@@ -1,234 +1,238 @@
-Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-Import-Module $PSScriptRoot/../src/Akamai.IVM/Akamai.IVM.psd1 -Force
-# Setup shared variables
-$Script:EdgeRCFile = $env:PesterEdgeRCFile
-$Script:SafeEdgeRCFile = $env:PesterSafeEdgeRCFile
-$Script:Section = $env:PesterEdgeRCSection
-$Script:TestContract = $env:PesterContractID
-$Script:TestGroupID = $env:PesterGroupID
-$Script:Network = 'Staging'
-$Script:TestImagePolicySetName = 'akamaipowershell-testing-image'
-$Script:TestImagePolicyName = 'akamaipowershell-image-policy'
-$Script:TestImagePolicyBody = '{"output":{"quality":85},"breakpoints":{"widths":[1024,2048]}}'
-$Script:TestImagePolicy = ConvertFrom-Json $TestImagePolicyBody
-$Script:TestVideoPolicySetName = 'akamaipowershell-testing-video'
-$Script:TestVideoPolicyName = 'akamaipowershell-video-policy'
-$Script:TestVideoPolicyBody = '{"breakpoints":{"widths":[854,1280,1920]},"id":"low-vid","output":{"perceptualQuality":"mediumLow"}}'
-$Script:TestVideoPolicy = ConvertFrom-Json $TestVideoPolicyBody
-$Script:TestImageCollectionId = "akamaipowershell-testing-collection"
-$Script:TestImageCollection = ConvertFrom-Json @"
-{"id":"$TestImageCollectionId","description":"akamaiPowershellTestCollection from Pipeline","definition":{"version":1,"items":[{"type":"image","url":"https://www.example.com/1234.jpg"}]}}
-"@
-
-Describe 'Safe ImageManager Tests' {
-    #************************************************#
-    #                       Image Tests              #
-    #************************************************#
-
-    ### Create a new image policy set
-    $Script:NewImagePolicySet = New-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -Name $TestImagePolicySetName -ContractID $TestContract -Type Image -Region EMEA
-    it 'New-IVMPolicySet creates an image policy set' {
-        $NewImagePolicySet.name | Should -Be $TestImagePolicySetName
+Describe 'Safe Akamai.IVM Tests' {
+    BeforeAll {
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.IVM/Akamai.IVM.psd1 -Force
+        # Setup shared variables
+        $CommonParams = @{
+            EdgeRCFile = $env:PesterEdgeRCFile
+            Section    = $env:PesterEdgeRCSection
+        }
+        $TestContract = $env:PesterContractID
+        $TestGroupID = $env:PesterGroupID
+        $TestNetwork = 'Staging'
+        $TestImagePolicySetName = 'akamaipowershell-testing-image'
+        $TestImagePolicyName = 'akamaipowershell-image-policy'
+        $TestImagePolicyBody = '{"output":{"quality":85},"breakpoints":{"widths":[1024,2048]}}'
+        $TestImagePolicy = ConvertFrom-Json $TestImagePolicyBody
+        $TestVideoPolicySetName = 'akamaipowershell-testing-video'
+        $TestVideoPolicyName = 'akamaipowershell-video-policy'
+        $TestVideoPolicyBody = '{"breakpoints":{"widths":[854,1280,1920]},"id":"low-vid","output":{"perceptualQuality":"mediumLow"}}'
+        $TestVideoPolicy = ConvertFrom-Json $TestVideoPolicyBody
+        $PD = @{}
     }
 
-    ### Get all policy sets
-    $Script:AllPolicySets = Get-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -ContractID $TestContract 
-    it 'Get-IVMPolicySet gets all policy sets' {
-        $AllPolicySets[0].name | Should -Not -BeNullOrEmpty
+    AfterAll {
+        # Find and remove all testing policySets
+        Get-IVMPolicySet @CommonParams | Where-Object policySetName -like akamaipowershell-testing* | ForEach-Object {
+            Remove-IVMPolicySet -PolicySetID $_.id @CommonParams
+        }
     }
 
-    ### Get a single policy set
-    $Script:GetSingleImagePolicySet = Get-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract 
-    it 'Get-IVMPolicySet gets a image policy set' {
-        $GetSingleImagePolicySet.name | Should -Be $TestImagePolicySetName
+    #-------------------------------------------------
+    #                  Image Tests
+    #-------------------------------------------------
+
+    Context 'New-IVMPolicySet' {
+        It 'creates an image policy set' {
+            $PD.NewImagePolicySet = New-IVMPolicySet -Name $TestImagePolicySetName -ContractID $TestContract -Type Image -Region EMEA @CommonParams
+            $PD.NewImagePolicySet.name | Should -Be $TestImagePolicySetName
+        }
     }
 
-    ### Add a new image policy to the policy set via pipeline
-    $Script:NewImagePolicyPipe = $TestImagePolicy | New-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network 
-    it 'New-IVMPolicy creates a new Image policy via pipeline' {
-        $NewImagePolicyPipe.operationPerformed | Should -Be "CREATED"
+    Context 'Get-IVMPolicySet, All' {
+        It 'gets all policy sets' {
+            $PD.AllPolicySets = Get-IVMPolicySet @CommonParams -ContractID $TestContract 
+            $PD.AllPolicySets[0].name | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Creation fails if the policy with the same name already exists
-    $Script:NewImagePolicyExists = { $TestImagePolicy | New-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network } | Should -Throw 
-    it 'New-IVMPolicy fails if policy already exists' {
-        $NewImagePolicyExists | Should -BeNullOrEmpty
+    Context 'Get-IVMPolicySet, Single' {
+        It 'gets a image policy set' {
+            $PD.GetSingleImagePolicySet = Get-IVMPolicySet -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract @CommonParams
+            $PD.GetSingleImagePolicySet.name | Should -Be $TestImagePolicySetName
+        }
     }
 
-    ### Change output quality  parameter to update the policy settings in the next test case
-    $TestImagePolicy.output.quality = 95
-
-    ### Update an existing image policy
-    $Script:SetImagePolicyPipe = $TestImagePolicy | Set-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network 
-    it 'Set-IVMPolicy updates a Image policy via pipeline' {
-        $SetImagePolicyPipe.operationPerformed | Should -Be "UPDATED"
+    Context 'New-IVMPolicy, Pipeline' {
+        It 'creates a new Image policy via pipeline' {
+            $PD.NewImagePolicyPipe = $TestImagePolicy | New-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork @CommonParams
+            $PD.NewImagePolicyPipe.operationPerformed | Should -Be 'CREATED'
+        }
+        It 'fails if policy already exists' {
+            { $TestImagePolicy | New-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork @CommonParams } | Should -Throw
+        }
     }
 
-    ### Restore an image policy to the previous version
-    $Script:RestoreImagePolicy = Restore-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network 
-    it 'Restore-IVMPolicy reverts a policy back to the previous version' {
-        $RestoreImagePolicy.operationPerformed | Should -Be "UPDATED"
-        $RestoreImagePolicy.description | Should -BeLike "*has been rolled back to version*"
+    Context 'Set-IVMPolicy ' {
+        It 'updates a Image policy via pipeline' {
+            $TestImagePolicy.output.quality = 95
+            $PD.SetImagePolicyPipe = $TestImagePolicy | Set-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork @CommonParams
+            $PD.SetImagePolicyPipe.operationPerformed | Should -Be 'UPDATED'
+        }
     }
 
-    ### Remove the image Policy
-    { $Script:RemoveImagePolicy = Remove-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network } | Should -Not -Throw
-    It "Remove-IVMPolicy deletes an image policy " {
-        $RemoveImagePolicy.operationPerformed | Should -Be "DELETED"
+    Context 'Restore-IVMPolicy' {
+        It 'reverts a policy back to the previous version' {
+            $PD.RestoreImagePolicy = Restore-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork @CommonParams
+            $PD.RestoreImagePolicy.operationPerformed | Should -Be 'UPDATED'
+            $PD.RestoreImagePolicy.description | Should -BeLike '*has been rolled back to version*'
+        }
     }
 
-    ### Create an image policy with body parameter
-    $Script:NewImagePolicyBody = New-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network -Body $TestImagePolicyBody
-    it 'New-IVMPolicy creates a new Image policy with body parameter' {
-        $NewImagePolicyBody.operationPerformed | Should -Be "CREATED"
+    Context 'Remove-IVMPolicy' {
+        It 'deletes an image policy' {
+            $PD.RemoveImagePolicy = Remove-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork  @CommonParams
+            $PD.RemoveImagePolicy.operationPerformed | Should -Be 'DELETED'
+        }
     }
 
-    ### Get all Policies
-    $Script:AllImagePolicies = Get-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -Network $Network
-    it 'Get-IVMPolicy gets all Image Policies' {
-        $AllImagePolicies[0].id | Should -Not -BeNullOrEmpty
+    Context 'Create an image policy with body parameter' {
+        It 'New-IVMPolicy creates a new Image policy with body parameter' {
+            $PD.NewImagePolicyBody = New-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork -Body $TestImagePolicyBody @CommonParams
+            $PD.NewImagePolicyBody.operationPerformed | Should -Be 'CREATED'
+        }
     }
 
-    ### Get a single Policy
-    $Script:GetSingleImagePolicy = Get-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network
-    it 'Get-IVMPolicy gets a single Image Policy' {
-        $GetSingleImagePolicy.id | Should -Be $TestImagePolicyName
+    Context 'Get-IVMPolicy, All' {
+        It 'gets all Image Policies' {
+            $PD.AllImagePolicies = Get-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -Network $TestNetwork @CommonParams
+            $PD.AllImagePolicies[0].id | Should -Not -BeNullOrEmpty
+        }
     }
 
-    $Script:SetImagePolicySet = Set-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -ContractID $TestContract -Region US -Name "akamaipowershell-testing-image-changed-name" -PolicySetID $NewImagePolicySet.id
-    it 'Set-IVMPolicySet updates an image policy sets name and region' {
-        $SetImagePolicySet.name | Should -Match "-changed-name"
-        $SetImagePolicySet.region | Should -Be "US"
+    Context 'Get-IVMPolicy, Single' {
+        It 'gets a single Image Policy' {
+            $PD.GetSingleImagePolicy = Get-IVMPolicy -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork @CommonParams
+            $PD.GetSingleImagePolicy.id | Should -Be $TestImagePolicyName
+        }
     }
 
-    $Script:GetImagePolicyHistory = Get-IVMPolicyHistory -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $Network
-    it 'Get-IVMPolicyHistory gets the Image Policy history' {
-        $GetImagePolicyHistory  | Should -Not -BeNullOrEmpty
+    Context 'Set-IVMPolicySet' {
+        It 'updates an image policy sets name and region' {
+            $PD.SetImagePolicySet = Set-IVMPolicySet -ContractID $TestContract -Region US -Name 'akamaipowershell-testing-image-changed-name' -PolicySetID $PD.NewImagePolicySet.id @CommonParams
+            $PD.SetImagePolicySet.name | Should -Match '-changed-name'
+            $PD.SetImagePolicySet.region | Should -Be 'US'
+        }
     }
 
-    ### Create a IM Image Collection via Pipeline
-    $Script:NewImageCollection = $TestImageCollection | New-IVMImageCollection -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract
-    it 'New-IVMImageCollection creates a new Image collection via pipeline' {
-        $NewImageCollection.operationPerformed | Should -Be "CREATED"
+    Context 'Get-IVMPolicyHistory' {
+        It 'gets the Image Policy history' {
+            $PD.GetImagePolicyHistory = Get-IVMPolicyHistory -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract -PolicyID $TestImagePolicyName -Network $TestNetwork @CommonParams
+            $PD.GetImagePolicyHistory | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Creation fails if the collection with the same name already exists
-    $Script:NewImageCollectionExists = { $TestImageCollection | New-IVMImageCollection -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract } | Should -Throw 
-    it 'New-IVMImageCollection fails if collection already exists' {
-        $NewImageCollectionExists | Should -BeNullOrEmpty
+    Context 'Remove-IVMPolicySet' {
+        It "deletes an image policy set" {
+            Remove-IVMPolicySet -PolicySetID $PD.NewImagePolicySet.id -ContractID $TestContract @CommonParams
+        }
     }
 
-    ### Change content of the Image Collection for update
-    $TestImageCollectionBody = '{"id":"akamaipowershell-testing-collection","description":"akamaiPowershellTestCollection","definition":{"version":1,"items":[{"type":"image","url":"https://www.example.com/5678.jpg"}]}}'
-    
-    ### Update a IM Image collection with Body parameter
-    $Script:SetImageCollection = Set-IVMImageCollection -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -ImageCollectionID $NewImageCollection.id -Body $TestImageCollectionBody
-    it 'Set-IVMImageCollection updates an Image collection with Body Parameter' {
-        $SetImageCollection.operationPerformed | Should -Be "UPDATED"
-    }
-    ### Get all Image collections
-    $Script:AllImageCollections = Get-IVMImageCollection -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract
-    it 'Get-IVMImageCollection gets all Image Collections' {
-        $AllImageCollections.totalItems | Should -GT 0
-    }
-
-    ### Get a single Image collection
-    $Script:GetSingleImageCollection = Get-IVMImageCollection -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -ImageCollectionId $TestImageCollection.id
-    it 'Get-IVMImageCollection gets a single Image Collection' {
-        $GetSingleImageCollection.id | Should -Be $TestImageCollectionId
-    }
-    
-    $Script:RemoveImageCollection = Remove-IVMImageCollection -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract -ImageCollectionId $TestImageCollection.id
-    it 'Remove-IVMImageCollection deletes an Image collection' {
-        $RemoveImageCollection.operationPerformed | Should -Be "DELETED"
-    }
-
-    # Remove the Policy Set
-    It "Remove-IVMPolicySet deletes an image policy set" {
-        { Remove-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewImagePolicySet.id -ContractID $TestContract } | Should -Not -Throw
-    }
-
-    #************************************************#
+    #-------------------------------------------------
     #                       Video Tests              #
-    #************************************************#
+    #-------------------------------------------------
 
-    ### Create a new video policy set
-    $Script:NewVideoPolicySet = New-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -Name $TestVideoPolicySetName -ContractID $TestContract -Type Video -Region US
-    it 'New-IVMPolicySet creates a video policy set' {
-        $NewVideoPolicySet.name | Should -Be $TestVideoPolicySetName
+    Context 'New-IVMPolicySet' {
+        It 'creates a video policy set' {
+            $PD.NewVideoPolicySet = New-IVMPolicySet -Name $TestVideoPolicySetName -ContractID $TestContract -Type Video -Region US @CommonParams
+            $PD.NewVideoPolicySet.name | Should -Be $TestVideoPolicySetName
+        }
     }
 
-    ### Get a single video policy set
-    $Script:GetSingleVideoPolicySet = Get-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewVideoPolicySet.id -ContractID $TestContract 
-    it 'Get-IVMPolicySet gets a video policy set' {
-        $GetSingleVideoPolicySet.name | Should -Be $TestVideoPolicySetName
+    Context 'Get-IVMPolicySet, Single' {
+        It 'gets a video policy set' {
+            $PD.GetSingleVideoPolicySet = Get-IVMPolicySet -PolicySetID $PD.NewVideoPolicySet.id -ContractID $TestContract @CommonParams
+            $PD.GetSingleVideoPolicySet.name | Should -Be $TestVideoPolicySetName
+        }
     }
 
-    ### Create a video policy via pipeline
-    $Script:NewVideoPolicyPipe = $TestVideoPolicy | New-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $Network
-    it 'New-IVMPolicy creates a new Video policy via pipeline' {
-        $NewVideoPolicyPipe.operationPerformed | Should -Be "CREATED"
+    Context 'New-IVMPolicy' {
+        It 'creates a new Video policy via pipeline' {
+            $PD.NewVideoPolicyPipe = $TestVideoPolicy | New-IVMPolicy -PolicySetID $PD.NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $TestNetwork @CommonParams
+            $PD.NewVideoPolicyPipe.operationPerformed | Should -Be 'CREATED'
+        }
     }
 
-    ### Remove a video policy
-    { $Script:RemoveVideoPolicy = Remove-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $Network } | Should -Not -Throw
-    It "Remove-IVMPolicy deletes a video policy " {
-        $RemoveVideoPolicy.operationPerformed | Should -Be "DELETED"
+    Context 'Remove-IVMPolicy' {
+        It 'deletes a video policy' {
+            $PD.RemoveVideoPolicy = Remove-IVMPolicy -PolicySetID $PD.NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $TestNetwork @CommonParams
+            $PD.RemoveVideoPolicy.operationPerformed | Should -Be 'DELETED'
+        }
     }
 
-    ### Create a video policy with body parameter
-    $Script:NewVideoPolicyBody = New-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $Network -Body $TestVideoPolicyBody
-    it 'New-IVMPolicy creates a new Video policy with body parameter' {
-        $NewVideoPolicyBody.operationPerformed | Should -Be "CREATED"
+    Context 'New-IVMPolicy' {
+        It 'creates a new Video policy with body parameter' {
+            $PD.NewVideoPolicyBody = New-IVMPolicy -PolicySetID $PD.NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $TestNetwork -Body $TestVideoPolicyBody @CommonParams
+            $PD.NewVideoPolicyBody.operationPerformed | Should -Be 'CREATED'
+        }
     }
 
-    ### Get a single video policy
-    $Script:GetSingleVideoPolicy = Get-IVMPolicy -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $Network
-    it 'Get-IVMPolicy gets a single Video Policy' {
-        $GetSingleVideoPolicy.id | Should -Be $TestVideoPolicyName
+    Context 'Get-IVMPolicy, Single' {
+        It 'gets a single Video Policy' {
+            $PD.GetSingleVideoPolicy = Get-IVMPolicy -PolicySetID $PD.NewVideoPolicySet.id -ContractID $TestContract -PolicyID $TestVideoPolicyName -Network $TestNetwork @CommonParams
+            $PD.GetSingleVideoPolicy.id | Should -Be $TestVideoPolicyName
+        }
     }
 
-    ### Remove the video policy set
-    It "Remove-IVMPolicySet deletes a video policy set" {
-        { Remove-IVMPolicySet -EdgeRCFile $EdgeRCFile -Section $Section -PolicySetID $NewVideoPolicySet.id -ContractID $TestContract } | Should -Not -Throw
+    Context 'Remove-IVMPolicySet' {
+        It 'deletes a video policy set' {
+            Remove-IVMPolicySet -PolicySetID $PD.NewVideoPolicySet.id -ContractID $TestContract @CommonParams
+        }
+    }
+}
+Describe 'Unsafe Akamai.IVM Tests' {
+    BeforeAll {
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.IVM/Akamai.IVM.psd1 -Force
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.IVM"
+        $PD = @{}
+    }
+    #-------------------------------------------------
+    #               Log and Error Tests
+    #-------------------------------------------------
 
+    Context 'Get-IVMErrorDetails' {
+        It 'gets error details' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMErrorDetails.json"
+                return $Response | ConvertFrom-Json
+            }
+            $ErrorDetails = Get-IVMErrorDetails -PolicySetID 'videoPolicy' -Network Production
+            $ErrorDetails | Should -Not -BeNullOrEmpty
+        }
     }
 
-    AfterAll {
-        ### Cleanup files
+    Context 'Get-IVMLogDetails' {
+        It 'gets log details' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMLogDetails.json"
+                return $Response | ConvertFrom-Json
+            }
+            $LogDetails = Get-IVMLogDetails -PolicySetID 'videoPolicy' -Network Production
+            $LogDetails | Should -Not -BeNullOrEmpty
+        }
     }
     
+    Context 'Get-IVMImage, All' {
+        It 'lists images' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMImage_1.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Images = Get-IVMImage -PolicySetID 'imagePolicy' -Network Production
+            $Images[0].url | Should -Not -BeNullOrEmpty
+        }
+    }
+    
+    Context 'Get-IVMImage, single' {
+        It 'retrieves a single image' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMImage.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Image = Get-IVMImage -PolicySetID 'imagePolicy' -Network Production -ImageID '/images/image.jpg?imageId=format/jpg'
+            $Image.url | Should -Not -BeNullOrEmpty
+        }
+    }
 }
 
-Describe 'Unsafe ImageManager Tests' {
-    #************************************************#
-    #               Log and Error Tests              #
-    #************************************************#
-    ### Create a new image policy set
-    $Script:ErrorDetails = Get-IVMErrorDetails -EdgeRCFile $SafeEdgeRCFile -Section $Section -PolicySetID 'videoPolicy' -Network Production
-    it 'Get-IVMErrorDetails gets error details' {
-        $ErrorDetails | Should -Not -BeNullOrEmpty
-    }
-
-    $Script:LogDetails = Get-IVMLogDetails -EdgeRCFile $SafeEdgeRCFile -Section $Section -PolicySetID 'videoPolicy' -Network Production
-    it 'Get-IVMLogDetails gets log details' {
-        $LogDetails | Should -Not -BeNullOrEmpty
-    }
-    
-    # Get-IVMImage, all
-    $Script:Images = Get-IVMImage -PolicySetID 'imagePolicy' -Network Production -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Get-IVMImage, all, lists images' {
-        $Images[0].url | Should -Not -BeNullOrEmpty
-    }
-    
-    # Get-IVMImage, single
-    $Script:Image = Get-IVMImage -PolicySetID 'imagePolicy' -Network Production -ImageID '/images/image.jpg?imageId=format/jpg' -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Get-IVMImage, single, retrieves a single image' {
-        $Image.url | Should -Not -BeNullOrEmpty
-    }
-
-    AfterAll {
-        ### Cleanup files
-    }
-    
-}

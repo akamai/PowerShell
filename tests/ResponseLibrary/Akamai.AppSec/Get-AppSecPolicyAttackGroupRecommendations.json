@@ -1,0 +1,42 @@
+{
+  "group": "CMD",
+  "recommendations": [
+    {
+      "description": "This selector triggered on 3458 unique IPs over a period of 7 hours.",
+      "exceptions": [
+        {
+          "selectorId": 77,
+          "selector": {
+            "type": "AAG_SPECIFIC",
+            "selector": "REQUEST_HEADERS",
+            "wildcard": false,
+            "numberOfExceptions": 2,
+            "enhanced": false,
+            "names": [
+              "WWW-Exc_Header",
+              "WWW-Auth"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "declinedRecommendations": [
+    {
+      "description": "CMD recommendation",
+      "exceptions": [
+        {
+          "selectorId": 19557,
+          "selector": {
+            "type": "AAG_SPECIFIC",
+            "selector": "XML_PAIRS",
+            "wildcard": true,
+            "names": [
+              "XML-PAIR-02-TEST"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

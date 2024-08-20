@@ -1,0 +1,63 @@
+{
+  "streamName": "diagnostics-log-stream",
+  "streamId": 7050,
+  "streamVersion": 1,
+  "groupId": 32145,
+  "contractId": "C-0N7RAC7",
+  "latestVersion": 1,
+  "productId": "Dynamic_Site_Accelerator",
+  "streamStatus": "ACTIVATING",
+  "createdBy": "alfulani",
+  "createdDate": "2022-02-05T13:31:30Z",
+  "modifiedBy": "alfulani",
+  "modifiedDate": "2022-02-05T13:31:30Z",
+  "collectMidgress": true,
+  "notificationEmails": [
+    "useremail1@domain.com",
+    "useremail2@domain.com"
+  ],
+  "destination": {
+    "path": "ds2-logs",
+    "displayName": "S3Destination",
+    "bucket": "datastream.akamai.com",
+    "region": "ap-south-1",
+    "destinationType": "S3",
+    "compressLogs": true
+  },
+  "deliveryConfiguration": {
+    "uploadFilePrefix": "logs",
+    "uploadFileSuffix": "ds",
+    "fieldDelimiter": "SPACE",
+    "format": "STRUCTURED",
+    "frequency": {
+      "intervalInSeconds": 30
+    }
+  },
+  "properties": [
+    {
+      "propertyId": 349772,
+      "propertyName": "example.com"
+    },
+    {
+      "propertyId": 349770,
+      "propertyName": "example.akamai.com"
+    }
+  ],
+  "datasetFields": [
+    {
+      "datasetFieldId": 1000,
+      "datasetFieldName": "CP code",
+      "datasetFieldJsonKey": "cp"
+    },
+    {
+      "datasetFieldId": 1002,
+      "datasetFieldName": "Request ID",
+      "datasetFieldJsonKey": "reqId"
+    },
+    {
+      "datasetFieldId": 1023,
+      "datasetFieldName": "Cookie",
+      "datasetFieldJsonKey": "cookie"
+    }
+  ]
+}

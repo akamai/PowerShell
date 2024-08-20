@@ -1,41 +1,22 @@
-Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-Import-Module $PSScriptRoot/../src/Akamai.CPCodes/Akamai.CPCodes.psd1 -Force
-# Setup shared variables
-$Script:EdgeRCFile = $env:PesterEdgeRCFile
-$Script:SafeEdgeRCFile = $env:PesterSafeEdgeRCFile
-$Script:Section = $env:PesterEdgeRCSection
-$Script:TestContract = $env:PesterContractID
-$Script:TestGroupID = $env:PesterGroupID
-$Script:TestCPCode = $env:PesterCPCode
-$Script:TestReportingGroup = $env:PesterReportingGroup
-$Script:TestReportingGroupBody = @"
-{
-    "reportingGroupName": "akamaipowershell-testing",
-    "contracts": [
-      {
-        "contractId": "$env:PesterContractID",
-        "cpcodes": [
-          {
-            "cpcodeId": $env:PesterCPCode,
-            "cpcodeName": "akamaipowershell-testing"
-          }
-        ]
-      }
-    ],
-    "accessGroup": {
-      "groupId": $env:PesterGroupID,
-      "contractId": "$env:PesterContractID"
-    }
-}
-"@
-$Script:TestReportingGroupObject = ConvertFrom-Json $TestReportingGroupBody
-$Script:TestReportingGroupName = 'akamaipowershell-testing'
-$Script:TestReportingGroupNamePipeline = $TestReportingGroupName + '-pipeline'
-$TestReportingGroupObject.reportingGroupName = $TestReportingGroupNamePipeline
-
 Describe 'Safe Akamai.CPCodes Tests' {
+    
+    BeforeAll { 
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.CPCodes/Akamai.CPCodes.psd1 -Force
+        # Setup shared variables
+        $CommonParams = @{
+            EdgeRCFile = $env:PesterEdgeRCFile
+            Section    = $env:PesterEdgeRCSection
+        }
+        $TestContract = $env:PesterContractID
+        $TestGroupID = $env:PesterGroupID
+        $TestCPCode = $env:PesterCPCode
+        $TestReportingGroup = $env:PesterReportingGroup
+        $TestReportingGroupName = 'akamaipowershell-testing'
+        $PD = @{}
+    }
 
-    BeforeDiscovery {
+    AfterAll {
         
     }
 
@@ -43,66 +24,75 @@ Describe 'Safe Akamai.CPCodes Tests' {
     #                 CPCode                  
     #------------------------------------------------
 
-    ### Get-CPCode - Parameter Set 'single'
-    $Script:GetCPCodeSingle = Get-CPCode -CPCodeID $TestCPCode -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPCode (single) returns the correct data' {
-        $GetCPCodeSingle.cpcodeId | Should -Be $TestCPCode
+    Context 'Get-CPCode - Parameter Set single' {
+        It 'Get-CPCode (single) returns the correct data' {
+            $PD.GetCPCodeSingle = Get-CPCode -CPCodeID $TestCPCode @CommonParams
+            $PD.GetCPCodeSingle.cpcodeId | Should -Be $TestCPCode
+        }
     }
 
-    ### Get-CPCode - Parameter Set 'all'
-    $Script:GetCPCodeAll = Get-CPCode -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPCode (all) returns the correct data' {
-        $GetCPCodeAll[0].cpcodeId | Should -Not -BeNullOrEmpty
+    Context 'Get-CPCode - Parameter Set all' {
+        It 'Get-CPCode (all) returns the correct data' {
+            $PD.GetCPCodeAll = Get-CPCode @CommonParams
+            $PD.GetCPCodeAll[0].cpcodeId | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Set-CPCode by parameter
-    $Script:SetCPCodeByParam = Set-CPCode -Body $GetCPCodeSingle -CPCodeID $TestCPCode -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Set-CPCode by param returns the correct data' {
-        $SetCPCodeByParam.cpcodeId | Should -Be $TestCPCode
+    Context 'Set-CPCode by parameter' {
+        It 'Set-CPCode by param returns the correct data' {
+            $PD.SetCPCodeByParam = Set-CPCode -Body $PD.GetCPCodeSingle -CPCodeID $TestCPCode @CommonParams
+            $PD.SetCPCodeByParam.cpcodeId | Should -Be $TestCPCode
+        }
     }
 
-    ### Set-CPCode by pipeline
-    $Script:SetCPCodeByPipeline = ($GetCPCodeSingle | Set-CPCode -CPCodeID $TestCPCode -EdgeRCFile $EdgeRCFile -Section $Section)
-    it 'Set-CPCode by pipeline returns the correct data' {
-        $SetCPCodeByPipeline.cpcodeId | Should -Be $TestCPCode
+    Context 'Set-CPCode by pipeline' {
+        It 'returns the correct data' {
+            $PD.SetCPCodeByPipeline = ($PD.GetCPCodeSingle | Set-CPCode -CPCodeID $TestCPCode @CommonParams)
+            $PD.SetCPCodeByPipeline.cpcodeId | Should -Be $TestCPCode
+        }
     }
 
     #------------------------------------------------
     #                 CPCodeWatermarkLimit                  
     #------------------------------------------------
 
-    ### Get-CPCodeWatermarkLimit
-    $Script:GetCPCodeWatermarkLimit = Get-CPCodeWatermarkLimit -ContractID $TestContract -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPCodeWatermarkLimit returns the correct data' {
-        $GetCPCodeWatermarkLimit.limit | Should -Not -BeNullOrEmpty
+    Context 'Get-CPCodeWatermarkLimit' {
+        It 'returns the correct data' {
+            $PD.GetCPCodeWatermarkLimit = Get-CPCodeWatermarkLimit -ContractID $TestContract @CommonParams
+            $PD.GetCPCodeWatermarkLimit.limit | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
     #                 CPReportingGroup                  
     #------------------------------------------------
 
-    ### Get-CPReportingGroup - Parameter Set 'all'
-    $Script:GetCPReportingGroupAll = Get-CPReportingGroup -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPReportingGroup (all) returns the correct data' {
-        $GetCPReportingGroupAll[0].ReportingGroupId | Should -Not -BeNullOrEmpty
+    Context 'Get-CPReportingGroup - Parameter Set all' {
+        It 'Get-CPReportingGroup (all) returns the correct data' {
+            $PD.GetCPReportingGroupAll = Get-CPReportingGroup @CommonParams
+            $PD.GetCPReportingGroupAll[0].ReportingGroupId | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Get-CPReportingGroup - Parameter Set 'single'
-    $Script:GetCPReportingGroupSingle = Get-CPReportingGroup -ReportingGroupID $TestReportingGroup -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPReportingGroup (single) returns the correct data' {
-        $GetCPReportingGroupSingle.ReportingGroupId | Should -Be $TestReportingGroup
+    Context 'Get-CPReportingGroup - Parameter Set single' {
+        It 'Get-CPReportingGroup (single) returns the correct data' {
+            $PD.GetCPReportingGroupSingle = Get-CPReportingGroup -ReportingGroupID $TestReportingGroup @CommonParams
+            $PD.GetCPReportingGroupSingle.ReportingGroupId | Should -Be $TestReportingGroup
+        }
     }
 
-    ### Set-CPReportingGroup by parameter
-    $Script:SetCPReportingGroupByParam = Set-CPReportingGroup -Body $GetCPReportingGroupSingle -ReportingGroupID $TestReportingGroup -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Set-CPReportingGroup by param returns the correct data' {
-        $SetCPReportingGroupByParam.ReportingGroupId | Should -Be $TestReportingGroup
+    Context 'Set-CPReportingGroup by parameter' {
+        It 'Set-CPReportingGroup by param returns the correct data' {
+            $PD.SetCPReportingGroupByParam = Set-CPReportingGroup -Body $PD.GetCPReportingGroupSingle -ReportingGroupID $TestReportingGroup @CommonParams
+            $PD.SetCPReportingGroupByParam.ReportingGroupId | Should -Be $TestReportingGroup
+        }
     }
 
-    ### Set-CPReportingGroup by pipeline
-    $Script:SetCPReportingGroupByPipeline = ($GetCPReportingGroupSingle | Set-CPReportingGroup -ReportingGroupID $TestReportingGroup -EdgeRCFile $EdgeRCFile -Section $Section)
-    it 'Set-CPReportingGroup by pipeline returns the correct data' {
-        $SetCPReportingGroupByPipeline.ReportingGroupId | Should -Be $TestReportingGroup
+    Context 'Set-CPReportingGroup by pipeline' {
+        It 'returns the correct data' {
+            $PD.SetCPReportingGroupByPipeline = ($PD.GetCPReportingGroupSingle | Set-CPReportingGroup -ReportingGroupID $TestReportingGroup @CommonParams)
+            $PD.SetCPReportingGroupByPipeline.ReportingGroupId | Should -Be $TestReportingGroup
+        }
     }
 
     
@@ -110,48 +100,94 @@ Describe 'Safe Akamai.CPCodes Tests' {
     #                 CPReportingGroupProducts                  
     #------------------------------------------------
 
-    ### Get-CPReportingGroupProducts
-    $Script:GetCPReportingGroupProducts = Get-CPReportingGroupProducts -ReportingGroupID $TestReportingGroup -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPReportingGroupProducts returns the correct data' {
-        $GetCPReportingGroupProducts[0].productId | Should -Not -BeNullOrEmpty
+    Context 'Get-CPReportingGroupProducts' {
+        It 'returns the correct data' {
+            $PD.GetCPReportingGroupProducts = Get-CPReportingGroupProducts -ReportingGroupID $TestReportingGroup @CommonParams
+            $PD.GetCPReportingGroupProducts[0].productId | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
     #                 CPReportingGroupWatermarkLimit                  
     #------------------------------------------------
 
-    ### Get-CPReportingGroupWatermarkLimit
-    $Script:GetCPReportingGroupWatermarkLimit = Get-CPReportingGroupWatermarkLimit -ContractID $TestContract -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-CPReportingGroupWatermarkLimit returns the correct data' {
-        $GetCPReportingGroupWatermarkLimit.limit | Should -Not -BeNullOrEmpty
+    Context 'Get-CPReportingGroupWatermarkLimit' {
+        It 'returns the correct data' {
+            $PD.GetCPReportingGroupWatermarkLimit = Get-CPReportingGroupWatermarkLimit -ContractID $TestContract @CommonParams
+            $PD.GetCPReportingGroupWatermarkLimit.limit | Should -Not -BeNullOrEmpty
+        }
     }
-
-
-    AfterAll {
-        
-    }
-
 }
 
 Describe 'Unsafe Akamai.CPCodes tests' {
+    BeforeAll { 
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.CPCodes/Akamai.CPCodes.psd1 -Force
+        
+        $TestContract = $env:PesterContractID
+        $TestGroupID = $env:PesterGroupID
+        $TestCPCode = $env:PesterCPCode
+        $TestReportingGroupBody = @"
+{
+    "reportingGroupName": "akamaipowershell-testing",
+    "contracts": [
+        {
+        "contractId": "$TestContract",
+        "cpcodes": [
+            {
+            "cpcodeId": $TestCPCode,
+            "cpcodeName": "akamaipowershell-testing"
+            }
+        ]
+        }
+    ],
+    "accessGroup": {
+        "groupId": $TestGroupID,
+        "contractId": "$TestContract"
+    }
+}
+"@
+        $TestReportingGroupObject = ConvertFrom-Json $TestReportingGroupBody
+        $TestReportingGroupNamePipeline = $TestReportingGroupName + '-pipeline'
+        $TestReportingGroupObject.reportingGroupName = $TestReportingGroupNamePipeline
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.CPCodes"
+        $PD = @{}
+    }
+
     #------------------------------------------------
     #                 CPReportingGroup                  
     #------------------------------------------------
 
-    ### New-CPReportingGroup by parameter
-    $Script:NewCPReportingGroupByParam = New-CPReportingGroup -Body $TestReportingGroupBody -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'New-CPReportingGroup by param returns the correct data' {
-        $NewCPReportingGroupByParam.reportingGroupName | Should -Not -BeNullOrEmpty
+    Context 'New-CPReportingGroup by parameter' {
+        It 'New-CPReportingGroup by param returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPCodes -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
+                return $Response | ConvertFrom-Json
+            }
+            $NewCPReportingGroupByParam = New-CPReportingGroup -Body $TestReportingGroupBody
+            $NewCPReportingGroupByParam.reportingGroupName | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### New-CPReportingGroup by pipeline
-    $Script:NewCPReportingGroupByPipeline = ($TestReportingGroupObject | New-CPReportingGroup -EdgeRCFile $SafeEdgeRCFile -Section $Section)
-    it 'New-CPReportingGroup by pipeline returns the correct data' {
-        $NewCPReportingGroupByPipeline.reportingGroupName | Should -Not -BeNullOrEmpty
+    Context 'New-CPReportingGroup by pipeline' {
+        It 'returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPCodes -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
+                return $Response | ConvertFrom-Json
+            }
+            $NewCPReportingGroupByPipeline = ($TestReportingGroupObject | New-CPReportingGroup)
+            $NewCPReportingGroupByPipeline.reportingGroupName | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Remove-CPReportingGroup
-    it 'Remove-CPReportingGroup throws no errors' {
-        { Remove-CPReportingGroup -ReportingGroupID 123456 -EdgeRCFile $SafeEdgeRCFile -Section $Section } | Should -Not -Throw
+    Context 'Remove-CPReportingGroup' {
+        It 'throws no errors' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPCodes -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Remove-CPReportingGroup.json"
+                return $Response | ConvertFrom-Json
+            }
+            Remove-CPReportingGroup -ReportingGroupID 123456 
+        }
     }
 }
+

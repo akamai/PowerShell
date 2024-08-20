@@ -1,0 +1,103 @@
+{
+  "evaluationPeriodStart": "2021-04-08T03:10:43Z",
+  "evaluationPeriodEnd": "2021-05-08T03:10:43Z",
+  "ruleRecommendations": [
+    {
+      "id": 100001,
+      "declinedRecommendations": [
+        {
+          "description": "100001 recommendation",
+          "ruleSetType": "ACTIVE",
+          "exceptions": [
+            {
+              "selectorId": 19557,
+              "selector": {
+                "type": "AAG_SPECIFIC",
+                "selector": "XML_PAIRS",
+                "wildcard": true,
+                "names": [
+                  "XML-PAIR-02-TEST"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "recommendations": [
+        {
+          "description": "Description for SQL",
+          "ruleSetType": "EVALUATION",
+          "evidences": {
+            "hostnames": [
+              "www.yamanohi.jp"
+            ]
+          },
+          "exceptions": [
+            {
+              "selectorId": 84220,
+              "selector": {
+                "type": "AAG_SPECIFIC",
+                "selector": "JSON_PAIRS",
+                "wildcard": true,
+                "names": [
+                  "JSON_PAIR_001"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "attackGroupRecommendations": [
+    {
+      "group": "CMD",
+      "recommendations": [
+        {
+          "description": "This selector triggered on 3458 unique IPs over a period of 7 hours.",
+          "ruleSetType": "ACTIVE",
+          "exceptions": [
+            {
+              "selectorId": 77,
+              "selector": {
+                "type": "AAG_SPECIFIC",
+                "selector": "REQUEST_HEADERS",
+                "wildcard": false,
+                "numberOfExceptions": 2,
+                "enhanced": false,
+                "names": [
+                  "WWW-Exc_Header",
+                  "WWW-Auth"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": "SQL",
+      "recommendations": [
+        {
+          "description": "Recommendation for SQL",
+          "ruleSetType": "EVALUATION",
+          "exceptions": [
+            {
+              "selectorId": 76,
+              "selector": {
+                "type": "AAG_SPECIFIC",
+                "selector": "ARGS_NAMES",
+                "wildcard": true,
+                "numberOfExceptions": 1,
+                "enhanced": false,
+                "names": [
+                  "test"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

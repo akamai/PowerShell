@@ -1,62 +1,57 @@
-Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-Import-Module $PSScriptRoot/../src/Akamai.SIEM/Akamai.SIEM.psd1 -Force
-# Setup shared variables
-$Script:EdgeRCFile = $env:PesterEdgeRCFile
-$Script:SafeEdgeRCFile = $env:PesterSafeEdgeRCFile
-$Script:Section = $env:PesterEdgeRCSection
-$Script:TestContract = $env:PesterContractID
-$Script:TestGroupID = $env:PesterGroupID
-$Script:TestSIEMEvent = '{"attackData":{"clientIP":"52.91.36.10","configId":"14227","policyId":"qik1_26545","ruleActions":"YWxlcnQ%3d%3bYWxlcnQ%3d%3bZGVueQ%3d%3d","ruleData":"dGVsbmV0LmV4ZQ%3d%3d%3bdGVsbmV0LmV4ZQ%3d%3d%3bVmVjdG9yIFNjb3JlOiAxMCwgREVOWSB0aHJlc2hvbGQ6IDksIEFsZXJ0IFJ1bGVzOiA5NTAwMDI6OTUwMDA2LCBEZW55IFJ1bGU6ICwgTGFzdCBNYXRjaGVkIE1lc3NhZ2U6IFN5c3RlbSBDb21tYW5kIEluamVjdGlvbg%3d%3d","ruleMessages":"U3lzdGVtIENvbW1hbmQgQWNjZXNz%3bU3lzdGVtIENvbW1hbmQgSW5qZWN0aW9u%3bQW5vbWFseSBTY29yZSBFeGNlZWRlZCBmb3IgQ29tbWFuZCBJbmplY3Rpb24%3d","ruleSelectors":"QVJHUzpvcHRpb24%3d%3bQVJHUzpvcHRpb24%3d%3b","ruleTags":"T1dBU1BfQ1JTL1dFQl9BVFRBQ0svRklMRV9JTkpFQ1RJT04%3d%3bT1dBU1BfQ1JTL1dFQl9BVFRBQ0svQ09NTUFORF9JTkpFQ1RJT04%3d%3bQUtBTUFJL1BPTElDWS9DTURfSU5KRUNUSU9OX0FOT01BTFk%3d","ruleVersions":"NA%3d%3d%3bNA%3d%3d%3bMQ%3d%3d","rules":"OTUwMDAy%3bOTUwMDA2%3bQ01ELUlOSkVDVElPTi1BTk9NQUxZ"},"botData":{"botScore":"100","responseSegment":"3"},"clientData":{"appBundleId":"com.mydomain.myapp","appVersion":"1.23","sdkVersion":"4.7.1","telemetryType":"2"},"format":"json","geo":{"asn":"14618","city":"ASHBURN","continent":"288","country":"US","regionCode":"VA"},"httpMessage":{"bytes":"266","host":"www.hmapi.com","method":"GET","path":"/","port":"80","protocol":"HTTP/1.1","query":"option=com_jce%20telnet.exe","requestHeaders":"User-Agent%3a%20BOT%2f0.1%20(BOT%20for%20JCE)%0d%0aAccept%3a%20text%2fhtml,application%2fxhtml+xml,application%2fxml%3bq%3d0.9,*%2f*%3bq%3d0.8%0d%0auniqueID%3a%20CR_H8%0d%0aAccept-Language%3a%20en-US,en%3bq%3d0.5%0d%0aAccept-Encoding%3a%20gzip,%20deflate%0d%0aConnection%3a%20keep-alive%0d%0aHost%3a%20www.hmapi.com%0d%0aContent-Length%3a%200%0d%0a","requestId":"1158db1758e37bfe67b7c09","responseHeaders":"Server%3a%20AkamaiGHost%0d%0aMime-Version%3a%201.0%0d%0aContent-Type%3a%20text%2fhtml%0d%0aContent-Length%3a%20266%0d%0aExpires%3a%20Tue,%2004%20Apr%202017%2010%3a57%3a02%20GMT%0d%0aDate%3a%20Tue,%2004%20Apr%202017%2010%3a57%3a02%20GMT%0d%0aConnection%3a%20close%0d%0aSet-Cookie%3a%20ak_bmsc%3dAFE4B6D8CEEDBD286FB10F37AC7B256617DB580D417F0000FE7BE3580429E23D%7epluPrgNmaBdJqOLZFwxqQLSkGGMy4zGMNXrpRIc1Md4qtsDfgjLCojg1hs2HC8JqaaB97QwQRR3YS1ulk+6e9Dbto0YASJAM909Ujbo6Qfyh1XpG0MniBzVbPMUV8oKhBLLPVSNCp0xXMnH8iXGZUHlUsHqWONt3+EGSbWUU320h4GKiGCJkig5r+hc6V1pi3tt7u3LglG3DloEilchdo8D7iu4lrvvAEzyYQI8Hao8M0%3d%3b%20expires%3dTue,%2004%20Apr%202017%2012%3a57%3a02%20GMT%3b%20max-age%3d7200%3b%20path%3d%2f%3b%20domain%3d.hmapi.com%3b%20HttpOnly%0d%0a","start":"1491303422","status":"200"},"type":"akamai_siem","userRiskData":{"allow":"0","general":"duc_1h:10|duc_1d:30","originUserId":"jsmith007","risk":"udfp:1325gdg4g4343g/M|unp:74256/H","score":"75","status":"0","trust":"ugp:US","username":"jsmith@example.com","uuid":"964d54b7-0821-413a-a4d6-8131770ec8d5"},"version":"1.0"}'
-$Script:TestSIEMEventObject = ConvertFrom-Json $Script:TestSIEMEvent
-
-Describe 'Safe Akamai.SIEM Tests' {
-
-    BeforeDiscovery {
-        
+Describe 'Unsafe Akamai.SIEM Tests' {
+    
+    BeforeAll {
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.SIEM/Akamai.SIEM.psd1 -Force
+        $TestSIEMEvent = '{"attackData":{"clientIP":"52.91.36.10","configId":"14227","policyId":"qik1_26545","ruleActions":"YWxlcnQ%3d%3bYWxlcnQ%3d%3bZGVueQ%3d%3d","ruleData":"dGVsbmV0LmV4ZQ%3d%3d%3bdGVsbmV0LmV4ZQ%3d%3d%3bVmVjdG9yIFNjb3JlOiAxMCwgREVOWSB0aHJlc2hvbGQ6IDksIEFsZXJ0IFJ1bGVzOiA5NTAwMDI6OTUwMDA2LCBEZW55IFJ1bGU6ICwgTGFzdCBNYXRjaGVkIE1lc3NhZ2U6IFN5c3RlbSBDb21tYW5kIEluamVjdGlvbg%3d%3d","ruleMessages":"U3lzdGVtIENvbW1hbmQgQWNjZXNz%3bU3lzdGVtIENvbW1hbmQgSW5qZWN0aW9u%3bQW5vbWFseSBTY29yZSBFeGNlZWRlZCBmb3IgQ29tbWFuZCBJbmplY3Rpb24%3d","ruleSelectors":"QVJHUzpvcHRpb24%3d%3bQVJHUzpvcHRpb24%3d%3b","ruleTags":"T1dBU1BfQ1JTL1dFQl9BVFRBQ0svRklMRV9JTkpFQ1RJT04%3d%3bT1dBU1BfQ1JTL1dFQl9BVFRBQ0svQ09NTUFORF9JTkpFQ1RJT04%3d%3bQUtBTUFJL1BPTElDWS9DTURfSU5KRUNUSU9OX0FOT01BTFk%3d","ruleVersions":"NA%3d%3d%3bNA%3d%3d%3bMQ%3d%3d","rules":"OTUwMDAy%3bOTUwMDA2%3bQ01ELUlOSkVDVElPTi1BTk9NQUxZ"},"botData":{"botScore":"100","responseSegment":"3"},"clientData":{"appBundleId":"com.mydomain.myapp","appVersion":"1.23","sdkVersion":"4.7.1","telemetryType":"2"},"format":"json","geo":{"asn":"14618","city":"ASHBURN","continent":"288","country":"US","regionCode":"VA"},"httpMessage":{"bytes":"266","host":"www.hmapi.com","method":"GET","path":"/","port":"80","protocol":"HTTP/1.1","query":"option=com_jce%20telnet.exe","requestHeaders":"User-Agent%3a%20BOT%2f0.1%20(BOT%20for%20JCE)%0d%0aAccept%3a%20text%2fhtml,application%2fxhtml+xml,application%2fxml%3bq%3d0.9,*%2f*%3bq%3d0.8%0d%0auniqueID%3a%20CR_H8%0d%0aAccept-Language%3a%20en-US,en%3bq%3d0.5%0d%0aAccept-Encoding%3a%20gzip,%20deflate%0d%0aConnection%3a%20keep-alive%0d%0aHost%3a%20www.hmapi.com%0d%0aContent-Length%3a%200%0d%0a","requestId":"1158db1758e37bfe67b7c09","responseHeaders":"Server%3a%20AkamaiGHost%0d%0aMime-Version%3a%201.0%0d%0aContent-Type%3a%20text%2fhtml%0d%0aContent-Length%3a%20266%0d%0aExpires%3a%20Tue,%2004%20Apr%202017%2010%3a57%3a02%20GMT%0d%0aDate%3a%20Tue,%2004%20Apr%202017%2010%3a57%3a02%20GMT%0d%0aConnection%3a%20close%0d%0aSet-Cookie%3a%20ak_bmsc%3dAFE4B6D8CEEDBD286FB10F37AC7B256617DB580D417F0000FE7BE3580429E23D%7epluPrgNmaBdJqOLZFwxqQLSkGGMy4zGMNXrpRIc1Md4qtsDfgjLCojg1hs2HC8JqaaB97QwQRR3YS1ulk+6e9Dbto0YASJAM909Ujbo6Qfyh1XpG0MniBzVbPMUV8oKhBLLPVSNCp0xXMnH8iXGZUHlUsHqWONt3+EGSbWUU320h4GKiGCJkig5r+hc6V1pi3tt7u3LglG3DloEilchdo8D7iu4lrvvAEzyYQI8Hao8M0%3d%3b%20expires%3dTue,%2004%20Apr%202017%2012%3a57%3a02%20GMT%3b%20max-age%3d7200%3b%20path%3d%2f%3b%20domain%3d.hmapi.com%3b%20HttpOnly%0d%0a","start":"1491303422","status":"200"},"type":"akamai_siem","userRiskData":{"allow":"0","general":"duc_1h:10|duc_1d:30","originUserId":"jsmith007","risk":"udfp:1325gdg4g4343g/M|unp:74256/H","score":"75","status":"0","trust":"ugp:US","username":"jsmith@example.com","uuid":"964d54b7-0821-413a-a4d6-8131770ec8d5"},"version":"1.0"}'
+        $TestSIEMEventObject = ConvertFrom-Json $TestSIEMEvent
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.SIEM"
+        $PD = @{}
     }
-
 
     AfterAll {
         
     }
 
-}
-
-Describe 'Unsafe Akamai.SIEM Tests' {
-
-    BeforeDiscovery {
-        
-    }
 
     #------------------------------------------------
     #                 SIEMEvent                  
     #------------------------------------------------
 
-    ### Format-SIEMEvent
-    $Script:FormatSIEMEvent = Format-SIEMEvent -SIEMEvent $Script:TestSIEMEventObject
-    it 'Format-SIEMEvent returns the correct data' {
-        $FormatSIEMEvent.attackData.ruleActions | Should -Be 'alert;alert;deny'
+    Context 'Format-SIEMEvent' {
+        It 'Returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.SIEM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Format-SIEMEvent.json"
+                return $Response | ConvertFrom-Json
+            }
+            $PD.FormatSIEMEvent = Format-SIEMEvent -SIEMEvent $TestSIEMEventObject
+            $PD.FormatSIEMEvent.attackData.ruleActions | Should -Be 'alert;alert;deny'
+        }
     }
 
     #------------------------------------------------
     #                 SIEMData                  
     #------------------------------------------------
 
-    ### Get-SIEMData - Parameter Set 'fromto'
-    $Script:GetSIEMDataFromTo = Get-SIEMData -ConfigID 123456 -From 1488816442 -To 1488816784 -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Get-SIEMData (fromto) returns the correct data' {
-        $GetSIEMDataFromTo.ResponseContext.attackData | Should -Not -BeNullOrEmpty
+    Context 'Get-SIEMData - Parameter Set fromto' {
+        It 'Returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.SIEM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-SIEMData.json"
+                return $Response | ConvertFrom-Json
+            }
+            $PD.GetSIEMDataFromTo = Get-SIEMData -ConfigID 123456 -From 1488816442 -To 1488816784
+            $PD.GetSIEMDataFromTo.ResponseContext.attackData | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Get-SIEMData - Parameter Set 'offset'
-    $Script:GetSIEMDataOffset = Get-SIEMData -ConfigID 123456 -Offset 'c0bc409010aa6928e57cd5a3000433b9' -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Get-SIEMData (offset) returns the correct data' {
-        $GetSIEMDataOffset.ResponseContext.attackData | Should -Not -BeNullOrEmpty
+    Context 'Get-SIEMData - Parameter Set offset' {
+        It 'Returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.SIEM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-SIEMData.json"
+                return $Response | ConvertFrom-Json
+            }
+            $PD.GetSIEMDataOffset = Get-SIEMData -ConfigID 123456 -Offset 'c0bc409010aa6928e57cd5a3000433b9'
+            $PD.GetSIEMDataOffset.ResponseContext.attackData | Should -Not -BeNullOrEmpty
+        }
     }
-
-
-    AfterAll {
-        
-    }
-
 }

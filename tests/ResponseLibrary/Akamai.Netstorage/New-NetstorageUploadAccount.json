@@ -1,0 +1,111 @@
+{
+  "uploadAccountId": "value",
+  "storageGroupId": 1234568,
+  "status": "ACTIVE",
+  "isEditable": true,
+  "ftpEnabled": true,
+  "sshEnabled": true,
+  "rsyncEnabled": true,
+  "asperaEnabled": true,
+  "hasFileManagerAccess": true,
+  "hasHttpApiAccess": true,
+  "hasPendingPropagation": true,
+  "email": "tyamada@email.com",
+  "ruleSetId": 555551,
+  "lastModifiedBy": "afero",
+  "lastModifiedDate": "2017-09-04T09:10:58Z",
+  "keys": {
+    "ftp": [
+      {
+        "identity": "value",
+        "isActive": true,
+        "lastModifiedBy": "jdupont",
+        "lastModifiedDate": "2017-09-04T09:10:58Z"
+      }
+    ],
+    "ssh": [
+      {
+        "identity": "value",
+        "key": "ssh-rsa HASH jdoe@hostname",
+        "isActive": true,
+        "lastModifiedBy": "tyamada",
+        "lastModifiedDate": "2017-09-04T09:10:58Z"
+      }
+    ],
+    "rsync": [
+      {
+        "identity": "value",
+        "key": "value",
+        "isActive": true,
+        "lastModifiedBy": "tyamada",
+        "lastModifiedDate": "2017-09-04T09:10:58Z"
+      }
+    ],
+    "aspera": [
+      {
+        "identity": "value",
+        "key": "ssh-rsa HASH jdoe@hostname",
+        "isActive": true,
+        "lastModifiedBy": "afero",
+        "lastModifiedDate": "2017-09-04T09:10:58Z"
+      }
+    ],
+    "g2o": [
+      {
+        "identity": "value",
+        "user": "asingh",
+        "key": "value",
+        "isActive": true,
+        "lastModifiedBy": "hgildong",
+        "lastModifiedDate": "2017-09-04T09:10:58Z"
+      }
+    ]
+  },
+  "accessConfig": {
+    "hasReadOnlyAccess": false,
+    "chrootDirectory": "/456789/j",
+    "loginDirectory": "/456789/j",
+    "cpcodes": [
+      {
+        "cpcodeId": 1234567,
+        "lastModifiedBy": "tyamada",
+        "lastModifiedDate": "2017-09-04T09:10:58Z",
+        "subDirectoryRestrictions": [
+          "/456789/j/k/s"
+        ]
+      }
+    ]
+  },
+  "bruteForceAttackConfig": {
+    "failedLoginThreshold": 10,
+    "lockDownDurationSeconds": 30
+  },
+  "technicalContactInfo": {
+    "newTechnicalContact": {
+      "firstName": "jane",
+      "lastName": "doe",
+      "email": "tyamada@email.com",
+      "phone": {
+        "countryCode": "+7",
+        "areaCode": "7",
+        "number": "767676767676"
+      }
+    }
+  },
+  "changeHistory": [
+    {
+      "changeType": "UPLOAD_ACCOUNT",
+      "action": "ADDED",
+      "propagated": false,
+      "lastModifiedBy": "mrossi",
+      "lastModifiedDate": "2017-09-04T09:10:58Z"
+    },
+    {
+      "changeType": "RULESET",
+      "action": "ADDED",
+      "propagated": false,
+      "lastModifiedBy": "adevi",
+      "lastModifiedDate": "2017-09-04T09:10:58Z"
+    }
+  ]
+}

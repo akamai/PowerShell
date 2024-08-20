@@ -1,0 +1,62 @@
+{
+  "uiIdentityId": "A-BC-1234567",
+  "firstName": "John",
+  "lastName": "Smith",
+  "uiUserName": "john.sith@example.com",
+  "email": "jsmith@example.com",
+  "phone": "(123) 321-1234",
+  "timeZone": "GMT",
+  "additionalAuthentication": "TFA",
+  "contactType": "Billing",
+  "preferredLanguage": "English",
+  "sessionTimeOut": 64800,
+  "passwordExpiryDate": "2018-05-05T22:38:39Z",
+  "address": "first Street",
+  "city": "Santa Clara",
+  "state": "CA",
+  "country": "USA",
+  "additionalAuthenticationConfigured": false,
+  "actions": {
+    "resetPassword": true,
+    "edit": true,
+    "isCloneable": true,
+    "delete": true,
+    "thirdPartyAccess": false,
+    "apiClient": true
+  },
+  "notifications": {
+    "enableEmailNotifications": true,
+    "options": {
+      "passwordExpiry": true,
+      "newUserNotification": true,
+      "apiClientCredentialExpiryNotification": true,
+      "upgrade": [
+        "24x7"
+      ],
+      "proactive": [
+        "Security"
+      ]
+    }
+  },
+  "authGrants": [
+    {
+      "groupId": 12345,
+      "roleId": 3,
+      "groupName": "Main Street Corporatio",
+      "roleName": "Admin",
+      "roleDescription": "Provides the maximum access to users.",
+      "subGroups": [
+        {
+          "groupId": 54321,
+          "groupName": "Internet Company",
+          "subGroups": [
+            {
+              "groupId": 54321,
+              "groupName": "Digital Company"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

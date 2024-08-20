@@ -1,0 +1,97 @@
+{
+  "contractId": "K-0N7RAK7",
+  "storageGroupId": 1234568,
+  "storageGroupName": "aka_storage",
+  "storageGroupType": "OBJECTSTORE",
+  "storageGroupPurpose": "NETSTORAGE",
+  "domainPrefix": "akastorage",
+  "asperaEnabled": false,
+  "pciEnabled": false,
+  "estimatedUsageGB": 0,
+  "allowEdit": true,
+  "migrationStatus": "-",
+  "provisionStatus": "PROVISIONED",
+  "lastModifiedBy": "mrossi",
+  "lastModifiedDate": "2018-08-07T09:25:35Z",
+  "propagationStatus": {
+    "status": "PENDING",
+    "pendingChanges": [
+      "PORTAL_COBRA_METADATA",
+      "PORTAL_PLANNER_METADATA",
+      "PLANNER_PLACEMENT",
+      "CNAMES"
+    ],
+    "activeChanges": []
+  },
+  "cpcodes": [
+    {
+      "cpcodeId": 7563521,
+      "downloadSecurity": "ALL_EDGE_SERVERS",
+      "useSsl": false,
+      "serveFromZip": true,
+      "sendHash": true,
+      "quickDelete": false,
+      "numberOfFiles": -1,
+      "numberOfBytes": -1,
+      "lastChangesPropagated": false,
+      "requestUriCaseConversion": "NO_CONVERSION",
+      "pathCheckAndConversion": "DISALLOW_ALL_IMPROPER_PATHS",
+      "lastModifiedBy": "jdupont",
+      "lastModifiedDate": "2018-08-07T09:25:35Z",
+      "queryStringConversion": {
+        "queryStringConversionMode": "STRIP_ALL_INCOMING_QUERY"
+      },
+      "encodingConfig": {
+        "enforceEncoding": true,
+        "encoding": "UTF_8"
+      },
+      "dirListing": {
+        "indexFileName": "index.html",
+        "maxListSize": 1,
+        "searchOn404": "LOOK_FOR_EXPLICIT_DIR_ONLY"
+      },
+      "ageDeletions": [
+        {
+          "ageDeletionDirectory": "/456789/EN",
+          "ageDeletionDays": 200,
+          "ageDeletionSizeBytes": 10000000,
+          "ageDeletionRecursivePurge": true,
+          "ageDeletionExclusionRegex": ".zip*",
+          "ageDeletionSelectionRegex": ".*"
+        }
+      ]
+    }
+  ],
+  "zones": [
+    {
+      "zoneName": "AU",
+      "allowUpload": "YES",
+      "allowDownload": "YES",
+      "noCapacityAction": "SPILL_OUTSIDE",
+      "lastModifiedBy": "szhang",
+      "lastModifiedDate": "2018-08-07T09:25:35Z"
+    },
+    {
+      "zoneName": "IN",
+      "allowUpload": "YES",
+      "allowDownload": "YES",
+      "noCapacityAction": "SPILL_OUTSIDE",
+      "lastModifiedBy": "szhang",
+      "lastModifiedDate": "2018-08-07T09:25:35Z"
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "/storage-services/api/v1/storage-groups/1234568"
+    },
+    {
+      "rel": "uploadAccounts",
+      "href": "/storage-services/api/v1/upload-accounts?storageGroupId=1234568"
+    },
+    {
+      "rel": "zones",
+      "href": "/storage-services/api/v1/zones"
+    }
+  ]
+}

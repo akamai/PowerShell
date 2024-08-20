@@ -1,0 +1,198 @@
+{
+  "createdBy": "szhang",
+  "createdTime": "2021-02-26T07:15:42Z",
+  "completedTime": "2021-02-26T07:15:49Z",
+  "executionStatus": "SUCCESS",
+  "request": {
+    "url": "https://www.example.com",
+    "delivery": "ENHANCED_TLS"
+  },
+  "result": {
+    "edgeErrors": 1460,
+    "edgeHits": 79655,
+    "edgeFailurePercentage": 2,
+    "originErrors": 1204,
+    "originHits": 82279,
+    "originFailurePercentage": 1,
+    "topEdgeIpsWithError": [
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 403,
+        "hits": 26,
+        "errorCode": "0:None",
+        "edgeLogsLink": "/edge-diagnostics/v1/grep?edgeIp=NN.NN.NN.NN&cpCode=1234567&objectStatus=p&httpStatusCode=403&end=2021-04-21T13:42:45Z&logType=f",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      },
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 403,
+        "hits": 22,
+        "errorCode": "18:ACCESS_DENIED",
+        "edgeLogsLink": "/edge-diagnostics/v1/grep?edgeIp=NN.NN.NN.NN&cpCode=1234567&objectStatus=p&httpStatusCode=403&end=2021-04-21T13:42:45Z&logType=f",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      }
+    ],
+    "topEdgeIpsWithErrorFromOrigin": [
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 403,
+        "hits": 31,
+        "errorCode": "0:None",
+        "edgeLogsLink": "/edge-diagnostics/v1/grep?edgeIp=NN.NN.NN.NN&cpCode=1234567&objectStatus=p&httpStatusCode=403&end=2021-04-21T13:42:45Z&logType=r",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      },
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 403,
+        "hits": 29,
+        "errorCode": "0:None",
+        "edgeLogsLink": "/edge-diagnostics/v1/grep?edgeIp=NN.NN.NN.NN&cpCode=1234567&objectStatus=p&httpStatusCode=403&end=2021-04-21T13:42:45Z&logType=r",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      }
+    ],
+    "topEdgeIpsWithSuccess": [
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 200,
+        "hits": 1194,
+        "errorCode": "0:None",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      },
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 200,
+        "hits": 798,
+        "errorCode": "0:None",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      }
+    ],
+    "topEdgeIpsWithSuccessFromOrigin": [
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 200,
+        "hits": 1765,
+        "errorCode": "0:None",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      },
+      {
+        "edgeIp": "NN.NN.NN.NN",
+        "httpStatus": 200,
+        "hits": 1525,
+        "errorCode": "0:None",
+        "edgeIpLocation": {
+          "city": "TOKYO",
+          "regionCode": "13",
+          "countryCode": "JP",
+          "asNumber": 1234
+        },
+        "objectStatus": [
+          {
+            "code": "p",
+            "description": "Another hierarchy parent edge server was contacted."
+          }
+        ]
+      }
+    ],
+    "edgeStatusCodeDistribution": [
+      {
+        "httpStatus": 200,
+        "hits": 72804,
+        "percentage": 91.4
+      },
+      {
+        "httpStatus": 204,
+        "hits": 2442,
+        "percentage": 3.07
+      }
+    ],
+    "originStatusCodeDistribution": [
+      {
+        "httpStatus": 200,
+        "hits": 76513,
+        "percentage": 92.99
+      },
+      {
+        "httpStatus": 204,
+        "hits": 2402,
+        "percentage": 2.92
+      }
+    ]
+  }
+}

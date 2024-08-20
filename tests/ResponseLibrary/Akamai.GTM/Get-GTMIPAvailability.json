@@ -1,0 +1,79 @@
+{
+  "metadata": {
+    "domain": "example.akadns.net",
+    "property": "www",
+    "uri": "https://akab-xxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxx.luna.akamaiapis.net/gtm-api/v1/reports/ip-availability/domains/example.akadns.net/properties/www"
+  },
+  "dataRows": [
+    {
+      "timestamp": "2021-02-23T21:42:35Z",
+      "cutOff": 112.5,
+      "datacenters": [
+        {
+          "datacenterId": 3132,
+          "nickname": "Winterfell",
+          "trafficTargetName": "Winterfell - 1.2.3.4",
+          "IPs": [
+            {
+              "ip": "192.0.2.83",
+              "score": 75,
+              "handedOut": true,
+              "alive": true
+            }
+          ]
+        },
+        {
+          "datacenterId": 3133,
+          "nickname": "Braavos",
+          "trafficTargetName": "Braavos - 1.2.3.5",
+          "IPs": [
+            {
+              "ip": "192.0.2.5",
+              "score": 85,
+              "handedOut": true,
+              "alive": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "timestamp": "2021-03-23T21:42:35Z",
+      "cutOff": 112.5,
+      "datacenters": [
+        {
+          "datacenterId": 3132,
+          "nickname": "Winterfell",
+          "trafficTargetName": "Winterfell - 1.2.3.4",
+          "IPs": [
+            {
+              "ip": "192.0.2.227",
+              "score": 115,
+              "handedOut": false,
+              "alive": false
+            }
+          ]
+        },
+        {
+          "datacenterId": 3133,
+          "nickname": "Braavos",
+          "trafficTargetName": "Braavos - 1.2.3.5",
+          "IPs": [
+            {
+              "ip": "192.0.2.235",
+              "score": 75,
+              "handedOut": true,
+              "alive": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://akab-xxxxxxxxxxxxxxxx-xxxxxxxxxxxxxxxx.luna.akamaiapis.net/gtm-api/v1/reports/ip-availability/domains/example.akadns.net/properties/www"
+    }
+  ]
+}

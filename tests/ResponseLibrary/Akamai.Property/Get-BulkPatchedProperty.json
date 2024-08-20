@@ -1,0 +1,78 @@
+{
+  "bulkPatchId": 7,
+  "bulkPatchStatus": "COMPLETE",
+  "bulkPatchSubmitDate": "2018-01-18T00:00:00Z",
+  "bulkPatchUpdateDate": "2018-01-18T01:00:00Z",
+  "patchPropertyVersions": [
+    {
+      "patchPropertyId": "prp_1",
+      "patchPropertyVersion": 2,
+      "patchPropertyVersionStatus": "COMPLETE",
+      "patchSubmitDate": "2018-01-18T00:00:00Z",
+      "patchUpdateDate": "2018-01-18T00:00:00Z",
+      "etag": "a9dfe78cf93090516bde891d009eaf57",
+      "propertyVersionRulesLink": "/papi/v1/properties/prp_1/versions/1/rules",
+      "patches": [
+        {
+          "op": "replace",
+          "value": "on",
+          "path": "/rules/children/1/features/3/option/enabled"
+        },
+        {
+          "op": "replace",
+          "value": "on",
+          "path": "/rules/children/1/features/0/option/enabled"
+        }
+      ],
+      "papiErrors": [
+        {
+          "type": "https://problems.luna.akamaiapis.net/papi/v0/validation/attribute_required",
+          "title": "Attribute not specified",
+          "detail": "The Verification Settings option on the `Origin Server` behavior is required.",
+          "instance": "https://control.sqa2.qa.akamai.com/papi/v0/bulk/activations/1?contractId=ctr_C-0N7RAC71&groupId=grp_15225#853080b7-e411-432d-99ae-967e56b50d72",
+          "errorLocation": "#/rules/behaviors/0/options/verificationMode"
+        }
+      ],
+      "papiWarnings": [
+        {
+          "type": "https://problems.luna.akamaiapis.net/papi/v0/validation/product_behavior_issue.cpcode_incorrect_product",
+          "title": "Unstable rule format",
+          "detail": "The CP Code within `Content Provider Code` isn't configured for use with the product used by this property, Dynamic Site Accelerator. Traffic for this property might not show up under the correct traffic reports.",
+          "instance": "https://control.sqa2.qa.akamai.com/papi/v0/bulk/activations/1?contractId=ctr_C-0N7RAC7&groupId=grp_15225#853080b7-e411-432d-99ae-967e56b50d72",
+          "errorLocation": "#/rules/behaviors/1/options/value"
+        }
+      ]
+    },
+    {
+      "patchPropertyId": "prp_15",
+      "patchPropertyVersion": 3,
+      "patchPropertyVersionStatus": "SUBMISSION_ERROR",
+      "patchSubmitDate": "2018-01-18T00:00:00Z",
+      "patchUpdateDate": "2018-01-18T00:00:00Z",
+      "fatalError": "BAD SYNTAX UNABLE TO SAVE",
+      "patches": [
+        {
+          "op": "replace",
+          "value": "on",
+          "path": "/rules/children/1/children/0/features/1/enabled"
+        }
+      ]
+    },
+    {
+      "patchPropertyId": "prp_3",
+      "patchPropertyVersion": 11,
+      "patchPropertyVersionStatus": "COMPLETE",
+      "patchSubmitDate": "2018-01-18T00:00:00Z",
+      "patchUpdateDate": "2018-01-18T00:00:00Z",
+      "etag": "a9dfe78cf93090516bde891d009eaf57",
+      "propertyVersionRulesLink": "/papi/v1/properties/prp_3/versions/1/rules",
+      "patches": [
+        {
+          "op": "replace",
+          "value": "on",
+          "path": "/rules/children/0/children/1/children/2/features/1/enabled"
+        }
+      ]
+    }
+  ]
+}

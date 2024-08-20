@@ -1,0 +1,52 @@
+{
+  "provisionStateChanges": [
+    {
+      "id": 654,
+      "hostname": "www.example.com",
+      "targetState": "WHITELISTED",
+      "previousState": "DEPROVISIONED",
+      "edgeHostname": "www.example.com.edgesuite.net",
+      "sendEmail": true,
+      "currentStatus": "COMPLETED",
+      "createdDate": "2021-07-01T12:32:01Z",
+      "completedDate": "2021-10-01T17:23:44Z",
+      "partnerStatuses": {
+        "PARTNER1": {
+          "targetState": "WHITELISTED",
+          "previousState": "DEPROVISIONED",
+          "currentStatus": "COMPLETED",
+          "completedDate": "2021-10-01T11:21:32Z"
+        },
+        "PARTNER2": {
+          "targetState": "PROVISIONED",
+          "previousState": "DEPROVISIONED",
+          "currentStatus": "REJECTED",
+          "completedDate": "2021-10-01T17:23:44Z",
+          "rejection": {
+            "reason": "INVALID_ICP_LICENSE",
+            "explanation": "Invalid ICP license."
+          }
+        }
+      }
+    },
+    {
+      "id": 655,
+      "hostname": "www.example.com",
+      "targetState": "WHITELISTED",
+      "previousState": "DEPROVISIONED",
+      "edgeHostname": "www.example2.com.edgesuite.net",
+      "sendEmail": true,
+      "currentStatus": "COMPLETED",
+      "createdDate": "2021-07-01T12:32:01Z",
+      "completedDate": "2021-10-01T17:23:44Z",
+      "partnerStatuses": {
+        "PARTNER3": {
+          "targetState": "WHITELISTED",
+          "previousState": "DEPROVISIONED",
+          "currentStatus": "COMPLETED",
+          "completedDate": "2021-10-01T11:21:32Z"
+        }
+      }
+    }
+  ]
+}

@@ -1,51 +1,60 @@
-Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-Import-Module $PSScriptRoot/../src/Akamai.Siteshield/Akamai.Siteshield.psd1 -Force
-# Setup shared variables
-$Script:EdgeRCFile = $env:PesterEdgeRCFile
-$Script:SafeEdgeRCFile = $env:PesterSafeEdgeRCFile
-$Script:Section = $env:PesterEdgeRCSection
-$Script:TestContract = $env:PesterContractID
-$Script:TestGroupID = $env:PesterGroupID
-
 Describe 'Safe Akamai.Siteshield Tests' {
-
-    BeforeDiscovery {
+    
+    BeforeAll {
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.Siteshield/Akamai.Siteshield.psd1 -Force
         
+        # Setup shared variables
+        $CommonParams = @{
+            EdgeRCFile = $env:PesterEdgeRCFile
+            Section    = $env:PesterEdgeRCSection
+        }
+        $PD = @{}
     }
-
-    ### Get-SiteShieldMap - All
-    $Script:GetSiteShieldMapAll = Get-SiteShieldMap -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-SiteShieldMap returns the correct data' {
-        $GetSiteShieldMapAll[0].ID | Should -Not -BeNullOrEmpty
-    }
-
-    ### Get-SiteShieldMap - Single
-    $Script:GetSiteShieldMapSingle = Get-SiteShieldMap -ID $GetSiteShieldMapAll[0].id -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-SiteShieldMap returns the correct data' {
-        $GetSiteShieldMapSingle[0].ID | Should -Be $GetSiteShieldMapAll[0].ID
-    }
-
+    
     AfterAll {
         
     }
 
+    Context 'Get-SiteShieldMap - All' {
+        It 'Returns the correct data' {
+            $PD.GetSiteShieldMapAll = Get-SiteShieldMap @CommonParams
+            $PD.GetSiteShieldMapAll[0].ID | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-SiteShieldMap - Single' {
+        It 'Returns the correct data' {
+            $GetSiteShieldMapSingle = Get-SiteShieldMap -ID $PD.GetSiteShieldMapAll[0].id @CommonParams
+            $GetSiteShieldMapSingle[0].ID | Should -Be $PD.GetSiteShieldMapAll[0].ID
+        }
+    }
 }
 
 Describe 'Unsafe Akamai.Siteshield Tests' {
 
-    BeforeDiscovery {
-        
+    BeforeAll {
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.Siteshield/Akamai.Siteshield.psd1 -Force
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Siteshield"
+        $PD = @{}
     }
-
-    ### Confirm-SiteShieldMap
-    $Script:ConfirmSiteShieldMap = Confirm-SiteShieldMap -ID 123456789 -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Confirm-SiteShieldMap returns the correct data' {
-        $ConfirmSiteShieldMap.ruleName | Should -Not -BeNullOrEmpty
-    }
-
 
     AfterAll {
         
     }
 
+    Context 'Confirm-SiteShieldMap' {
+        It 'Returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Siteshield -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Confirm-SiteShieldMap.json"
+                return $Response | ConvertFrom-Json
+            }
+            $ConfirmSiteShieldMap = Confirm-SiteShieldMap -ID 123456789
+            $ConfirmSiteShieldMap.ruleName | Should -Not -BeNullOrEmpty
+        }
+    }
+
 }
+
+

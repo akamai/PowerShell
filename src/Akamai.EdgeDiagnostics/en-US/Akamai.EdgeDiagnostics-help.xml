@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns geolocation data of an IP's network. You can enter up to 10 IPs as a comma-separated string.</maml:para>
+      <maml:para>Gets geolocation data of an IP's network. You can provide up to 10 IPs as a comma-separated string.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -59,18 +59,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -126,18 +114,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -182,11 +158,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsConnectivityProblem</command:noun>
       <maml:description>
-        <maml:para>Get the Connectivity problems scenario response.</maml:para>
+        <maml:para>Get the connectivity problems scenario response.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the status of the New-EdgeDiagnosticsConnectivityProblem request. Operations with the `SUCCESS` status include also fetched GREP, cURL, and MTR data.</maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsConnectivityProblem` operation. Operations with the `executionStatus` of `SUCCESS ` include also additional details, such as the fetched GREP, cURL, and MTR data.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -249,18 +225,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -325,18 +289,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -381,11 +333,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsContentProblem</command:noun>
       <maml:description>
-        <maml:para>Get the Content problems scenario response.</maml:para>
+        <maml:para>Get the content problems scenario response.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the status of the New-EdgeDiagnosticsContentProblem request. Operations with the `SUCCESS` status include fetched GREP and cURL data.</maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsContentProblem` operation. Operations with the `executionStatus` of `SUCCESS ` include also additional details, such as the GREP and cURL data.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -459,18 +411,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -547,18 +487,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -607,7 +535,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns HTTP status codes distribution statistics from delivering a URL or CP code based on the nine-second traffic sample from the last two minutes. You can filter the results by Delivery and ErrorType.</maml:para>
+      <maml:para>Gets the HTTP status codes distribution statistics from delivering a URL or CP code based on the nine-second traffic sample from the last two minutes. You can filter the results by `-Delivery` and `-ErrorType`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -692,18 +620,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-EdgeDiagnosticsErrorStatistics</maml:name>
@@ -783,18 +699,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -886,18 +790,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -946,7 +838,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the status of the New-EdgeDiagnosticsErrorTranslation request. For operations with the `SUCCESS` status, the response includes details about the error. For operations in progress, the returned object contains `retryAfter` and `requestId`. In this case, wait for the duration of the `retryAfter` interval, then run this operation again.</maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsErrorTranslation` operation. Operations with the `executionStatus` of `SUCCESS` include also details about the error. For operations in progress, the returned object contains `retryAfter` and `requestId`. In this case, wait for the duration of the `retryAfter` interval, then run this operation again.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -995,18 +887,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1062,18 +942,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1122,7 +990,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the status of the New-EdgeDiagnosticsGrep request. Operations with the `SUCCESS` status include also the `grep` logs.</maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsGrep` operation. Operations with the `executionStatus` of `SUCCESS ` include also the GREP logs.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1171,18 +1039,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1238,18 +1094,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1294,11 +1138,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsGroup</command:noun>
       <maml:description>
-        <maml:para>Get diagnostic data for an end user group.</maml:para>
+        <maml:para>Get diagnostic data for an end-user group.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns collected diagnostic data for a specific group. You can also request additional cURL, DIG, and MTR data. GroupIDs can be retrieved with Get-Group.</maml:para>
+      <maml:para>Gets collected diagnostic data for a specific group. You can also request additional cURL, DIG, and MTR data. To retrieve the group ID, run the `Get-Group` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1383,18 +1227,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -1483,18 +1315,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1539,11 +1359,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsGTMProperties</command:noun>
       <maml:description>
-        <maml:para>List GTM properties.</maml:para>
+        <maml:para>Get GTM properties.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists GTM properties you have access to. You can use the returned `hostname` values to run New-EdgeDiagnosticsMTR and New-EdgeDiagnosticsDig operations for a GTM hostname. Note, that the New-EdgeDiagnosticsMTR operation requires also hostname's test and target IP values, that you can get with the Get-EdgeDiagnosticsGTMPropertyIPs operation.</maml:para>
+      <maml:para>Gets the GTM properties you have access to. You can use the returned `hostname` values to run the `New-EdgeDiagnosticsMTR` and `New-EdgeDiagnosticsDig` operations for a GTM hostname. Note that the `New-EdgeDiagnosticsMTR` operation also requires hostname's test and target IP values that you can get by running the `Get-EdgeDiagnosticsGTMPropertyIPs` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1584,18 +1404,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1631,18 +1439,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1691,11 +1487,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsGTMPropertyIPs</command:noun>
       <maml:description>
-        <maml:para>List test and target IPs for a GTM hostname.</maml:para>
+        <maml:para>Get test and target IPs for a GTM hostname.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists test and target IPs for a GTM property. You can use the returned data to run the New-EdgeDiagnosticsMTR operation for a GTM hostname. To get the data necessary for this request, run the Get-EdgeDiagnosticsGTMProperties operation first.</maml:para>
+      <maml:para>Gets test and target IPs for a GTM property. You can use the returned data to run the `New-EdgeDiagnosticsMTR` operation for a GTM hostname. To get the data necessary for this request, run the `Get-EdgeDiagnosticsGTMProperties` operation first.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1756,18 +1552,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1835,18 +1619,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1891,11 +1663,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsIPAHostnames</command:noun>
       <maml:description>
-        <maml:para>List IP acceleration hostnames.</maml:para>
+        <maml:para>Get IP acceleration hostnames.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists IP acceleration (IPA) hostnames you have access to and can New-EdgeDiagnosticsLink to collect diagnostic data.</maml:para>
+      <maml:para>Gets IP acceleration (IPA) hostnames you have access to and can run the `New-EdgeDiagnosticsLink` operation to collect diagnostic data.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1936,18 +1708,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1983,18 +1743,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2043,11 +1791,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsLocations</command:noun>
       <maml:description>
-        <maml:para>List available edge server locations.</maml:para>
+        <maml:para>Get available edge server locations.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists active edge server locations you can use to run New-EdgeDiagnosticsCurl, New-EdgeDiagnosticsDig, New-EdgeDiagnosticsMTR, New-EdgeDiagnosticsURLHealthCheck, New-EdgeDiagnosticsConnectivityProblem, and New-EdgeDiagnosticsContentProblem operations. To get a subset of edge servers supporting metadata tracer, run the Get-EdgeDiagnosticsMetadataTraceLocations operation.</maml:para>
+      <maml:para>Gets active edge server locations. Use the `id` values from this operation in the `-EdgeLocationId` parameter when you run `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsDig`, `New-EdgeDiagnosticsMTR`, `New-EdgeDiagnosticsURLHealthCheck`, `New-EdgeDiagnosticsConnectivityProblem`, or `New-EdgeDiagnosticsContentProblem` operation. To get a subset of edge servers supporting metadata tracer, run the `Get-EdgeDiagnosticsMetadataTraceLocations` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2088,18 +1836,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2135,18 +1871,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2199,7 +1923,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Using the `grep` command, returns logs that match the query parameters. This operation gets the data directly. If you don't have detailed information about the logs or you want to avoid latency, run the New-EdgeDiagnosticsGrep operation.</maml:para>
+      <maml:para>Using the GREP command, returns logs that match the parameters that you specify in your request. This operation retrieves the data directly. If you don't get detailed information about the logs or you want to avoid latency, run the `New-EdgeDiagnosticsGrep` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2351,7 +2075,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
           <maml:name>LogType</maml:name>
           <maml:description>
-            <maml:para>Record type of the logs. Possible values are either `R` for client requests to an edge server or `F` for forward requests from an edge server to the origin.</maml:para>
+            <maml:para>Record type of the logs. Possible values are  either `R` for client requests to an edge server or `F` for forward requests from an edge server to the origin.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">R</command:parameterValue>
@@ -2360,18 +2084,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2478,7 +2190,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
         <maml:name>LogType</maml:name>
         <maml:description>
-          <maml:para>Record type of the logs. Possible values are either `R` for client requests to an edge server or `F` for forward requests from an edge server to the origin.</maml:para>
+          <maml:para>Record type of the logs. Possible values are  either `R` for client requests to an edge server or `F` for forward requests from an edge server to the origin.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2535,18 +2247,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -2595,7 +2295,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the status of the New-EdgeDiagnosticsMetadataTrace operation. For operations with the `SUCCESS` status, the response includes the metadata details. For requests with the HTMLFormat parameter, results are in static HTML format.</maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsMetadataTrace` operation. Operations with the `executionStatus` of `SUCCESS` include also the metadata details. For requests with the added `-HTMLFormat` switch parameter, results are in static HTML format.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2658,18 +2358,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -2734,18 +2422,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -2790,11 +2466,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeDiagnosticsMetadataTraceLocations</command:noun>
       <maml:description>
-        <maml:para>List available edge server locations for metadata tracing.</maml:para>
+        <maml:para>Get available edge server locations for metadata tracing.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists active locations you can use to run the New-EdgeDiagnosticsMetadataTrace operation together with information about supported HTTP methods. The operation responds with a subset of edge servers returned by the Get-EdgeDiagnosticsLocations operation.</maml:para>
+      <maml:para>Gets active locations. Use the `id` values from this operation in the `-MtLocationId` parameter when you run the `New-EdgeDiagnosticsMetadataTrace` operation together with information about supported HTTP methods. The operation responds with a subset of edge servers returned by the `Get-EdgeDiagnosticsLocations` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2835,18 +2511,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -2882,18 +2546,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2946,7 +2598,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns the status of the New-EdgeDiagnosticsURLHealthCheck request. Operations with the `SUCCESS` status include also fetched GREP, dig, cURL, and MTR data.</maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsURLHealthCheck` operation. Operations with the `executionStatus` of `SUCCESS` include also the fetched GREP, DIG, cURL, and MTR data.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -3010,18 +2662,6 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -3081,18 +2721,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3198,18 +2826,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -3257,18 +2873,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -3321,7 +2925,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches a request to simultaneously run New-EdgeDiagnosticsGrep, New-EdgeDiagnosticsCurl, and New-EdgeDiagnosticsMTR operations for a URL. It may help you diagnose issues with slow download and high response time. Successful operations return fetched GREP, cURL, and MTR data.</maml:para>
+      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep` and `New-EdgeDiagnosticsCurl` operations for a URL. Use the response results to diagnose issues with slow download and high response time. Operations with the `executionStatus` of `SUCCESS` return the fetched GREP and cURL data.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -3370,18 +2974,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3552,18 +3144,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3739,18 +3319,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -3799,7 +3367,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an request to simultaneously run New-EdgeDiagnosticsGrep and New-EdgeDiagnosticsCurl operations for a URL. It may help you diagnose issues with slow download and high response time. Successful operations return fetched GREP and cURL data.</maml:para>
+      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep` and `New-EdgeDiagnosticsCurl` operations for a URL. Use the response results to diagnose issues with slow download and high response time. Operations with the `executionStatus` of `SUCCESS` return the fetched GREP and cURL data.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -3848,18 +3416,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -3986,18 +3542,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4137,18 +3681,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -4197,7 +3729,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Requests content using the `curl` command to provide the raw HTML for a URL, including request headers. You can run this operation for a specific location, an edge server IP, or a Site Shield map. If you want to get the data for a location, you need to run the Get-EdgeDiagnosticsLocations operation first to get `edgeLocationId`. And if you want to run this operation for an IP, you may need to to check if it belongs to an edge server. If you provide neither a location nor an edge server IP, then Edge Diagnostics runs the operation using a random edge server IP.</maml:para>
+      <maml:para>Requests content using the cURL command to provide the raw HTML for a URL, including request headers. You can run this operation for a specific location, an edge server IP, or a Site Shield map.  To get the data for a location, you need to run the `Get-EdgeDiagnosticsLocations` operation first to get the `edgeLocationId`.  To run this operation for an IP, you need to run the `Test-EdgeDiagnosticsIP` operation to verify if it belongs to an edge server. If you don't provide a location or an edge server IP, then Edge Diagnostics runs the operation using a random edge server IP.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4246,18 +3778,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4376,18 +3896,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-EdgeDiagnosticsCurl</maml:name>
@@ -4498,18 +4006,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4649,18 +4145,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -4705,11 +4189,11 @@
       <command:verb>New</command:verb>
       <command:noun>EdgeDiagnosticsDig</command:noun>
       <maml:description>
-        <maml:para>Get domain details with dig.</maml:para>
+        <maml:para>Get domain details with DIG.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Uses the `dig` command to provide DNS details for the location of an edge server, a hostname or a domain name, or a GTM hostname. The results may help you diagnose issues with domain name resolutions. You can run this operation either for a specific location or an edge IP. If you want to get the data for a location, you need to run the Get-EdgeDiagnosticsLocations operation first to get `edgeLocationId`. To run this operation for an IP, you may need to , if it belongs to an edge server. And to run this operation for a GTM hostname, you need to run the Get-EdgeDiagnosticsGTMProperties operation first. If you don't provide neither a location ID nor an edge server IP, then Edge Diagnostics runs the operation using a random edge server IP.</maml:para>
+      <maml:para>Using the DIG command, provides DNS details for the location of an edge server, a hostname, a domain name, or a GTM hostname. The results can help you diagnose issues with the domain name resolutions. You can run this operation either for a specific location or an edge server IP. To get the data for a location, you need to run the `Get-EdgeDiagnosticsLocations operation` first to get the `edgeLocationId`.  To run this operation for an IP, you need to run the `Test-EdgeDiagnosticsIP` operation to verify if it belongs to an edge server.  To run this operation for a GTM hostname, you need to run the `Get-EdgeDiagnosticsGTMProperties` operation first. If you don't provide a location ID or an edge server IP, then Edge Diagnostics runs the operation using a random edge server IP.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4758,18 +4242,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4873,18 +4345,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-EdgeDiagnosticsDig</maml:name>
@@ -4980,18 +4440,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5107,18 +4555,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -5167,7 +4603,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an request to fetch summary and logs for an error with a specific reference code. You can also translate any Global Request Number (GRN) generated by the Property Manager's Global Request Number behavior. You can get the error logs from the last 6 or 24 hours depending on the server and traffic conditions. For operations in progress, the returned object contains `retryAfter`, `requestId`, and `link`. In this case, wait for the duration of the `retryAfter` interval, then either use the `requestId` to run the Get-EdgeDiagnosticsErrorTranslation operation, or simply GET the `link`.</maml:para>
+      <maml:para>Launches an asynchronous request to fetch a summary and logs for an error with a specific reference code. The error logs are from the last 6 or 24 hours depending on the server and traffic conditions. You can also translate any Global Request Number (GRN) generated by the Property Manager's `Global Request Number` behavior. For operations in progress, the returned object contains `retryAfter`, `requestId`, and `link`. In this case, wait for the duration of the `retryAfter` interval, then either use the `requestId` to run the `Get-EdgeDiagnosticsErrorTranslation` operation, or simply GET the `link`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5230,18 +4666,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -5306,18 +4730,6 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -5366,7 +4778,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This operation provides a debugging report on the ESI code of your source page and all pages that the source page references.</maml:para>
+      <maml:para>Gets a debugging report on the ESI code of your source page and all pages that the source page references.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5415,18 +4827,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5513,18 +4913,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5628,18 +5016,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -5688,7 +5064,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an request to fetch logs for an edge server IP address using the `grep` command. To verify if an IP belongs to an edge server, run the Test-EdgeDiagnosticsIP operation first. If you known the exact values to filter the logs by and you want to get the data directly, run the synchronous Get-EdgeDiagnosticsLogs operation.</maml:para>
+      <maml:para>Launches an asynchronous request to fetch logs for an edge server IP address using the GREP command. To verify if an IP belongs to an edge server, run the `Test-EdgeDiagnosticsIP` operation first. If you know the exact values to filter the logs by and you want to get the data directly, run the synchronous `Get-EdgeDiagnosticsLogs` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5737,18 +5113,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5804,18 +5168,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -5864,7 +5216,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Generates a diagnostic link for you to share with end users of a particular URL or IP acceleration hostname experiencing similar issues. After an end user clicks the link, the tool gathers necessary diagnostic data and asks the end user to submit it. Once submitted, you can check the collected data with the Get-EdgeDiagnosticsGroup operation. Each link is valid for 7 days of 50 submissions. To get the list of IP acceleration hostname you can collect diagnostic data for, run the Get-EdgeDiagnosticsIPAHostnames operation first.</maml:para>
+      <maml:para>Generates a diagnostic link for you to share with your users of a particular URL or IP acceleration hostname experiencing similar issues. After your user clicks the link, the tool gathers necessary diagnostic data and asks them to submit it. Once submitted, you can check the collected data with the `Get-EdgeDiagnosticsGroup` operation. Each link is valid for 7 days of 50 submissions.  To get the list of IP acceleration hostnames for which you can collect diagnostic data, run the `Get-EdgeDiagnosticsIPAHostnames` operation first.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5913,18 +5265,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5992,18 +5332,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-EdgeDiagnosticsLink</maml:name>
@@ -6063,18 +5391,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6166,18 +5482,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -6226,7 +5530,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an request to trace metadata for a URL configured in Property Manager. The metadata tracing works for the current property version active either on staging or production. To run the operation for a location, run the Get-EdgeDiagnosticsMetadataTraceLocations operation first to get available values. If you don't provide a location ID or an edge server IP, then Edge Diagnostics runs the operation using a random location.</maml:para>
+      <maml:para>Launches an asynchronous request to trace metadata for a URL configured in Property Manager. The metadata tracing works for the current property version active either on the staging or production network. To run the operation for a location, run the `Get-EdgeDiagnosticsMetadataTraceLocations` operation first to get the required values. If you don't provide a location ID or an edge server IP, then Edge Diagnostics runs the operation using a random location.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6275,18 +5579,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6406,18 +5698,6 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-EdgeDiagnosticsMetadataTrace</maml:name>
@@ -6532,18 +5812,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -6680,18 +5948,6 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -6740,7 +5996,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Uses MTR to provide information about packet loss and latency between an edge server IP, location, or Site Shield map and a remote destination. To run this operation for an IP, you may need to Test-EdgeDiagnosticsIP if it belongs to an edge server. To run this operation for a GTM hostname, run Get-EdgeDiagnosticsGTMProperties and Get-EdgeDiagnosticsGTMPropertyIPs operations first to get the test and target IPs for the hostname.</maml:para>
+      <maml:para>Using MTR, provides information about packet loss and latency between an edge server IP and a location or between a Site Shield map and a remote destination.  To run this operation for an IP, you need to run the `Test-EdgeDiagnosticsIP` operation first to verify if it belongs to an edge server.  To run this operation for a GTM hostname, run the `Get-EdgeDiagnosticsGTMProperties` and `Get-EdgeDiagnosticsGTMPropertyIPs` operations first to get the test and target IPs for the hostname.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6789,18 +6045,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -6977,18 +6221,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -7160,18 +6392,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -7220,7 +6440,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches a request to simultaneously run New-EdgeDiagnosticsGrep, New-EdgeDiagnosticsDig, New-EdgeDiagnosticsCurl, New-EdgeDiagnosticsMTR and Get-EdgeDiagnosticsURLTranslation operations for a URL. Successful operations return fetched GREP, dig, cURL, and MTR data and Akamaized URL (ARL) (doc:arl-syntax)details.</maml:para>
+      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep`, `New-EdgeDiagnosticsDig`, `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsMTR`, and `Get-EdgeDiagnosticsURLTranslation` operations for a URL. Operations with the `executionStatus` of `SUCCESS` return the fetched GREP, DIG, cURL, and MTR data as well as Akamaized URL (ARL) (https://techdocs.akamai.com/edge-diagnostics/docs/arl-syntax)details.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7269,18 +6489,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7480,18 +6688,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -7675,18 +6871,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -7735,7 +6919,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Verifies if an IP belongs to an edge server and gets the geolocation data of its network. For IPs verified positively, you can continue gathering diagnostic data with New-EdgeDiagnosticsCurl, New-EdgeDiagnosticsDig, or New-EdgeDiagnosticsMTR operations. IPAddress can be a single IP, or a comma-separated string.</maml:para>
+      <maml:para>Verifies if an IP belongs to an edge server and gets the geolocation data of its network. For IPs verified positively, you can continue gathering diagnostic data with the `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsDig`, or `New-EdgeDiagnosticsMTR` operation. The `-IPAddress` parameter is a single IP or a comma-separated string of up to 10 IPs.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7799,18 +6983,6 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -7870,18 +7042,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

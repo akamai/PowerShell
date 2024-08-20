@@ -1,0 +1,79 @@
+{
+  "www.myproperty.com": {
+    "groupId": 12345,
+    "name": "www.example.com",
+    "newestVersion": {
+      "activatedBy": "jkowalski",
+      "activationDate": "2018-01-01",
+      "version": 5,
+      "referencedPolicies": [
+        "fr_policy_1"
+      ],
+      "cloudletsOrigins": {
+        "customerOrigin1": {
+          "checksum": "691365709300c782c875ea43244a3d3f",
+          "hostname": "origin1.example.com",
+          "originId": "customerOrigin1",
+          "type": "CUSTOMER"
+        },
+        "customerOrigin2": {
+          "checksum": "da016ec7b425cc1b601352d6078d0b51",
+          "hostname": "origin2.example.com",
+          "originId": "customerOrigin2",
+          "type": "CUSTOMER"
+        }
+      }
+    },
+    "production": {
+      "activatedBy": "tyamada",
+      "activationDate": "2018-01-01",
+      "version": 5,
+      "referencedPolicies": [
+        "fr_policy_1"
+      ],
+      "cloudletsOrigins": {
+        "customerOrigin1": {
+          "checksum": "691365709300c782c875ea43244a3d3f",
+          "hostname": "origin1.example.com",
+          "originId": "customerOrigin1",
+          "type": "CUSTOMER"
+        },
+        "netStorageOrigin1": {
+          "checksum": "773636eb8f6c65f5dc01cc3d84f5c0a8",
+          "hostname": "download.akamai.com/12345",
+          "originId": "netStorageOrigin1",
+          "type": "NETSTORAGE"
+        }
+      }
+    },
+    "staging": {
+      "activatedBy": "mrossi",
+      "activationDate": "2018-01-01",
+      "version": 5,
+      "referencedPolicies": [
+        "fr_policy_1"
+      ]
+    },
+    "id": 987654321
+  },
+  "cloudletsOrigins": {
+    "customerOrigin1": {
+      "checksum": "691365709300c782c875ea43244a3d3f",
+      "hostname": "origin1.example.com",
+      "originId": "customerOrigin1",
+      "type": "CUSTOMER"
+    },
+    "customerOrigin2": {
+      "checksum": "da016ec7b425cc1b601352d6078d0b51",
+      "hostname": "origin2.example.com",
+      "originId": "customerOrigin2",
+      "type": "CUSTOMER"
+    },
+    "netStorageOrigin1": {
+      "checksum": "773636eb8f6c65f5dc01cc3d84f5c0a8",
+      "hostname": "download.akamai.com/12345",
+      "originId": "netStorageOrigin1",
+      "type": "NETSTORAGE"
+    }
+  }
+}

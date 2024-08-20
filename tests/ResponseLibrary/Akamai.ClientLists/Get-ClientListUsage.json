@@ -1,0 +1,69 @@
+{
+  "listId": "1234_NORTHAMERICAGEOALLOWLIST",
+  "usage": [
+    {
+      "configId": 1111,
+      "configName": "Sec Configuration for IT",
+      "policyId": "abc_12345",
+      "policyName": "WAF Policy",
+      "production": {
+        "version": 2,
+        "protections": [
+          {
+            "protection": "CUSTOM_RULES",
+            "instances": [
+              {
+                "id": "54321"
+              }
+            ]
+          }
+        ]
+      },
+      "staging": {
+        "version": 2,
+        "protections": [
+          {
+            "protection": "CUSTOM_RULES",
+            "instances": [
+              {
+                "id": "54321"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "configId": 2222,
+      "configName": "Billing Sec Configuration",
+      "policyId": "efg_12345",
+      "policyName": "ASE policy",
+      "production": {
+        "version": 1,
+        "protections": [
+          {
+            "protection": "HEADER_MANAGEMENT_CONFIG_LEVEL",
+            "instances": [
+              {
+                "id": "12345"
+              }
+            ]
+          }
+        ]
+      },
+      "staging": {
+        "version": 1,
+        "protections": [
+          {
+            "protection": "HEADER_MANAGEMENT_CONFIG_LEVEL",
+            "instances": [
+              {
+                "id": "12345"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+{
+  "createdBy": "bookstore_admin",
+  "createDate": "2019-06-12T06:06:52-07:00",
+  "updateDate": "2019-06-12T06:06:52-07:00",
+  "updatedBy": "bookstore_admin",
+  "apiEndPointId": 492375,
+  "apiEndPointName": "Bookstore API",
+  "description": "An API for bookstore users allowing them to retrieve book items, add new items (admin users), and modify existing items.",
+  "basePath": "/bookstore",
+  "consumeType": "any",
+  "apiEndPointScheme": "http/https",
+  "contractId": "C-0N7RAC71",
+  "groupId": 12345,
+  "versionNumber": 1,
+  "clonedFromVersion": 1,
+  "apiEndPointLocked": false,
+  "protectedByApiKey": true,
+  "apiGatewayEnabled": true,
+  "source": null,
+  "positiveConstrainsEnabled": null,
+  "responseConstraintsEnabled": false,
+  "versionHidden": false,
+  "endpointHidden": false,
+  "akamaiSecurityRestrictions": null,
+  "stagingStatus": null,
+  "productionStatus": null,
+  "graphQL": false,
+  "caseSensitive": true,
+  "isGraphQL": false,
+  "lockVersion": 2,
+  "apiEndPointHosts": [
+    "bookstore.api.akamai.com"
+  ],
+  "apiCategoryIds": [
+    2,
+    7
+  ],
+  "availableActions": [
+    "DELETE",
+    "CLONE_ENDPOINT",
+    "ACTIVATE_ON_PRODUCTION",
+    "HIDE_ENDPOINT",
+    "EDIT_ENDPOINT_DEFINITION",
+    "ACTIVATE_ON_STAGING"
+  ],
+  "stagingVersion": {
+    "versionNumber": null,
+    "status": null,
+    "timestamp": null,
+    "lastError": null
+  },
+  "productionVersion": {
+    "versionNumber": null,
+    "status": null,
+    "timestamp": null,
+    "lastError": null
+  },
+  "securityScheme": {
+    "securitySchemeType": "apikey",
+    "securitySchemeDetail": {
+      "apiKeyLocation": "header",
+      "apiKeyName": "apikey"
+    }
+  },
+  "apiResources": [
+    {
+      "createdBy": "bookstore_admin",
+      "createDate": "2019-06-12T06:06:52-07:00",
+      "updateDate": "2019-06-12T06:06:52-07:00",
+      "updatedBy": "bookstore_admin",
+      "apiResourceId": 2926712,
+      "apiResourceName": "books",
+      "resourcePath": "/books/{bookId}",
+      "description": "A book item within the bookstore API.",
+      "link": null,
+      "apiResourceClonedFromId": null,
+      "apiResourceLogicId": 118435,
+      "private": false,
+      "lockVersion": 2,
+      "apiResourceMethods": [
+        {
+          "apiResourceMethodId": 341591,
+          "apiResourceMethod": "GET",
+          "apiResourceMethodLogicId": 184404,
+          "apiParameters": [
+            {
+              "apiParameterId": 1212945,
+              "apiParameterRequired": true,
+              "apiParameterName": "bookId",
+              "apiParameterLocation": "path",
+              "apiParameterType": "string",
+              "array": false,
+              "pathParamLocationId": null,
+              "apiParamLogicId": 578116,
+              "apiResourceMethParamId": 494448,
+              "apiParameterRestriction": null,
+              "apiParameterNotes": null,
+              "response": false,
+              "apiChildParameters": []
+            }
+          ]
+        },
+        {
+          "apiResourceMethodId": 341592,
+          "apiResourceMethod": "POST",
+          "apiResourceMethodLogicId": 184405,
+          "apiParameters": [
+            {
+              "apiParameterId": 1212946,
+              "apiParameterRequired": true,
+              "apiParameterName": "bookId",
+              "apiParameterLocation": "path",
+              "apiParameterType": "string",
+              "array": false,
+              "pathParamLocationId": null,
+              "apiParamLogicId": 578117,
+              "apiResourceMethParamId": 494449,
+              "apiParameterNotes": null,
+              "response": false,
+              "apiChildParameters": [],
+              "apiParameterRestriction": {
+                "rangeRestriction": null,
+                "numberRangeRestriction": null,
+                "arrayRestriction": null,
+                "xmlConversionRule": null,
+                "lengthRestriction": {
+                  "lengthMax": 15,
+                  "lengthMin": 3
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

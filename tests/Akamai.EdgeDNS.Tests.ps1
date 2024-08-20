@@ -56,6 +56,8 @@ BeforeAll {
         comment       = "PWSH Pester Test"
         target        = $TestZonePrimary
     }
+
+    $PD = @{}
 }
 
 Describe "EdgeDNS" {
@@ -235,7 +237,7 @@ Describe "EdgeDNS" {
         }
     }
     
-    Describe "Record Sets" -Tag "WorkInProgress" {
+    Describe "Record Sets" {
         Context "Get-EdnsRecordSetTypes" {
             It "returns all types for specified record set in a zone (parameter)" {
                 $Result = Get-EdnsRecordSetTypes @TestParams -Zone $TestZonePrimary
@@ -281,22 +283,58 @@ Describe "EdgeDNS" {
                 $Result | Should -BeNullOrEmpty
             }
         }
-        Context "New-EdnsZoneRecordSet" -Skip {
+        Context "New-EdnsRecordSet" {
+            BeforeAll {
+                $Zone = "primary.pwsh.test"
+                $SingleRecordName = "newrecord-param"
+                $MultiRecordName = "newrecord-body"
+            }
             It "creates a record set in the specified zone (parameter)" {
-                $Result = New-EdnsZoneRecordSet
+                New-EdnsRecordSet -Zone $Zone -Name "$SingleRecordName.$Zone" -Type A -TTL 60 -RData '1.1.1.1' @TestParams
+                $PD.NewRecord = Get-EdnsRecordSet -Zone $Zone -Name "$SingleRecordName.$Zone" -Type A @TestParams
+                $PD.NewRecord.name | Should -Be "$SingleRecordName.$Zone"
+                $PD.NewRecord.ttl | Should -Be 60
+                $PD.NewRecord.Type | Should -Be 'A'
+                $PD.NewRecord.rdata | Should -Be @('1.1.1.1')
+            }
+            It "creates a record set in the specified zone (body)" {
+                $Body = @{
+                    'recordsets' = @(
+                        @{
+                            name  = "$MultiRecordName.$Zone"
+                            rdata = @('2.2.2.2')
+                            ttl   = 60
+                            type  = 'A'
+                        }
+                        @{
+                            name  = "$MultiRecordName.$Zone"
+                            rdata = @('AkamaiPowershell')
+                            ttl   = 60
+                            type  = 'TXT'
+                        }
+                    )
+                }
+                New-EdnsRecordSet -Zone $Zone -Body $Body @TestParams
+                $PD.NewRecords = Get-EdnsRecordSet -Search "$MultiRecordName.$Zone" -Zone $Zone @TestParams
+                $PD.NewRecords[0].name | Should -Be "$MultiRecordName.$Zone"
+                $PD.NewRecords[0].ttl | Should -Be 60
+                $PD.NewRecords[0].Type | Should -Be 'A'
+                $PD.NewRecords[0].rdata | Should -Be @('2.2.2.2')
+                $PD.NewRecords[1].name | Should -Be "$MultiRecordName.$Zone"
+                $PD.NewRecords[1].ttl | Should -Be 60
+                $PD.NewRecords[1].Type | Should -Be 'TXT'
+                $PD.NewRecords[1].rdata | Should -Be @('"AkamaiPowershell"')
             }
         }
-        Context "Remove-EdnsZoneRecordSet" -Skip {
+        Context "Remove-EdnsZoneRecordSet" {
             BeforeAll {
-                $TestRecord = Get-EdnsRecordSet @TestParams -Zone $TestZonePrimary -Name test2.$TestZonePrimary -Type TXT
+                $Zone = "primary.pwsh.test"
             }
             It "removes specified record set from a zone (parameter)" {
-                $Result = Remove-EdnsZoneRecordSet @TestParams -Zone $TestZonePrimary -Name "test1.$TestZonePrimary" -Type TXT
-                $Result | Should -BeNullOrEmpty
+                Remove-EdnsRecordSet -Zone $Zone -Name $PD.NewRecord.Name -Type $PD.NewRecord.Type @TestParams
             }
             It "removes specified record set from a zone (pipeline)" {
-                $Result = $TestRecord | Remove-EdnsZoneRecordSet @TestParams -Zone $TestZonePrimary
-                $Result | Should -BeNullOrEmpty
+                $PD.NewRecords | Remove-EdnsRecordSet -Zone $Zone @TestParams
             }
         }
     }
@@ -312,8 +350,13 @@ Describe "EdgeDNS" {
                 $Zones.zones += $BodySecondaryObject.psobject.Copy()
                 Start-Sleep -Milliseconds 100
             }
-            New-EdnsZoneBulkCreate @TestParams -ContractID $TestContractId -GroupID $TestGroupId -Body $Zones
-            Start-Sleep -Seconds 5
+            $ZoneCreation = New-EdnsZoneBulkCreate @TestParams -ContractID $TestContractId -GroupID $TestGroupId -Body $Zones
+            # Wait for creation to complete
+            while (-not $Status.isComplete) {
+                $Status = Get-EdnsZoneBulkCreateStatus -RequestID $ZoneCreation.requestId @TestParams
+                Start-Sleep -s 3
+                Write-Host -ForegroundColor Yellow "Waiting for zone creation to complete..."
+            }
         }
         Context "Get-EdnsTSIGKey" {
             It "returns all TSIG keys" {
@@ -555,6 +598,11 @@ Describe "EdgeDNS" {
                 New-EdnsZoneBulkCreate @TestParams -ContractID $TestContractId -GroupID $TestGroupId -Body $Zones
                 Start-Sleep -Seconds 3
                 $DeleteResult = New-EdnsZoneBulkDelete @TestParams -Zones $BodyPrimaryObject.zone -BypassSafetyChecks
+                while (-not $Status.isComplete) {
+                    $Status = Get-EdnsZoneBulkDeleteStatus -RequestID $DeleteResult.requestId @TestParams
+                    Start-Sleep -s 3
+                    Write-Host -ForegroundColor Yellow "Waiting for zone deletion to complete..."
+                }
                 Start-Sleep -Seconds 3
             }
             It "returns details for specified request ID (parameter)" {
