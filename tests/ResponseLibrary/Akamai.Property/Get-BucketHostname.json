@@ -1,0 +1,79 @@
+{
+  "accountId": "act_A-CCT1234",
+  "contractId": "ctr_C-0N7RAC71",
+  "groupId": "grp_15225",
+  "propertyId": "prp_175780",
+  "propertyName": "mytestproperty.com",
+  "currentSort": "hostname:a",
+  "defaultSort": "hostname:a",
+  "availableSort": [
+    "hostname:a",
+    "hostname:d"
+  ],
+  "hostnames": {
+    "totalItems": 4,
+    "currentItemCount": 3,
+    "nextLink": "/papi/v1/properties/prp_175780/hostnames?offset=1&groupId=grp_15225&contractId=ctr_K-0N7RAK71&limit=3",
+    "items": [
+      {
+        "cnameFrom": "example.com",
+        "cnameType": "EDGE_HOSTNAME",
+        "productionEdgeHostnameId": "ehn_895822",
+        "productionCertType": "DEFAULT",
+        "productionCnameTo": "example.com.edgekey.net"
+      },
+      {
+        "cnameFrom": "m-example.com",
+        "stagingEdgeHostnameId": "ehn_293412",
+        "stagingCertType": "DEFAULT",
+        "cnameType": "EDGE_HOSTNAME",
+        "stagingCnameTo": "m-example.com.edgekey.net"
+      },
+      {
+        "cnameFrom": "example2.com",
+        "stagingCertType": "DEFAULT",
+        "stagingEdgeHostnameId": "ehn_895822",
+        "cnameType": "EDGE_HOSTNAME",
+        "stagingCnameTo": "example2.com.edgekey.net",
+        "certStatus": {
+          "validationCname": {
+            "hostname": "_acme-challenge.www.example.com",
+            "target": "{token}.www.example.com.akamai-domain.com"
+          },
+          "staging": [
+            {
+              "status": "PENDING"
+            }
+          ],
+          "production": [
+            {
+              "status": "PENDING"
+            }
+          ],
+          "certExpirationDate": "2024-07-25T16:17:37Z",
+          "authorization": {
+            "status": "ATTEMPTING_VALIDATION",
+            "validUntil": "2024-07-25T16:17:37Z",
+            "http01": {
+              "url": "/.well-known/acme-challenge/",
+              "body": "unique http body content",
+              "result": {
+                "src": "CPS",
+                "message": "http01 cps dry run fail reason",
+                "timestamp": "2024-07-25T16:17:37Z"
+              }
+            },
+            "dns01": {
+              "value": "dummy-unique-value-for-DNS-TXT-record",
+              "result": {
+                "src": "CPS",
+                "message": "dns01 cps dry run cname/TXT incomplete",
+                "timestamp": "2024-07-25T16:17:37Z"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

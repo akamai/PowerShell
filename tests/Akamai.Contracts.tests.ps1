@@ -1,15 +1,19 @@
-Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-Import-Module $PSScriptRoot/../src/Akamai.Contracts/Akamai.Contracts.psd1 -Force
-# Setup shared variables
-$Script:EdgeRCFile = $env:PesterEdgeRCFile
-$Script:SafeEdgeRCFile = $env:PesterSafeEdgeRCFile
-$Script:Section = $env:PesterEdgeRCSection
-$Script:TestContract = $env:PesterContractID
-$Script:TestReportingGroupID = $env:PesterReportingGroup
-
 Describe 'Safe Akamai.Contracts Tests' {
+    
+    BeforeAll { 
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.Contracts/Akamai.Contracts.psd1 -Force
+        # Setup shared variables
+        $CommonParams = @{
+            EdgeRCFile = $env:PesterEdgeRCFile
+            Section    = $env:PesterEdgeRCSection
+        }
+        $TestContract = $env:PesterContractID
+        $TestReportingGroupID = $env:PesterReportingGroup
+        $PD = @{}
+    }
 
-    BeforeDiscovery {
+    AfterAll {
         
     }
 
@@ -17,35 +21,32 @@ Describe 'Safe Akamai.Contracts Tests' {
     #                 Contract                  
     #------------------------------------------------
 
-    ### Get-Contract
-    $Script:GetContract = Get-Contract -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-Contract returns the correct data' {
-        $GetContract[0] | Should -Not -BeNullOrEmpty
+    Context 'Get-Contract' {
+        It 'returns the correct data' {
+            $PD.GetContract = Get-Contract @CommonParams
+            $PD.GetContract[0] | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
     #                 ProductsPerContract                  
     #------------------------------------------------
 
-    ### Get-ProductsPerContract
-    $Script:GetProductsPerContract = Get-ProductsPerContract -ContractID $TestContract -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-ProductsPerContract returns the correct data' {
-        $GetProductsPerContract[0].marketingProductId | Should -Not -BeNullOrEmpty
+    Context 'Get-ProductsPerContract' {
+        It 'returns the correct data' {
+            $PD.GetProductsPerContract = Get-ProductsPerContract -ContractID $TestContract @CommonParams
+            $PD.GetProductsPerContract[0].marketingProductId | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
     #                 ProductsPerReportingGroup                  
     #------------------------------------------------
 
-    ### Get-ProductsPerReportingGroup
-    $Script:GetProductsPerReportingGroup = Get-ProductsPerReportingGroup -ReportingGroupID $TestReportingGroupID -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-ProductsPerReportingGroup returns the correct data' {
-        $GetProductsPerReportingGroup[0].marketingProductId | Should -Not -BeNullOrEmpty
+    Context 'Get-ProductsPerReportingGroup' {
+        It 'returns the correct data' {
+            $PD.GetProductsPerReportingGroup = Get-ProductsPerReportingGroup -ReportingGroupID $TestReportingGroupID @CommonParams
+            $PD.GetProductsPerReportingGroup[0].marketingProductId | Should -Not -BeNullOrEmpty
+        }
     }
-
-
-    AfterAll {
-        
-    }
-
 }

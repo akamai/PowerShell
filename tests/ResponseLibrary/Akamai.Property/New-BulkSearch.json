@@ -1,0 +1,62 @@
+{
+  "bulkSearchId": 5,
+  "searchTargetStatus": "COMPLETE",
+  "searchSubmitDate": "2018-01-18T00:00:00Z",
+  "searchUpdateDate": "2018-01-18T00:01:00Z",
+  "bulkSearchQuery": {
+    "syntax": "JSONPATH",
+    "match": "$..conditions[?(@.name == \"ext\" && \"mp3\" in @.options.value && \"mp4\" nin @.options.value)].options.value[?(@ == \"mp3\")]",
+    "bulkSearchQualifiers": [
+      "$.options[?(@.secure==\"true\")]",
+      "$..features[?(@.name==\"origin\")].options[?(@.hostname==\"old.origin.example.com\")]"
+    ]
+  },
+  "results": [
+    {
+      "propertyId": "prp_1",
+      "propertyVersion": 1,
+      "propertyName": "example1.example.com",
+      "stagingStatus": "ACTIVE",
+      "productionStatus": "INACTIVE",
+      "isLatest": true,
+      "isLocked": true,
+      "isSecure": true,
+      "accountId": "act_A-CCT3456",
+      "lastModifiedTime": "2018-01-18T00:00:00Z",
+      "matchLocations": [
+        "/rules/children/1/features/0",
+        "/rules/children/1/features/3"
+      ]
+    },
+    {
+      "propertyId": "prp_15",
+      "propertyVersion": 2,
+      "propertyName": "example2.example.com",
+      "stagingStatus": "INACTIVE",
+      "productionStatus": "INACTIVE",
+      "isLatest": false,
+      "isLocked": false,
+      "isSecure": true,
+      "accountId": "act_A-CCT3456",
+      "lastModifiedTime": "2018-01-18T00:00:00Z",
+      "matchLocations": [
+        "/rules/children/1/children/0/features/1"
+      ]
+    },
+    {
+      "propertyId": "prp_3",
+      "propertyVersion": 10,
+      "propertyName": "example3.example.com",
+      "stagingStatus": "INACTIVE",
+      "productionStatus": "ACTIVE",
+      "isLatest": true,
+      "isLocked": true,
+      "isSecure": true,
+      "accountId": "A-CCT9012",
+      "lastModifiedTime": "2018-01-18T00:00:00Z",
+      "matchLocations": [
+        "/rules/children/0/children/1/children/2/features/1"
+      ]
+    }
+  ]
+}

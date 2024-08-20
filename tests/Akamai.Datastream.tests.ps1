@@ -1,106 +1,161 @@
-Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-Import-Module $PSScriptRoot/../src/Akamai.Datastream/Akamai.Datastream.psd1 -Force
-# Setup shared variables
-$Script:EdgeRCFile = $env:PesterEdgeRCFile
-$Script:SafeEdgeRCFile = $env:PesterSafeEdgeRCFile
-$Script:Section = $env:PesterEdgeRCSection
-$Script:TestContract = $env:PesterContractID
-$Script:TestGroupID = $env:PesterGroupID
-$Script:TestStreamID = $env:PesterDatastreamID
-
-Describe 'Safe Datastream Tests' {
-
-    BeforeDiscovery {
-        
-    }
-
-    ### Get-DataStream, all
-    $Script:Streams = Get-DataStream -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-DataStream returns a list' {
-        $Streams[0].StreamID | Should -Not -BeNullOrEmpty
-    }
+Describe 'Safe Akamai.Datastream Tests' {
     
-    ### Get-DataStream, single
-    $Script:Stream = Get-DataStream -StreamID $TestStreamID -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-DataStream, single returns the correct stream' {
-        $Stream.StreamID | Should -Be $TestStreamID
-    }
-
-    ### Get-DatastreamDatasets
-    $Script:Fields = Get-DatastreamDatasets -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-DatastreamDatasetField returns a list' {
-        $Fields[0].datasetFieldName | Should -Not -BeNullOrEmpty
-    }
-
-    ### Get-DatastreamGroup
-    $Script:Groups = Get-DatastreamGroups -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-DatastreamGroup returns a list' {
-        $Groups[0].groupName | Should -Not -BeNullOrEmpty
-    }
-
-    ### Get-DataStreamHistory
-    $Script:StreamHistory = Get-DataStreamHistory -StreamID $TestStreamID -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-DataStreamHistory returns the correct stream' {
-        $StreamHistory[0].streamId | Should -Be $TestStreamID
-    }
-
-    ### Get-DataStreamActivationHistory
-    $Script:ActivationHistory = Get-DataStreamActivationHistory -StreamID $TestStreamID -EdgeRCFile $EdgeRCFile -Section $Section
-    it 'Get-DataStreamActivationHistory returns the correct stream' {
-        $ActivationHistory[0].streamId | Should -Be $TestStreamID
+    BeforeAll { 
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.Datastream/Akamai.Datastream.psd1 -Force
+        # Setup shared variables
+        $CommonParams = @{
+            EdgeRCFile = $env:PesterEdgeRCFile
+            Section    = $env:PesterEdgeRCSection
+        }
+        $TestContract = $env:PesterContractID
+        $TestGroupID = $env:PesterGroupID
+        $TestStreamID = $env:PesterDatastreamID
+        $PD = @{}
     }
 
     AfterAll {
         
     }
+
+    Context 'Get-DataStream, all' {
+        It 'Get-DataStream returns a list' {
+            $PD.Streams = Get-DataStream @CommonParams
+            $PD.Streams[0].StreamID | Should -Not -BeNullOrEmpty
+        }
+    }
     
+    Context 'Get-DataStream, single' {
+        It 'returns the correct stream' {
+            $PD.Stream = Get-DataStream -StreamID $TestStreamID @CommonParams
+            $PD.Stream.StreamID | Should -Be $TestStreamID
+        }
+    }
+
+    Context 'Get-DatastreamDatasets' {
+        It 'Get-DatastreamDatasetField returns a list' {
+            $PD.Fields = Get-DatastreamDatasets @CommonParams
+            $PD.Fields[0].datasetFieldName | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-DatastreamGroup' {
+        It 'returns a list' {
+            $PD.Groups = Get-DatastreamGroups @CommonParams
+            $PD.Groups[0].groupName | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-DataStreamHistory' {
+        It 'returns the correct stream' {
+            $PD.StreamHistory = Get-DataStreamHistory -StreamID $TestStreamID @CommonParams
+            $PD.StreamHistory[0].streamId | Should -Be $TestStreamID
+        }
+    }
+
+    Context 'Get-DataStreamActivationHistory' {
+        It 'returns the correct stream' {
+            $PD.ActivationHistory = Get-DataStreamActivationHistory -StreamID $TestStreamID @CommonParams
+            $PD.ActivationHistory[0].streamId | Should -Be $TestStreamID
+        }
+    }
 }
 
-Describe 'Unsafe Datastream Tests' {
-    ### Get-DataStreamPropertie
-    $Script:Properties = Get-DataStreamProperties -GroupID $TestGroupID -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Get-DataStreamPropertie returns a list' {
-        $Properties[0].propertyId | Should -Not -BeNullOrEmpty
+Describe 'Unsafe Akamai.Datastream Tests' {
+    BeforeAll { 
+        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.Datastream/Akamai.Datastream.psd1 -Force
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Datastream"
+        $PD = @{}
     }
 
-    ### New-DataStream
-    $Script:NewStream = New-DataStream -Body $Stream -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'New-DataStream creates successfully' {
-        $NewStream.streamStatus | Should -Be "ACTIVATING"
+    Context 'Get-DataStreamProperties' {
+        It 'returns a list' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-DataStreamProperties.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Properties = Get-DataStreamProperties -GroupID 111111
+            $Properties[0].propertyId | Should -Not -BeNullOrEmpty
+        }
     }
 
-    ### Remove-DataStream
-    it 'Remove-DataStream deletes successfully' {
-        { Remove-DataStream -StreamID $TestStreamID -EdgeRCFile $SafeEdgeRCFile -Section $Section } | Should -Not -Throw
+    Context 'New-DataStream' {
+        It 'creates successfully' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-DataStream.json"
+                return $Response | ConvertFrom-Json
+            }
+            $PD.Stream = Get-DataStream -StreamID 123456
+            $NewStream = New-DataStream -Body $PD.Stream
+            $NewStream.streamStatus | Should -Be "ACTIVATING"
+        }
     }
 
-    ### Set-DataStream by pipeline
-    $Script:StreamByPipeline = ( $Stream | Set-DataStream -StreamID $TestStreamID -EdgeRCFile $SafeEdgeRCFile -Section $Section )
-    it 'Set-DataStream completes successfully' {
-        $StreamByPipeline.streamStatus | Should -Be "ACTIVATING"
+    Context 'Remove-DataStream' {
+        It 'deletes successfully' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Remove-DataStream.json"
+                return $Response | ConvertFrom-Json
+            }
+            Remove-DataStream -StreamID 123456 
+        }
     }
 
-    ### Set-DataStream by body
-    $Script:StreamByBody = Set-DataStream -StreamID $TestStreamID -Body $Stream -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Set-DataStream completes successfully' {
-        $StreamByBody.streamStatus | Should -Be "ACTIVATING"
+    Context 'Set-DataStream by pipeline' {
+        It 'Set-DataStream completes successfully' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Set-DataStream.json"
+                return $Response | ConvertFrom-Json
+            }
+            $StreamByPipeline = ( $PD.Stream | Set-DataStream -StreamID 123456 )
+            $StreamByPipeline.streamStatus | Should -Be "ACTIVATING"
+        }
+    }
+
+    Context 'Set-DataStream by body' {
+        It 'Set-DataStream completes successfully' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Set-DataStream.json"
+                return $Response | ConvertFrom-Json
+            }
+            $StreamByBody = Set-DataStream -StreamID 123456 -Body $PD.Stream
+            $StreamByBody.streamStatus | Should -Be "ACTIVATING"
+        }
     }
     
-    ### New-DatastreamActivation
-    $Script:Activate = New-DatastreamActivation -StreamID $TestStreamID -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'New-DatastreamActivation activates successfully' {
-        $Activate.streamStatus | Should -Be "ACTIVATING"
+    Context 'New-DatastreamActivation' {
+        It 'activates successfully' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-DatastreamActivation.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Activate = New-DatastreamActivation -StreamID 123456
+            $Activate.streamStatus | Should -Be "ACTIVATING"
+        }
     }
 
-    ### New-DatastreamDeactivation
-    $Script:Deactivate = New-DatastreamDeactivation -StreamID $TestStreamID -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'New-DatastreamDeactivation deactivates successfully' {
-        $Deactivate.streamStatus | Should -Be "ACTIVATING"
+    Context 'New-DatastreamDeactivation' {
+        It 'deactivates successfully' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-DatastreamDeactivation.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Deactivate = New-DatastreamDeactivation -StreamID 123456
+            $Deactivate.streamStatus | Should -Be "ACTIVATING"
+        }
     }
     
-    ### Get-DataStreamMetrics
-    $Script:Metrics = Get-DataStreamMetrics -Start "2024-01-01T09:00:00" -End "01/01/2022 09:00:00" -EdgeRCFile $SafeEdgeRCFile -Section $Section
-    it 'Get-DataStreamMetrics returns the correct data' {
-        $Metrics.fileUploadMetrics[0].streamId | Should -Not -BeNullOrEmpty
+    Context 'Get-DataStreamMetrics' {
+        It 'returns the correct data' {
+            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-DataStreamMetrics.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Metrics = Get-DataStreamMetrics -Start "2024-01-01T09:00:00" -End "01/01/2022 09:00:00"
+            $Metrics.fileUploadMetrics[0].streamId | Should -Not -BeNullOrEmpty
+        }
     }
 }
+
+

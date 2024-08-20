@@ -1,0 +1,38 @@
+{
+    "acknowledgementDeadline": null,
+    "validationResultHash": "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+    "pendingState": {
+        "pendingNetworkConfiguration": {
+            "dnsNameSettings": null,
+            "mustHaveCiphers": "ak-akamai-2020q1",
+            "networkType": null,
+            "ocspStapling": "not-set",
+            "preferredCiphers": "ak-akamai-2020q1",
+            "fipsMode": true,
+            "quicEnabled": false,
+            "sniOnly": false,
+            "disallowedTlsVersions": [
+                "TLSv1_2"
+            ]
+        },
+        "pendingCertificates": [
+            {
+                "certificateType": "third-party",
+                "fullCertificate": "-----BEGIN CERTIFICATE-----\nMIID2 ... <sample - removed for readability> .... KZlSw==\n-----END CERTIFICATE-----",
+                "keyAlgorithm": "RSA",
+                "ocspStapled": false,
+                "ocspUris": null,
+                "signatureAlgorithm": "SHA-256"
+            }
+        ]
+    },
+    "validationResult": {
+        "errors": null,
+        "warnings": [
+            {
+                "message": "[SAN name [san9.example.com] removed from certificate is still live on the network., SAN name [san8.example.com] removed from certificate is still live on the network.]",
+                "messageCode": "no-code"
+            }
+        ]
+    }
+}

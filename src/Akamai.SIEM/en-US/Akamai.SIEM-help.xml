@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This is an internal function used by Get-SIEMData when the Decode parameter has been provided, which will Base64- and Url-decode returned SIEM data to help with readability.</maml:para>
+      <maml:para>It's an internal function used by the `Get-SIEMData` operation when the `-Decode` switch has been enabled, which will base64- and url- decode returned SIEM data to help with readability.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -27,18 +27,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -50,18 +38,6 @@
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
           <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -110,7 +86,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets security events data from your security configurations using one of two modes: offset or the From and To date ranges. You can optionally decode the data to make it human-readable by using the -Decode parameter. Note: The user associated with your API client (or the client role in the case of a Service Account) must have the Manage SIEM role and no others, or the function will result in a 403 response.</maml:para>
+      <maml:para>Gets security events data from your security configurations using one of the two modes: using the `-Offset` parameter or the `-From` and `-To` date ranges. You can optionally decode the data to make it human-readable by enabling the `-Decode` switch.  &gt; Note: The user associated with your API client (or the client role in the case of a Service Account) is required to have the Manage SIEM role assigned and no others. Otherwise, the operation will return a 403 response.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -210,18 +186,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-SIEMData</maml:name>
@@ -287,7 +251,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Offset</maml:name>
           <maml:description>
-            <maml:para>This token denotes the last message. If specified, this operation fetches only security events that have occurred from offset. This is a required parameter for offset mode and you can't use it in time-based requests.</maml:para>
+            <maml:para>This token denotes the last message.  If specified, this operation fetches only security events that have occurred from offset. This is a required parameter for offset mode and you can't use it in time-based requests.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -304,18 +268,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -398,7 +350,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Offset</maml:name>
         <maml:description>
-          <maml:para>This token denotes the last message. If specified, this operation fetches only security events that have occurred from offset. This is a required parameter for offset mode and you can't use it in time-based requests.</maml:para>
+          <maml:para>This token denotes the last message.  If specified, this operation fetches only security events that have occurred from offset. This is a required parameter for offset mode and you can't use it in time-based requests.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -427,18 +379,6 @@
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
           <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

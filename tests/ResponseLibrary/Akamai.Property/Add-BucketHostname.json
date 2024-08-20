@@ -1,0 +1,36 @@
+{
+  "activationLink": "/papi/v1/properties/prp_173136/hostname-activations/atv_67037?contractId=ctr_C-0N7RAC71&groupId=grp_15225",
+  "activationId": "atv_67037",
+  "hostnames": [
+    {
+      "cnameType": "EDGE_HOSTNAME",
+      "edgeHostnameId": "ehn_895822",
+      "cnameFrom": "example.com",
+      "cnameTo": "example.com.edgekey.net",
+      "certProvisioningType": "DEFAULT",
+      "certStatus": {
+        "validationCname": {
+          "hostname": "_acme-challenge.www.example.com",
+          "target": "{token}.www.example.com.akamai-domain.com"
+        },
+        "staging": [
+          {
+            "status": "PENDING"
+          }
+        ],
+        "production": [
+          {
+            "status": "PENDING"
+          }
+        ]
+      }
+    },
+    {
+      "cnameType": "EDGE_HOSTNAME",
+      "edgeHostnameId": "ehn_895833",
+      "cnameFrom": "m.example.com",
+      "cnameTo": "m.example.com.edgesuite.net",
+      "certProvisioningType": "CPS_MANAGED"
+    }
+  ]
+}

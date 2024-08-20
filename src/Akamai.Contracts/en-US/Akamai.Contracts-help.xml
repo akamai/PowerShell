@@ -6,11 +6,11 @@
       <command:verb>Get</command:verb>
       <command:noun>Contract</command:noun>
       <maml:description>
-        <maml:para>List contracts.</maml:para>
+        <maml:para>Get contracts.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the list of contracts to which a user has access.</maml:para>
+      <maml:para>Gets the list of contracts to which you have access.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -67,18 +67,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -130,18 +118,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -186,7 +162,7 @@
       <command:verb>Get</command:verb>
       <command:noun>ProductsPerContract</command:noun>
       <maml:description>
-        <maml:para>List products per contract.</maml:para>
+        <maml:para>Get products per contract.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -210,7 +186,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>From</maml:name>
           <maml:description>
-            <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date. The default start date is 30 days prior to the current date. For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
+            <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date.  The default start date is 30 days prior to the current date.  For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -222,7 +198,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>To</maml:name>
           <maml:description>
-            <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date. The default end date is the current date.</maml:para>
+            <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date.  The default end date is the current date.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -263,18 +239,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -321,7 +285,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>From</maml:name>
         <maml:description>
-          <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date. The default start date is 30 days prior to the current date. For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
+          <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date.  The default start date is 30 days prior to the current date.  For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -345,23 +309,11 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>To</maml:name>
         <maml:description>
-          <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date. The default end date is the current date.</maml:para>
+          <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date.  The default end date is the current date.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -410,7 +362,7 @@
       <command:verb>Get</command:verb>
       <command:noun>ProductsPerReportingGroup</command:noun>
       <maml:description>
-        <maml:para>List products per reporting group.</maml:para>
+        <maml:para>Get products per reporting group.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -434,7 +386,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>From</maml:name>
           <maml:description>
-            <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date. The default start date is 30 days prior to the current date. For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
+            <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date.  The default start date is 30 days prior to the current date.  For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -446,7 +398,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>To</maml:name>
           <maml:description>
-            <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date. The default end date is the current date.</maml:para>
+            <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date.  The default end date is the current date.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -491,18 +443,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -533,7 +473,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>From</maml:name>
         <maml:description>
-          <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date. The default start date is 30 days prior to the current date. For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
+          <maml:para>The start date, in UTC, to use when looking for products associated with a contract. The search always begins at midnight (0:00) UTC of the specified date.  The default start date is 30 days prior to the current date.  For current contracts, you can select a date within the past 15 months of the current date. For expired contracts, you are limited to a date range of 30 days within the 15 month window.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -569,23 +509,11 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>To</maml:name>
         <maml:description>
-          <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date. The default end date is the current date.</maml:para>
+          <maml:para>The end date, in UTC, to use when looking for products associated with a contract. The search always ends at 23:59:59 UTC of the specified date.  The default end date is the current date.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

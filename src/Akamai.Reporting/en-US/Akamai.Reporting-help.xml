@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Produces a report in either JSON or CSV format for a specific version of a report type. While functionally identical to the New-Report operation, this alternative GET operation specifies all request data as query parameters. This operation also produces a cacheable result, and therefore, the repeat operations will be faster than the New-Report operation.</maml:para>
+      <maml:para>Produces a report in either JSON or CSV format for a specific version of a report type. While functionally it's identical to the `New-Report` operation, this operation specifies all request data as query parameters. It also produces a cacheable result, and therefore, this recursive operation is faster than the `New-Report` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -65,7 +65,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Filters</maml:name>
           <maml:description>
-            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -108,7 +108,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Metrics</maml:name>
           <maml:description>
-            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted. The set of available metrics depends on the type of report.</maml:para>
+            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -165,18 +165,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-Report</maml:name>
@@ -219,7 +207,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Filters</maml:name>
           <maml:description>
-            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -262,7 +250,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Metrics</maml:name>
           <maml:description>
-            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted. The set of available metrics depends on the type of report.</maml:para>
+            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -331,18 +319,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -397,7 +373,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Filters</maml:name>
         <maml:description>
-          <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+          <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -433,7 +409,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Metrics</maml:name>
         <maml:description>
-          <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted. The set of available metrics depends on the type of report.</maml:para>
+          <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -502,18 +478,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -562,7 +526,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists all report types or retrieves a specific version of a report type.</maml:para>
+      <maml:para>Gets all report types or retrieves a specific version of a report type.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -627,18 +591,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-ReportType</maml:name>
@@ -699,18 +651,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -799,18 +739,6 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -855,11 +783,11 @@
       <command:verb>Get</command:verb>
       <command:noun>ReportTypeVersions</command:noun>
       <maml:description>
-        <maml:para>List report versions.</maml:para>
+        <maml:para>Get report versions.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Lists all versions for a specific report type.</maml:para>
+      <maml:para>Gets all versions for a specific report type.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -933,18 +861,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
       </command:syntaxItem>
     </command:syntax>
@@ -1021,18 +937,6 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
@@ -1081,7 +985,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Produces a report in either JSON or CSV format for a specific version of a report type. While functionally identical to the Get-Report operation, this alternative POST operation specifies all request data as request body, and therefore, is better suited for very large datasets.</maml:para>
+      <maml:para>Produces a report in either JSON or CSV format for a specific version of a report type. While functionally it's identical to the `Get-Report` operation, this operation specifies all request data as a request body, and therefore, it's better suited for very large datasets.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1213,18 +1117,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>New-Report</maml:name>
@@ -1267,7 +1159,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Filters</maml:name>
           <maml:description>
-            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1310,7 +1202,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Metrics</maml:name>
           <maml:description>
-            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted. The set of available metrics depends on the type of report.</maml:para>
+            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1379,18 +1271,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-          <maml:name>ProgressAction</maml:name>
-          <maml:description>
-            <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-          <dev:type>
-            <maml:name>ActionPreference</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
@@ -1445,7 +1325,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Filters</maml:name>
         <maml:description>
-          <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+          <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1481,7 +1361,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Metrics</maml:name>
         <maml:description>
-          <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted. The set of available metrics depends on the type of report.</maml:para>
+          <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1546,18 +1426,6 @@
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="proga">
-        <maml:name>ProgressAction</maml:name>
-        <maml:description>
-          <maml:para>{{ Fill ProgressAction Description }}</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">ActionPreference</command:parameterValue>
-        <dev:type>
-          <maml:name>ActionPreference</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>

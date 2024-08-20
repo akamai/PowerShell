@@ -1,0 +1,74 @@
+{
+  "bulkActivationId": 12345,
+  "bulkActivationStatus": "COMPLETE",
+  "bulkActivationSubmitDate": "2023-11-22T09:50:18Z",
+  "bulkActivationUpdateDate": "2023-11-22T09:50:25Z",
+  "activatePropertyVersions": [
+    {
+      "propertyId": "prp_3",
+      "propertyVersion": 11,
+      "network": "PRODUCTION",
+      "note": "created by xyz",
+      "acknowledgeWarnings": [
+        "msg_123",
+        "msg_234"
+      ],
+      "notifyEmails": [
+        "you@example.com",
+        "them@example.com"
+      ],
+      "acknowledgeAllWarnings": false,
+      "activationSubmitDate": "2023-11-22T09:50:18Z",
+      "activationUpdateDate": "2023-11-22T09:50:25Z",
+      "activationStatus": "NEW",
+      "taskStatus": "SUBMISSION_ERROR",
+      "useFastFallback": false,
+      "fastPush": true,
+      "fatalError": "property id is bad or not accessible"
+    },
+    {
+      "propertyId": "prp_1",
+      "propertyVersion": 2,
+      "network": "STAGING",
+      "note": "Sample activation note",
+      "notifyEmails": [
+        "you@example.com",
+        "them@example.com"
+      ],
+      "acknowledgeAllWarnings": true,
+      "activationSubmitDate": "2023-11-22T09:50:18Z",
+      "activationUpdateDate": "2023-11-22T09:50:25Z",
+      "activationStatus": "NEW",
+      "taskStatus": "SUBMISSION_ERROR",
+      "useFastFallback": false,
+      "fastPush": true,
+      "fatalError": "property id is bad or not accessible"
+    },
+    {
+      "propertyId": "prp_15",
+      "propertyVersion": 3,
+      "network": "STAGING",
+      "note": "Sample activation",
+      "notifyEmails": [
+        "someoneElse@somewhere.com"
+      ],
+      "acknowledgeAllWarnings": true,
+      "activationSubmitDate": "2023-11-22T09:50:18Z",
+      "activationUpdateDate": "2023-11-22T09:50:25Z",
+      "activationStatus": "NEW",
+      "taskStatus": "SUBMISSION_ERROR",
+      "useFastFallback": false,
+      "fastPush": true,
+      "fatalError": "property id is bad or not accessible"
+    }
+  ],
+  "defaultActivationSettings": {
+    "notifyEmails": [
+      "you@example.com",
+      "them@example.com"
+    ],
+    "acknowledgeAllWarnings": true,
+    "useFastFallback": false,
+    "fastPush": true
+  }
+}

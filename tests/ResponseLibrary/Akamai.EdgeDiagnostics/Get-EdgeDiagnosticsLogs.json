@@ -1,0 +1,104 @@
+{
+  "executionStatus": "SUCCESS",
+  "createdTime": "2021-04-15T07:48:30Z",
+  "createdBy": "hgildong",
+  "logLinesCount": 2,
+  "suggestedActions": [
+    "Check for long times.",
+    "Check content length/bytes served."
+  ],
+  "request": {
+    "edgeIp": "192.0.2.0",
+    "logType": "R",
+    "start": "2022-03-15T06:08:40Z",
+    "end": "2022-03-15T06:08:43Z",
+    "objectStatus": "pxR",
+    "cpCodes": [
+      1234567
+    ],
+    "httpStatusCodes": {
+      "comparison": "EQUALS",
+      "value": [
+        "400"
+      ]
+    }
+  },
+  "result": {
+    "legend": {
+      "logType": {
+        "r": "(r) response to client",
+        "f": "(f) going forward to forward hostname"
+      },
+      "rObjectStatus": {
+        "W": "The object TTL was set in response headers."
+      },
+      "rObjectStatus2": {
+        "x": "Either 'no-store' is turned on by metadata and not disabled by \"!no-store\" in the response or the downstream TTL was set by metadata and not by the response header.",
+        "N": "The request was processed over an anycast VIP and is marked as zero rated billing request.",
+        "o": "The origin server was contacted for the request."
+      },
+      "rObjectStatus3": {},
+      "fObjectStatus": {
+        "W": "The object TTL was set in response headers."
+      },
+      "fObjectStatus2": {},
+      "fObjectStatus3": {}
+    },
+    "logs": [
+      {
+        "dateTime": "2021-08-24T10:14:09.306Z",
+        "logType": "r",
+        "edgeIp": "192.0.2.10",
+        "clientIp": "192.0.2.6",
+        "forwardIp": "-",
+        "cpCode": "1234567",
+        "sslVersion": "TLSv1.2",
+        "httpMethod": "GET",
+        "httpStatus": "504",
+        "error": "ERR_READ_TIMEOUT|before_resp_hdrs",
+        "contentType": "text/html",
+        "objectStatus": "W",
+        "objectStatus2": "xNo",
+        "objectStatus3": "-",
+        "bytesServed": "568",
+        "bytesReceived": "-",
+        "contentBytesServed": "250",
+        "objectSize": "250",
+        "timeTaken": "0",
+        "turnaroundTime": "598",
+        "hostHeader": "etranslator.edgesuite.net",
+        "arl": "/D/1682/1234567/000/example.com./ERR_READ_TIMEOUT",
+        "referer": "-",
+        "userAgent": "Mozilla/5.0%20(Macintosh;%20Intel%20Mac%20OS%20X%2010_15_7)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/92.0.4515.159%20Safari/537.36",
+        "cookie": "-"
+      },
+      {
+        "dateTime": "2021-08-24T10:14:09.356Z",
+        "logType": "f",
+        "edgeIp": "192.0.2.10",
+        "clientIp": "192.0.2.6",
+        "forwardIp": "192.0.2.11",
+        "cpCode": "1234567",
+        "sslVersion": "TLSv1.2",
+        "httpMethod": "GET",
+        "httpStatus": "0",
+        "error": "-",
+        "contentType": "-",
+        "objectStatus": "W",
+        "objectStatus2": "-",
+        "objectStatus3": "-",
+        "bytesServed": "-",
+        "bytesReceived": "0",
+        "contentBytesServed": "-",
+        "objectSize": "-",
+        "timeTaken": "0",
+        "turnaroundTime": "0",
+        "hostHeader": "-",
+        "arl": "/D/1682/1234567/000/example.com./ERR_READ_TIMEOUT",
+        "referer": "-",
+        "userAgent": "-",
+        "cookie": "-"
+      }
+    ]
+  }
+}
