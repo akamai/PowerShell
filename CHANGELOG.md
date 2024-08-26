@@ -15,7 +15,7 @@
 
 * Functionality
   * General
-    * Added Docker support for both both AMD64 and ARM64.
+    * Added Docker support for both AMD64 and ARM64.
 
   * Property
     * Expanded Property submodule to include cmdlets for add, remove, test, and update property rules.
@@ -35,20 +35,20 @@
 * Property
   * Added additional response body object members in cmdlets that only returned a link, removing the need to parse IDs for use downstream.
   
-  For example, `New-Property` now returns both a `PropertyLink`, `/papi/v1/properties/prp_97654?contractId=ctr_C-0N7RAC7&groupId=grp_12345`, and an isolated `PropertyID`, `97654` or `prp_97654` depending on your client settings.
+    For example, when creating new properties, the API response is a URL to the new property. The property’s ID only appears as part of the path and users have to manage extracting it to pipe the value into other commands. With this update, `New-Property` now returns both the `PropertyLink` and an isolated value for the `PropertyID`. 
 
   * Simplified `Get-PropertyRules` and `Get-PropertyIncludeRules` to support multiple output types.
   
 ### Removed
 
 * Common
-  * Scoping for 100-continue removal.
+  * Scoping for `100-continue`. Akamai APIs don’t use this intermediate status code for `POST` functions, but PowerShell can expect it. Removing it from our module removes the expectancy.
 
 * AppSec
   * `Copy-AppSecPolicy`. Functionality moved into `New-AppSecPolicy`.
 
 * Image & Video Manager
-  * ImageCollection functions.
+  * `ImageCollection` functions.
 
 ## 2.0.0 (Apr 17, 2024)
 
