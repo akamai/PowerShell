@@ -123,7 +123,7 @@ function New-NetstorageAuth {
         Add-Content -Path $AuthFilePath -Value "`n$FileContents"
     }
     else {
-        Write-Host "Creating new Neststorage auth file at '" -NoNewline
+        Write-Host "Creating new NetStorage auth file at '" -NoNewline
         Write-Host -ForegroundColor Green $AuthFilePath -NoNewline
         Write-Host "'"
         New-Item -Path $AuthFilePath -Force | Out-Null
