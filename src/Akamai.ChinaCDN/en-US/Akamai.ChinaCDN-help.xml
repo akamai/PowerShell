@@ -6,7 +6,7 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNDeprovisionPolicy</command:noun>
       <maml:description>
-        <maml:para>Get deprovision policy</maml:para>
+        <maml:para>Get deprovision policy.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -18,7 +18,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeHostname</maml:name>
           <maml:description>
-            <maml:para>The edge hostname available for use on a China CDN enabled contract.</maml:para>
+            <maml:para>The edge hostname available for use on a China CDN-enabled contract.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -30,7 +30,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -42,7 +42,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -54,7 +54,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -69,7 +69,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -81,7 +81,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeHostname</maml:name>
         <maml:description>
-          <maml:para>The edge hostname available for use on a China CDN enabled contract.</maml:para>
+          <maml:para>The edge hostname available for use on a China CDN-enabled contract.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -93,7 +93,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -105,7 +105,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -143,12 +143,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-edge-hostname-deprovision-policy</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdndeprovisionpolicy</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-edge-hostname-deprovision-policy</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -158,11 +162,11 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNEdgeHostnames</command:noun>
       <maml:description>
-        <maml:para>List edge hostnames</maml:para>
+        <maml:para>List edge hostnames.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns a filtered list of provided edge hostnames available for use on a China CDN enabled contract.</maml:para>
+      <maml:para>Returns a filtered list of provided edge hostnames available for use on a China CDN-enabled contract.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -170,7 +174,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -182,7 +186,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -194,7 +198,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -209,7 +213,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -221,7 +225,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -233,7 +237,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -271,12 +275,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-edge-hostnames</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdnedgehostnames</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-edge-hostnames</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -286,11 +294,11 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNGroups</command:noun>
       <maml:description>
-        <maml:para>List groups</maml:para>
+        <maml:para>List groups.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Returns a filtered list of groups under your account available for use on a China CDN enabled contract.</maml:para>
+      <maml:para>Returns a filtered list of groups under your account available for use on a China CDN-enabled contract.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -298,7 +306,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -310,7 +318,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -322,7 +330,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -337,7 +345,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -349,7 +357,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -361,7 +369,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -399,12 +407,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-groups</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdngroups</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-groups</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -414,7 +426,7 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNHoldingEntities</command:noun>
       <maml:description>
-        <maml:para>List ICP holding entities</maml:para>
+        <maml:para>List ICP holding entities.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -426,7 +438,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -438,7 +450,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -450,7 +462,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -465,7 +477,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -477,7 +489,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -489,7 +501,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -527,12 +539,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-icp-holding-entities</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdnholdingentities</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-icp-holding-entities</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -542,7 +558,7 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNICPNumbers</command:noun>
       <maml:description>
-        <maml:para>List ICP numbers</maml:para>
+        <maml:para>List ICP numbers.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -554,7 +570,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -566,7 +582,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -578,7 +594,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -593,7 +609,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -605,7 +621,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -617,7 +633,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -655,12 +671,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-icp-numbers</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdnicpnumbers</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-icp-numbers</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -670,11 +690,11 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNPropertyHostname</command:noun>
       <maml:description>
-        <maml:para>Get a property hostname</maml:para>
+        <maml:para>Get a property hostname.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>List all China CDN hostnames, or specify an individual with `Hostname`.</maml:para>
+      <maml:para>Lists all China CDN hostnames, or gets an individual record by its `-Hostname`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -694,7 +714,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -706,7 +726,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -718,7 +738,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -733,7 +753,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -745,7 +765,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -769,7 +789,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -807,12 +827,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-property-hostname</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdnpropertyhostname</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-property-hostname</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -822,11 +846,11 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNProvisionStateChange</command:noun>
       <maml:description>
-        <maml:para>Get a provision state change</maml:para>
+        <maml:para>Get a provision state change.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>List all provisioning state changes for a given `Hostname` or combine with a `ChangeID` to specify an individual change.</maml:para>
+      <maml:para>Lists all provisioning state changes for a given `-Hostname` or combines it with a `-ChangeID` to retrieve an individual change.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -846,7 +870,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>ChangeID</maml:name>
           <maml:description>
-            <maml:para>A unique identifier for the property hostname's current provision state change.</maml:para>
+            <maml:para>The ID for the property hostname's current provision state change.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -858,7 +882,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -870,7 +894,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -882,7 +906,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -897,7 +921,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -909,7 +933,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>ChangeID</maml:name>
         <maml:description>
-          <maml:para>A unique identifier for the property hostname's current provision state change.</maml:para>
+          <maml:para>The ID for the property hostname's current provision state change.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -921,7 +945,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -945,7 +969,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -983,12 +1007,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-property-hostname-provision-state-change</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdnprovisionstatechange</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-property-hostname-provision-state-change</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -998,7 +1026,7 @@
       <command:verb>Get</command:verb>
       <command:noun>ChinaCDNProvisionStates</command:noun>
       <maml:description>
-        <maml:para>List current provision states</maml:para>
+        <maml:para>List current provision states.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1010,7 +1038,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>ProvisionState</maml:name>
           <maml:description>
-            <maml:para>Filter results by the given provision state.</maml:para>
+            <maml:para>Filters results by a given provision state.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1022,7 +1050,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1034,7 +1062,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1046,7 +1074,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1061,7 +1089,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1073,7 +1101,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1085,7 +1113,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>ProvisionState</maml:name>
         <maml:description>
-          <maml:para>Filter results by the given provision state.</maml:para>
+          <maml:para>Filters results by a given provision state.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1097,7 +1125,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1135,12 +1163,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/get-current-provision-states</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-chinacdnprovisionstates</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/get-current-provision-states</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1150,11 +1182,11 @@
       <command:verb>New</command:verb>
       <command:noun>ChinaCDNPropertyHostname</command:noun>
       <maml:description>
-        <maml:para>Create or update a property hostname</maml:para>
+        <maml:para>Create or update a property hostname.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This operation lets you create or update a property `hostname` based on the group for your current account and contract type. If the property `hostname` has a provision status of `WHITELISTED` or `PROVISIONED` and you change the `icpNumberId`, the API creates a China partner re-approval request. If the partner denies the request for any reason, the property hostname's `provisionState` changes to `DEPROVISIONED`.</maml:para>
+      <maml:para>Creates or updates a property `hostname` based on the group for your current account and contract type. If the property `hostname` has a provision status of `WHITELISTED` or `PROVISIONED` and you change the `icpNumberId`, the API creates a China partner re-approval request. If the partner denies the request for any reason, the property hostname's `provisionState` changes to `DEPROVISIONED`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1162,7 +1194,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1174,7 +1206,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1186,7 +1218,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1198,7 +1230,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
-            <maml:para>A unique identifier for a group. A unique identifier for a group. This parameter is only needed when creating a property `hostname`.</maml:para>
+            <maml:para>Your group's ID. This parameter is only needed when creating a property hostname.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1222,7 +1254,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1237,7 +1269,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1249,7 +1281,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Comments</maml:name>
           <maml:description>
-            <maml:para>A descriptive comment about the property hostname.</maml:para>
+            <maml:para>A human-readable comment about the property hostname.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1261,7 +1293,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1273,7 +1305,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
-            <maml:para>A unique identifier for a group. A unique identifier for a group. This parameter is only needed when creating a property `hostname`.</maml:para>
+            <maml:para>Your group's ID. This parameter is only needed when creating a property hostname.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1297,7 +1329,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ICPNumberID</maml:name>
           <maml:description>
-            <maml:para>Identifies the ICP number assigned to the property hostname.</maml:para>
+            <maml:para>The ICP number assigned to the property hostname.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1309,7 +1341,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1321,7 +1353,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ServiceCategory</maml:name>
           <maml:description>
-            <maml:para>Declares the type of website that you're deploying to China. For available codes, see Service category types.</maml:para>
+            <maml:para>The type of website you're deploying to China. For available codes, see the Service category types (https://techdocs.akamai.com/chinacdn/reference/service-category-types)page.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1336,7 +1368,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1348,7 +1380,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1360,7 +1392,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Comments</maml:name>
         <maml:description>
-          <maml:para>A descriptive comment about the property hostname.</maml:para>
+          <maml:para>A human-readable comment about the property hostname.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1372,7 +1404,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1384,7 +1416,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
-          <maml:para>A unique identifier for a group. A unique identifier for a group. This parameter is only needed when creating a property `hostname`.</maml:para>
+          <maml:para>Your group's ID. This parameter is only needed when creating a property hostname.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1408,7 +1440,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ICPNumberID</maml:name>
         <maml:description>
-          <maml:para>Identifies the ICP number assigned to the property hostname.</maml:para>
+          <maml:para>The ICP number assigned to the property hostname.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1420,7 +1452,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1432,7 +1464,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ServiceCategory</maml:name>
         <maml:description>
-          <maml:para>Declares the type of website that you're deploying to China. For available codes, see Service category types.</maml:para>
+          <maml:para>The type of website you're deploying to China. For available codes, see the Service category types (https://techdocs.akamai.com/chinacdn/reference/service-category-types)page.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1478,12 +1510,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/put-property-hostname</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-chinacdnpropertyhostname</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/put-property-hostname</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1493,11 +1529,11 @@
       <command:verb>New</command:verb>
       <command:noun>ChinaCDNProvisionStateChange</command:noun>
       <maml:description>
-        <maml:para>Create a new provision state change</maml:para>
+        <maml:para>Create a new provision state change.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Run this operation to change your property hostname's current deployment state. For delivery in China, Akamai recommends you map the CNAME of your property hostname to the new `*88.net` Chinese operational domain that corresponds to your original edge hostname selection. For example, with an `example.com.edgesuite.net` edge hostname, change the CNAME to `example.com.edgesuite88.net`.</maml:para>
+      <maml:para>Changes your property hostname's current deployment state. For delivery in China, Akamai recommends you map the CNAME of your property hostname to the new `*88.net` Chinese operational domain that corresponds to your original edge hostname selection. For example, with an `example.com.edgesuite.net` edge hostname, change the CNAME to `example.com.edgesuite88.net`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1517,7 +1553,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1529,7 +1565,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1541,7 +1577,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1553,7 +1589,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1565,7 +1601,9 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ForceDeprovision</maml:name>
           <maml:description>
-            <maml:para>When deprovisioning a property `hostname` that's mapped to a shared edge hostname, the API responds with an `edgehostname-shared` error. To override the error, set the `forceDeprovision` switch. This removes the property `hostname` from the whitelist without unmapping the edge hostname from it. To avoid a denial in service once the deprovision is complete, change the current CNAME from the property `hostname` to the shared edge hostname.</maml:para>
+            <maml:para>When deprovisioning a property hostname that's mapped to a shared edge hostname, the API responds with an `edgehostname-shared` error.</maml:para>
+            <maml:para>To override the error, set the `-ForceDeprovision` switch. This removes the property hostname from the whitelist without unmapping the edge hostname from it.</maml:para>
+            <maml:para>To avoid a denial in service once the deprovision is complete, change the current CNAME from the property hostname to the shared edge hostname.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1579,7 +1617,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1591,7 +1629,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1603,7 +1641,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1615,7 +1653,9 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ForceDeprovision</maml:name>
         <maml:description>
-          <maml:para>When deprovisioning a property `hostname` that's mapped to a shared edge hostname, the API responds with an `edgehostname-shared` error. To override the error, set the `forceDeprovision` switch. This removes the property `hostname` from the whitelist without unmapping the edge hostname from it. To avoid a denial in service once the deprovision is complete, change the current CNAME from the property `hostname` to the shared edge hostname.</maml:para>
+          <maml:para>When deprovisioning a property hostname that's mapped to a shared edge hostname, the API responds with an `edgehostname-shared` error.</maml:para>
+          <maml:para>To override the error, set the `-ForceDeprovision` switch. This removes the property hostname from the whitelist without unmapping the edge hostname from it.</maml:para>
+          <maml:para>To avoid a denial in service once the deprovision is complete, change the current CNAME from the property hostname to the shared edge hostname.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1639,7 +1679,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1677,12 +1717,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/post-property-hostname-provision-state-change</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-chinacdnprovisionstatechange</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/post-property-hostname-provision-state-change</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1692,11 +1736,11 @@
       <command:verb>Set</command:verb>
       <command:noun>ChinaCDNDeprovisionPolicy</command:noun>
       <maml:description>
-        <maml:para>Specify a deprovision policy</maml:para>
+        <maml:para>Specify a deprovision policy.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Specify a deprovision policy for the provided edge hostname.</maml:para>
+      <maml:para>Specifies a deprovision policy for the provided edge hostname.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1704,7 +1748,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1716,7 +1760,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1728,7 +1772,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeHostname</maml:name>
           <maml:description>
-            <maml:para>The edge hostname available for use on a China CDN enabled contract.</maml:para>
+            <maml:para>The edge hostname available for use on a China CDN-enabled contract.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1740,7 +1784,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1752,7 +1796,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1767,7 +1811,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1779,7 +1823,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeHostname</maml:name>
           <maml:description>
-            <maml:para>The edge hostname available for use on a China CDN enabled contract.</maml:para>
+            <maml:para>The edge hostname available for use on a China CDN-enabled contract.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1791,7 +1835,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1803,7 +1847,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1815,7 +1859,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UnmapSharedEdgeHostname</maml:name>
           <maml:description>
-            <maml:para>Whether to unmap the shared edge hostname before de-whitelisting the property hostname during the deprovision process.</maml:para>
+            <maml:para>When set to `true`, unmaps the shared edge hostname before de-whitelisting the property hostname during the deprovision process.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
           <dev:type>
@@ -1830,7 +1874,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1842,7 +1886,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1854,7 +1898,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeHostname</maml:name>
         <maml:description>
-          <maml:para>The edge hostname available for use on a China CDN enabled contract.</maml:para>
+          <maml:para>The edge hostname available for use on a China CDN-enabled contract.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1866,7 +1910,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1878,7 +1922,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1890,7 +1934,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>UnmapSharedEdgeHostname</maml:name>
         <maml:description>
-          <maml:para>Whether to unmap the shared edge hostname before de-whitelisting the property hostname during the deprovision process.</maml:para>
+          <maml:para>When set to `true`, unmaps the shared edge hostname before de-whitelisting the property hostname during the deprovision process.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
         <dev:type>
@@ -1928,12 +1972,12 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/chinacdn/reference/put-edge-hostname-deprovision-policy</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/chinacdn/reference/put-edge-hostname-deprovision-policy</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

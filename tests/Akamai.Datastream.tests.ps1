@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Datastream Tests' {
     
     BeforeAll { 
@@ -71,7 +78,7 @@ Describe 'Unsafe Akamai.Datastream Tests' {
 
     Context 'Get-DataStreamProperties' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-DataStreamProperties.json"
                 return $Response | ConvertFrom-Json
             }
@@ -82,19 +89,19 @@ Describe 'Unsafe Akamai.Datastream Tests' {
 
     Context 'New-DataStream' {
         It 'creates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-DataStream.json"
                 return $Response | ConvertFrom-Json
             }
             $PD.Stream = Get-DataStream -StreamID 123456
-            $NewStream = New-DataStream -Body $PD.Stream
+            $NewStream = New-DataStream -Body $PD.Stream -Activate
             $NewStream.streamStatus | Should -Be "ACTIVATING"
         }
     }
 
     Context 'Remove-DataStream' {
         It 'deletes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-DataStream.json"
                 return $Response | ConvertFrom-Json
             }
@@ -104,7 +111,7 @@ Describe 'Unsafe Akamai.Datastream Tests' {
 
     Context 'Set-DataStream by pipeline' {
         It 'Set-DataStream completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-DataStream.json"
                 return $Response | ConvertFrom-Json
             }
@@ -115,7 +122,7 @@ Describe 'Unsafe Akamai.Datastream Tests' {
 
     Context 'Set-DataStream by body' {
         It 'Set-DataStream completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-DataStream.json"
                 return $Response | ConvertFrom-Json
             }
@@ -126,7 +133,7 @@ Describe 'Unsafe Akamai.Datastream Tests' {
     
     Context 'New-DatastreamActivation' {
         It 'activates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-DatastreamActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -137,7 +144,7 @@ Describe 'Unsafe Akamai.Datastream Tests' {
 
     Context 'New-DatastreamDeactivation' {
         It 'deactivates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-DatastreamDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -148,7 +155,7 @@ Describe 'Unsafe Akamai.Datastream Tests' {
     
     Context 'Get-DataStreamMetrics' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Datastream -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Datastream -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-DataStreamMetrics.json"
                 return $Response | ConvertFrom-Json
             }

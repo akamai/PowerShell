@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe API Key Manager Tests' {
     
     BeforeAll {
@@ -45,7 +52,7 @@ Describe 'Safe API Key Manager Tests' {
     }
 
     AfterAll {
-        Get-ApiKeyCollection @CommonParams | Where-Object collectionName -eq $TestCollectionName | ForEach-Object {
+        Get-ApiKeyCollection @CommonParams | Where-Object collectionName -in $TestCollectionName, $TestCollectionName2 | ForEach-Object {
             Remove-APIKeyCollection -CollectionID $_.collectionId @CommonParams
         }
         Get-APIThrottlingCounter @CommonParams | Where-Object throttlingCounterName -eq $TestCounterName | ForEach-Object {
@@ -204,14 +211,14 @@ Describe 'Safe API Key Manager Tests' {
     Context 'Import-APIKey from files' {
         It 'fails as expected' {
             $JSONError = { Import-APIKey -CollectionID $PD.NewCollection.collectionId -InputFile $TestJSONFile @CommonParams } | Should -Throw -PassThru
-            $JSONErrorMessage = $JSONError.ErrorDetails.Message | ConvertFrom-Json
-            $JSONErrorMessage.errors[0].detail | Should -Match "A key with value .* already exists"
+            $JSONErrorMessage = $JSONError.Exception.Data.errors[0].detail
+            $JSONErrorMessage | Should -Match "A key with value .* already exists"
             $XMLError = { Import-APIKey -CollectionID $PD.NewCollection.collectionId -InputFile $TestXMLFile @CommonParams } | Should -Throw -PassThru
-            $XMLErrorMessage = $XMLError.ErrorDetails.Message | ConvertFrom-Json
-            $XMLErrorMessage.errors[0].detail | Should -Match "A key with value .* already exists"
+            $XMLErrorMessage = $XMLError.Exception.Data.errors[0].detail
+            $XMLErrorMessage | Should -Match "A key with value .* already exists"
             $CSVError = { Import-APIKey -CollectionID $PD.NewCollection.collectionId -InputFile $TestCSVFile @CommonParams } | Should -Throw -PassThru
-            $CSVErrorMessage = $CSVError.ErrorDetails.Message | ConvertFrom-Json
-            $CSVErrorMessage.errors[0].detail | Should -Match "A key with value .* already exists"
+            $CSVErrorMessage = $CSVError.Exception.Data.errors[0].detail
+            $CSVErrorMessage | Should -Match "A key with value .* already exists"
         }
     }
 

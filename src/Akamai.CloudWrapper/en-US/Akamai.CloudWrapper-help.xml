@@ -6,11 +6,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperAuthKey</command:noun>
       <maml:description>
-        <maml:para>Get an auth key</maml:para>
+        <maml:para>Get an auth key.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This operation shows the `cdnAuthKeys` for a specific Akamai `contractId` and specific third-party CDN (`cdnCode`). Auth Keys can be specified when running New-CloudWrapperConfiguration.</maml:para>
+      <maml:para>Retrieves the `cdnAuthKeys` for a specific Akamai `contractId` and specific third-party CDN (`cdnCode`). Auth Keys can be specified when running `New-CloudWrapperConfiguration`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -18,7 +18,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>ContractID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigned to your contract, where you've added Cloud Wrapper.</maml:para>
+            <maml:para>Your contract's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -30,7 +30,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>CdnCode</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai uses for a third-party content delivery network (CDN). Run `Get-CloudWrapperProvider` to get these values.</maml:para>
+            <maml:para>The ID Akamai uses for a third-party content delivery network (CDN). Run `Get-CloudWrapperProvider` to get these values.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -42,7 +42,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -54,7 +54,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -66,7 +66,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -81,7 +81,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -93,7 +93,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>CdnCode</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai uses for a third-party content delivery network (CDN). Run `Get-CloudWrapperProvider` to get these values.</maml:para>
+          <maml:para>The ID Akamai uses for a third-party content delivery network (CDN). Run `Get-CloudWrapperProvider` to get these values.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -105,7 +105,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>ContractID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigned to your contract, where you've added Cloud Wrapper.</maml:para>
+          <maml:para>Your contract's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -117,7 +117,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -129,7 +129,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -167,12 +167,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-auth-keys</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperauthkey</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-auth-keys</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -182,11 +186,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperCapacity</command:noun>
       <maml:description>
-        <maml:para>List capacity</maml:para>
+        <maml:para>List capacity.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View the capacities available for a given `contractId`.</maml:para>
+      <maml:para>Returns the capacities available for a given `-ContractID`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -194,7 +198,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>ContractIds</maml:name>
           <maml:description>
-            <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the Akamai.Property module to retrieve these.</maml:para>
+            <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the `Akamai.Property` module to retrieve these.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -206,7 +210,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -218,7 +222,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -230,7 +234,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -245,7 +249,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -257,7 +261,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>ContractIds</maml:name>
         <maml:description>
-          <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the Akamai.Property module to retrieve these.</maml:para>
+          <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the `Akamai.Property` module to retrieve these.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -269,7 +273,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -281,7 +285,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -319,12 +323,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-capacity-inventory</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrappercapacity</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-capacity-inventory</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -334,11 +342,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperConfiguration</command:noun>
       <maml:description>
-        <maml:para>Get a configuration</maml:para>
+        <maml:para>Get a configuration.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View a specific Cloud Wrapper configuration by its ConfigID, or list all existing configurations.</maml:para>
+      <maml:para>Returns a specific Cloud Wrapper configuration by its `-ConfigID`, or list all existing configurations.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -346,7 +354,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>ConfigID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+            <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -358,7 +366,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -370,7 +378,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -382,7 +390,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -397,7 +405,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -409,7 +417,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>ConfigID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+          <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -421,7 +429,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -433,7 +441,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -471,12 +479,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-configuration</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperconfiguration</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-configuration</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -486,11 +498,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperConfigurationOrigins</command:noun>
       <maml:description>
-        <maml:para>List origin hostnames for a configuration</maml:para>
+        <maml:para>List origin hostnames for a configuration.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View a list of origin hostnames for a configuration.</maml:para>
+      <maml:para>Returns a list of origin hostnames for a configuration.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -498,7 +510,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>ConfigID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+            <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -510,7 +522,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -522,7 +534,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -534,7 +546,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -549,7 +561,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -561,7 +573,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>ConfigID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+          <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -573,7 +585,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -585,7 +597,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -623,12 +635,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-origin-hostnames</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperconfigurationorigins</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-origin-hostnames</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -638,11 +654,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperLocation</command:noun>
       <maml:description>
-        <maml:para>List locations</maml:para>
+        <maml:para>List locations.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View the locations available to distribute your Cloud Wrapper capacity. This operation lists the available `trafficTypeId` values for use when creating configurations.</maml:para>
+      <maml:para>Retrieves the locations available to distribute your Cloud Wrapper capacity. This operation lists the available `trafficTypeId` values for use when creating configurations.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -650,7 +666,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -662,7 +678,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -674,7 +690,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -689,7 +705,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -701,7 +717,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -713,7 +729,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -751,12 +767,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-locations</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperlocation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-locations</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -766,11 +786,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudwrapperOrigin</command:noun>
       <maml:description>
-        <maml:para>List origins</maml:para>
+        <maml:para>List origins.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View a list of origin servers configured in eligible delivery properties. Response data is pulled from the property as it iss shown in the Property API. At least one origin server entry is shown at the top-level for the `default` rule. If additional origin servers are set in child-level rules in the same property, they're revealed at a lower level.</maml:para>
+      <maml:para>Returns a list of origin servers configured in eligible delivery properties. Response data is pulled from the property as it is shown in the Property API. At least one origin server entry is shown at the top level for the `default` rule. If additional origin servers are set in child-level rules in the same property, they're revealed at a lower level.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -778,7 +798,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>PropertyID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigned to the property you've configured to deliver your media or website content. You can find this with the `Get-Property` command in the Akamai.Property module.</maml:para>
+            <maml:para>Your property's ID. You can find this with the `Get-Property` command in the `Akamai.Property` module.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -790,7 +810,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>ContractID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigned to your contract, where you've added Cloud Wrapper.</maml:para>
+            <maml:para>Your contract's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -802,7 +822,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigned to the group you used to create the property. You can find this with the `Get-Property` command in the Akamai.Property module.</maml:para>
+            <maml:para>Your group's ID. You can find this with the `Get-Property` command in the `Akamai.Property` module.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -814,7 +834,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -826,7 +846,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -838,7 +858,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -853,7 +873,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -865,7 +885,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>ContractID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigned to your contract, where you've added Cloud Wrapper.</maml:para>
+          <maml:para>Your contract's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -877,7 +897,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -889,7 +909,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigned to the group you used to create the property. You can find this with the `Get-Property` command in the Akamai.Property module.</maml:para>
+          <maml:para>Your group's ID. You can find this with the `Get-Property` command in the `Akamai.Property` module.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -901,7 +921,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>PropertyID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigned to the property you've configured to deliver your media or website content. You can find this with the `Get-Property` command in the Akamai.Property module.</maml:para>
+          <maml:para>Your property's ID. You can find this with the `Get-Property` command in the `Akamai.Property` module.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -913,7 +933,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -959,12 +979,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-origins</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperorigin</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-origins</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -974,11 +998,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperProperty</command:noun>
       <maml:description>
-        <maml:para>List properties</maml:para>
+        <maml:para>List properties.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View a list of properties for delivery products that are eligible to enable Cloud Wrapper.</maml:para>
+      <maml:para>Retrieves a list of properties for delivery products that are eligible to enable Cloud Wrapper.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -986,7 +1010,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>ContractIds</maml:name>
           <maml:description>
-            <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the Akamai.Property module to retrieve these.</maml:para>
+            <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the `Akamai.Property` module to retrieve these.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -998,7 +1022,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1010,7 +1034,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1022,7 +1046,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1034,7 +1058,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Unused</maml:name>
           <maml:description>
-            <maml:para>Specify whether the response should contain only unused properties.</maml:para>
+            <maml:para>When enabled, the response contains only unused properties.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1048,7 +1072,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1060,7 +1084,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>ContractIds</maml:name>
         <maml:description>
-          <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the Akamai.Property module to retrieve these.</maml:para>
+          <maml:para>A list of contract IDs with Cloud Wrapper entitlement. Run `Get-Contract` from the `Akamai.Property` module to retrieve these.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1072,7 +1096,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1084,7 +1108,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1096,7 +1120,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Unused</maml:name>
         <maml:description>
-          <maml:para>Specify whether the response should contain only unused properties.</maml:para>
+          <maml:para>When enabled, the response contains only unused properties.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1134,12 +1158,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-properties</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperproperty</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-properties</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1149,11 +1177,11 @@
       <command:verb>Get</command:verb>
       <command:noun>CloudWrapperProvider</command:noun>
       <maml:description>
-        <maml:para>List CDN providers</maml:para>
+        <maml:para>List CDN providers.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>View a list of CDN providers.</maml:para>
+      <maml:para>Retrieves a list of CDN providers.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1161,7 +1189,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1173,7 +1201,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1185,7 +1213,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1200,7 +1228,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1212,7 +1240,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1224,7 +1252,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1262,12 +1290,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/get-providers</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudwrapperprovider</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/get-providers</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1277,11 +1309,12 @@
       <command:verb>New</command:verb>
       <command:noun>CloudWrapperConfiguration</command:noun>
       <maml:description>
-        <maml:para>Create a configuration</maml:para>
+        <maml:para>Create a configuration.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Create a Cloud Wrapper configuration, either as a JSON string or PSCustomObject, and optionally activate upon creation with the `-Activate` switch. Verify your capacity by viewing your Get-CloudWrapperCapacity, and you can work with your account team to include Cloud Wrapper locations and capacity on your contract.</maml:para>
+      <maml:para>Create a Cloud Wrapper configuration, either as a JSON string or PSCustomObject, and optionally activate upon creation with the `-Activate` switch.</maml:para>
+      <maml:para>Verify your capacity by running `Get-CloudWrapperCapacity`, and you can work with your account team to include Cloud Wrapper locations and capacity on your contract.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1289,7 +1322,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject `or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1301,7 +1334,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1313,7 +1346,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1325,7 +1358,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1337,7 +1370,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Activate</maml:name>
           <maml:description>
-            <maml:para>Specify if you want to activate the modified configuration, `false` by default. You can then run `New-CloudWrapperActivation` separately.</maml:para>
+            <maml:para>When enabled, activates the modified configuration. You can then run `New-CloudWrapperActivation` separately.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1351,7 +1384,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1363,7 +1396,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Activate</maml:name>
         <maml:description>
-          <maml:para>Specify if you want to activate the modified configuration, `false` by default. You can then run `New-CloudWrapperActivation` separately.</maml:para>
+          <maml:para>When enabled, activates the modified configuration. You can then run `New-CloudWrapperActivation` separately.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1375,7 +1408,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject `or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1387,7 +1420,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1399,7 +1432,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1437,12 +1470,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/post-configuration</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudwrapperconfiguration</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/post-configuration</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1452,11 +1489,13 @@
       <command:verb>New</command:verb>
       <command:noun>CloudWrapperConfigurationActivation</command:noun>
       <maml:description>
-        <maml:para>Activate a configuration</maml:para>
+        <maml:para>Activate a configuration.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Activate a Cloud Wrapper configuration. It takes 3-4 hours for the configuration to complete. You can use the configuration's `configId` to run the Get-CloudWrapperConfiguration operation and review its `status`. Once it's `ACTIVE`, enable the Cloud Wrapper behavior in your property. To deactivate a configuration, Set-CloudWrapperConfiguration and add the `-Deactivate` switch.</maml:para>
+      <maml:para>Activates a Cloud Wrapper configuration. It takes 3-4 hours for the configuration to complete.</maml:para>
+      <maml:para>You can use the configuration's `configId` to run the `Get-CloudWrapperConfiguration` operation and review its `status`. Once it's `ACTIVE`, enable the Cloud Wrapper behavior in your property.</maml:para>
+      <maml:para>To deactivate a configuration, run `Set-CloudWrapperConfiguration` and add the `-Deactivate` switch.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1464,7 +1503,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>ConfigurationIDs</maml:name>
           <maml:description>
-            <maml:para>Array of configuration IDs (which can be piped) or a comma-separated string.</maml:para>
+            <maml:para>An array of configuration IDs, which can be piped, or a comma-separated string.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1476,7 +1515,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1488,7 +1527,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1500,7 +1539,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1515,7 +1554,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1527,7 +1566,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>ConfigurationIDs</maml:name>
         <maml:description>
-          <maml:para>Array of configuration IDs (which can be piped) or a comma-separated string.</maml:para>
+          <maml:para>An array of configuration IDs, which can be piped, or a comma-separated string.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1539,7 +1578,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1551,7 +1590,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1589,12 +1628,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/post-configuration-activations</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudwrapperconfigurationactivation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/post-configuration-activations</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1604,11 +1647,13 @@
       <command:verb>Remove</command:verb>
       <command:noun>CloudWrapperConfiguration</command:noun>
       <maml:description>
-        <maml:para>Delete a configuration</maml:para>
+        <maml:para>Delete a configuration.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Delete a specific Cloud Wrapper configuration. The delete can take up to three hours to complete. You can use the configuration's `configId` to run the Get-CloudWrapperConfiguration operation to check the status. `DELETE_IN_PROGRESS` indicates the request has been accepted. A 404 response indicates the configuration has been deleted. Before you delete a configuration, ensure that all the properties that use it have the cloudWrapper behavior disabled. Then Set-CloudWrapperConfiguration the configuration to deactivate it by providing the `-Deactivate` switch.</maml:para>
+      <maml:para>Deletes a specific Cloud Wrapper configuration. The delete can take up to three hours to complete.</maml:para>
+      <maml:para>You can use the configuration's `configId` to run the `Get-CloudWrapperConfiguration` operation to check the status. `DELETE_IN_PROGRESS` indicates the request has been accepted. A 404 response indicates the configuration has been deleted.</maml:para>
+      <maml:para>Before you delete a configuration, ensure that all the properties that use it have the Cloud Wrapper behavior disabled. Then run the `Set-CloudWrapperConfiguration` operation to deactivate it by providing the `-Deactivate` switch.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1616,7 +1661,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>ConfigID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+            <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1628,7 +1673,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1640,7 +1685,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1652,7 +1697,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1667,7 +1712,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1679,7 +1724,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>ConfigID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+          <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1691,7 +1736,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1703,7 +1748,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1741,12 +1786,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/delete-configuration</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-cloudwrapperconfiguration</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/delete-configuration</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1756,11 +1805,11 @@
       <command:verb>Set</command:verb>
       <command:noun>CloudWrapperConfiguration</command:noun>
       <maml:description>
-        <maml:para>Update a configuration</maml:para>
+        <maml:para>Update a configuration.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Update a saved or inactive configuration.</maml:para>
+      <maml:para>Updates a saved or inactive configuration.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1768,7 +1817,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1780,7 +1829,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Activate</maml:name>
           <maml:description>
-            <maml:para>Specify if you want to activate the modified configuration, `false` by default. You can then run `New-CloudWrapperActivation` separately.</maml:para>
+            <maml:para>When enabled, activates the modified configuration. You can then run `New-CloudWrapperActivation` separately.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1791,7 +1840,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject `or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1803,7 +1852,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ConfigID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+            <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1815,7 +1864,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1827,7 +1876,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1842,7 +1891,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1854,7 +1903,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject `or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1866,7 +1915,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ConfigID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+            <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1878,7 +1927,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Deactivate</maml:name>
           <maml:description>
-            <maml:para>Specify if you want to deactivate the configuration, which is required before it can be deleted.</maml:para>
+            <maml:para>When enabled, deactivates the configuration, which is required before it can be deleted.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -1889,7 +1938,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1901,7 +1950,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1916,7 +1965,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1928,7 +1977,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Activate</maml:name>
         <maml:description>
-          <maml:para>Specify if you want to activate the modified configuration, `false` by default. You can then run `New-CloudWrapperActivation` separately.</maml:para>
+          <maml:para>When enabled, activates the modified configuration. You can then run `New-CloudWrapperActivation` separately.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1940,7 +1989,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject `or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1952,7 +2001,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ConfigID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier Akamai assigns to your Cloud Wrapper configuration.</maml:para>
+          <maml:para>Your Cloud Wrapper configuration's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1964,7 +2013,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Deactivate</maml:name>
         <maml:description>
-          <maml:para>Specify if you want to deactivate the configuration, which is required before it can be deleted.</maml:para>
+          <maml:para>When enabled, deactivates the configuration, which is required before it can be deleted.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -1976,7 +2025,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1988,7 +2037,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2034,12 +2083,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/cloud-wrapper/reference/put-configuration</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-cloudwrapperconfiguration</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloud-wrapper/reference/put-configuration</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

@@ -18,7 +18,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -30,7 +30,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AllObjectIDs</maml:name>
           <maml:description>
-            <maml:para>As an alternative to `objectIds`, enabling this generates a report that includes all IDs available for the specified object type (each report supports only one specific object type). This parameter is ignored if the request also specifies a set of `objectIds`.</maml:para>
+            <maml:para>An alternative to `-ObjectIDs`, enabling this generates a report that includes all IDs available for the specified object type (each report supports only one specific object type). This parameter is ignored if the request also specifies a set of `-ObjectIDs`.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -41,7 +41,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -53,7 +53,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>End</maml:name>
           <maml:description>
-            <maml:para>Specifies the end of the reported period as an ISO 8601 date with timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
+            <maml:para>The end of the reported period as an ISO 8601 timestamp with a timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -65,7 +65,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Filters</maml:name>
           <maml:description>
-            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+            <maml:para>The criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name-value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -96,7 +96,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Limit</maml:name>
           <maml:description>
-            <maml:para>Limit the number of entries returned. Not supported on all report types.</maml:para>
+            <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -108,7 +108,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Metrics</maml:name>
           <maml:description>
-            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
+            <maml:para>A comma-separated list of metrics to include in the report, otherwise all metrics are retrieved if omitted. The set of available metrics depends on the type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -120,7 +120,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Identifies the type of report.</maml:para>
+            <maml:para>The type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -132,7 +132,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -144,7 +144,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Start</maml:name>
           <maml:description>
-            <maml:para>Specifies the start of the reported period as an ISO 8601 date with timezone.</maml:para>
+            <maml:para>The start of the reported period as an ISO 8601 timestamp with timezone.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -171,7 +171,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -183,7 +183,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -195,7 +195,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>End</maml:name>
           <maml:description>
-            <maml:para>Specifies the end of the reported period as an ISO 8601 date with timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
+            <maml:para>The end of the reported period as an ISO 8601 timestamp with a timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -207,7 +207,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Filters</maml:name>
           <maml:description>
-            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+            <maml:para>The criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name-value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -238,7 +238,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Limit</maml:name>
           <maml:description>
-            <maml:para>Limit the number of entries returned. Not supported on all report types.</maml:para>
+            <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -250,7 +250,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Metrics</maml:name>
           <maml:description>
-            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
+            <maml:para>A comma-separated list of metrics to include in the report, otherwise all metrics are retrieved if omitted. The set of available metrics depends on the type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -262,7 +262,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Identifies the type of report.</maml:para>
+            <maml:para>The type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -274,7 +274,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ObjectIDs</maml:name>
           <maml:description>
-            <maml:para>As an alternative to `allObjectIds`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
+            <maml:para>An alternative to `-AllObjectIDs`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -286,7 +286,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -298,7 +298,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Start</maml:name>
           <maml:description>
-            <maml:para>Specifies the start of the reported period as an ISO 8601 date with timezone.</maml:para>
+            <maml:para>The start of the reported period as an ISO 8601 timestamp with timezone.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -325,7 +325,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -337,7 +337,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AllObjectIDs</maml:name>
         <maml:description>
-          <maml:para>As an alternative to `objectIds`, enabling this generates a report that includes all IDs available for the specified object type (each report supports only one specific object type). This parameter is ignored if the request also specifies a set of `objectIds`.</maml:para>
+          <maml:para>An alternative to `-ObjectIDs`, enabling this generates a report that includes all IDs available for the specified object type (each report supports only one specific object type). This parameter is ignored if the request also specifies a set of `-ObjectIDs`.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -349,7 +349,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -361,7 +361,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>End</maml:name>
         <maml:description>
-          <maml:para>Specifies the end of the reported period as an ISO 8601 date with timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
+          <maml:para>The end of the reported period as an ISO 8601 timestamp with a timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -373,7 +373,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Filters</maml:name>
         <maml:description>
-          <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+          <maml:para>The criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name-value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -397,7 +397,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Limit</maml:name>
         <maml:description>
-          <maml:para>Limit the number of entries returned. Not supported on all report types.</maml:para>
+          <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -409,7 +409,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Metrics</maml:name>
         <maml:description>
-          <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
+          <maml:para>A comma-separated list of metrics to include in the report, otherwise all metrics are retrieved if omitted. The set of available metrics depends on the type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -421,7 +421,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Identifies the type of report.</maml:para>
+          <maml:para>The type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -433,7 +433,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ObjectIDs</maml:name>
         <maml:description>
-          <maml:para>As an alternative to `allObjectIds`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
+          <maml:para>An alternative to `-AllObjectIDs`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -445,7 +445,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -457,7 +457,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Start</maml:name>
         <maml:description>
-          <maml:para>Specifies the start of the reported period as an ISO 8601 date with timezone.</maml:para>
+          <maml:para>The start of the reported period as an ISO 8601 timestamp with timezone.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -507,12 +507,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/reports</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Reporting</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/reports</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/reporting/reference/get-report-version-data</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-report</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/reporting/reference/get-report-version-data</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -534,7 +538,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -546,7 +550,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -558,7 +562,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Identifies the type of report.</maml:para>
+            <maml:para>The type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -570,7 +574,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -597,7 +601,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -609,7 +613,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -621,7 +625,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -633,7 +637,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ShowDeprecated</maml:name>
           <maml:description>
-            <maml:para>Specifies if deprecated reports should be shown.</maml:para>
+            <maml:para>When enabled, retrieves deprecated reports.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -644,7 +648,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ShowUnavailable</maml:name>
           <maml:description>
-            <maml:para>Specifies if unavailable reports should be shown.</maml:para>
+            <maml:para>When enabled, retrieves unavailable reports.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -658,7 +662,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -670,7 +674,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -682,7 +686,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Identifies the type of report.</maml:para>
+          <maml:para>The type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -694,7 +698,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -706,7 +710,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ShowDeprecated</maml:name>
         <maml:description>
-          <maml:para>Specifies if deprecated reports should be shown.</maml:para>
+          <maml:para>When enabled, retrieves deprecated reports.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -718,7 +722,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ShowUnavailable</maml:name>
         <maml:description>
-          <maml:para>Specifies if unavailable reports should be shown.</maml:para>
+          <maml:para>When enabled, retrieves unavailable reports.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -768,12 +772,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/reports</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Reporting</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/reports</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/reporting/reference/get-report-version</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-reporttype</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/reporting/reference/get-report-version</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -795,7 +803,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Identifies the type of report.</maml:para>
+            <maml:para>The type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -807,7 +815,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -819,7 +827,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -831,7 +839,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -843,7 +851,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ShowDeprecated</maml:name>
           <maml:description>
-            <maml:para>Specifies if deprecated reports should be shown.</maml:para>
+            <maml:para>When enabled, retrieves deprecated reports.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -854,7 +862,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ShowUnavailable</maml:name>
           <maml:description>
-            <maml:para>Specifies if unavailable reports should be shown.</maml:para>
+            <maml:para>When enabled, retrieves unavailable reports.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -868,7 +876,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -880,7 +888,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -892,7 +900,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Identifies the type of report.</maml:para>
+          <maml:para>The type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -904,7 +912,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -916,7 +924,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ShowDeprecated</maml:name>
         <maml:description>
-          <maml:para>Specifies if deprecated reports should be shown.</maml:para>
+          <maml:para>When enabled, retrieves deprecated reports.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -928,7 +936,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ShowUnavailable</maml:name>
         <maml:description>
-          <maml:para>Specifies if unavailable reports should be shown.</maml:para>
+          <maml:para>When enabled, retrieves unavailable reports.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -966,12 +974,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/reports</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Reporting</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/reports</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/reporting/reference/get-report-versions</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-reporttypeversions</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/reporting/reference/get-report-versions</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -993,7 +1005,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1005,7 +1017,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1017,7 +1029,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1029,7 +1041,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>End</maml:name>
           <maml:description>
-            <maml:para>Specifies the end of the reported period as an ISO 8601 date with timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
+            <maml:para>The end of the reported period as an ISO 8601 timestamp with a timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1060,7 +1072,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Limit</maml:name>
           <maml:description>
-            <maml:para>Limit the number of entries returned. Not supported on all report types.</maml:para>
+            <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1072,7 +1084,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Identifies the type of report.</maml:para>
+            <maml:para>The type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1084,7 +1096,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1096,7 +1108,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Start</maml:name>
           <maml:description>
-            <maml:para>Specifies the start of the reported period as an ISO 8601 date with timezone.</maml:para>
+            <maml:para>The start of the reported period as an ISO 8601 timestamp with timezone.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1123,7 +1135,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1135,7 +1147,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1147,7 +1159,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>End</maml:name>
           <maml:description>
-            <maml:para>Specifies the end of the reported period as an ISO 8601 date with timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
+            <maml:para>The end of the reported period as an ISO 8601 timestamp with a timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1159,7 +1171,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Filters</maml:name>
           <maml:description>
-            <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+            <maml:para>The criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name-value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1190,7 +1202,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Limit</maml:name>
           <maml:description>
-            <maml:para>Limit the number of entries returned. Not supported on all report types.</maml:para>
+            <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1202,7 +1214,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Metrics</maml:name>
           <maml:description>
-            <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
+            <maml:para>A comma-separated list of metrics to include in the report, otherwise all metrics are retrieved if omitted. The set of available metrics depends on the type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1214,7 +1226,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Identifies the type of report.</maml:para>
+            <maml:para>The type of report.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1226,7 +1238,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ObjectIDs</maml:name>
           <maml:description>
-            <maml:para>As an alternative to `allObjectIds`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
+            <maml:para>An alternative to `-AllObjectIDs`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1238,7 +1250,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1250,7 +1262,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Start</maml:name>
           <maml:description>
-            <maml:para>Specifies the start of the reported period as an ISO 8601 date with timezone.</maml:para>
+            <maml:para>The start of the reported period as an ISO 8601 timestamp with timezone.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1277,7 +1289,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1289,7 +1301,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1301,7 +1313,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1313,7 +1325,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>End</maml:name>
         <maml:description>
-          <maml:para>Specifies the end of the reported period as an ISO 8601 date with timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
+          <maml:para>The end of the reported period as an ISO 8601 timestamp with a timezone. Any data that matches the `end` value's timestamp is excluded from the report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1325,7 +1337,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Filters</maml:name>
         <maml:description>
-          <maml:para>Specifies criteria to filter the report's data. The set of available filters depends on the type of report.  Separate each filter name and value with an equals (`=`) character, and separate various name/value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
+          <maml:para>The criteria to filter the report's data. The set of available filters depends on the type of report. Separate each filter name and value with an equals (`=`) character, and separate various name-value pairs with commas (`,`). To specify more than one filter value, repeat the filter name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1349,7 +1361,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Limit</maml:name>
         <maml:description>
-          <maml:para>Limit the number of entries returned. Not supported on all report types.</maml:para>
+          <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1361,7 +1373,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Metrics</maml:name>
         <maml:description>
-          <maml:para>Specifies a comma-separated list of metrics to include in the report, otherwise all metrics if omitted.  The set of available metrics depends on the type of report.</maml:para>
+          <maml:para>A comma-separated list of metrics to include in the report, otherwise all metrics are retrieved if omitted. The set of available metrics depends on the type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1373,7 +1385,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Identifies the type of report.</maml:para>
+          <maml:para>The type of report.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1385,7 +1397,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ObjectIDs</maml:name>
         <maml:description>
-          <maml:para>As an alternative to `allObjectIds`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
+          <maml:para>An alternative to `-AllObjectIDs`, specifies the set of unique IDs for the given object type you want to report on, formatted as a comma-delimited list.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1397,7 +1409,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1409,7 +1421,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Start</maml:name>
         <maml:description>
-          <maml:para>Specifies the start of the reported period as an ISO 8601 date with timezone.</maml:para>
+          <maml:para>The start of the reported period as an ISO 8601 timestamp with timezone.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1459,12 +1471,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/reports</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Reporting</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/reports</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/reporting/reference/post-report-version-data</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-report</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/reporting/reference/post-report-version-data</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

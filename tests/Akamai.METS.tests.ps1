@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.METS Tests' {
     BeforeAll {
         function Get-CAPem($CN) {
@@ -58,12 +65,16 @@ Describe 'Safe Akamai.METS Tests' {
             )
         }
 
+        # Clear cache
+        Clear-AkamaiDataCache
+
         # Persistent Data
         $PD = @{}
     }
 
     AfterAll {
         Remove-Item -Force -Recurse $TestDirName
+        #Clear-AkamaiDataCache
     }
 
     #------------------------------------------------
@@ -117,12 +128,27 @@ Describe 'Safe Akamai.METS Tests' {
     #------------------------------------------------
     
     Context 'Expand-METSCASetDetails' {
-        It 'reports the correct data' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "./options.json"
+            # Create options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
+        It 'finds the right CA set' {
             $TestParams = @{
                 CASetName = $TestCASetName
             }
-            $PD.ExpandCASetID = Expand-METSCASetDetails @TestParams @CommonParams
-            $PD.ExpandCASetID | Should -Be $PD.CASet.caSetId
+            $PD.ExpandedCASetID = Expand-METSCASetDetails @TestParams @CommonParams
+            $PD.ExpandedCASetID | Should -Be $PD.CASet.caSetId
+            $AkamaiDataCache.METS.CASets.$TestCASetName.CASetID | Should -Be $PD.ExpandedCASetID
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
         }
     }
 
@@ -297,10 +323,6 @@ Describe 'Unsafe METS Tests' {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.METS/Akamai.METS.psm1 -Force
         # Setup shared variables
-        $CommonParams = @{
-            EdgeRCFile = $env:PesterSafeEdgeRCFile
-            Section    = 'default'
-        }
         $TestContract = '1-2AB34C'
         $TestGroup = 123456
         $TestCASet = @"
@@ -323,7 +345,7 @@ Describe 'Unsafe METS Tests' {
     
     Context 'New-METSCASet by parameters' {
         It 'creates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-METSCASet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -339,7 +361,7 @@ Describe 'Unsafe METS Tests' {
     
     Context 'New-METSCASet by pipeline' {
         It 'creates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-METSCASet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -351,7 +373,7 @@ Describe 'Unsafe METS Tests' {
 
     Context 'Remove-METSCASet' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-METSCASet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -364,7 +386,7 @@ Describe 'Unsafe METS Tests' {
 
     Context 'Get-METSRemoval - All' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-METSRemoval_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -380,7 +402,7 @@ Describe 'Unsafe METS Tests' {
     
     Context 'Get-METSRemoval - Single' {
         It 'returns a single deletion' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-METSRemoval.json"
                 return $Response | ConvertFrom-Json
             }
@@ -400,7 +422,7 @@ Describe 'Unsafe METS Tests' {
 
     Context 'New-METSCASetDeactivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-METSCASetDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -421,7 +443,7 @@ Describe 'Unsafe METS Tests' {
 
     Context 'New-METSCASetActivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.METS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-METSCASetActivation.json"
                 return $Response | ConvertFrom-Json
             }

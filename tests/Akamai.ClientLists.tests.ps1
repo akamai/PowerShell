@@ -1,3 +1,9 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
 
 Describe 'Safe Akamai.ClientLists Tests' {
     
@@ -98,9 +104,29 @@ value,description,tags,expirationDate
     #------------------------------------------------
 
     Context 'Expand-ClientListDetails' {
-        It 'returns the correct data' {
-            $PD.ExpandClientListDetails = Expand-ClientListDetails -Name $TestClientListName1 -Version latest @CommonParams
-            $PD.ExpandClientListDetails | Should -Be @($PD.NewClientListByBody.listId, 1)
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "./options.json"
+            # Creat options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
+        It 'finds the right client list' {
+            $TestParams = @{
+                Name    = $TestClientListName1
+                Version = 'latest'
+            }
+            $PD.ExpandedListID, $PD.ExpandedVersion = Expand-ClientListDetails @TestParams @CommonParams
+            $PD.ExpandedListID | Should -Be $PD.NewClientListByBody.listId
+            $PD.ExpandedVersion | Should -Be 1
+            $AkamaiDataCache.ClientLists.Lists.$TestClientListName1.ListID | Should -Be $PD.ExpandedListID
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
         }
     }
 
@@ -250,7 +276,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'New-ClientListActivation by attributes' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -261,7 +287,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'New-ClientListActivation by body' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -272,7 +298,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
     
     Context 'New-ClientListDeactivation by attributes' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -283,7 +309,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'New-ClientListDeactivation by body' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -294,7 +320,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'Get-ClientListActivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -309,7 +335,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'Get-ClientListActivationStatus' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListActivationStatus.json"
                 return $Response | ConvertFrom-Json
             }
@@ -324,7 +350,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'Get-ClientListUsage - Parameter Set id' {
         it 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListUsage.json"
                 return $Response | ConvertFrom-Json
             }
@@ -339,7 +365,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
 
     Context 'Get-ClientListSnapshot' {
         it 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListSnapshot.json"
                 return $Response | ConvertFrom-Json
             }
@@ -348,7 +374,7 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
         }
 
         it 'returns content' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ClientLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListSnapshot.json"
                 return $Response | ConvertFrom-Json
             }

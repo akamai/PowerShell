@@ -1,3 +1,9 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
 
 Describe 'Safe Akamai.ChinaCDN Tests' {
     BeforeAll {
@@ -177,7 +183,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
 
     Context 'New-ChinaCDNPropertyHostname, by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ChinaCDN -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNPropertyHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -199,7 +205,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
     
     Context 'New-ChinaCDNPropertyHostname, body' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ChinaCDN -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNPropertyHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -221,7 +227,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
 
     Context 'Get-ChinaCDNProvisionStateChange, all' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ChinaCDN -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ChinaCDNProvisionStateChange_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -238,7 +244,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
     
     Context 'Get-ChinaCDNProvisionStateChange, single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ChinaCDN -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ChinaCDNProvisionStateChange.json"
                 return $Response | ConvertFrom-Json
             }
@@ -255,7 +261,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
 
     Context 'New-ChinaCDNProvisionStateChange by parameter' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ChinaCDN -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNProvisionStateChange.json"
                 return $Response | ConvertFrom-Json
             }
@@ -272,7 +278,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
 
     Context 'New-ChinaCDNProvisionStateChange by pipeline' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.ChinaCDN -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNProvisionStateChange.json"
                 return $Response | ConvertFrom-Json
             }

@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.GTM Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -365,7 +372,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
     }
     Context 'Get-GTMDatacenterLatency' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMDatacenterLatency.json"
                 return $Response | ConvertFrom-Json
             }
@@ -376,7 +383,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMDemand' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMDemand.json"
                 return $Response | ConvertFrom-Json
             }
@@ -387,7 +394,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMIPAvailability' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMIPAvailability.json"
                 return $Response | ConvertFrom-Json
             }
@@ -398,7 +405,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMLivenessPerProperty' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLivenessPerProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -409,7 +416,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMLivenessTestError - All' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLivenessTestError.json"
                 return $Response | ConvertFrom-Json
             }
@@ -420,7 +427,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMLivenessTestError - Specific' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLivenessTestError.json"
                 return $Response | ConvertFrom-Json
             }
@@ -431,7 +438,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMLoadFeedbackReport' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLoadFeedbackReport.json"
                 return $Response | ConvertFrom-Json
             }
@@ -442,7 +449,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMTrafficPerDatacenter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMTrafficPerDatacenter.json"
                 return $Response | ConvertFrom-Json
             }
@@ -453,7 +460,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMTrafficPerProperty' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMTrafficPerProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -464,7 +471,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Get-GTMLoadData' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLoadData.json"
                 return $Response | ConvertFrom-Json
             }
@@ -475,7 +482,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'Submit-GTMLoadData' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Submit-GTMLoadData.json"
                 return $Response | ConvertFrom-Json
             }
@@ -485,7 +492,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
 
     Context 'New-GTMDomain' {
         It 'creates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.GTM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-GTMDomain.json"
                 return $Response | ConvertFrom-Json
             }

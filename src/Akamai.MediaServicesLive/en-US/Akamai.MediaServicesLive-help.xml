@@ -6,11 +6,11 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLCDN</command:noun>
       <maml:description>
-        <maml:para>List CDNs</maml:para>
+        <maml:para>List CDNs.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Fetch predefined list of CDN providers. You can configure your MSL origin to include multiple CDN providers.</maml:para>
+      <maml:para>Fetches a predefined list of CDN providers. You can configure your MSL origin to include multiple CDN providers.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -18,7 +18,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -30,7 +30,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -42,7 +42,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -57,7 +57,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -69,7 +69,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -81,7 +81,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -119,12 +119,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-cdns</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslcdn</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-cdns</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -134,11 +138,11 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLContract</command:noun>
       <maml:description>
-        <maml:para>List contracts</maml:para>
+        <maml:para>List contracts.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Fetch MSL contracts.</maml:para>
+      <maml:para>Fetches MSL contracts.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -146,7 +150,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -158,7 +162,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -170,7 +174,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -185,7 +189,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -197,7 +201,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -209,7 +213,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -247,12 +251,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-contracts</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslcontract</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-contracts</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -262,11 +270,11 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLCPCode</command:noun>
       <maml:description>
-        <maml:para>List CP codes</maml:para>
+        <maml:para>List CP codes.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Obtains CP codes based on provided -Type. You need a CP code to create a stream.</maml:para>
+      <maml:para>Obtains CP codes based on the provided `-Type`. You need a CP code to create a stream.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -274,7 +282,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Type</maml:name>
           <maml:description>
-            <maml:para>Specify the type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
+            <maml:para>The type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">INGEST</command:parameterValue>
@@ -291,7 +299,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -303,7 +311,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -315,7 +323,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -341,7 +349,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -353,7 +361,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -365,7 +373,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -377,7 +385,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Type</maml:name>
         <maml:description>
-          <maml:para>Specify the type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
+          <maml:para>The type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -427,12 +435,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-cpcodes</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslcpcode</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-cpcodes</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -442,11 +454,11 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLOrigin</command:noun>
       <maml:description>
-        <maml:para>Get an origin</maml:para>
+        <maml:para>Get an origin.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>List all MSL origins, or retrieve a specific entry by its `OriginID`.</maml:para>
+      <maml:para>Lists all MSL origins, or retrieves a specific entry by its `-OriginID`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -454,7 +466,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -466,7 +478,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>CPCode</maml:name>
           <maml:description>
-            <maml:para>The Media Services Live Content Provider code.</maml:para>
+            <maml:para>The Media Services Live Content Provider (CP) code.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -478,7 +490,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -490,7 +502,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EncoderLocation</maml:name>
           <maml:description>
-            <maml:para>Specifies the geographical region where the encoder is located.</maml:para>
+            <maml:para>The geographical region where the encoder is located.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -502,7 +514,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -517,7 +529,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -529,7 +541,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -541,7 +553,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each origin.</maml:para>
+            <maml:para>Your origin's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -553,7 +565,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -568,7 +580,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -580,7 +592,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>CPCode</maml:name>
         <maml:description>
-          <maml:para>The Media Services Live Content Provider code.</maml:para>
+          <maml:para>The Media Services Live Content Provider (CP) code.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -592,7 +604,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -604,7 +616,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EncoderLocation</maml:name>
         <maml:description>
-          <maml:para>Specifies the geographical region where the encoder is located.</maml:para>
+          <maml:para>The geographical region where the encoder is located.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -616,7 +628,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each origin.</maml:para>
+          <maml:para>Your origin's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -628,7 +640,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -666,12 +678,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-origin</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslorigin</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-origin</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -681,7 +697,7 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLOriginCPCode</command:noun>
       <maml:description>
-        <maml:para>List CP codes per origin</maml:para>
+        <maml:para>List CP codes per origin.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -693,7 +709,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Type</maml:name>
           <maml:description>
-            <maml:para>Specify the type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
+            <maml:para>The type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">AKAMAI</command:parameterValue>
@@ -709,7 +725,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -721,7 +737,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -733,7 +749,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -748,7 +764,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -760,7 +776,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -772,7 +788,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -784,7 +800,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Type</maml:name>
         <maml:description>
-          <maml:para>Specify the type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
+          <maml:para>The type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -822,12 +838,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-origin-cpcodes</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslorigincpcode</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-origin-cpcodes</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -837,11 +857,11 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLPublishingLocations</command:noun>
       <maml:description>
-        <maml:para>List publishing locations</maml:para>
+        <maml:para>List publishing locations.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get valid encoder locations.</maml:para>
+      <maml:para>Gets valid encoder locations.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -849,7 +869,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -861,7 +881,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -873,7 +893,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -888,7 +908,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -900,7 +920,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -912,7 +932,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -950,12 +970,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-publishing-locations</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslpublishinglocations</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-publishing-locations</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -965,7 +989,7 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLStream</command:noun>
       <maml:description>
-        <maml:para>Get a stream</maml:para>
+        <maml:para>Get a stream.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -977,7 +1001,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -989,7 +1013,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1001,7 +1025,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Page</maml:name>
           <maml:description>
-            <maml:para>Specifies the page number to view, starting at 1.</maml:para>
+            <maml:para>The page number to view, starting at `1`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1013,7 +1037,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>PageSize</maml:name>
           <maml:description>
-            <maml:para>Indicates the number of data points that are displayed per page. The default is to display all data if you don't specify the page size.</maml:para>
+            <maml:para>The number of data points that are displayed per page. The default is to display all data if you don't specify the page size.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1025,7 +1049,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1079,7 +1103,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1091,7 +1115,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1103,7 +1127,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1115,7 +1139,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>StreamID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each stream.</maml:para>
+            <maml:para>Your stream's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1130,7 +1154,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1142,7 +1166,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1154,7 +1178,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Page</maml:name>
         <maml:description>
-          <maml:para>Specifies the page number to view, starting at 1.</maml:para>
+          <maml:para>The page number to view, starting at `1`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1166,7 +1190,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>PageSize</maml:name>
         <maml:description>
-          <maml:para>Indicates the number of data points that are displayed per page. The default is to display all data if you don't specify the page size.</maml:para>
+          <maml:para>The number of data points that are displayed per page. The default is to display all data if you don't specify the page size.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1178,7 +1202,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1214,7 +1238,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>StreamID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each stream.</maml:para>
+          <maml:para>Your stream's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1252,12 +1276,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-stream</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslstream</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-stream</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1267,11 +1295,11 @@
       <command:verb>Get</command:verb>
       <command:noun>MSLVODOrigin</command:noun>
       <maml:description>
-        <maml:para>List VOD origins</maml:para>
+        <maml:para>List VOD origins.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>List all of the VOD origins.</maml:para>
+      <maml:para>Lists all of the VOD origins.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1279,7 +1307,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EncoderLocation</maml:name>
           <maml:description>
-            <maml:para>Specifies the geographical region where the encoder is located.</maml:para>
+            <maml:para>The geographical region where the encoder is located.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1291,7 +1319,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1303,7 +1331,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1315,7 +1343,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1330,7 +1358,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1342,7 +1370,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1354,7 +1382,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>EncoderLocation</maml:name>
         <maml:description>
-          <maml:para>Specifies the geographical region where the encoder is located.</maml:para>
+          <maml:para>The geographical region where the encoder is located.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1366,7 +1394,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1404,12 +1432,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-vod-origin</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-mslvodorigin</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-vod-origin</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1419,7 +1451,7 @@
       <command:verb>New</command:verb>
       <command:noun>MSLCPCode</command:noun>
       <maml:description>
-        <maml:para>Create a CP code</maml:para>
+        <maml:para>Create a CP code.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1431,7 +1463,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Name of the CP code.</maml:para>
+            <maml:para>A human-readable name for the CP code.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1443,7 +1475,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>ContractID</maml:name>
           <maml:description>
-            <maml:para>The ID of the contract associated with the CP code. Run `Get-Contract` from the Akamai.Property module to see these.</maml:para>
+            <maml:para>The ID of the contract associated with the CP code. Run `Get-Contract` from the `Akamai.Property` module to see these.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1455,7 +1487,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1467,7 +1499,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1479,7 +1511,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1494,7 +1526,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1506,7 +1538,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>ContractID</maml:name>
         <maml:description>
-          <maml:para>The ID of the contract associated with the CP code. Run `Get-Contract` from the Akamai.Property module to see these.</maml:para>
+          <maml:para>The ID of the contract associated with the CP code. Run `Get-Contract` from the `Akamai.Property` module to see these.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1518,7 +1550,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1530,7 +1562,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Name of the CP code.</maml:para>
+          <maml:para>A human-readable name for the CP code.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1542,7 +1574,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1580,12 +1612,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/post-cpcodes</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-mslcpcode</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/post-cpcodes</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1595,11 +1631,11 @@
       <command:verb>New</command:verb>
       <command:noun>MSLKey</command:noun>
       <maml:description>
-        <maml:para>Generate a key</maml:para>
+        <maml:para>Generate a key.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Create a new auth key, in either the `AKAMAI` or `THIRD_PARTY` formats.</maml:para>
+      <maml:para>Creates a new auth key, in either the `AKAMAI` or `THIRD_PARTY` formats.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1607,7 +1643,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Type</maml:name>
           <maml:description>
-            <maml:para>Specify the type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
+            <maml:para>The type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">AKAMAI</command:parameterValue>
@@ -1623,7 +1659,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1635,7 +1671,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1647,7 +1683,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1662,7 +1698,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1674,7 +1710,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1686,7 +1722,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1698,7 +1734,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Type</maml:name>
         <maml:description>
-          <maml:para>Specify the type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
+          <maml:para>The type of CP code. Specify `INGEST` to obtain the INGEST CP codes, `DELIVERY` for the delivery CP codes, and `STORAGE` for the storage CP codes.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1736,12 +1772,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/get-generate-key</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-mslkey</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/get-generate-key</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1751,11 +1791,12 @@
       <command:verb>New</command:verb>
       <command:noun>MSLOrigin</command:noun>
       <maml:description>
-        <maml:para>Create a new origin</maml:para>
+        <maml:para>Create a new origin.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Create a Media Services live origin for the stream. You can associate this origin hostname with an Adaptive Media Delivery configuration. Note: due to the complexity of the request body, it may be easier to retrieve an existing origin (should one exist), edit the details locally and pipe to this function.</maml:para>
+      <maml:para>Creates a Media Services live origin for the stream. You can associate this origin hostname with an Adaptive Media Delivery configuration.</maml:para>
+      <maml:para>&gt; Note: Due to the complexity of the request body, it may be easier to retrieve an existing origin (should one exist), edit the details locally, and pipe to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1763,7 +1804,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1775,7 +1816,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1787,7 +1828,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1799,7 +1840,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1814,7 +1855,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1826,7 +1867,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1838,7 +1879,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1850,7 +1891,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1888,12 +1929,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/post-origin</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-mslorigin</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/post-origin</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1903,11 +1948,12 @@
       <command:verb>New</command:verb>
       <command:noun>MSLStream</command:noun>
       <maml:description>
-        <maml:para>Create a stream</maml:para>
+        <maml:para>Create a stream.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Provisions a new stream. The process of creating or updating any stream changes its status to `PENDING`. When all of the steps are complete, the stream status changes to `PROVISIONED`. If any of the steps fail, the stream status changes to `FAILED`. It takes two to three hours to provision a stream. Note: due to the complexity of the request body, it may be easier to retrieve an existing stream (if one exists), edit the details locally and pipe to this function.</maml:para>
+      <maml:para>Provisions a new stream. The process of creating or updating any stream changes its status to `PENDING`. When all of the steps are complete, the stream status changes to `PROVISIONED`. If any of the steps fail, the stream status changes to `FAILED`. It takes two to three hours to provision a stream.</maml:para>
+      <maml:para>&gt; Note: Due to the complexity of the request body, it may be easier to retrieve an existing stream (if one exists), edit the details locally and pipe to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1915,7 +1961,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1927,7 +1973,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>CloneInternalSettingsFromStreamID</maml:name>
           <maml:description>
-            <maml:para>Specifies the stream to clone the internal settings from.</maml:para>
+            <maml:para>The stream to clone the internal settings from.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1939,7 +1985,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1951,7 +1997,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1963,7 +2009,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1978,7 +2024,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1990,7 +2036,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2002,7 +2048,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>CloneInternalSettingsFromStreamID</maml:name>
         <maml:description>
-          <maml:para>Specifies the stream to clone the internal settings from.</maml:para>
+          <maml:para>The stream to clone the internal settings from.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2014,7 +2060,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2026,7 +2072,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2064,12 +2110,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/post-stream</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-mslstream</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/post-stream</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2079,7 +2129,7 @@
       <command:verb>Remove</command:verb>
       <command:noun>MSLOrigin</command:noun>
       <maml:description>
-        <maml:para>Remove an origin</maml:para>
+        <maml:para>Remove an origin.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -2091,7 +2141,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each origin.</maml:para>
+            <maml:para>Your origin's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2103,7 +2153,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2115,7 +2165,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2127,7 +2177,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2142,7 +2192,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2154,7 +2204,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2166,7 +2216,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each origin.</maml:para>
+          <maml:para>Your origin's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2178,7 +2228,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2216,12 +2266,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/delete-origin</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-mslorigin</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/delete-origin</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2231,11 +2285,13 @@
       <command:verb>Remove</command:verb>
       <command:noun>MSLStream</command:noun>
       <maml:description>
-        <maml:para>Remove a stream</maml:para>
+        <maml:para>Remove a stream.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes the specified stream. If you delete an archived stream, but do not include `-PurgeContent` the stream will be permanently deleted, but any archived content saved on NetStorage will continue to incur billing. If you do set `-PurgeContent`, the stream will be permanently deleted and any archived content saved on NetStorage for this stream will also be deleted and cannot be restored.</maml:para>
+      <maml:para>Deletes the specified stream.</maml:para>
+      <maml:para>If you delete an archived stream but don't include `-PurgeContent`, the stream will be permanently deleted, but any archived content saved on NetStorage will continue to incur billing.</maml:para>
+      <maml:para>If you set `-PurgeContent`, the stream will be permanently deleted and any archived content saved on NetStorage for this stream will also be deleted and can't be restored.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2243,7 +2299,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>StreamID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each stream.</maml:para>
+            <maml:para>Your stream's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2255,7 +2311,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2267,7 +2323,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2279,7 +2335,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2291,7 +2347,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>PurgeContent</maml:name>
           <maml:description>
-            <maml:para>This value determines whether to delete archived content on NetStorage.</maml:para>
+            <maml:para>When enabled, deletes archived content on NetStorage.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -2305,7 +2361,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2317,7 +2373,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2329,7 +2385,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>PurgeContent</maml:name>
         <maml:description>
-          <maml:para>This value determines whether to delete archived content on NetStorage.</maml:para>
+          <maml:para>When enabled, deletes archived content on NetStorage.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -2341,7 +2397,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2353,7 +2409,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>StreamID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each stream.</maml:para>
+          <maml:para>Your stream's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2391,12 +2447,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/delete-stream</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-mslstream</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/delete-stream</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2406,11 +2466,12 @@
       <command:verb>Set</command:verb>
       <command:noun>MSLOrigin</command:noun>
       <maml:description>
-        <maml:para>Update an origin</maml:para>
+        <maml:para>Update an origin.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates certain fields of the origin. You can also use this API to rotate keys. Populate `previousKey` and `previousKeyExpiryDate` fields if you need your old keys to be valid for a certain amount of time even after rotating. Note: this function supports the pipeline, and can also read the OriginID from the piped object.</maml:para>
+      <maml:para>Updates certain fields of the origin. You can also use this API to rotate keys. Populate the `previousKey` and `previousKeyExpiryDate` fields if you need your old keys to be valid for a certain amount of time even after rotating.</maml:para>
+      <maml:para>&gt; Note: This function supports the pipeline, and can also read the `-OriginID` from the piped object.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2418,7 +2479,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID">
           <maml:name>OriginID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each origin.</maml:para>
+            <maml:para>Your origin's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2430,7 +2491,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2442,7 +2503,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2454,7 +2515,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2466,7 +2527,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2481,7 +2542,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2493,7 +2554,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2505,7 +2566,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2517,7 +2578,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID">
         <maml:name>OriginID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each origin.</maml:para>
+          <maml:para>Your origin's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2529,7 +2590,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2575,12 +2636,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/put-origin</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-mslorigin</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/put-origin</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2590,11 +2655,13 @@
       <command:verb>Set</command:verb>
       <command:noun>MSLStream</command:noun>
       <maml:description>
-        <maml:para>Update a stream</maml:para>
+        <maml:para>Update a stream.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Modifies an existing stream. The request body object must be identical in structure to the Get Stream Details response object. You can edit the `name`, `ingestAccelerated`, `password`, `dvrWindow`, `allowedIps`, and `additionalEmailIds` members. If you try to edit any other member, the API returns a `400` error. Note: this function supports the pipeline, and can also read the StreamID from the piped object.</maml:para>
+      <maml:para>Modifies an existing stream. The request body object needs to be identical in structure to the `Get-Stream` response object.</maml:para>
+      <maml:para>You can edit the `name`, `ingestAccelerated`, `password`, `dvrWindow`, `allowedIps`, and `additionalEmailIds` members. If you try to edit any other member, the API returns a `400` error.</maml:para>
+      <maml:para>&gt; Note: This function supports the pipeline, and can also read the `-StreamID` from the piped object.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2602,7 +2669,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID">
           <maml:name>StreamID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each stream.</maml:para>
+            <maml:para>Your stream's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2614,7 +2681,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2626,7 +2693,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2638,7 +2705,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2650,7 +2717,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2665,7 +2732,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2677,7 +2744,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2689,7 +2756,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2701,7 +2768,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2713,7 +2780,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="ID">
         <maml:name>StreamID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each stream.</maml:para>
+          <maml:para>Your stream's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -2759,12 +2826,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/media-services-api/reference/put-stream</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-mslstream</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/media-services-api/reference/put-stream</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

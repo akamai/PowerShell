@@ -1,0 +1,100 @@
+{
+  "Status": 200,
+  "Body": {
+    "accessToken": "akaa-eol24zwha6c2huw6-3at564pdmaggqrro",
+    "activeCredentialCount": 0,
+    "allowAccountSwitch": false,
+    "canAutoCreateCredential": false,
+    "baseURL": "https://akaa-g3bclnoojfn7jvua-ic3mtmz7dwkot4jw.luna-dev.akamaiapis.net",
+    "clientDescription": "Provides access to the reporting data.",
+    "clientId": "2cdgugz2tjbtowmy",
+    "clientName": "report_data",
+    "clientType": "CLIENT",
+    "createdBy": "jperez",
+    "createdDate": "2022-05-23T19:56:27Z",
+    "isLocked": false,
+    "authorizedUsers": [
+      "jsmith"
+    ],
+    "notificationEmails": [
+      "jsmith@example.com"
+    ],
+    "actions": {
+      "deactivateAll": false,
+      "delete": true,
+      "edit": true,
+      "editApis": true,
+      "editAuth": true,
+      "editGroups": true,
+      "editIpAcl": true,
+      "editSwitchAccount": false,
+      "lock": true,
+      "transfer": true,
+      "unlock": false
+    },
+    "apiAccess": {
+      "allAccessibleApis": true,
+      "apis": [
+        {
+          "apiId": 164,
+          "apiName": "Media Reports",
+          "description": "Media Reports APIs",
+          "endPoint": "/media-reports",
+          "documentationUrl": "https://developer.akamai.com/api/luna/media-reports/overview.html",
+          "accessLevel": "READ-ONLY"
+        },
+        {
+          "accessLevel": "READ-WRITE",
+          "apiId": 5101,
+          "apiName": "Reporting API",
+          "description": "Reporting API",
+          "documentationUrl": "https://developer.akamai.com/api/luna/reporting-api/overview.html",
+          "endPoint": "/reporting-api"
+        }
+      ]
+    },
+    "groupAccess": {
+      "cloneAuthorizedUserGroups": true,
+      "groups": [
+        {
+          "groupId": 12345,
+          "groupName": "Main Street Corporation",
+          "isBlocked": false,
+          "roleDescription": "CPCode RolePermissions Automation",
+          "roleId": 114492,
+          "roleName": "CP Code Automation Role",
+          "subGroups": []
+        },
+        {
+          "groupId": 54321,
+          "groupName": "High Street Company",
+          "isBlocked": false,
+          "roleDescription": "Admin Role plus Authz Case Management Read Role",
+          "roleId": 142838,
+          "roleName": "Admin plus Authz Case Management Read",
+          "subGroups": [
+            {
+              "groupId": 54321,
+              "groupName": "Cloud Access Manager",
+              "isBlocked": false,
+              "parentGroupId": 19717,
+              "roleDescription": "Cloud Access Manager Admin",
+              "roleId": 114776,
+              "roleName": "Cloud Access Manager Admin",
+              "subGroups": []
+            }
+          ]
+        }
+      ]
+    },
+    "purgeOptions": {
+      "canPurgeByCacheTag": false,
+      "canPurgeByCpcode": false,
+      "cpcodeAccess": {
+        "allCurrentAndNewCpcodes": true,
+        "cpcodes": []
+      }
+    }
+  },
+  "Headers": {}
+}

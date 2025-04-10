@@ -18,7 +18,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -30,7 +30,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Element</maml:name>
           <maml:description>
-            <maml:para>Specifies the element to add to the network list.</maml:para>
+            <maml:para>An element to add to the network list.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -42,7 +42,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -54,7 +54,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -66,7 +66,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -81,7 +81,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -93,7 +93,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -105,7 +105,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Element</maml:name>
         <maml:description>
-          <maml:para>Specifies the element to add to the network list.</maml:para>
+          <maml:para>An element to add to the network list.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -117,7 +117,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -129,7 +129,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -167,12 +167,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/put-network-list-elements</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/add-networklistelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/put-network-list-elements</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -194,7 +198,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -206,7 +210,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -218,7 +222,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Extended</maml:name>
           <maml:description>
-            <maml:para>Provide additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
+            <maml:para>When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -229,7 +233,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IncludeElements</maml:name>
           <maml:description>
-            <maml:para>If enabled, the response `list` includes all items.  For large network lists, this may slow responses and yield large response objects. The default `true` value includes the list's contents.</maml:para>
+            <maml:para>When enabled, the response `list` includes all items. For large network lists, this may slow responses and show large response objects.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -240,7 +244,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ListType</maml:name>
           <maml:description>
-            <maml:para>Filters the output to lists of only the given type of network lists if provided, either IP or GEO. This corresponds to the network list object's type member.</maml:para>
+            <maml:para>If provided, filters the output to list only the given type of network lists, either `IP` or `GEO`. This corresponds to the network list object's type member.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">IP</command:parameterValue>
@@ -256,7 +260,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Search</maml:name>
           <maml:description>
-            <maml:para>Only list items that match the specified substring in any network list's name or list of items.</maml:para>
+            <maml:para>Lists only items that match the specified substring in any network list's name or list of items.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -268,7 +272,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -283,7 +287,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -295,7 +299,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -307,7 +311,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Extended</maml:name>
           <maml:description>
-            <maml:para>Provide additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
+            <maml:para>When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -318,7 +322,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IncludeElements</maml:name>
           <maml:description>
-            <maml:para>If enabled, the response `list` includes all items.  For large network lists, this may slow responses and yield large response objects. The default `true` value includes the list's contents.</maml:para>
+            <maml:para>When enabled, the response `list` includes all items. For large network lists, this may slow responses and show large response objects.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -329,7 +333,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -341,7 +345,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -356,7 +360,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -368,7 +372,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -380,7 +384,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Extended</maml:name>
         <maml:description>
-          <maml:para>Provide additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
+          <maml:para>When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -392,7 +396,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>IncludeElements</maml:name>
         <maml:description>
-          <maml:para>If enabled, the response `list` includes all items.  For large network lists, this may slow responses and yield large response objects. The default `true` value includes the list's contents.</maml:para>
+          <maml:para>When enabled, the response `list` includes all items. For large network lists, this may slow responses and show large response objects.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -404,7 +408,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ListType</maml:name>
         <maml:description>
-          <maml:para>Filters the output to lists of only the given type of network lists if provided, either IP or GEO. This corresponds to the network list object's type member.</maml:para>
+          <maml:para>If provided, filters the output to list only the given type of network lists, either `IP` or `GEO`. This corresponds to the network list object's type member.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -416,7 +420,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -428,7 +432,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Search</maml:name>
         <maml:description>
-          <maml:para>Only list items that match the specified substring in any network list's name or list of items.</maml:para>
+          <maml:para>Lists only items that match the specified substring in any network list's name or list of items.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -440,7 +444,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -478,12 +482,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/get-network-list</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-networklist</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/get-network-list</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -505,7 +513,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>ActivationID</maml:name>
           <maml:description>
-            <maml:para>The unique identifier for this activation request.</maml:para>
+            <maml:para>Your activation request's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -517,7 +525,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -529,7 +537,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -541,7 +549,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -556,7 +564,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -568,7 +576,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>ActivationID</maml:name>
         <maml:description>
-          <maml:para>The unique identifier for this activation request.</maml:para>
+          <maml:para>Your activation request's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -580,7 +588,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -592,7 +600,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -630,12 +638,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/get-activation</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-networklistactivation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/get-activation</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -657,7 +669,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -669,7 +681,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Environment</maml:name>
           <maml:description>
-            <maml:para>The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.</maml:para>
+            <maml:para>The Akamai network on which this list is activated, either `STAGING` or `PRODUCTION`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
@@ -685,7 +697,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -697,7 +709,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -709,7 +721,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -724,7 +736,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -736,7 +748,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -748,7 +760,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Environment</maml:name>
         <maml:description>
-          <maml:para>The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.</maml:para>
+          <maml:para>The Akamai network on which this list is activated, either `STAGING` or `PRODUCTION`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -760,7 +772,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -772,7 +784,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -810,12 +822,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/get-network-list-status</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-networklistactivationstatus</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/get-network-list-status</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -837,7 +853,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -861,7 +877,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -873,7 +889,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -885,7 +901,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -897,7 +913,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Extended</maml:name>
           <maml:description>
-            <maml:para>Provide additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
+            <maml:para>When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -911,7 +927,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -923,7 +939,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -935,7 +951,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Extended</maml:name>
         <maml:description>
-          <maml:para>Provide additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
+          <maml:para>When enabled, provides additional response data identifying who created and updated the list and when, and the network list's deployment status in both `STAGING` and `PRODUCTION` environments. This data takes longer to provide.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -947,7 +963,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -959,7 +975,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1009,12 +1025,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/get-network-list-history</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-networklistsnapshot</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/get-network-list-history</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1028,7 +1048,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new network list. You can specify attributes individually or all at one with the `-Body` parameter.</maml:para>
+      <maml:para>Creates a new network list. You can specify attributes individually or all at once with the `-Body` parameter.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1036,7 +1056,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1048,7 +1068,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -1060,7 +1080,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1072,7 +1092,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1087,7 +1107,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1099,7 +1119,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>ContractId</maml:name>
           <maml:description>
-            <maml:para>A unique identifier for the contract.</maml:para>
+            <maml:para>Your contract's ID</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1111,7 +1131,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Description</maml:name>
           <maml:description>
-            <maml:para>Detailed description of the list.</maml:para>
+            <maml:para>Additional information about the network list.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1123,7 +1143,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1135,7 +1155,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
-            <maml:para>Identifies the group where you want to create the list. You need to have write access to the group you specify. If you include a GroupID, you need to pair it with a ContractID.</maml:para>
+            <maml:para>The ID of the group for which you want to create the list. You need to have write access to the group you specify. If you include the `-GroupID`, you need to pair it with the `-ContractID`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1147,7 +1167,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Name</maml:name>
           <maml:description>
-            <maml:para>Display name of the network list.</maml:para>
+            <maml:para>The name of the network list.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1159,7 +1179,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1190,7 +1210,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1202,7 +1222,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -1214,7 +1234,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>ContractId</maml:name>
         <maml:description>
-          <maml:para>A unique identifier for the contract.</maml:para>
+          <maml:para>Your contract's ID</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1226,7 +1246,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Description</maml:name>
         <maml:description>
-          <maml:para>Detailed description of the list.</maml:para>
+          <maml:para>Additional information about the network list.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1238,7 +1258,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1250,7 +1270,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
-          <maml:para>Identifies the group where you want to create the list. You need to have write access to the group you specify. If you include a GroupID, you need to pair it with a ContractID.</maml:para>
+          <maml:para>The ID of the group for which you want to create the list. You need to have write access to the group you specify. If you include the `-GroupID`, you need to pair it with the `-ContractID`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
@@ -1262,7 +1282,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Name</maml:name>
         <maml:description>
-          <maml:para>Display name of the network list.</maml:para>
+          <maml:para>The name of the network list.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1274,7 +1294,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1324,12 +1344,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/post-network-lists</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-networklist</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/post-network-lists</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1351,7 +1375,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1363,7 +1387,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Environment</maml:name>
           <maml:description>
-            <maml:para>The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.</maml:para>
+            <maml:para>The Akamai network on which this list is activated, either `STAGING` or `PRODUCTION`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
@@ -1391,7 +1415,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>NotificationRecipients</maml:name>
           <maml:description>
-            <maml:para>List of email addresses of Control Center users who receive an email when activation of this list is complete. Don't add addresses to this list without the recipients' consent.</maml:para>
+            <maml:para>A list of email addresses of Control Center users who receive an email when activation of the list is complete. Don't add addresses to the list without the recipients' consents.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1415,7 +1439,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1427,7 +1451,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1439,7 +1463,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1454,7 +1478,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1478,7 +1502,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1490,7 +1514,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Environment</maml:name>
         <maml:description>
-          <maml:para>The Akamai network on which this list is activated: `STAGING` or `PRODUCTION`.</maml:para>
+          <maml:para>The Akamai network on which this list is activated, either `STAGING` or `PRODUCTION`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1502,7 +1526,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1514,7 +1538,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>NotificationRecipients</maml:name>
         <maml:description>
-          <maml:para>List of email addresses of Control Center users who receive an email when activation of this list is complete. Don't add addresses to this list without the recipients' consent.</maml:para>
+          <maml:para>A list of email addresses of Control Center users who receive an email when activation of the list is complete. Don't add addresses to the list without the recipients' consents.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1526,7 +1550,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1576,12 +1600,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/post-network-list-activate</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-networklistactivation</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/post-network-list-activate</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1603,7 +1631,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Recipients</maml:name>
           <maml:description>
-            <maml:para>Specifies the full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in UniqueIDs.</maml:para>
+            <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1615,7 +1643,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>UniquedIDs</maml:name>
           <maml:description>
-            <maml:para>Specifies the full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+            <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1627,7 +1655,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1639,7 +1667,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1651,7 +1679,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1666,7 +1694,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1678,7 +1706,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1690,7 +1718,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Recipients</maml:name>
         <maml:description>
-          <maml:para>Specifies the full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in UniqueIDs.</maml:para>
+          <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1702,7 +1730,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1714,7 +1742,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>UniquedIDs</maml:name>
         <maml:description>
-          <maml:para>Specifies the full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+          <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1752,12 +1780,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/post-notifications-subscribe</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-networklistsubscription</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/post-notifications-subscribe</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1771,7 +1803,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Removes a network list. You can only remove network lists that have never been activated. To deactivate a list, you can empty out its `list` of elements by running the `Remove-NetworkListElement` operation.</maml:para>
+      <maml:para>Removes a network list. You can only remove network lists that have never been activated. To deactivate a list, you can empty its `list` of elements by running the `Remove-NetworkListElement` operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1779,7 +1811,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1791,7 +1823,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1803,7 +1835,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1815,7 +1847,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1830,7 +1862,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1842,7 +1874,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1854,7 +1886,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1866,7 +1898,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1904,12 +1936,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/delete-network-list</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-networklist</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/delete-network-list</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1931,7 +1967,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1943,7 +1979,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Element</maml:name>
           <maml:description>
-            <maml:para>Specifies the element to add to the network list.</maml:para>
+            <maml:para>An element to add to the network list.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1955,7 +1991,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1967,7 +2003,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1979,7 +2015,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1994,7 +2030,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2006,7 +2042,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2018,7 +2054,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Element</maml:name>
         <maml:description>
-          <maml:para>Specifies the element to add to the network list.</maml:para>
+          <maml:para>An element to add to the network list.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2030,7 +2066,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2042,7 +2078,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2080,12 +2116,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/delete-network-list-elements</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-networklistelement</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/delete-network-list-elements</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2107,7 +2147,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Recipients</maml:name>
           <maml:description>
-            <maml:para>Specifies the full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in UniqueIDs.</maml:para>
+            <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2119,7 +2159,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>UniquedIDs</maml:name>
           <maml:description>
-            <maml:para>Specifies the full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+            <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2131,7 +2171,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2143,7 +2183,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2155,7 +2195,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2170,7 +2210,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2182,7 +2222,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2194,7 +2234,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Recipients</maml:name>
         <maml:description>
-          <maml:para>Specifies the full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in UniqueIDs.</maml:para>
+          <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2206,7 +2246,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2218,7 +2258,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>UniquedIDs</maml:name>
         <maml:description>
-          <maml:para>Specifies the full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+          <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2256,12 +2296,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/post-notifications-unsubscribe</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-networklistsubscription</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/post-notifications-unsubscribe</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2275,7 +2319,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Modifies the network list items and properties. You can edit the name, description, and set of network list items to the resource. You can't edit the type. When running the operation, the current state of the list is replaced with the properties and items you provide.  &gt; Note: To retrieve a network list with its elements, run the `Get-NetworkList` operation with the `-NetworkListID` parameter and the `-IncludeElements` switch, edit the content locally, and pipe it to this command. Make sure to use the `-IncludeElements` switch when retrieving. Otherwise, the operation won't return any elements.</maml:para>
+      <maml:para>Modifies the network list items and properties. You can edit the name, description, and a set of network list items to the resource. You can't edit the type. When running the operation, the current state of the list is replaced with the properties and items you provide.</maml:para>
+      <maml:para>&gt; Note: To retrieve a network list with its elements, run the `Get-NetworkList` operation with the `-NetworkListID` parameter and the `-IncludeElements` switch, edit the content locally, and pipe it to this command. Make sure to use the `-IncludeElements` switch when retrieving. Otherwise, the operation won't return any elements.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2283,7 +2328,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>NetworkListID</maml:name>
           <maml:description>
-            <maml:para>Unique identifier for each network list.</maml:para>
+            <maml:para>Your network list's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2295,7 +2340,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+            <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2307,7 +2352,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2319,7 +2364,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2331,7 +2376,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2346,7 +2391,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Account Switch Key, for use when you have access to mulitple accounts and need to specify which one to use. Account Switch Keys can be found using Get-AccountSwitchKey.</maml:para>
+          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2358,7 +2403,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>Request body, either as a PSCustomObject or string. This parameter supports pipelining.</maml:para>
+          <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2370,7 +2415,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
-          <maml:para>EdgeRC file to authenticate your command. Defaults to ~/.edgerc.</maml:para>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2382,7 +2427,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>NetworkListID</maml:name>
         <maml:description>
-          <maml:para>Unique identifier for each network list.</maml:para>
+          <maml:para>Your network list's ID.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2394,7 +2439,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>EdgeRC section to retrieve authentication credentials from. Defaults to 'default'.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2432,12 +2477,16 @@
     <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
-        <maml:linkText>User Guide: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>API Reference: https://techdocs.akamai.com/network-lists/reference/put-network-list</maml:linkText>
-        <maml:uri></maml:uri>
+        <maml:linkText>Function Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-networklist</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/network-lists/reference/put-network-list</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mcr.microsoft.com/powershell:alpine-3.16
+FROM --platform=linux/amd64 mcr.microsoft.com/powershell:7.5-alpine-3.20 AS build-amd64
+FROM --platform=linux/arm64 mcr.microsoft.com/powershell:7.5-mariner-2.0-arm64 AS build-arm64
+
+FROM build-$TARGETARCH
+
+ARG TARGETARCH
+RUN if [ "$TARGETARCH" = "arm64" ] ; then \
+    tdnf install tar -y; \
+    fi
 
 # Install Akamai module
-RUN ["pwsh", "-command", "Install-Module -Scope AllUsers Akamai -Force"]
+RUN ["pwsh", "-command", "Install-Module -Scope AllUsers Akamai -Force"] 

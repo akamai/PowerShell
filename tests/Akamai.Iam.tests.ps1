@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.IAM Tests' {
     
     BeforeAll { 
@@ -18,7 +25,7 @@ Describe 'Safe Akamai.IAM Tests' {
             "roleDescription" = "Test role for PowerShell pester testing."
             "roleName"        = $TestNewRoleName
         }
-        $TestPropertyID = $env:PesterAssetID
+        $TestAssetID = $env:PesterAssetID
         $TestUsername = $env:PesterIAMUsername
         $TestExpirationDate = Get-Date ((Get-Date).ToUniversalTime().AddMinutes(60)) -Format 'yyyy-MM-ddTHH:mm:ss.000Z'
         $TestCredentialBody = @{
@@ -61,6 +68,7 @@ Describe 'Safe Akamai.IAM Tests' {
 "@
         $TestAPIClientObj = ConvertFrom-Json $TestAPIClientJSON
         $TestAPIClientName = 'akamaipowershell_testclient'
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.IAM"
         $PD = @{}
     }
 
@@ -148,6 +156,14 @@ Describe 'Safe Akamai.IAM Tests' {
         It 'returns the correct data' {
             $PD.GetIAMGroupAll = Get-IAMGroup @CommonParams
             $PD.GetIAMGroupAll[0].groupId | Should -Not -BeNullOrEmpty
+        }
+    }
+    
+    Context 'Get-IAMGroup - Flatten' {
+        It 'returns a flat list' {
+            $PD.GetIAMGroupFlatten = Get-IAMGroup -Flatten @CommonParams
+            $PD.GetIAMGroupFlatten[0].groupId | Should -Not -BeNullOrEmpty
+            $PD.GetIAMGroupFlatten.count | Should -BeGreaterThan $PD.GetIAMGroupAll.count
         }
     }
     
@@ -245,7 +261,7 @@ Describe 'Safe Akamai.IAM Tests' {
     
     Context 'Get-IAMProperty - Single' {
         It 'returns the correct data' {
-            $PD.GetIAMPropertySingle = Get-IAMProperty -GroupID $TestGroupID -PropertyID $TestPropertyID @CommonParams
+            $PD.GetIAMPropertySingle = Get-IAMProperty -GroupID $TestGroupID -AssetID $TestAssetID @CommonParams
             $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
         }
     }
@@ -256,7 +272,7 @@ Describe 'Safe Akamai.IAM Tests' {
 
     Context 'Get-IAMPropertyResources' {
         It 'returns the correct data' {
-            $PD.GetIAMPropertyResources = Get-IAMPropertyResources -GroupID $TestGroupID -PropertyID $TestPropertyID @CommonParams
+            $PD.GetIAMPropertyResources = Get-IAMPropertyResources -GroupID $TestGroupID -AssetID $TestAssetID @CommonParams
             $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
         }
     }
@@ -267,7 +283,7 @@ Describe 'Safe Akamai.IAM Tests' {
 
     Context 'Get-IAMPropertyUsers' {
         It 'returns the correct data' {
-            $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers -PropertyID $TestPropertyID @CommonParams
+            $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers -AssetID $TestAssetID @CommonParams
             $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
     }
@@ -307,7 +323,7 @@ Describe 'Safe Akamai.IAM Tests' {
     
     Context 'Get-IAMAPIClient, self' {
         It 'returns the correct data' {
-            $PD.GetIAMAPIClientSelf = Get-IAMAPIClient -ClientID self @CommonParams
+            $PD.GetIAMAPIClientSelf = Get-IAMAPIClient -ClientID self -GroupAccess -APIAccess @CommonParams
             $PD.GetIAMAPIClientSelf.clientId | Should -Not -BeNullOrEmpty
         }
     }
@@ -328,15 +344,23 @@ Describe 'Safe Akamai.IAM Tests' {
 
     Context 'Set-IAMAPIClient - Parameter Set self, by parameter' {
         It 'returns the correct data' {
-            $PD.SetIAMAPIClientSelfByParam = Set-IAMAPIClient -Body $PD.GetIAMAPIClientSelf @CommonParams
-            $PD.SetIAMAPIClientSelfByParam.clientId | Should -Be $PD.GetIAMAPIClientSelf.clientId
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPIClient.json"
+                return $Response | ConvertFrom-Json
+            }
+            $SetIAMAPIClientSelfByParam = Set-IAMAPIClient -Body $PD.GetIAMAPIClientSelf @CommonParams
+            $SetIAMAPIClientSelfByParam.clientId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Set-IAMAPIClient - Parameter Set self, by pipeline' {
         It 'returns the correct data' {
-            $PD.SetIAMAPIClientSelfByPipeline = $PD.GetIAMAPIClientSelf | Set-IAMAPIClient @CommonParams
-            $PD.SetIAMAPIClientSelfByPipeline.clientId | Should -Be $PD.GetIAMAPIClientSelf.clientId
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPIClient.json"
+                return $Response | ConvertFrom-Json
+            }
+            $SetIAMAPIClientSelfByPipeline = $PD.GetIAMAPIClientSelf | Set-IAMAPIClient @CommonParams
+            $SetIAMAPIClientSelfByPipeline.clientId | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -695,7 +719,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-AccountSwitchKey' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AccountSwitchKey.json"
                 return $Response | ConvertFrom-Json
             }
@@ -710,7 +734,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'New-IAMUser by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMUser.json"
                 return $Response | ConvertFrom-Json
             }
@@ -721,7 +745,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'New-IAMUser by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMUser.json"
                 return $Response | ConvertFrom-Json
             }
@@ -732,7 +756,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Remove-IAMUser' {
         It 'does not throw' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMUser.json"
                 return $Response | ConvertFrom-Json
             }
@@ -743,7 +767,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMGroupMoveAffectedUsers' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMGroupMoveAffectedUsers.json"
                 return $Response | ConvertFrom-Json
             }
@@ -758,7 +782,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Disable-IAMIPAllowList' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Disable-IAMIPAllowList.json"
                 return $Response | ConvertFrom-Json
             }
@@ -768,7 +792,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Enable-IAMIPAllowList' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Enable-IAMIPAllowList.json"
                 return $Response | ConvertFrom-Json
             }
@@ -782,7 +806,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMIPAllowListStatus' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMIPAllowListStatus.json"
                 return $Response | ConvertFrom-Json
             }
@@ -797,7 +821,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMUserProfile' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMUserProfile.json"
                 return $Response | ConvertFrom-Json
             }
@@ -808,7 +832,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMUserProfile by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserProfile.json"
                 return $Response | ConvertFrom-Json
             }
@@ -819,7 +843,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMUserProfile by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserProfile.json"
                 return $Response | ConvertFrom-Json
             }
@@ -834,7 +858,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMUserPassword - Parameter Set my' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserPassword.json"
                 return $Response | ConvertFrom-Json
             }
@@ -844,7 +868,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMUserPassword - Parameter Set others' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserPassword.json"
                 return $Response | ConvertFrom-Json
             }
@@ -854,7 +878,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Reset-IAMUserPassword' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Reset-IAMUserPassword.json"
                 return $Response | ConvertFrom-Json
             }
@@ -868,22 +892,22 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Block-IAMPropertyUsers by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
                 return $Response | ConvertFrom-Json
             }
-            $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers -PropertyID 123456789 -UIIdentityID 'A-1-23CDEF'
+            $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers -AssetID 123456789 -UIIdentityID 'A-1-23CDEF'
             $BlockIAMPropertyUsersByParam[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Block-IAMPropertyUsers by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
                 return $Response | ConvertFrom-Json
             }
-            $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers -PropertyID 123456789
+            $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers -AssetID 123456789
             $BlockIAMPropertyUsersByPipeline[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
     }
@@ -894,7 +918,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMUserBlockedProperties' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMUserBlockedProperties.json"
                 return $Response | ConvertFrom-Json
             }
@@ -905,7 +929,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMUserBlockedProperties' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserBlockedProperties.json"
                 return $Response | ConvertFrom-Json
             }
@@ -920,7 +944,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMUserMFA - My' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
@@ -930,7 +954,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
     
     Context 'Set-IAMUserMFA - Other' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
@@ -940,7 +964,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Reset-IAMUserMFA - My' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Reset-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
@@ -950,7 +974,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
     
     Context 'Reset-IAMUserMFA - Other' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Reset-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
@@ -964,11 +988,11 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Move-IAMProperty' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Move-IAMProperty.json"
                 return $Response | ConvertFrom-Json
             }
-            Move-IAMProperty -DestinationGroupID 11111 -PropertyID 12345678 -SourceGroupID 22222 
+            Move-IAMProperty -DestinationGroupID 11111 -AssetID 12345678 -SourceGroupID 22222 
         }
     }
 
@@ -978,7 +1002,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'New-IAMCIDRBlock' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
@@ -989,7 +1013,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMCIDRBlock, single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1000,7 +1024,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
     
     Context 'Get-IAMCIDRBlock, all' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1011,7 +1035,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMCIDRBlock' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1022,7 +1046,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Test-IAMCIDRBlock' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Test-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1032,7 +1056,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Remove-IAMCIDRBlock' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1046,7 +1070,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMAllowedCPCodes' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMAllowedCPCodes.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1061,7 +1085,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Remove-IAMAPICredential - Parameter Set self' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1071,7 +1095,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Lock-IAMAPIClient - Parameter Set self' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Lock-IAMAPIClient.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1082,7 +1106,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Remove-IAMAPIClient - Parameter Set self' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMAPIClient.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1096,7 +1120,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'New-IAMAPICredential - Parameter Set single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1107,7 +1131,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Get-IAMAPICredential - Parameter Set single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1118,7 +1142,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMAPICredential - Parameter Set single, by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1129,7 +1153,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Set-IAMAPICredential - Parameter Set single, by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1140,7 +1164,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Disable-IAMAPICredential - Parameter Set single' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Disable-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1150,7 +1174,7 @@ Describe 'UnSafe Akamai.IAM Tests' {
 
     Context 'Remove-IAMAPICredential - Parameter Set single' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IAM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
