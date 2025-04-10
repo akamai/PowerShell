@@ -9,19 +9,11 @@
 
 * Functionality
   * General
-    * New functions
-      * `Invoke-AkamaiRequest`. Replaces `Invoke-AkamaiRestMethod` in all higher function. It's based on `Invoke-WebRequest` rather than `Invoke-RestMethod`, so all functions work the same for PowerShell v5.1 and ≥7.0.
-      * `Get-EdgeKVNamespaceGroup`. Lists groups within a namespace.
-      * `Update-EdgeKVAccessToken`. Refreshes an access token.
-      * `Read-NetstorageDirectory`. Recursively downloads an entire directory from a storage group.
+   * Improved API handling and migration help.
+      * `Invoke-AkamaiRequest`. Replaces `Invoke-AkamaiRestMethod` in all higher functions. It's based on `Invoke-WebRequest` rather than `Invoke-RestMethod`, so all functions work the same for PowerShell v5.1 and ≥7.0.
       * `Uninstall-Akamai`. Handles migration from Akamaipowershell v1.
-      * `Get-EdgeKVNamespaceDelete`. Gets the namespace delete time.
-      * `Get-EdgeKVNamespaceGroup`. Lists groups within a namespace.
-      * `Remove-EdgeKVNamespace`. Deletes a namespace.
-      * `Restore-EdgeKVNamespace`. Cancels a scheduled namespace delete.
-      * `Update-EdgeKVAccessToken`. Refreshes an access token.
-    
-    * Added options architecture that manage server and rate limiting error impact, provides troubleshooting information, and stores Akamai asset IDs for reuse. 
+   
+  * Added options architecture that manage server and rate limiting error impact, provides troubleshooting information, and stores Akamai asset IDs for reuse. 
       * Error Retries
       * Rate Limit Retries
       * Rate Limit Warnings
@@ -29,17 +21,27 @@
       * Suggested Actions
       * Data Cache
 
+  * EdgeKV
+      * `Get-EdgeKVNamespaceDelete`. Gets the namespace delete time.
+      * `Get-EdgeKVNamespaceGroup`. Lists groups within a namespace.
+      * `Remove-EdgeKVNamespace`. Deletes a namespace.
+      * `Restore-EdgeKVNamespace`. Cancels a scheduled namespace delete.
+      * `Update-EdgeKVAccessToken`. Refreshes an access token.
+ 
+  * NetStorage<br />
+  `Read-NetstorageDirectory`. Recursively downloads an entire directory from a storage group.
+
 ### Bug Fixes
 
 This update fixes the following issues.
 
-* `New-Property`. Always placed a cloned property in the existing property's group. Resolves [Issue 11](https://github.com/akamai/powershell/issues/11).
+* `AllowCancelPendingChanges`. A typo prevented its use.
+* `*-EdgeKVItem`. Overloaded use of the word _group_ in functions that fused item and access control groups. Access control groups now use a string.
 * `Get-PropertyIncludeRulesDigest`. Didn't require the`-IncludeVersion` parameter, missing mandatory annotation on the parameter.
 * `Get-PropertyHostname`. Didn't pass the `-Network` parameter to recursive calls.
-* `AllowCancelPendingChanges`. A typo prevented its use.
 * `Get-IAMGroup`. Unexpected behavior when using the `-Flatten` option in PowerShell 5.1. Resolves [Akamaipowershell issue 54](https://github.com/akamai/akamaipowershell/issues/54).
-* `*-EdgeKVItem`. Overloaded use of the word _group_ in functions that fused item and access control groups. Access control groups now use a string.
 * `New-AppSecActivation`. Body data not sent if not a string.
+* `New-Property`. Always placed a cloned property in the existing property's group. Resolves [Issue 11](https://github.com/akamai/powershell/issues/11).
     
 ### Updates
 
