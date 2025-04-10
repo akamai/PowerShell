@@ -1,8 +1,13 @@
-
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
 
 Describe 'Safe Akamai.APIDefinitions Tests' {
     
-    BeforeAll { 
+    BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.APIDefinitions/Akamai.APIDefinitions.psd1 -Force
         # Setup shared variables
@@ -146,7 +151,10 @@ paths:
     }
 
     AfterAll {
-        
+        $TestEndpointName, "$TestEndpointName`2", $TestEndpointNameClone1, $TestEndpointNameClone2 | foreach-object {
+            Try { Remove-APIEndpoint -APIEndpointName $_ @CommonParams }
+            Catch {}
+        }
     }
 
     #------------------------------------------------
@@ -239,10 +247,30 @@ paths:
     #------------------------------------------------
 
     Context 'Expand-APIEndpointDetails' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "./options.json"
+            # Creat options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
         It 'returns the correct data' {
-            $ExpandAPIEndpointDetailsID, $ExpandAPIEndpointDetailsVersion = Expand-APIEndpointDetails -APIEndpointName $PD.NewAPIEndpointByParam.apiEndpointName -VersionNumber latest @CommonParams
+            $Name = $PD.NewAPIEndpointByParam.apiEndpointName
+            $TestParams = @{
+                APIEndpointName = $Name
+                VersionNumber   = 'latest'
+            }
+            $ExpandAPIEndpointDetailsID, $ExpandAPIEndpointDetailsVersion = Expand-APIEndpointDetails @TestParams @CommonParams
             $ExpandAPIEndpointDetailsID | Should -Be $PD.NewAPIEndpointByParam.apiEndpointId
             $ExpandAPIEndpointDetailsVersion | Should -Be $PD.NewAPIEndpointByParam.versionNumber
+            $AkamaiDataCache.APIDefinitions.APIEndpoints.$Name.APIEndpointID | Should -Be $ExpandAPIEndpointDetailsID
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
         }
     }
 
@@ -881,7 +909,7 @@ paths:
 
     Context 'Get-APIEndpointVersionPII - Parameter Set id' {
         It 'Get-APIEndpointVersionPII (id) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-APIEndpointVersionPII.json"
                 return $Response | ConvertFrom-Json
             }
@@ -892,7 +920,7 @@ paths:
 
     Context 'Set-APIEndpointVersionPII - Parameter Set id, by parameter' {
         It 'Set-APIEndpointVersionPII (id) by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-APIEndpointVersionPII.json"
                 return $Response | ConvertFrom-Json
             }
@@ -903,7 +931,7 @@ paths:
 
     Context 'Set-APIEndpointVersionPII - Parameter Set id, by pipeline' {
         It 'Set-APIEndpointVersionPII (id) by pipeline returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-APIEndpointVersionPII.json"
                 return $Response | ConvertFrom-Json
             }
@@ -914,7 +942,7 @@ paths:
 
     Context 'Update-APIEndpointVersionPII - Parameter Set id' {
         It 'Update-APIEndpointVersionPII (id) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Update-APIEndpointVersionPII.json"
                 return $Response | ConvertFrom-Json
             }
@@ -925,7 +953,7 @@ paths:
 
     Context 'Remove-APIEndpointVersionPII' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-APIEndpointVersionPII.json"
                 return $Response | ConvertFrom-Json
             }
@@ -939,7 +967,7 @@ paths:
 
     Context 'Get-APIEndpointVersionPIIParams - Parameter Set id' {
         It 'Get-APIEndpointVersionPIIParams (id) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-APIEndpointVersionPIIParams.json"
                 return $Response | ConvertFrom-Json
             }
@@ -949,26 +977,12 @@ paths:
     }
 
     #------------------------------------------------
-    #                 APIEndpointVersionPIIParameters                  
-    #------------------------------------------------
-
-    Context 'Set-APIEndpointVersionPIIParameters - Parameter Set id' {
-        It 'Set-APIEndpointVersionPIIParameters throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Set-APIEndpointVersionPIIParameters.json"
-                return $Response | ConvertFrom-Json
-            }
-            Set-APIEndpointVersionPIIParameters -APIEndpointID 123456 -VersionNumber 1 -Body $TestPIIParamJSON 
-        }
-    }
-
-    #------------------------------------------------
     #                 APIEndpointActivation                  
     #------------------------------------------------
 
     Context 'New-APIEndpointActivation - Parameter' {
         It 'New-APIEndpointActivation by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -979,7 +993,7 @@ paths:
 
     Context 'New-APIEndpointActivation - Pipeline' {
         It 'New-APIEndpointActivation by pipeline returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -990,7 +1004,7 @@ paths:
 
     Context 'New-APIEndpointActivation - Attributes' {
         It 'New-APIEndpointActivation by attributes returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1005,7 +1019,7 @@ paths:
 
     Context 'New-APIEndpointDeactivation - Parameter Set id-body, name-body, by parameter' {
         It 'New-APIEndpointDeactivation (id-body, name-body) by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1016,7 +1030,7 @@ paths:
 
     Context 'New-APIEndpointDeactivation - Parameter Set id-body, name-body, by pipeline' {
         It 'New-APIEndpointDeactivation (id-body, name-body) by pipeline returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1027,7 +1041,7 @@ paths:
 
     Context 'New-APIEndpointDeactivation - Parameter Set id-attributes, name-attributes' {
         It 'New-APIEndpointDeactivation (id-attributes, name-attributes) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1042,7 +1056,7 @@ paths:
 
     Context 'Test-APISecureConnection by parameter' {
         It 'Test-APISecureConnection by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Test-APISecureConnection.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1053,7 +1067,7 @@ paths:
 
     Context 'Test-APISecureConnection by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Test-APISecureConnection.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1068,7 +1082,7 @@ paths:
 
     Context 'New-APIEndpointFromFile by parameter' {
         It 'New-APIEndpointFromFile by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointFromFile.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1079,7 +1093,7 @@ paths:
 
     Context 'New-APIEndpointFromFile by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.APIDefinitions -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.APIDefinitions -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-APIEndpointFromFile.json"
                 return $Response | ConvertFrom-Json
             }

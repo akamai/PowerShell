@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.NetworkLists Tests' {
     
     BeforeAll { 
@@ -100,7 +107,7 @@ Describe 'Unsafe Akamai.NetworkLists Tests' {
     
     Context 'New-NetworkListActivation' {
         It 'activates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.NetworkLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.NetworkLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetworkListActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -111,7 +118,7 @@ Describe 'Unsafe Akamai.NetworkLists Tests' {
 
     Context 'Get-NetworkListActivationStatus' {
         It 'returns status' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.NetworkLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.NetworkLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-NetworkListActivationStatus.json"
                 return $Response | ConvertFrom-Json
             }
@@ -122,7 +129,7 @@ Describe 'Unsafe Akamai.NetworkLists Tests' {
     
     Context 'Get-NetworkListActivation' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.NetworkLists -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.NetworkLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-NetworkListActivation.json"
                 return $Response | ConvertFrom-Json
             }

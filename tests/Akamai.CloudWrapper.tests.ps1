@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.CloudWrapper Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -72,7 +79,11 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
     }
 
     AfterAll {
-        
+        $TestParams = @{
+            ConfigID = $PD.Configs[0].configId
+        }
+        try { Get-CloudWrapperConfiguration @TestParams @CommonParams | Remove-CloudWrapperConfiguration @CommonParams }
+        catch {}
     }
 
     #------------------------------------------------
@@ -219,6 +230,21 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
     Context 'Remove-CloudWrapperConfiguration by pipeline' {
         It 'throws no errors' {
             $PD.NewConfig | Remove-CloudWrapperConfiguration @CommonParams
+            Start-Sleep -Seconds 30
+            
+            $GetParams = @{
+                ConfigID = $PD.NewConfig.configId
+            }
+            while ($true) {
+                try {
+                    Get-CloudWrapperConfiguration @GetParams @CommonParams
+                }
+                catch {
+                    break
+                }
+                Write-Warning "Waiting for config removal to complete"
+                Start-Sleep -Seconds 30
+            }
         }
     }
 }
@@ -245,7 +271,7 @@ Describe 'Unsafe Akamai.CloudWrapper Tests' {
 
     Context 'Get-CloudWrapperAuthKey' {
         It 'gets a key in the right format' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudWrapper -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudWrapper -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudWrapperAuthKey.json"
                 return $Response | ConvertFrom-Json
             }
@@ -265,7 +291,7 @@ Describe 'Unsafe Akamai.CloudWrapper Tests' {
 
     Context 'New-CloudWrapperConfigurationActivation by parameter' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudWrapper -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudWrapper -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudWrapperConfigurationActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -278,7 +304,7 @@ Describe 'Unsafe Akamai.CloudWrapper Tests' {
 
     Context 'New-CloudWrapperConfigurationActivation by pipeline' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudWrapper -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudWrapper -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudWrapperConfigurationActivation.json"
                 return $Response | ConvertFrom-Json
             }

@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.CPS Tests' {
     BeforeAll { 
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -93,7 +100,7 @@ Describe 'Safe Akamai.CPS Tests' {
 
     Context 'Get-CPSEnrollment - all' {
         It 'Get-CPSEnrollment returns a list' {
-            $PD.Enrollments = Get-CPSEnrollment @CommonParams
+            $PD.Enrollments = Get-CPSEnrollment -ContractID $TestContract @CommonParams
             $PD.Enrollments.count | Should -Not -BeNullOrEmpty
         }
     }
@@ -216,7 +223,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
     }
     Context 'Get-CPSPreVerificationWarnings' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CPSPreVerificationWarnings.json"
                 return $Response | ConvertFrom-Json
             }
@@ -227,7 +234,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
 
     Context 'Get-CPSPostVerificationWarnings' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CPSPostVerificationWarnings.json"
                 return $Response | ConvertFrom-Json
             }
@@ -238,7 +245,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
 
     Context 'Confirm-CPSPreVerificationWarnings' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Confirm-CPSPreVerificationWarnings.json"
                 return $Response | ConvertFrom-Json
             }
@@ -249,7 +256,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
 
     Context 'Confirm-CPSPostVerificationWarnings' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Confirm-CPSPostVerificationWarnings.json"
                 return $Response | ConvertFrom-Json
             }
@@ -260,7 +267,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
 
     Context 'Add-CPSThirdPartyCert' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Add-CPSThirdPartyCert.json"
                 return $Response | ConvertFrom-Json
             }
@@ -271,7 +278,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
 
     Context 'Complete-CPSChange' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Complete-CPSChange.json"
                 return $Response | ConvertFrom-Json
             }
@@ -282,7 +289,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
 
     Context 'Confirm-CPSLetsEncryptChallengesCompleted' {
         It 'returns the correct info' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPS -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPS -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Confirm-CPSLetsEncryptChallengesCompleted.json"
                 return $Response | ConvertFrom-Json
             }

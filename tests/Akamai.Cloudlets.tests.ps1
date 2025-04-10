@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Cloudlets Tests' {
     
     BeforeAll { 
@@ -26,11 +33,16 @@ Describe 'Safe Akamai.Cloudlets Tests' {
     }
 
     AfterAll {
-        # Temporary scoping of -All param as it isn't supported in 5.1 yet
-        if ($PSVersionTable.PSVersion.Major -gt 5) {
-            Get-CloudletPolicy -Legacy -All @CommonParams | Where-Object name -eq $TestLegacyPolicyName | ForEach-Object { Remove-CloudletPolicy -PolicyID $_.policyId -Legacy @CommonParams }
+        Get-CloudletPolicy -Legacy -All @CommonParams | `
+            Where-Object name -eq $TestLegacyPolicyName | `
+            ForEach-Object { 
+            Remove-CloudletPolicy -PolicyID $_.policyId -Legacy @CommonParams
         }
-        Get-CloudletPolicy @CommonParams | Where-Object name -in $TestSharedPolicyName, $TestClonePolicyName | ForEach-Object { Remove-CloudletPolicy -PolicyID $_.id @CommonParams }
+        Get-CloudletPolicy @CommonParams | `
+            Where-Object name -in $TestSharedPolicyName, $TestClonePolicyName | `
+            ForEach-Object { 
+            Remove-CloudletPolicy -PolicyID $_.id @CommonParams
+        }
         if ((Test-Path $TestCSVFileName)) {
             Remove-Item -Force $TestCSVFileName
         }
@@ -450,7 +462,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'New-CloudletPolicyActivation - Parameter Set legacy' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletPolicyActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -461,7 +473,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'New-CloudletPolicyActivation - Parameter Set shared' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletPolicyActivation_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -476,7 +488,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'New-CloudletPolicyDeactivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletPolicyDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -491,7 +503,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'Get-CloudletPolicyProperty, legacy' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -502,7 +514,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
     
     Context 'Get-CloudletPolicyProperty, shared' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyProperty_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -513,7 +525,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
     
     Context 'Get-CloudletPolicyProperty' {
         It 'returns a dictionary' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -528,7 +540,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'Get-CloudletPolicyActivation - Parameter Set single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyActivation_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -539,7 +551,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'Get-CloudletPolicyActivation - Parameter Set all - Legacy' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -550,7 +562,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
     
     Context 'Get-CloudletPolicyActivation - Parameter Set all - Shared' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyActivation_2.json"
                 return $Response | ConvertFrom-Json
             }
@@ -566,7 +578,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'New-CloudletLoadBalancer' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletLoadBalancer.json"
                 return $Response | ConvertFrom-Json
             }
@@ -581,7 +593,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'New-CloudletLoadBalancerActivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletLoadBalancerActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -592,7 +604,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
 
     Context 'Get-CloudletLoadBalancerActivation, single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletLoadBalancerActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -603,7 +615,7 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
     
     Context 'Get-CloudletLoadBalancerActivation, all' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Cloudlets -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletLoadBalancerActivation.json"
                 return $Response | ConvertFrom-Json
             }

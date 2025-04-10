@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Property Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -51,12 +58,19 @@ Describe 'Safe Akamai.Property Tests' {
 
     AfterAll {
         Context 'Cleanup files' {
-            Remove-Item snippets.json -Force
-            Remove-Item rules.json -Force
-            Remove-Item includeRules.json -Force
-            Remove-Item 'default.json' -Force
-            Remove-Item snippets -Recurse -Force
-            Remove-Item includesnippets -Recurse -Force
+            $ToDelete = @(
+                'snippets.json'
+                'rules.json'
+                'includeRules.json'
+                'default.json'
+                'snippets'
+                'includesnippets'
+            )
+            $ToDelete | ForEach-Object {
+                if ((Test-Path $_)) {
+                    Remove-Item -Path $_ -Recurse -Force
+                }
+            }
         }
     }
 
@@ -207,28 +221,54 @@ Describe 'Safe Akamai.Property Tests' {
         It 'lists properties' {
             $PD.Properties = Get-Property -GroupID $TestGroupID -ContractId $TestContract @CommonParams
             $PD.Properties.count | Should -BeGreaterThan 0
+            $PD.Properties[0].propertyId | Should -Not -BeNullOrEmpty
+        }
+        It 'lists properties (pipeline)' {
+            $PD.Properties = Get-Group @CommonParams | Select -First 5 | Get-Property @CommonParams
+            $PD.Properties.count | Should -BeGreaterThan 0
+            $PD.Properties[0].propertyId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Find-Property' {
         It 'finds properties' {
             $PD.FoundProperty = Find-Property -PropertyName $TestPropertyName -Latest @CommonParams
-            $PD.FoundProperty | Should -Not -BeNullOrEmpty
+            $PD.FoundProperty.PropertyName | Should -Be $TestPropertyName
+            $PD.FoundProperty.propertyId | Should -Not -BeNullOrEmpty
+            $PD.FoundProperty.propertyVersion | Should -Not -BeNullOrEmpty
+            $PD.FoundProperty.groupId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Expand-PropertyDetails' {
-        It 'returns the correct data' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "./options.json"
+            # Creat options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
+        It 'finds the right property and version' {
             $PD.ExpandedPropertyID, $PD.ExpandedPropertyVersion, $null, $null = Expand-PropertyDetails -PropertyName $TestPropertyName -PropertyVersion latest @CommonParams
             $PD.ExpandedPropertyID | Should -Be $PD.FoundProperty.propertyId
             $PD.ExpandedPropertyVersion | Should -Be $PD.FoundProperty.propertyVersion
+            $AkamaiDataCache.Property.Properties.$TestPropertyName.PropertyID | Should -Be $PD.ExpandedPropertyID
+            $AkamaiDataCache.Property.Properties.$TestPropertyName.ContractID | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.Property.Properties.$TestPropertyName.GroupID | Should -Not -BeNullOrEmpty
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
         }
     }
 
     Context 'Get-Property by name' {
         It 'finds properties by name' {
             $PD.PropertyByName = Get-Property -PropertyName $TestPropertyName @CommonParams
-            $PD.PropertyByName | Should -Not -BeNullOrEmpty
+            $PD.PropertyByName.PropertyName | Should -Be $TestPropertyName
         }
     }
 
@@ -243,7 +283,16 @@ Describe 'Safe Akamai.Property Tests' {
     #                Versions
     #-------------------------------------------------
 
-    Context 'Get-PropertyVersion using specific' {
+    Context 'Get-PropertyVersion, all' {
+        It 'lists versions' {
+            $PD.PropertyVersions = Get-PropertyVersion -PropertyID $PD.FoundProperty.propertyId @CommonParams
+            $PD.PropertyVersions[0].propertyVersion | Should -Match '^[\d]+$'
+            $PD.PropertyVersions[0].productionStatus | Should -Not -BeNullOrEmpty
+            $PD.PropertyVersions[0].stagingStatus | Should -Not -BeNullOrEmpty
+        }
+    }
+    
+    Context 'Get-PropertyVersion, specific' {
         It 'finds specified version' {
             $PD.PropertyVersion = Get-PropertyVersion -PropertyID $PD.FoundProperty.propertyId -PropertyVersion $PD.FoundProperty.propertyVersion @CommonParams
             $PD.PropertyVersion | Should -Not -BeNullOrEmpty
@@ -529,7 +578,7 @@ Describe 'Safe Akamai.Property Tests' {
                 Path            = "/rules/children/0"
                 Value           = $TestRule
             }
-            { Test-PropertyRule @TestParams @CommonParams } | Should -Throw "value differs from expectations"
+            { Test-PropertyRule @TestParams @CommonParams } | Should -Throw "*JSON Patch Invalid - value differs from expectations*"
         }
     }
 
@@ -626,10 +675,31 @@ Describe 'Safe Akamai.Property Tests' {
     }
 
     Context 'Expand-PropertyIncludeDetails' {
-        It 'returns the correct data' {
-            $PD.ExpandedIncludeID, $PD.ExpandedIncludeVersion, $null, $null = Expand-PropertyIncludeDetails -IncludeName $TestIncludeName -IncludeVersion latest @CommonParams
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "./options.json"
+            # Creat options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
+        It 'finds the right property and version' {
+            $TestParams = @{
+                IncludeName    = $TestIncludeName
+                IncludeVersion = 'latest'
+            }
+            $PD.ExpandedIncludeID, $PD.ExpandedIncludeVersion, $null, $null = Expand-PropertyIncludeDetails @TestParams @CommonParams
             $PD.ExpandedIncludeID | Should -Be $PD.NewInclude.includeId
             $PD.ExpandedIncludeVersion | Should -Be 1
+            $AkamaiDataCache.Property.Includes.$TestIncludeName.IncludeID | Should -Be $PD.ExpandedIncludeID
+            $AkamaiDataCache.Property.Includes.$TestIncludeName.ContractID | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.Property.Includes.$TestIncludeName.GroupID | Should -Not -BeNullOrEmpty
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
         }
     }
 
@@ -834,7 +904,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     }
     Context 'New-Property' {
         It 'creates a property' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-Property.json"
                 return $Response | ConvertFrom-Json
             }
@@ -846,7 +916,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Remove-Property' {
         It 'removes a property' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-Property.json"
                 return $Response | ConvertFrom-Json
             }
@@ -857,7 +927,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-EdgeHostname' {
         It 'creates an edge hostname' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -869,7 +939,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-CPCode' {
         It 'creates a property' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CPCode.json"
                 return $Response | ConvertFrom-Json
             }
@@ -881,7 +951,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-PropertyDeactivation' {
         It 'returns activationlink' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-PropertyDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -897,7 +967,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-PropertyIncludeActivation' {
         It 'activates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-PropertyIncludeActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -909,7 +979,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'Undo-PropertyIncludeActivation' {
         It 'cancels activation' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Undo-PropertyIncludeActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -921,7 +991,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-PropertyIncludeDeactivation' {
         It 'activates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-PropertyIncludeDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -933,7 +1003,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Get-PropertyIncludeActivation by ID' {
         It 'returns the right data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-PropertyIncludeActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -944,7 +1014,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Get-PropertyIncludeActivation' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-PropertyIncludeActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -955,7 +1025,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'Get-PropertyVersionInclude' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-PropertyVersionInclude.json"
                 return $Response | ConvertFrom-Json
             }
@@ -967,7 +1037,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'Test-PropertyInclude' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Test-PropertyInclude.json"
                 return $Response | ConvertFrom-Json
             }
@@ -984,7 +1054,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Add-BucketHostname' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Add-BucketHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1002,7 +1072,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Get-BucketHostname' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-BucketHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1013,7 +1083,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Compare-BucketHostname' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Compare-BucketHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1024,7 +1094,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Remove-BucketHostname' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-BucketHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1035,7 +1105,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Undo-BucketActivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Undo-BucketActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1050,7 +1120,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-BulkSearch, async' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-BulkSearch_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1061,7 +1131,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'New-BulkSearch, sync' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-BulkSearch.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1072,7 +1142,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'Get-BulkSearchResult' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-BulkSearchResult.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1083,7 +1153,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-BulkVersion' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-BulkVersion.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1094,7 +1164,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'Get-BulkVersionedProperty' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-BulkVersionedProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1105,7 +1175,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-BulkPatch' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-BulkPatch.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1116,7 +1186,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'Get-BulkPatchedProperty' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-BulkPatchedProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1127,7 +1197,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-BulkActivation' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-BulkActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1138,7 +1208,7 @@ Describe 'Unsafe Akamai.Property Tests' {
     
     Context 'Get-BulkActivatedProperty' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-BulkActivatedProperty.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1153,7 +1223,7 @@ Describe 'Unsafe Akamai.Property Tests' {
 
     Context 'New-PropertyActivation, with compliance record' {
         It 'returns activationlink' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Property -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-PropertyActivation.json"
                 return $Response | ConvertFrom-Json
             }

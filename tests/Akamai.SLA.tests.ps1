@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe SLA Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -69,8 +76,16 @@ Describe 'Safe SLA Tests' {
 
     Context 'Get-SLATestConfiguration Single' {
         It 'gets a test configuration by ID' {
-            $GetSingleTestConfig = Get-SLATestConfiguration -SLATestID $AvailabilityReportID @CommonParams
+            $PD.GetSingleTestConfig = Get-SLATestConfiguration -SLATestID $AvailabilityReportID @CommonParams
+            $PD.GetSingleTestConfig[0].slaTestId | Should -Be $AvailabilityReportID
+        }
+        It 'gets a test configuration by piped ID' {
+            $GetSingleTestConfig = $AvailabilityReportID | Get-SLATestConfiguration @CommonParams
             $GetSingleTestConfig[0].slaTestId | Should -Be $AvailabilityReportID
+        }
+        It 'gets a test configuration by piped object' {
+            $GetSingleTestConfig = $PD.GetSingleTestConfig | Get-SLATestConfiguration @CommonParams
+            $GetSingleTestConfig[0].slaTestId | Should -Be $PD.GetSingleTestConfig.slaTestID
         }
     }
 
@@ -108,8 +123,19 @@ Describe 'Safe SLA Tests' {
             $PD.NewAvailTest.slaTestId | Should -Match '[\d]+'
         }
         It 'should create a new test successfully using the pipeline' {
-            $PD.NewPerfTest = ($PerfTest | New-SLATestConfiguration @CommonParams)
+            $PD.NewPerfTest = $PerfTest | New-SLATestConfiguration @CommonParams
             $PD.NewPerfTest.slaTestId | Should -Match '[\d]+'
+        }
+    }
+
+    Context 'Set-SLATestConfiguration' {
+        It 'should update an availability test successfully' {
+            $Test = $PD.NewAvailTest | Get-SLATestConfiguration @CommonParams
+            $Test | Set-SLATestConfiguration @CommonParams
+        }
+        It 'should update a perf test successfully' {
+            $Test = $PD.NewPerfTest | Get-SLATestConfiguration @CommonParams
+            $Test | Set-SLATestConfiguration @CommonParams
         }
     }
 
@@ -118,7 +144,7 @@ Describe 'Safe SLA Tests' {
             Remove-SLATestConfiguration -SLATestID $PD.NewAvailTest.slaTestId @CommonParams
         }
         It 'should remove the test successfully using the pipeline' {
-            $PD.NewPerfTest.slaTestId | Remove-SLATestConfiguration @CommonParams
+            $PD.NewPerfTest | Remove-SLATestConfiguration @CommonParams
         }
     }
 }

@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.EdgeHostnames Tests' {
     
     BeforeAll { 
@@ -83,7 +90,7 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
 
     Context 'Get-EdgeHostnameChangeRequest - Parameter Set single-id' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeHostnames -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest.json"
                 return $Response | ConvertFrom-Json
             }
@@ -94,7 +101,7 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
 
     Context 'Get-EdgeHostnameChangeRequest - Parameter Set single-components' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeHostnames -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -105,7 +112,7 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
 
     Context 'Get-EdgeHostnameChangeRequest - Parameter Set all' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeHostnames -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -116,7 +123,7 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
 
     Context 'Set-EdgeHostname' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeHostnames -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-EdgeHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -127,7 +134,7 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
 
     Context 'Remove-EdgeHostname' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeHostnames -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-EdgeHostname.json"
                 return $Response | ConvertFrom-Json
             }
@@ -142,7 +149,7 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
 
     Context 'Get-EdgeHostnameCertificate' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeHostnames -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameCertificate.json"
                 return $Response | ConvertFrom-Json
             }

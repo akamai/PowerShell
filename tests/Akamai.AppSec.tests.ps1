@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.AppSec Tests' {
     BeforeAll { 
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -75,9 +82,8 @@ Describe 'Safe Akamai.AppSec Tests' {
     
     AfterAll {
         # Cleanup, in case of error
-        Get-AppSecConfiguration @CommonParams | Where-Object name -eq $TestConfigName | ForEach-Object { Remove-AppSecConfiguration -ConfigID $_.id @CommonParams }
+        Get-AppSecConfiguration @CommonParams | Where-Object name -eq $TestConfigName | Remove-AppSecConfiguration @CommonParams
     }
-
 
     #-------------------------------------------------
     #                 Configuration                  
@@ -217,7 +223,7 @@ Describe 'Safe Akamai.AppSec Tests' {
 
     Context 'Remove-AppSecSelectedHostnames' {
         It 'removes the correct hostname' {
-            $PD.RemovedHostnames = Remove-AppSecSelectedHostnames -ConfigID $PD.NewConfig.configId -VersionNumber 1 -Body $TestHostnamesToAdd @CommonParams
+            $PD.RemovedHostnames = $TestHostnamesToAdd | Remove-AppSecSelectedHostnames -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
             $PD.RemovedHostnames.hostnameList.hostname | Should -Not -Contain $TestNewHostname
         }
     }
@@ -311,9 +317,25 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     Context 'Get-AppSecMatchTarget by ID' {
+        BeforeAll {
+            $TestParams = @{
+                ConfigID      = $PD.NewConfig.configId
+                VersionNumber = 1
+                TargetID      = $PD.NewAPIMatchTarget.targetId
+            }
+        }
         It 'returns the correct target' {
-            $PD.MatchTarget = Get-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 -TargetID $PD.NewAPIMatchTarget.targetId @CommonParams
-            $PD.MatchTarget | Should -Not -BeNullOrEmpty
+            $PD.MatchTarget = Get-AppSecMatchTarget @TestParams @CommonParams
+            $PD.MatchTarget.targetId | Should -Be $PD.NewAPIMatchTarget.targetId
+            $PD.MatchTarget.type | Should -Be 'api'
+            $PD.MatchTarget.apis[0].id | Should -Be $TestAPIEndpointID
+            $PD.MatchTarget.apis[0].name | Should -Not -BeNullOrEmpty
+            $PD.MatchTarget.sequence | Should -Not -BeNullOrEmpty
+        }
+        It 'does not include names when set to do so' {
+            # Pull again to check OmitChildObjects param
+            $MatchTargetNoNames = Get-AppSecMatchTarget -OmitChildObjectName @TestParams @CommonParams
+            $MatchTargetNoNames.apis[0].name | Should -BeNullOrEmpty
         }
     }
 
@@ -1224,12 +1246,6 @@ Describe 'Safe Akamai.AppSec Tests' {
         }
     }
 
-    Context 'Remove-AppSecConfigurationVersion' {
-        It 'completes successfully' {
-            $PD.RemoveVersion = Remove-AppSecConfigurationVersion -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version @CommonParams 
-        }
-    }
-
     #-------------------------------------------------
     #               ContractsAndGroups                    
     #-------------------------------------------------
@@ -1410,21 +1426,57 @@ Describe 'Safe Akamai.AppSec Tests' {
         }
     }
     
+    #-------------------------------------------------
+    #                 Expand                  
+    #-------------------------------------------------
+
+    Context 'Expand-AppSecConfigDetails' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "./options.json"
+            # Creat options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
+        It 'finds the right config' {
+            $TestParams = @{
+                ConfigName = $TestConfigName
+                Version    = 'latest'
+                PolicyName = $TestPolicyName
+            }
+            $PD.ExpandedConfigID, $PD.ExpandedConfigVersion, $PD.ExpandedPolicyID = Expand-AppSecConfigDetails @TestParams @CommonParams
+            $PD.ExpandedConfigID | Should -Be $PD.NewConfig.configId
+            $PD.ExpandedConfigVersion | Should -Be $PD.NewVersion.version
+            $PD.ExpandedPolicyID | Should -Be $PD.NewPolicy.policyId
+            $AkamaiDataCache.AppSec.Configs.$TestConfigName.ConfigID | Should -Be $PD.ExpandedConfigID
+            $AkamaiDataCache.AppSec.Configs.$TestConfigName.Policies.$TestPolicyName.PolicyID | Should -Be $PD.ExpandedPolicyID
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
+        }
+    }
+
     
     #-------------------------------------------------
     #                    Removals                    
     #-------------------------------------------------
 
     Context 'Remove-AppSecMatchTarget' {
-        It 'completes successfully' {
-            Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 -TargetID $PD.NewAPIMatchTarget.targetId @CommonParams 
-            Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 -TargetID $PD.NewWebsiteMatchTarget.targetId @CommonParams 
+        It 'removes API target successfully' {
+            $PD.NewAPIMatchTarget | Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
+        }
+        It 'removes website target successfully' {
+            $PD.NewWebsiteMatchTarget.targetId | Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
         }
     }
 
     Context 'Remove-AppSecPolicy' {
         It 'completes successfully' {
-            Remove-AppSecPolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId @CommonParams 
+            $PD.NewPolicy | Remove-AppSecPolicy @CommonParams 
         }
     }
 
@@ -1433,44 +1485,53 @@ Describe 'Safe Akamai.AppSec Tests' {
 
     Context 'Remove-AppSecReputationProfile' {
         It 'completes successfully' {
-            Remove-AppSecReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 1 -ReputationProfileID $PD.NewReputationProfileByBody.id @CommonParams 
+            $PD.NewReputationProfileByBody | Remove-AppSecReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
         }
     }
 
     Context 'Remove-AppSecCustomDenyAction' {
         It 'completes successfully' {
-            Remove-AppSecCustomDenyAction -ConfigID $PD.NewConfig.configId -VersionNumber 1 -CustomDenyID $PD.NewCustomDenyAction.id @CommonParams 
+            $PD.NewCustomDenyAction | Remove-AppSecCustomDenyAction -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
         }
     }
 
     Context 'Remove-AppSecCustomRule' {
         It 'completes successfully' {
-            Remove-AppSecCustomRule -ConfigID $PD.NewConfig.ConfigId -RuleID $PD.NewCustomRule.id @CommonParams 
+            $PD.NewCustomRule | Remove-AppSecCustomRule -ConfigID $PD.NewConfig.ConfigId @CommonParams 
         }
     }
 
     Context 'Remove-AppSecRatePolicy' {
         It 'completes successfully' {
-            Remove-AppSecRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 -RatePolicyID $PD.NewRatePolicyByBody.id @CommonParams 
+            $PD.NewRatePolicyByBody | Remove-AppSecRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
         }
     }
 
     Context 'Remove-AppSecURLProtectionPolicy' {
         It 'completes successfully' {
-            Remove-AppSecURLProtectionPolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -URLProtectionPolicyID $PD.GetURLProtectionPolicy.policyId @CommonParams 
+            $PD.GetURLProtectionPolicy | Remove-AppSecURLProtectionPolicy @CommonParams 
         }
     }
     
     Context 'Remove-AppSecMalwarePolicy' {
         It 'completes successfully' {
             Set-AppSecPolicyMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -MalwarePolicyID $PD.NewMalwarePolicy.id -Action none -UnscannedAction none @CommonParams | Out-Null
-            Remove-AppSecMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -MalwarePolicyID $PD.GetMalwarePolicy.id @CommonParams
+            $PD.GetMalwarePolicy.id | Remove-AppSecMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version  @CommonParams
+        }
+    }
+
+    Context 'Remove-AppSecConfigurationVersion' {
+        It 'completes successfully' {
+            Remove-AppSecConfigurationVersion -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version @CommonParams
+        }
+        It 'should throw for a missing version' {
+            { Get-AppSecConfigurationVersion -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version @CommonParams } | Should -Throw
         }
     }
 
     Context 'Remove-AppSecConfiguration' {
         It 'completes successfully' {
-            Remove-AppSecConfiguration -ConfigID $PD.NewConfig.ConfigId @CommonParams 
+            $PD.NewConfig | Remove-AppSecConfiguration @CommonParams 
         }
     } 
 }
@@ -1492,6 +1553,22 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     ]
 }
 "@
+        $TestActivationJSON = @"
+{
+  "action": "ACTIVATE",
+  "activationConfigs": [
+    {
+      "configId": 12345,
+      "configVersion": 4
+    }
+  ],
+  "network": "STAGING",
+  "note": "Test",
+  "notificationEmails": [
+    "mail@example.com"
+  ]
+}
+"@
         $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.AppSec"
         $PD = @{}
     }
@@ -1500,9 +1577,9 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     #                   Activations                  
     #-------------------------------------------------
 
-    Context 'New-AppSecActivation' {
+    Context 'New-AppSecActivation, by parameter' {
         It 'activates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-AppSecActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1510,10 +1587,21 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $Activate.activationId | Should -Not -BeNullOrEmpty
         }
     }
+    
+    Context 'New-AppSecActivation by body' {
+        It 'activates correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-AppSecActivation.json"
+                return $Response | ConvertFrom-Json
+            }
+            $Activate = New-AppSecActivation -Body $TestActivationJSON
+            $Activate.activationId | Should -Not -BeNullOrEmpty
+        }
+    }
 
     Context 'Get-AppSecActivationHistory' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecActivationHistory.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1524,7 +1612,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecActivationRequestStatus' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecActivationRequestStatus.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1535,7 +1623,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecActivationStatus' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecActivationStatus.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1550,7 +1638,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecSubscribers' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecSubscribers.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1561,7 +1649,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'New-AppSecSubscription' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-AppSecSubscription.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1571,7 +1659,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Remove-AppSecSubscription' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-AppSecSubscription.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1585,7 +1673,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Get-AppSecPolicyTuningRecommendations' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecPolicyTuningRecommendations.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1596,7 +1684,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Set-AppSecPolicyTuningRecommendations' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecPolicyTuningRecommendations.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1606,7 +1694,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecPolicyAttackGroupRecommendations' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecPolicyAttackGroupRecommendations.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1617,7 +1705,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecPolicyRuleRecommendations' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecPolicyRuleRecommendations.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1632,7 +1720,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecDiscoveredAPI, all' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecDiscoveredAPI_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1643,7 +1731,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Get-AppSecDiscoveredAPI, single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecDiscoveredAPI.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1654,7 +1742,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Hide-AppSecDiscoveredAPI' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Hide-AppSecDiscoveredAPI.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1665,7 +1753,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Show-AppSecDiscoveredAPI' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Show-AppSecDiscoveredAPI.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1676,7 +1764,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecDiscoveredApiEndpoints' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecDiscoveredApiEndpoints.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1691,7 +1779,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecHostnameMatchTargets' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecHostnameMatchTargets.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1707,7 +1795,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecHostnameCoverage' {
         It 'gets a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecHostnameCoverage.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1722,7 +1810,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecBypassNetworkLists' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecBypassNetworkLists.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1733,7 +1821,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Set-AppSecBypassNetworkLists' {
         It 'updates successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecBypassNetworkLists.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1744,7 +1832,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecPolicyBypassNetworkLists' {
         It 'returns a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecPolicyBypassNetworkLists.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1755,7 +1843,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Set-AppSecPolicyBypassNetworkLists' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecPolicyBypassNetworkLists.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1770,7 +1858,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Get-AppSecPolicySelectedHostnames' {
         It 'gets a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecPolicySelectedHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1781,7 +1869,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Add-AppSecPolicySelectedHostnames' {
         It 'adds a hostname successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Add-AppSecPolicySelectedHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1792,7 +1880,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Set-AppSecPolicySelectedHostnames' {
         It 'adds a hostname successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecPolicySelectedHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1803,7 +1891,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
 
     Context 'Remove-AppSecPolicySelectedHostnames' {
         It 'removes the correct hostname' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-AppSecPolicySelectedHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1818,7 +1906,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Get-AppSecEvaluationHostnames' {
         It 'gets a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecEvaluationHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1829,7 +1917,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Set-AppSecEvaluationHostnames' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecEvaluationHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1840,7 +1928,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Protect-AppSecEvaluationHostnames' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Protect-AppSecEvaluationHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1851,7 +1939,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Get-AppSecPolicyEvaluationHostnames' {
         It 'gets a list' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-AppSecPolicyEvaluationHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1862,7 +1950,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Set-AppSecPolicyEvaluationHostnames' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecPolicyEvaluationHostnames.json"
                 return $Response | ConvertFrom-Json
             }
@@ -1873,7 +1961,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     
     Context 'Protect-AppSecPolicyEvaluationHostnames' {
         It 'updates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.AppSec -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Protect-AppSecPolicyEvaluationHostnames.json"
                 return $Response | ConvertFrom-Json
             }

@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Unsafe Akamai.SIEM Tests' {
     
     BeforeAll {
@@ -20,7 +27,7 @@ Describe 'Unsafe Akamai.SIEM Tests' {
 
     Context 'Format-SIEMEvent' {
         It 'Returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.SIEM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.SIEM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Format-SIEMEvent.json"
                 return $Response | ConvertFrom-Json
             }
@@ -35,7 +42,7 @@ Describe 'Unsafe Akamai.SIEM Tests' {
 
     Context 'Get-SIEMData - Parameter Set fromto' {
         It 'Returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.SIEM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.SIEM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-SIEMData.json"
                 return $Response | ConvertFrom-Json
             }
@@ -46,7 +53,7 @@ Describe 'Unsafe Akamai.SIEM Tests' {
 
     Context 'Get-SIEMData - Parameter Set offset' {
         It 'Returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.SIEM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.SIEM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-SIEMData.json"
                 return $Response | ConvertFrom-Json
             }

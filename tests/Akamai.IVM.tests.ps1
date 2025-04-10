@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.IVM Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -193,7 +200,7 @@ Describe 'Unsafe Akamai.IVM Tests' {
 
     Context 'Get-IVMErrorDetails' {
         It 'gets error details' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IVM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMErrorDetails.json"
                 return $Response | ConvertFrom-Json
             }
@@ -204,7 +211,7 @@ Describe 'Unsafe Akamai.IVM Tests' {
 
     Context 'Get-IVMLogDetails' {
         It 'gets log details' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IVM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMLogDetails.json"
                 return $Response | ConvertFrom-Json
             }
@@ -215,7 +222,7 @@ Describe 'Unsafe Akamai.IVM Tests' {
     
     Context 'Get-IVMImage, All' {
         It 'lists images' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IVM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMImage_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -226,7 +233,7 @@ Describe 'Unsafe Akamai.IVM Tests' {
     
     Context 'Get-IVMImage, single' {
         It 'retrieves a single image' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.IVM -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IVM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IVMImage.json"
                 return $Response | ConvertFrom-Json
             }

@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Cloud Access Manager Tests' {
     
     BeforeAll { 
@@ -114,7 +121,7 @@ Describe 'Unsafe Cloud Access Manager Tests' {
     }
     Context 'New-CloudAccessKey by param' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudAccessManager -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudAccessManager -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudAccessKey.json"
                 return $Response | ConvertFrom-Json
             }
@@ -125,7 +132,7 @@ Describe 'Unsafe Cloud Access Manager Tests' {
 
     Context 'New-CloudAccessKey by pipeline' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudAccessManager -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudAccessManager -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudAccessKey.json"
                 return $Response | ConvertFrom-Json
             }
@@ -136,7 +143,7 @@ Describe 'Unsafe Cloud Access Manager Tests' {
 
     Context 'Get-CloudAccessKeyCreateRequest' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudAccessManager -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudAccessManager -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudAccessKeyCreateRequest.json"
                 return $Response | ConvertFrom-Json
             }
@@ -147,7 +154,7 @@ Describe 'Unsafe Cloud Access Manager Tests' {
 
     Context 'New-CloudAccessKeyVersion' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudAccessManager -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudAccessManager -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudAccessKeyVersion.json"
                 return $Response | ConvertFrom-Json
             }
@@ -158,7 +165,7 @@ Describe 'Unsafe Cloud Access Manager Tests' {
 
     Context 'Remove-CloudAccessKeyVersion' {
         It 'completes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CloudAccessManager -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudAccessManager -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-CloudAccessKeyVersion.json"
                 return $Response | ConvertFrom-Json
             }

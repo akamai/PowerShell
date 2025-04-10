@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Unsafe Akamai.Purge Tests' {
     
     BeforeAll { 
@@ -13,7 +20,7 @@ Describe 'Unsafe Akamai.Purge Tests' {
 
     Context 'Clear-AkamaiCache - Invalidate - Parameter Set cpcode' {
         It 'Clear-AkamaiCache (cpcode) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Purge -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }
@@ -24,7 +31,7 @@ Describe 'Unsafe Akamai.Purge Tests' {
 
     Context 'Clear-AkamaiCache - Invalidate - Parameter Set tag' {
         It 'Clear-AkamaiCache (tag) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Purge -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }
@@ -35,7 +42,7 @@ Describe 'Unsafe Akamai.Purge Tests' {
 
     Context 'Clear-AkamaiCache - Invalidate - Parameter Set url' {
         It 'Clear-AkamaiCache (url) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Purge -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }
@@ -46,7 +53,7 @@ Describe 'Unsafe Akamai.Purge Tests' {
 
     Context 'Clear-AkamaiCache - Delete - Parameter Set cpcode' {
         It 'Clear-AkamaiCache (cpcode) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Purge -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }
@@ -57,7 +64,7 @@ Describe 'Unsafe Akamai.Purge Tests' {
 
     Context 'Clear-AkamaiCache - Delete - Parameter Set tag' {
         It 'Clear-AkamaiCache (tag) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Purge -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }
@@ -68,7 +75,7 @@ Describe 'Unsafe Akamai.Purge Tests' {
 
     Context 'Clear-AkamaiCache - Delete - Parameter Set url' {
         It 'Clear-AkamaiCache (url) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Purge -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }

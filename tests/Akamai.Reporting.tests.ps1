@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Reporting Tests' {
     BeforeAll { 
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -51,7 +58,7 @@ Describe 'Unsafe Akamai.Reporting Tests' {
 
     Context 'Get-Report' {
         It 'Gets some data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Reporting -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Reporting -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-Report.json"
                 return $Response | ConvertFrom-Json
             }
@@ -62,7 +69,7 @@ Describe 'Unsafe Akamai.Reporting Tests' {
 
     Context 'New-Report' {
         It 'Gets some data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Reporting -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Reporting -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-Report.json"
                 return $Response | ConvertFrom-Json
             }

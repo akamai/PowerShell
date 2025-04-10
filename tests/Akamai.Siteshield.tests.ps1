@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Siteshield Tests' {
     
     BeforeAll {
@@ -46,7 +53,7 @@ Describe 'Unsafe Akamai.Siteshield Tests' {
 
     Context 'Confirm-SiteShieldMap' {
         It 'Returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Siteshield -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Siteshield -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Confirm-SiteShieldMap.json"
                 return $Response | ConvertFrom-Json
             }

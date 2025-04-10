@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Edgeworkers Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
@@ -38,8 +45,7 @@ Describe 'Safe Akamai.Edgeworkers Tests' {
         
         $Existing = Get-EdgeWorker -EdgeWorkerName $TestEdgeworkerName @CommonParams
         if ($Existing) {
-            Write-Error "Test EdgeWorker already exists"
-            return
+            throw "Test EdgeWorker already exists"
         }
 
         $PD = @{}
@@ -231,7 +237,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     }
     Context 'New-EdgeWorkerActivation' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeWorkerActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -242,7 +248,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Get-EdgeWorkerActivation, all' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerActivation_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -253,7 +259,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Get-EdgeWorkerActivation, single' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -264,7 +270,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Remove-EdgeworkerActivation' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-EdgeworkerActivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -275,7 +281,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'New-EdgeWorkerDeactivation' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeWorkerDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -286,7 +292,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Get-EdgeWorkerDeactivation, all' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerDeactivation_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -297,7 +303,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Get-EdgeWorkerDeactivation' {
         It 'single returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
@@ -308,7 +314,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Get-EdgeWorkerProperties' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerProperties.json"
                 return $Response | ConvertFrom-Json
             }
@@ -319,7 +325,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'New-EdgeWorkerAuthToken' {
         It 'returns valid response' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeWorkerAuthToken.json"
                 return $Response | ConvertFrom-Json
             }
@@ -330,7 +336,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
 
     Context 'Get-EdgeWorkerRevision, all' {
         It 'returns a list of revisions' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerRevision_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -341,7 +347,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     
     Context 'Get-EdgeWorkerRevision, single' {
         It 'returns the correct object' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerRevision.json"
                 return $Response | ConvertFrom-Json
             }
@@ -352,7 +358,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     
     Context 'Get-EdgeWorkerRevisionBom' {
         It 'returns the correct object' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeWorkerRevisionBom.json"
                 return $Response | ConvertFrom-Json
             }
@@ -364,7 +370,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     
     Context 'Compare-EdgeWorkerRevision' {
         It 'returns the correct object' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Compare-EdgeWorkerRevision.json"
                 return $Response | ConvertFrom-Json
             }
@@ -375,7 +381,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     
     Context 'Set-EdgeWorkerRevision, pin' {
         It 'pins correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-EdgeWorkerRevision.json"
                 return $Response | ConvertFrom-Json
             }
@@ -386,7 +392,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     
     Context 'Set-EdgeWorkerRevision, unpin' {
         It 'unpins correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-EdgeWorkerRevision_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -397,7 +403,7 @@ Describe 'Unsafe Akamai.Edgeworkers Tests' {
     
     Context 'New-EdgeWorkerRevisionActivation' {
         It 'activates correctly' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeWorkers -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeWorkers -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeWorkerRevisionActivation.json"
                 return $Response | ConvertFrom-Json
             }

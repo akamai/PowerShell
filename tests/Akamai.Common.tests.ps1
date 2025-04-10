@@ -1,8 +1,23 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Shared Tests' {
     
     BeforeAll { 
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+        # Import additional modules
+        Import-Module $PSScriptRoot/../src/Akamai.APIDefinitions/Akamai.APIDefinitions.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.AppSec/Akamai.AppSec.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.ClientLists/Akamai.ClientLists.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.EdgeWorkers/Akamai.EdgeWorkers.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.METS/Akamai.METS.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.MOKS/Akamai.MOKS.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.Property/Akamai.Property.psd1 -Force
+        
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
@@ -16,6 +31,8 @@ Describe 'Safe Shared Tests' {
         $TestSanitisedQuery = 'one=1&three=3'
         $TestUnsanitizedFileName = 'This\looks!Kinda<"bad">.txt'
         $TestSanitizedFileName = 'This%5Clooks!Kinda%3C%22bad%22%3E.txt'
+        $TestContract = $env:PesterContractID
+        $TestGroupID = $env:PesterGroupID
         $PD = @{}
     }
 
@@ -23,13 +40,6 @@ Describe 'Safe Shared Tests' {
         It 'decodes successfully' {
             $PD.Bas64Decode = ConvertFrom-Base64 -EncodedString $TestBase64EncodedString
             $PD.Bas64Decode | Should -Be $TestClearTextString
-        }
-    }
-
-    Context 'Convert-URL' {
-        It 'decodes successfully' {
-            $PD.URLDecode = Convert-URL -EncodedString $TestURLEncodedString
-            $PD.URLDecode | Should -Be $TestClearTextString
         }
     }
 
@@ -82,13 +92,150 @@ Describe 'Safe Shared Tests' {
         }
     }
 
-    Context 'Get-AkamaiCredentials from edgerc' {
-        It 'parses correctly' {
-            $PD.Auth = Get-AkamaiCredentials @CommonParams
-            $PD.Auth.client_token | Should -Not -BeNullOrEmpty
-            $PD.Auth.access_token | Should -Not -BeNullOrEmpty
-            $PD.Auth.client_secret | Should -Not -BeNullOrEmpty
-            $PD.Auth.host | Should -Not -BeNullOrEmpty
+    Context 'Get-AkamaiCredentials' -Tag 'Get-AkamaiCredentials' {
+        Context 'Get-AkamaiCredentials from edgerc' {
+            BeforeAll {
+                # Record previous env vars
+                $PreviousHost = $Env:AKAMAI_HOST
+                $PreviousClientToken = $Env:AKAMAI_CLIENT_TOKEN
+                $PreviousAccessToken = $Env:AKAMAI_ACCESS_TOKEN
+                $PreviousClientSecret = $Env:AKAMAI_CLIENT_SECRET
+                $PreviousAccountSwitchKey = $env:AKAMAI_ACCOUNT_KEY
+                # Set edgerc file
+                $TestEdgeRCFile = New-Item -ItemType File -Path 'TestDrive:/.edgerc'
+                $TestHost = 'akab-s1xcwas8oesoh43d-6rb2dj3zcusyr9zf.luna.akamaiapis.net'
+                $TestClientSecret = 'tQi7/x5DbFoZG7Ojv62AQ2U0iBOEpzTlHn07KeYpyZs='
+                $TestAccessToken = 'akab-rba8e9xa19gxbttd-rtyjm0rhcynqfslf'
+                $TestClientToken = 'akab-fp5z3sp714x155hr-mv7hrcu7j4iohgl9'
+                $TestASK = '1-2A345B:1-2RBL'
+                @"
+[not-default]
+client_secret = $TestClientSecret
+host = $TestHost
+access_token = $TestAccessToken
+client_token = $TestClientToken
+account_key = $TestASK
+"@ | Out-File $TestEdgeRCFile.FullName
+                $TestParams = @{
+                    EdgeRCFile = $TestEdgeRCFile
+                    Section    = 'not-default'
+                }
+            }
+            It 'reads an edgerc file correctly' {
+                $PD.Auth = Get-AkamaiCredentials @TestParams
+                $PD.Auth.client_token | Should -Be $TestClientToken
+                $PD.Auth.access_token | Should -Be $TestAccessToken
+                $PD.Auth.client_secret | Should -Be $TestClientSecret
+                $PD.Auth.host | Should -Be $TestHost
+                $PD.Auth.account_key | Should -Be $TestASK
+            }
+            It 'overrides the account switch key when provided' {
+                $OverrideASK = Get-AkamaiCredentials @TestParams -AccountSwitchKey 'Pester'
+                $OverrideASK.client_token | Should -Be $TestClientToken
+                $OverrideASK.access_token | Should -Be $TestAccessToken
+                $OverrideASK.client_secret | Should -Be $TestClientSecret
+                $OverrideASK.host | Should -Be $TestHost
+                $OverrideASK.account_key | Should -Be 'Pester'
+            }
+            It 'does not contain an account switch key when input is set to none' {
+                $NoAsk = Get-AkamaiCredentials -AccountSwitchKey 'none' @TestParams
+                $NoAsk.client_token | Should -Be $TestClientToken
+                $NoAsk.access_token | Should -Be $TestAccessToken
+                $NoAsk.client_secret | Should -Be $TestClientSecret
+                $NoAsk.host | Should -Be $TestHost
+                $NoAsk.account_key | Should -BeNullOrEmpty
+            }
+        }
+    
+        Context 'Get-AkamaiCredentials from environment, default section' {
+            It 'parses correctly' {
+                $env:AKAMAI_HOST = 'env-host'
+                $env:AKAMAI_CLIENT_TOKEN = 'env-client_token'
+                $env:AKAMAI_ACCESS_TOKEN = 'env-access_token'
+                $env:AKAMAI_CLIENT_SECRET = 'env-client_secret'
+                $env:AKAMAI_ACCOUNT_KEY = 'env-account_key'
+                $PD.DefaultEnvAuth = Get-AkamaiCredentials
+                $PD.DefaultEnvAuth.client_token | Should -Be 'env-client_token'
+                $PD.DefaultEnvAuth.access_token | Should -Be 'env-access_token'
+                $PD.DefaultEnvAuth.client_secret | Should -Be 'env-client_secret'
+                $PD.DefaultEnvAuth.host | Should -Be 'env-host'
+                $PD.DefaultEnvAuth.account_key | Should -Be 'env-account_key'
+            }
+            It 'overrides an account switch key when provided' {
+                $env:AKAMAI_HOST = 'env-host'
+                $env:AKAMAI_CLIENT_TOKEN = 'env-client_token'
+                $env:AKAMAI_ACCESS_TOKEN = 'env-access_token'
+                $env:AKAMAI_CLIENT_SECRET = 'env-client_secret'
+                $env:AKAMAI_ACCOUNT_KEY = 'env-account_key'
+                $PD.DefaultEnvAuth = Get-AkamaiCredentials -AccountSwitchKey 'provided-ask'
+                $PD.DefaultEnvAuth.client_token | Should -Be 'env-client_token'
+                $PD.DefaultEnvAuth.access_token | Should -Be 'env-access_token'
+                $PD.DefaultEnvAuth.client_secret | Should -Be 'env-client_secret'
+                $PD.DefaultEnvAuth.host | Should -Be 'env-host'
+                $PD.DefaultEnvAuth.account_key | Should -Be 'provided-ask'
+            }
+        }
+    
+        Context 'Get-AkamaiCredentials from environment, custom section' {
+            It 'parses correctly' {
+                $env:AKAMAI_PESTER_HOST = 'customenv-host'
+                $env:AKAMAI_PESTER_CLIENT_TOKEN = 'customenv-client_token'
+                $env:AKAMAI_PESTER_ACCESS_TOKEN = 'customenv-access_token'
+                $env:AKAMAI_PESTER_CLIENT_SECRET = 'customenv-client_secret'
+                $env:AKAMAI_PESTER_ACCOUNT_KEY = 'customenv-account_key'
+                $PD.CustomEnvAuth = Get-AkamaiCredentials -Section Pester
+                $PD.CustomEnvAuth.client_token | Should -Be 'customenv-client_token'
+                $PD.CustomEnvAuth.access_token | Should -Be 'customenv-access_token'
+                $PD.CustomEnvAuth.client_secret | Should -Be 'customenv-client_secret'
+                $PD.CustomEnvAuth.host | Should -Be 'customenv-host'
+                $PD.CustomEnvAuth.account_key | Should -Be 'customenv-account_key'
+            }
+            It 'overrides an account switch key when provided' {
+                $env:AKAMAI_PESTER_HOST = 'customenv-host'
+                $env:AKAMAI_PESTER_CLIENT_TOKEN = 'customenv-client_token'
+                $env:AKAMAI_PESTER_ACCESS_TOKEN = 'customenv-access_token'
+                $env:AKAMAI_PESTER_CLIENT_SECRET = 'customenv-client_secret'
+                $env:AKAMAI_PESTER_ACCOUNT_KEY = 'provided-ask'
+                $PD.CustomEnvAuth = Get-AkamaiCredentials -Section Pester
+                $PD.CustomEnvAuth.client_token | Should -Be 'customenv-client_token'
+                $PD.CustomEnvAuth.access_token | Should -Be 'customenv-access_token'
+                $PD.CustomEnvAuth.client_secret | Should -Be 'customenv-client_secret'
+                $PD.CustomEnvAuth.host | Should -Be 'customenv-host'
+                $PD.CustomEnvAuth.account_key | Should -Be 'provided-ask'
+            }
+        }
+    
+        Context 'Get-AkamaiCredentials from session' {
+            It 'parses correctly' {
+                $TestParams = @{
+                    'ClientSecret'      = 'session-client_secret'
+                    'HostName'          = 'session-host'
+                    'ClientAccessToken' = 'session-access_token'
+                    'ClientToken'       = 'session-client_token'
+                    'AccountSwitchKey'  = 'session-account_key'
+                }
+                New-AkamaiSession @TestParams
+                $PD.SessionAuth = Get-AkamaiCredentials
+                $PD.SessionAuth.client_token | Should -Be 'session-client_token'
+                $PD.SessionAuth.access_token | Should -Be 'session-access_token'
+                $PD.SessionAuth.client_secret | Should -Be 'session-client_secret'
+                $PD.SessionAuth.host | Should -Be 'session-host'
+                $PD.SessionAuth.account_key | Should -Be 'session-account_key'
+            }
+        }
+
+        AfterAll {
+            Remove-AkamaiSession
+            $env:AKAMAI_HOST = $PreviousHost
+            $env:AKAMAI_CLIENT_TOKEN = $PreviousClientToken
+            $env:AKAMAI_ACCESS_TOKEN = $PreviousAccessToken
+            $env:AKAMAI_CLIENT_SECRET = $PreviousClientSecret
+            $env:AKAMAI_ACCOUNT_KEY = $PreviousAccountSwitchKey
+            $env:AKAMAI_PESTER_HOST = $null
+            $env:AKAMAI_PESTER_CLIENT_TOKEN = $null
+            $env:AKAMAI_PESTER_ACCESS_TOKEN = $null
+            $env:AKAMAI_PESTER_CLIENT_SECRET = $null
+            $env:AKAMAI_PESTER_ACCOUNT_KEY = $null
         }
     }
 
@@ -96,45 +243,6 @@ Describe 'Safe Shared Tests' {
         It 'prints nothing' {
             $PD.AuthErrors = Confirm-Auth -Auth $PD.Auth
             $PD.AuthErrors | Should -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-AkamaiCredentials from environment, default section' {
-        It 'parses correctly' {
-            $env:AKAMAI_HOST = 'env-host'
-            $env:AKAMAI_CLIENT_TOKEN = 'env-client_token'
-            $env:AKAMAI_ACCESS_TOKEN = 'env-access_token'
-            $env:AKAMAI_CLIENT_SECRET = 'env-client_secret'
-            $PD.DefaultEnvAuth = Get-AkamaiCredentials
-            $PD.DefaultEnvAuth.client_token | Should -Be 'env-client_token'
-            $PD.DefaultEnvAuth.access_token | Should -Be 'env-access_token'
-            $PD.DefaultEnvAuth.client_secret | Should -Be 'env-client_secret'
-            $PD.DefaultEnvAuth.host | Should -Be 'env-host'
-        }
-    }
-
-    Context 'Get-AkamaiCredentials from environment, custom section' {
-        $env:AKAMAI_CUSTOM_HOST = 'customenv-host'
-        It 'parses correctly' {
-            $env:AKAMAI_CUSTOM_CLIENT_TOKEN = 'customenv-client_token'
-            $env:AKAMAI_CUSTOM_ACCESS_TOKEN = 'customenv-access_token'
-            $env:AKAMAI_CUSTOM_CLIENT_SECRET = 'customenv-client_secret'
-            $PD.CustomEnvAuth = Get-AkamaiCredentials -Section Custom
-            $PD.CustomEnvAuth.client_token | Should -Be 'customenv-client_token'
-            $PD.CustomEnvAuth.access_token | Should -Be 'customenv-access_token'
-            $PD.CustomEnvAuth.client_secret | Should -Be 'customenv-client_secret'
-            $PD.CustomEnvAuth.host | Should -Be 'customenv-host'
-        }
-    }
-
-    Context 'Get-AkamaiCredentials from session' {
-        It 'parses correctly' {
-            New-AkamaiSession -ClientSecret 'session-client_secret' -HostName 'session-host' -ClientAccessToken 'session-access_token' -ClientToken 'session-client_token'
-            $PD.SessionAuth = Get-AkamaiCredentials
-            $PD.SessionAuth.client_token | Should -Be 'session-client_token'
-            $PD.SessionAuth.access_token | Should -Be 'session-access_token'
-            $PD.SessionAuth.client_secret | Should -Be 'session-client_secret'
-            $PD.SessionAuth.host | Should -Be 'session-host'
         }
     }
 
@@ -187,20 +295,588 @@ Describe 'Safe Shared Tests' {
         }
     }
 
+    Context 'New-AkamaiOptions' -Tag 'New-AkamaiOptions' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+        }
+
+        It 'should create the options file at the specified location' {
+            New-AkamaiOptions
+            $env:AkamaiOptionsPath | Should -Exist
+        }
+
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+        }
+    }
+
+    Context 'Get-AkamaiOptions' -Tag 'Get-AkamaiOptions' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+        }
+        It 'returns options as expected' {
+            Get-AkamaiOptions
+            $AkamaiOptions.EnableErrorRetries | Should -BeOfType bool
+            $AkamaiOptions.EnableRateLimitRetries | Should -BeOfType bool
+            $AkamaiOptions.DisablePapiPrefixes | Should -BeOfType bool
+            $AkamaiOptions.EnableRateLimitWarnings | Should -BeOfType bool
+            $AkamaiOptions.InitialErrorWait | Should -BeOfType int
+            $AkamaiOptions.MaxErrorRetries | Should -BeOfType int
+            $AkamaiOptions.RateLimitWarningPercentage | Should -BeOfType int
+            $AkamaiOptions.EnableRecommendedActions | Should -BeOfType bool
+            $AkamaiOptions.EnableDataCache | Should -BeOfType bool
+        }
+        It 'should exist at default path' {
+            $env:AkamaiOptionsPath | Should -Exist
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+        }
+    }
+
+    Context 'Set-AkamaiOptions' -Tag 'Set-AkamaiOptions' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+        }
+        It 'should update correctly' {
+            $TestParams = @{
+                EnableErrorRetries         = $true
+                InitialErrorWait           = 2
+                MaxErrorRetries            = 10
+                EnableRateLimitRetries     = $true
+                DisablePAPIPrefixes        = $true
+                EnableRateLimitWarnings    = $true
+                RateLimitWarningPercentage = 12
+                EnableDataCache            = $true
+                EnableRecommendedActions   = $true
+            }
+
+            # Check defaults
+            $AkamaiOptions.EnableErrorRetries | Should -be $False
+            $AkamaiOptions.InitialErrorWait | Should -be 1
+            $AkamaiOptions.MaxErrorRetries | Should -be 5
+            $AkamaiOptions.EnableRateLimitRetries | Should -Be $False
+            $AkamaiOptions.DisablePapiPrefixes | Should -Be $False
+            $AkamaiOptions.EnableRateLimitWarnings | Should -Be $False
+            $AkamaiOptions.RateLimitWarningPercentage | Should -Be 90
+            $AkamaiOptions.EnableDataCache | Should -Be $False
+            $AkamaiOptions.EnableRecommendedActions | Should -Be $False
+
+            # Update
+            Set-AkamaiOptions @TestParams | Out-Null
+
+            # Check new values
+            $AkamaiOptions.EnableErrorRetries | Should -be $true
+            $AkamaiOptions.InitialErrorWait | Should -be 2
+            $AkamaiOptions.MaxErrorRetries | Should -be 10
+            $AkamaiOptions.EnableRateLimitRetries | Should -Be $true
+            $AkamaiOptions.DisablePapiPrefixes | Should -Be $true
+            $AkamaiOptions.EnableRateLimitWarnings | Should -Be $true
+            $AkamaiOptions.RateLimitWarningPercentage | Should -Be 12
+            $AkamaiOptions.EnableDataCache | Should -Be $true
+            $AkamaiOptions.EnableRecommendedActions | Should -Be $true
+        }
+        It 'should create the data cache' {
+            $SetOptions = Set-AkamaiOptions -EnableDataCache $true
+            $SetOptions.EnableDataCache | Should -Be $true
+            $AkamaiDataCache | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.APIDefinitions | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.AppSec | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.ClientLists | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.METS | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.MOKS | Should -Not -BeNullOrEmpty
+            $AkamaiDataCache.Property | Should -Not -BeNullOrEmpty
+        }
+        It 'should respond with rate limit warnings' {
+            Set-AkamaiOptions -EnableRateLimitWarnings $true -RateLimitWarningPercentage 0 | Out-Null
+            $AkamaiOptions.RateLimitWarningPercentage | Should -Be 0
+            $AkamaiOptions.EnableRateLimitWarnings | Should -Be $true
+            Get-PropertyContract @CommonParams -WarningAction Continue -WarningVariable RateWarning
+            $RateWarning | Should -BeLike "Akamai Rate Limit used = *"
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+        }
+    }
+
+    Context 'Cache operations' {
+        Context 'New-AkamaiDataCache' -Tag 'New-AkamaiDataCache' {
+            It 'populates the cache object correctly' {
+                New-AkamaiDataCache
+                $AkamaiDataCache | Should -Not -BeNullOrEmpty
+                'APIEndpoints' | Should -BeIn $AkamaiDataCache.APIDefinitions.Keys
+                'Configs' | Should -BeIn $AkamaiDataCache.AppSec.Keys
+                'Lists' | Should -BeIn $AkamaiDataCache.ClientLists.Keys
+                'EdgeWorkers' | Should -BeIn $AkamaiDataCache.EdgeWorkers.Keys
+                'CASets' | Should -BeIn $AkamaiDataCache.METS.Keys
+                'ClientCerts' | Should -BeIn $AkamaiDataCache.MOKS.Keys
+                'Properties' | Should -BeIn $AkamaiDataCache.Property.Keys
+                'Includes' | Should -BeIn $AkamaiDataCache.Property.Keys
+            }
+        }
+        Context 'Clear-AkamaiDataCache' -Tag 'Clear-AkamaiDataCache' {
+            BeforeAll {
+                $Modules = Get-Module
+                Write-Host "Clear modules = $Modules"
+                # Pull assets before enabling data cache
+                $AppSecConfigs = Get-AppSecConfiguration @CommonParams
+                $ClientLists = Get-ClientList @CommonParams
+                $EdgeWorkers = Get-EdgeWorker @CommonParams
+                $METSCASets = Get-METSCASet @CommonParams
+                $MOKSClientCerts = Get-MOKSClientCert @CommonParams
+                $Includes = Get-PropertyInclude -GroupID $TestGroupID -ContractID $TestContract @CommonParams
+                $Properties = Get-Property -GroupID $TestGroupID -ContractID $TestContract @CommonParams
+                $APIEndpoints = Get-APIEndpoints -PageSize 10 @CommonParams
+    
+                Clear-AkamaiDataCache
+                $PreviousOptionsPath = $env:AkamaiOptionsPath
+                $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+                Set-AkamaiOptions -EnableDataCache $true
+            }
+
+            It 'populates the cache from Get- commands' {
+                $Properties = Get-Property -GroupID $TestGroupID -ContractID $TestContract @CommonParams
+                $EdgeWorkers = Get-EdgeWorker @CommonParams
+                $AppSecConfigs = Get-AppSecConfiguration @CommonParams
+
+                $AkamaiDataCache.Property.Properties | Should -BeOfType Hashtable
+                $AkamaiDataCache.Property.Properties.Keys.count | Should -BeGreaterThan 0
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers | Should -BeOfType Hashtable
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.Keys.count | Should -BeGreaterThan 0
+                $AkamaiDataCache.AppSec.Configs | Should -BeOfType Hashtable
+                $AkamaiDataCache.AppSec.Configs.Keys.count | Should -BeGreaterThan 0
+            }
+            It 'clears the entire data cache' {
+                Clear-AkamaiDataCache
+                $AkamaiDataCache.Property.Properties.Keys.count | Should -Be 0
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.Keys.count | Should -Be 0
+                $AkamaiDataCache.AppSec.Configs.Keys.count | Should -Be 0
+            }
+
+            ## API Definitions
+            It 'clears an api definition from the cache by name' {
+                # Populate the cache with a single item
+                Get-APIEndpointVersion -APIEndpointName $APIEndpoints[0].apiEndPointName -VersionNumber latest @CommonParams
+                $EndpointName = $AkamaiDataCache.APIDefinitions.APIEndpoints.Keys | Select-Object -First 1
+                $EndpointID = $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName.APIEndpointID
+
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName.APIEndpointID | Should -Be $EndpointID
+                
+                Clear-AkamaiDataCache -APIEndpointName $EndpointName
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName | Should -BeNullOrEmpty
+            }
+            It 'clears an api definition from the cache by ID' {
+                # Populate the cache with a single item
+                Get-APIEndpointVersion -APIEndpointName $APIEndpoints[0].apiEndPointName -VersionNumber latest @CommonParams
+                $EndpointName = $AkamaiDataCache.APIDefinitions.APIEndpoints.Keys | Select-Object -First 1
+                $EndpointID = $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName.APIEndpointID
+
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName.APIEndpointID | Should -Be $EndpointID
+                
+                Clear-AkamaiDataCache -APIEndpointID $EndpointID
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.$EndpointName | Should -BeNullOrEmpty
+            }
+
+            ## AppSec
+            It 'clears an AAP Config from the cache by name' {
+                # Populate the cache with a single item
+                Get-AppSecConfiguration -ConfigName $AppSecConfigs[0].Name @CommonParams
+                $ConfigName = $AkamaiDataCache.AppSec.Configs.Keys | Select-Object -First 1
+                $ConfigID = $AkamaiDataCache.AppSec.Configs.$ConfigName.ConfigID
+
+                $AkamaiDataCache.AppSec.Configs.$ConfigName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.ConfigID | Should -Be $ConfigID
+                
+                Clear-AkamaiDataCache -AppSecConfigName $ConfigName
+                $AkamaiDataCache.AppSec.Configs.$ConfigName | Should -BeNullOrEmpty
+            }
+            It 'clears an AAP Config from the cache by ID' {
+                # Populate the cache with a single item
+                Get-AppSecConfiguration -ConfigName $AppSecConfigs[0].Name @CommonParams
+                $ConfigName = $AkamaiDataCache.AppSec.Configs.Keys | Select-Object -First 1
+                $ConfigID = $AkamaiDataCache.AppSec.Configs.$ConfigName.ConfigID
+
+                $AkamaiDataCache.AppSec.Configs.$ConfigName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.ConfigID | Should -Be $ConfigID
+                
+                Clear-AkamaiDataCache -AppSecConfigID $ConfigID
+                $AkamaiDataCache.AppSec.Configs.$ConfigName | Should -BeNullOrEmpty
+            }
+
+            It 'clears an AAP policy from the cache by name' {
+                # Populate the cache with a single item
+                $ConfigName = $AppSecConfigs[0].Name
+                Get-AppSecPolicy -ConfigName $ConfigName -VersionNumber latest @CommonParams
+                $PolicyName = $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.Keys | Select-Object -First 1
+                $PolicyID = $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName.PolicyID
+
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName.PolicyID | Should -Be $PolicyID
+                
+                Clear-AkamaiDataCache -AppSecConfigName $ConfigName -AppSecPolicyName $PolicyName
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName | Should -BeNullOrEmpty
+            }
+            It 'clears an AAP policy from the cache by ID' {
+                # Populate the cache with a single item
+                $ConfigName = $AppSecConfigs[0].Name
+                Get-AppSecPolicy -ConfigName $ConfigName -VersionNumber latest @CommonParams
+                $PolicyName = $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.Keys | Select-Object -First 1
+                $PolicyID = $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName.PolicyID
+
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName.PolicyID | Should -Be $PolicyID
+                
+                Clear-AkamaiDataCache -AppSecConfigName $ConfigName -AppSecPolicyID $PolicyID
+                $AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName | Should -BeNullOrEmpty
+            }
+
+            ## Client Lists
+            It 'clears a client list from the cache by name' {
+                # Populate the cache with a single item
+                Get-ClientList -Name $ClientLists[0].name @CommonParams
+                $ListName = $AkamaiDataCache.ClientLists.Lists.Keys | Select-Object -First 1
+                $ListID = $AkamaiDataCache.ClientLists.Lists.$ListName.ListID
+
+                $AkamaiDataCache.ClientLists.Lists.$ListName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.ClientLists.Lists.$ListName.ListID | Should -Be $ListID
+                
+                Clear-AkamaiDataCache -ClientListName $ListName
+                $AkamaiDataCache.ClientLists.Lists.$ListName | Should -BeNullOrEmpty
+            }
+            It 'clears a client list from the cache by ID' {
+                # Populate the cache with a single item
+                Get-ClientList -Name $ClientLists[0].name @CommonParams
+                $ListName = $AkamaiDataCache.ClientLists.Lists.Keys | Select-Object -First 1
+                $ListID = $AkamaiDataCache.ClientLists.Lists.$ListName.ListID
+
+                $AkamaiDataCache.ClientLists.Lists.$ListName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.ClientLists.Lists.$ListName.ListID | Should -Be $ListID
+                
+                Clear-AkamaiDataCache -ClientListID $ListID
+                $AkamaiDataCache.ClientLists.Lists.$ListName | Should -BeNullOrEmpty
+            }
+
+            ## EdgeWorkers
+            It 'clears an EdgeWorker from the cache by name' {
+                # Populate the cache with a single item
+                Get-EdgeWorker -EdgeWorkerName $EdgeWorkers[0].name @CommonParams
+                $EdgeWorkerName = $AkamaiDataCache.EdgeWorkers.EdgeWorkers.Keys | Select-Object -First 1
+                $EdgeWorkerID = $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName.EdgeWorkerID
+
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName.EdgeWorkerID | Should -Be $EdgeWorkerID
+                
+                Clear-AkamaiDataCache -EdgeWorkerName $EdgeWorkerName
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName | Should -BeNullOrEmpty
+            }
+            It 'clears an EdgeWorker from the cache by ID' {
+                # Populate the cache with a single item
+                Get-EdgeWorker -EdgeWorkerName $EdgeWorkers[0].name @CommonParams
+                $EdgeWorkerName = $AkamaiDataCache.EdgeWorkers.EdgeWorkers.Keys | Select-Object -First 1
+                $EdgeWorkerID = $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName.EdgeWorkerID
+
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName.EdgeWorkerID | Should -Be $EdgeWorkerID
+                
+                Clear-AkamaiDataCache -EdgeWorkerID $EdgeWorkerID
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.$EdgeWorkerName | Should -BeNullOrEmpty
+            }
+
+            ## METS
+            It 'clears a METS CA Set from the cache by name' {
+                # Populate the cache with a single item
+                Get-METSCASet -CASetName $METSCASets[0].caSetName @CommonParams
+                $CASetName = $AkamaiDataCache.METS.CASets.Keys | Select-Object -First 1
+                $CASetID = $AkamaiDataCache.METS.CASets.$CASetName.CASetID
+
+                $AkamaiDataCache.METS.CASets.$CASetName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.METS.CASets.$CASetName.CASetID | Should -Be $CASetID
+                
+                Clear-AkamaiDataCache -METSCaSetName $CASetName
+                $AkamaiDataCache.METS.CASets.$CASetName | Should -BeNullOrEmpty
+            }
+            It 'clears a METS CA Set from the cache by ID' {
+                # Populate the cache with a single item
+                Get-METSCASet -CASetName $METSCASets[0].caSetName @CommonParams
+                $CASetName = $AkamaiDataCache.METS.CASets.Keys | Select-Object -First 1
+                $CASetID = $AkamaiDataCache.METS.CASets.$CASetName.CASetID
+
+                $AkamaiDataCache.METS.CASets.$CASetName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.METS.CASets.$CASetName.CASetID | Should -Be $CASetID
+                
+                Clear-AkamaiDataCache -METSCaSetID $CASetID
+                $AkamaiDataCache.METS.CASets.$CASetName | Should -BeNullOrEmpty
+            }
+
+            ## MOKS
+            It 'clears a MOKS Client Cert from the cache by name' {
+                # Populate the cache with a single item
+                Get-MOKSClientCert -CertificateName $MOKSClientCerts[0].certificateName @CommonParams
+                $ClientCertName = $AkamaiDataCache.MOKS.ClientCerts.Keys | Select-Object -First 1
+                $ClientCertID = $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName.CertificateID
+
+                $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName.CertificateID | Should -Be $ClientCertID
+                
+                Clear-AkamaiDataCache -MOKSClientCertName $ClientCertName
+                $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName | Should -BeNullOrEmpty
+            }
+            It 'clears a MOKS Client Cert from the cache by ID' {
+                # Populate the cache with a single item
+                Get-MOKSClientCert -CertificateName $MOKSClientCerts[0].certificateName @CommonParams
+                $ClientCertName = $AkamaiDataCache.MOKS.ClientCerts.Keys | Select-Object -First 1
+                $ClientCertID = $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName.CertificateID
+
+                $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName.CertificateID | Should -Be $ClientCertID
+                
+                Clear-AkamaiDataCache -MOKSClientCertID $ClientCertID
+                $AkamaiDataCache.MOKS.ClientCerts.$ClientCertName | Should -BeNullOrEmpty
+            }
+
+            ## Property
+            It 'clears a property from the cache by name' {
+                # Populate the cache with a single item
+                Get-Property -PropertyName $Properties[0].propertyName @CommonParams
+                $PropertyName = $AkamaiDataCache.Property.Properties.Keys | Select-Object -First 1
+                $PropertyID = $AkamaiDataCache.Property.Properties.$PropertyName.propertyId
+
+                $AkamaiDataCache.Property.Properties.$PropertyName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.Property.Properties.$PropertyName.propertyID | Should -Be $PropertyID
+                
+                Clear-AkamaiDataCache -PropertyName $PropertyName
+                $AkamaiDataCache.Property.Properties.$PropertyName | Should -BeNullOrEmpty
+            }
+            It 'clears a property from the cache by ID' {
+                # Populate the cache with a single item
+                Get-Property -PropertyName $Properties[0].propertyName @CommonParams
+                $PropertyName = $AkamaiDataCache.Property.Properties.Keys | Select-Object -First 1
+                $PropertyID = $AkamaiDataCache.Property.Properties.$PropertyName.propertyId
+
+                $AkamaiDataCache.Property.Properties.$PropertyName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.Property.Properties.$PropertyName.propertyID | Should -Be $PropertyID
+                
+                Clear-AkamaiDataCache -PropertyID $PropertyID
+                $AkamaiDataCache.Property.Properties.$PropertyName | Should -BeNullOrEmpty
+            }
+            It 'clears an include from the cache by name' {
+                # Populate the cache with a single item
+                Get-PropertyInclude -IncludeName $Includes[0].includeName @CommonParams
+                $IncludeName = $AkamaiDataCache.Property.Includes.Keys | Select-Object -First 1
+                $IncludeID = $AkamaiDataCache.Property.Includes.$IncludeName.IncludeID
+
+                $AkamaiDataCache.Property.Includes.$IncludeName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.Property.Includes.$IncludeName.IncludeID | Should -Be $IncludeID
+                
+                Clear-AkamaiDataCache -IncludeName $IncludeName
+                $AkamaiDataCache.Property.Includes.$IncludeName | Should -BeNullOrEmpty
+            }
+            It 'clears an include from the cache by ID' {
+                # Populate the cache with a single item
+                Get-PropertyInclude -IncludeName $Includes[0].includeName @CommonParams
+                $IncludeName = $AkamaiDataCache.Property.Includes.Keys | Select-Object -First 1
+                $IncludeID = $AkamaiDataCache.Property.Includes.$IncludeName.IncludeID
+
+                $AkamaiDataCache.Property.Includes.$IncludeName | Should -Not -BeNullOrEmpty
+                $AkamaiDataCache.Property.Includes.$IncludeName.IncludeID | Should -Be $IncludeID
+                
+                Clear-AkamaiDataCache -IncludeID $IncludeID
+                $AkamaiDataCache.Property.Includes.$IncludeName | Should -BeNullOrEmpty
+            }
+
+            AfterAll {
+                Remove-Item -Path $env:AkamaiOptionsPath -Force
+                $env:AkamaiOptionsPath = $PreviousOptionsPath
+            }
+        }
+        
+
+        Context 'Set-AkamaiDataCache' -Tag 'Set-AkamaiDataCache' {
+            # API Endpoint
+            It 'adds an API endpoint to the cache' {
+                Set-AkamaiDataCache -APIEndpointName test -APIEndpointID 12345
+                $AkamaiDataCache.APIDefinitions.APIEndpoints.test.APIEndpointID | Should -Be 12345
+            }
+            # AppSec Config
+            It 'adds an appsec config to the cache' {
+                Set-AkamaiDataCache -AppSecConfigName test -AppSecConfigID 12345
+                $AkamaiDataCache.AppSec.Configs.test.ConfigID | Should -Be 12345
+            }
+            # AppSec Policy
+            It 'adds an appsec policy to the cache' {
+                Set-AkamaiDataCache -AppSecConfigName test -AppSecPolicyName test -AppSecPolicyID plc_12345
+                $AkamaiDataCache.AppSec.Configs.test.Policies.test.PolicyID | Should -Be plc_12345
+            }
+            # Client List
+            It 'adds a client list to the cache' {
+                Set-AkamaiDataCache -ClientListName test -ClientListID 12345_TEST
+                $AkamaiDataCache.ClientLists.Lists.test.ListID | Should -Be 12345_TEST
+            }
+            # EdgeWorkers
+            It 'adds an edgeworker to the cache' {
+                Set-AkamaiDataCache -EdgeWorkerName test -EdgeWorkerID 12345
+                $AkamaiDataCache.EdgeWorkers.EdgeWorkers.test.EdgeWorkerID | Should -Be 12345
+            }
+            # METS
+            It 'adds a METS CA set to the cache' {
+                Set-AkamaiDataCache -METSCaSetName test -METSCaSetID 12345
+                $AkamaiDataCache.METS.CASets.test.CASetID | Should -Be 12345
+            }
+            # MOKS
+            It 'adds a MOKS client cert to the cache' {
+                Set-AkamaiDataCache -MOKSClientCertName test -MOKSClientCertID 12345
+                $AkamaiDataCache.MOKS.ClientCerts.test.CertificateID | Should -Be 12345
+            }
+            # Property
+            It 'adds a property to the cache' {
+                Set-AkamaiDataCache -PropertyName test -PropertyID 12345
+                $AkamaiDataCache.Property.Properties.test.PropertyID | Should -Be 12345
+            }
+            It 'adds an include to the cache' {
+                Set-AkamaiDataCache -IncludeName test -IncludeID 12345
+                $AkamaiDataCache.Property.Includes.test.IncludeID | Should -Be 12345
+            }
+            AfterAll {
+                Clear-AkamaiDataCache
+            }
+        }
+    }
+
+    Context 'Uninstall-Akamai' -Tag 'Uninstall-Akamai' {
+        # -------------------------------------------------------------------------------------------------------
+        #  This context must go LAST as it performs a global Remove-Module Akamai* after the uninstall completes 
+        # -------------------------------------------------------------------------------------------------------
+        BeforeAll {
+            $OldProgressPreference = $ProgressPreference
+            $ProgressPreference = 'SilentlyContinue'
+
+            $ModuleName = 'Akamai.Common'
+            $OldModuleName = 'AkamaiPowershell'
+            $ModuleInstallVersions = '2.1.0', '2.0' # Make sure these are in descending order
+            $ModuleCheckVersions = '2.1.0', '2.0.0' # Versions to check need 3rd element, as this is always included in the release
+            $OldModuleInstallVersions = '1.13', '1.12', '1.8.0' # Make sure these are in descending order
+            $OldModuleCheckVersions = '1.13.0', '1.12', '1.8.0' # Versions to check need 3rd element, as this is always included in the release
+            New-Item -ItemType Directory -Path 'TestDrive:/Modules'
+        }
+        It 'Removes only the oldest version of v1' {
+            $OldModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $OldModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            Uninstall-Akamai -ModulePath 'TestDrive:/Modules' -AllButLatest -Confirm:$false
+            $OldModuleNotLatest = $OldModuleCheckVersions[1..($OldModuleCheckVersions.Count - 1)]
+            $OldModuleNotLatest | ForEach-Object {
+                "TestDrive:/Modules/$OldModuleName/$_" | Should -Not -Exist
+            }
+        }
+        It 'Removes all older versions when v1 and 2 are present' {
+            $ModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $ModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            $OldModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $OldModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            Uninstall-Akamai -ModulePath 'TestDrive:/Modules' -AllButLatest -Confirm:$false
+            $OldModuleNotLatest = $OldModuleCheckVersions[1..($OldModuleCheckVersions.Count - 1)]
+            $OldModuleNotLatest | ForEach-Object {
+                "TestDrive:/Modules/$OldModuleName/$_" | Should -Not -Exist
+            }
+            $ModuleNotLatest = $ModuleCheckVersions[1..($ModuleCheckVersions.Count - 1)]
+            $ModuleNotLatest | ForEach-Object {
+                "TestDrive:/Modules/$ModuleName/$_" | Should -Not -Exist
+            }
+        }
+        It 'Removes all versions of v1' {
+            $ModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $ModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            $OldModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $OldModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            Uninstall-Akamai -ModulePath 'TestDrive:/Modules' -AllV1 -Confirm:$false
+            "TestDrive:/Modules/$OldModuleName" | Should -Not -Exist
+            $ModuleCheckVersions | ForEach-Object {
+                "TestDrive:/Modules/$ModuleName/$_" | Should -Exist
+            }
+        }
+        It 'Removes only the the specified version' {
+            $ModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $ModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            Uninstall-Akamai -ModulePath 'TestDrive:/Modules' -Version $ModuleInstallVersions[0] -Confirm:$false
+            "TestDrive:/Modules/$ModuleName/$($ModuleCheckVersions[0])" | Should -Not -Exist
+            $ModuleCheckVersions[1..($ModuleCheckVersions.Count - 1)] | ForEach-Object {
+                "TestDrive:/Modules/$ModuleName/$_" | Should -Exist
+            }
+        }
+        It 'Removes all versions' {
+            $ModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $ModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            $OldModuleInstallVersions | ForEach-Object {
+                Find-Module -Name $OldModuleName -Repository PSGallery -MaximumVersion $_ | Save-Module -Path 'TestDrive:/Modules'
+            }
+            Uninstall-Akamai -ModulePath 'TestDrive:/Modules' -All -Confirm:$false
+            "TestDrive:/Modules/$OldModuleName" | Should -Not -Exist
+            "TestDrive:/Modules/$ModuleName" | Should -Not -Exist
+        }
+        AfterEach {
+            Get-ChildItem -Path 'TestDrive:/Modules' | Remove-Item -Recurse -Force
+        }
+        AfterAll {
+            Remove-Item -Path 'TestDrive:/Modules' -Force -Recurse
+            $ProgressPreference = $OldProgressPreference
+        }
+    }
+
+
     AfterAll {
         ## Clean up env variables
-        Remove-Item -Path env:\AKAMAI_HOST
-        Remove-Item -Path env:\AKAMAI_CLIENT_TOKEN
-        Remove-Item -Path env:\AKAMAI_ACCESS_TOKEN
-        Remove-Item -Path env:\AKAMAI_CLIENT_SECRET
-        Remove-Item -Path env:\AKAMAI_CUSTOM_HOST
-        Remove-Item -Path env:\AKAMAI_CUSTOM_CLIENT_TOKEN
-        Remove-Item -Path env:\AKAMAI_CUSTOM_ACCESS_TOKEN
-        Remove-Item -Path env:\AKAMAI_CUSTOM_CLIENT_SECRET
-        Remove-Item -Path env:\NETSTORAGE_CPCODE
-        Remove-Item -Path env:\NETSTORAGE_GROUP
-        Remove-Item -Path env:\NETSTORAGE_KEY
-        Remove-Item -Path env:\NETSTORAGE_ID
-        Remove-Item -Path env:\NETSTORAGE_HOST
+        if ($Env:AKAMAI_HOST) {
+            Remove-Item -Path env:\AKAMAI_HOST
+        }
+        if ($Env:AKAMAI_CLIENT_TOKEN) {
+            Remove-Item -Path env:\AKAMAI_CLIENT_TOKEN
+        }
+        if ($Env:AKAMAI_ACCESS_TOKEN) {
+            Remove-Item -Path env:\AKAMAI_ACCESS_TOKEN
+        }
+        if ($Env:AKAMAI_CLIENT_SECRET) {
+            Remove-Item -Path env:\AKAMAI_CLIENT_SECRET
+        }
+        if ($Env:AKAMAI_PESTER_HOST) {
+            Remove-Item -Path env:\AKAMAI_PESTER_HOST
+        }
+        if ($Env:AKAMAI_PESTER_CLIENT_TOKEN) {
+            Remove-Item -Path env:\AKAMAI_PESTER_CLIENT_TOKEN
+        }
+        if ($Env:AKAMAI_PESTER_ACCESS_TOKEN) {
+            Remove-Item -Path env:\AKAMAI_PESTER_ACCESS_TOKEN
+        }
+        if ($Env:AKAMAI_PESTER_CLIENT_SECRET) {
+            Remove-Item -Path env:\AKAMAI_PESTER_CLIENT_SECRET
+        }
+        if ($Env:NETSTORAGE_CPCODE) {
+            Remove-Item -Path env:\NETSTORAGE_CPCODE
+        }
+        if ($Env:NETSTORAGE_GROUP) {
+            Remove-Item -Path env:\NETSTORAGE_GROUP
+        }
+        if ($Env:NETSTORAGE_KEY) {
+            Remove-Item -Path env:\NETSTORAGE_KEY
+        }
+        if ($Env:NETSTORAGE_ID) {
+            Remove-Item -Path env:\NETSTORAGE_ID
+        }
+        if ($Env:NETSTORAGE_HOST) {
+            Remove-Item -Path env:\NETSTORAGE_HOST
+        }
     }
 }

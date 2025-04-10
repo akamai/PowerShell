@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.CPCodes Tests' {
     
     BeforeAll { 
@@ -160,7 +167,7 @@ Describe 'Unsafe Akamai.CPCodes tests' {
 
     Context 'New-CPReportingGroup by parameter' {
         It 'New-CPReportingGroup by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPCodes -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
                 return $Response | ConvertFrom-Json
             }
@@ -171,7 +178,7 @@ Describe 'Unsafe Akamai.CPCodes tests' {
 
     Context 'New-CPReportingGroup by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPCodes -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
                 return $Response | ConvertFrom-Json
             }
@@ -182,7 +189,7 @@ Describe 'Unsafe Akamai.CPCodes tests' {
 
     Context 'Remove-CPReportingGroup' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.CPCodes -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-CPReportingGroup.json"
                 return $Response | ConvertFrom-Json
             }

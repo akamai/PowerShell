@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.MediaServicesLive Tests' {
     
     BeforeAll { 
@@ -235,11 +242,11 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
     
     Context 'Get-MSLCDN' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-MSLCDN.json"
                 return $Response | ConvertFrom-Json
             }
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-MSLCDN.json"
                 return $Response | ConvertFrom-Json
             }
@@ -255,11 +262,7 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
 
     Context 'New-MSLCPCode' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-MSLCPCode.json"
-                return $Response | ConvertFrom-Json
-            }
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-MSLCPCode.json"
                 return $Response | ConvertFrom-Json
             }
@@ -275,7 +278,7 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
 
     Context 'Get-MSLPublishingLocations' {
         It 'lists vod origins' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-MSLVODOrigin.json"
                 return $Response | ConvertFrom-Json
             }
@@ -292,7 +295,7 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
     
     Context 'New-MSLOrigin' {
         It 'creates a new origin' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-MSLOrigin.json"
                 return $Response | ConvertFrom-Json
             }
@@ -302,7 +305,7 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
 
     Context 'Remove-MSLOrigin' {
         It 'deletes successfully' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.MediaServicesLive -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-MSLOrigin.json"
                 return $Response | ConvertFrom-Json
             }

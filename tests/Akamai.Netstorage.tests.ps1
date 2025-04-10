@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.Netstorage Config Tests' {
     
     BeforeAll { 
@@ -12,6 +19,7 @@ Describe 'Safe Akamai.Netstorage Config Tests' {
         $TestGroupID = $env:PesterGroupID
         $TestStorageGroupID = $env:PesterStorageGroupID
         $TestUploadAccountID = 'akamaipowershell'
+        $TestUploadAccountIDNoHTTP = 'akamaipowershell-ftp'
         $TestFTPKey = 'abcdefg1234'
         $TestRSyncKey = 'abcdefg1234'
         $TestSSHKey = 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQaxsF1OBwZbN/6G2D3P/QritNfPYizc4gJyry3SBQT6lfHojQbjOTG2+3j5/Gx5ve5o05h3+TzECihXHUj2jbc19HzdBs+jPafcJj+w9LAupcKi/WkDG/3GQDrp1zXMnPg/n+QrxeaqZpAawN6bDLpnAnfrmseb1GxL9cKwzNYR9A4uVm5JQaHD0iNGni09SNPdpmJrYLw9aw/AQaMtA35w7eIK+5h15wobW7+A00jVpqBfAfUJByzFueI+uj9ZVJKWN+MOUg6QqppVOjqYKRoWl3rcXOGPBmAvrk5YwseRX3f231ItIY7NsCaWLYpVVcISFICQjTZIUr3GfNf5D9 pester@akamai.com'
@@ -316,7 +324,7 @@ Describe 'Safe Akamai.Netstorage Config Tests' {
     #                 NetstorageAuth
     #------------------------------------------------
 
-    Context 'New-NetstorageAuth create new auth file' {
+    Context 'New-NetstorageAuth' {
         It 'should create new file called .nsrc at root' {
             $PD.NewNetstorageAuth = New-NetstorageAuth -UploadAccountID $TestUploadAccountID -OutputDirectory $TestOutputDirectory -AuthSection $PD.Section @CommonParams
             $TestNewNSAuthKey = $($PD.GetNetstorageUploadAccountSingle.keys.g2o.key)
@@ -329,15 +337,11 @@ Describe 'Safe Akamai.Netstorage Config Tests' {
             "$TestOutputDirectory/.nsrc" | Should -FileContentMatch "host=$TestDomainName"
             "$TestOutputDirectory/.nsrc" | Should -FileContentMatch "cpcode=$TestCPCodeID"
         }
-    }
 
-    Context 'New-NetStorageAuth append auth file with existing default section' {
         It 'should fail because a default section already exists' {
             New-NetstorageAuth -UploadAccountID $TestUploadAccountID -OutputDirectory $TestOutputDirectory @CommonParams
         }
-    }
 
-    Context 'New-NetstorageAuth create new auth section on existing .nsrc' {
         It 'should create new section on existing .nsrc' {
             $PD.NewNetstorageAuth2 = New-NetstorageAuth -UploadAccountID $TestUploadAccountID -OutputDirectory $TestOutputDirectory @CommonParams -AuthSection $TestAuthSection
             "$TestOutputDirectory/.nsrc" | Should -FileContentMatchMultiline "\n\[$TestAuthSection\]"
@@ -346,6 +350,10 @@ Describe 'Safe Akamai.Netstorage Config Tests' {
             "$TestOutputDirectory/.nsrc" | Should -FileContentMatch "group=$TestStorageGroupID" 
             "$TestOutputDirectory/.nsrc" | Should -FileContentMatch "host=$TestDomainName"
             "$TestOutputDirectory/.nsrc" | Should -FileContentMatch "cpcode=$TestCPCodeID"
+        }
+
+        It 'should fail when the upload account ID is not suitable' {
+            { New-NetstorageAuth -UploadAccountID $TestUploadAccountIDNoHTTP -OutputDirectory $TestOutputDirectory @CommonParams } | Should -Throw
         }
     }
 
@@ -390,7 +398,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageGroup by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageGroup.json"
                 return $Response | ConvertFrom-Json
             }
@@ -401,7 +409,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageGroup by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageGroup.json"
                 return $Response | ConvertFrom-Json
             }
@@ -412,7 +420,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Set-NetstorageGroup by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-NetstorageGroup.json"
                 return $Response | ConvertFrom-Json
             }
@@ -423,7 +431,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Set-NetstorageGroup by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-NetstorageGroup.json"
                 return $Response | ConvertFrom-Json
             }
@@ -438,7 +446,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageUploadAccount by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageUploadAccount.json"
                 return $Response | ConvertFrom-Json
             }
@@ -449,7 +457,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageUploadAccount by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageUploadAccount.json"
                 return $Response | ConvertFrom-Json
             }
@@ -464,7 +472,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageCPCode' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageCPCode.json"
                 return $Response | ConvertFrom-Json
             }
@@ -479,7 +487,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Start-NetstorageSnapshot' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Start-NetstorageSnapshot.json"
                 return $Response | ConvertFrom-Json
             }
@@ -494,7 +502,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageRuleSet by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageRuleSet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -505,7 +513,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageRuleSet by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetstorageRuleSet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -516,7 +524,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Get-NetstorageRuleSet, all' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-NetstorageRuleSet_1.json"
                 return $Response | ConvertFrom-Json
             }
@@ -527,7 +535,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
     
     Context 'Get-NetstorageRuleSet, single' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-NetstorageRuleSet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -538,7 +546,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Set-NetstorageRuleSet by parameter' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-NetstorageRuleSet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -549,7 +557,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Set-NetstorageRuleSet by pipeline' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-NetstorageRuleSet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -560,7 +568,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
 
     Context 'Remove-NetstorageRuleSet' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-NetstorageRuleSet.json"
                 return $Response | ConvertFrom-Json
             }
@@ -574,7 +582,7 @@ Describe 'Unsafe Akamai.Netstorage Config Tests' {
     
     Context 'Remove-NetstorageCPCodePurgeRoutine' {
         It 'throws no errors' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.Netstorage -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Netstorage -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-NetstorageCPCodePurgeRoutine.json"
                 return $Response | ConvertFrom-Json
             }
@@ -597,12 +605,16 @@ Describe 'Safe Akamai.Netstorage Usage Tests' {
         $TestNewFileContent = "new"
         $TestSymlinkFileName = "symlink.txt"
         $TestRenamedFileName = "renamed.txt"
+        $TestCPCodeID = $env:PesterNSCpCode
         $PD = @{}
     }
 
     AfterAll {
         if ((Test-Path $TestNewFileName)) {
             Remove-Item $TestNewFileName -Force
+        }
+        if ((Test-Path $TestDirectory)) {
+            Remove-Item $TestDirectory -Recurse -Force
         }
     }
 
@@ -621,17 +633,25 @@ Describe 'Safe Akamai.Netstorage Usage Tests' {
         }
     }
 
-    Context 'Get-NetstorageDirectory' {
+    Context 'Get-NetstorageDirectory without recursion (dir)' {
         It 'lists content' {
             $PD.Dir = Get-NetstorageDirectory -Path $TestDirectory @CommonParams
             $PD.Dir[0].type | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Get-NetstorageDirectory with recursion (ls)' {
+    Context 'Get-NetstorageDirectory with recursion (list)' {
         It 'lists content' {
-            $PD.Dir = Get-NetstorageDirectory -Path $TestDirectory -Recurse @CommonParams
-            ($PD.Dir | Where-Object type -eq file | Select-Object -First 1).size | Should -Not -BeNullOrEmpty
+            $PD.List = Get-NetstorageDirectory -Path $TestDirectory -Recurse @CommonParams
+            ($PD.List | Where-Object type -eq file | Select-Object -First 1).size | Should -Not -BeNullOrEmpty
+            $MatchingPrefix = $true
+            $PD.List.Name | ForEach-Object {
+                if (-not $_.StartsWith("$TestCPCodeID/$TestDirectory")) {
+                    Write-Host "File = $_"
+                    $MatchingPrefix = $false
+                }
+            }
+            $MatchingPrefix | Should -Be $true
         }
     }
 
@@ -654,6 +674,15 @@ Describe 'Safe Akamai.Netstorage Usage Tests' {
             Read-NetstorageObject -RemotePath "/$TestDirectory/$TestNewDirName/$TestNewFileName" -LocalPath $TestNewFileName @CommonParams 
             $PD.DownloadedContent = Get-Content $TestNewFileName
             $PD.DownloadedContent | Should -Be $TestNewFileContent
+        }
+    }
+    
+    Context 'Read-NetstorageDirectory' {
+        It 'downloads a whole directory successfully' {
+            Read-NetstorageDirectory -Path $TestDirectory -OutputDirectory $TestDirectory -Recurse @CommonParams 
+            $DownloadedFiles = Get-ChildItem $TestDirectory
+            $DownloadedFiles.count | Should -BeGreaterThan 0
+            $TestCPCodeID | Should -BeIn $DownloadedFiles.Name
         }
     }
 

@@ -1,3 +1,10 @@
+BeforeDiscovery {
+    # Check environment variables have been imported
+    if ($null -eq $env:PesterGroupID) {
+        throw "Required environment variables are missing"
+    }
+}
+
 Describe 'Safe Akamai.EdgeDiagnostics Tests' {
     
     BeforeAll { 
@@ -236,7 +243,7 @@ Describe 'Unsafe Akamai.EdgeDiagnostics Tests' {
     
     Context 'Get-EdgeDiagnosticsErrorStatistics' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeDiagnostics -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeDiagnostics -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeDiagnosticsErrorStatistics.json"
                 return $Response | ConvertFrom-Json
             }
@@ -248,7 +255,7 @@ Describe 'Unsafe Akamai.EdgeDiagnostics Tests' {
 
     Context 'Get-EdgeDiagnosticsLogs' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeDiagnostics -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeDiagnostics -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeDiagnosticsLogs.json"
                 return $Response | ConvertFrom-Json
             }
@@ -259,7 +266,7 @@ Describe 'Unsafe Akamai.EdgeDiagnostics Tests' {
 
     Context 'New-EdgeDiagnosticsGrep' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeDiagnostics -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeDiagnostics -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeDiagnosticsGrep.json"
                 return $Response | ConvertFrom-Json
             }
@@ -271,7 +278,7 @@ Describe 'Unsafe Akamai.EdgeDiagnostics Tests' {
     
     Context 'Get-EdgeDiagnosticsGrep' {
         It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRestMethod -ModuleName Akamai.EdgeDiagnostics -MockWith {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeDiagnostics -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeDiagnosticsGrep.json"
                 return $Response | ConvertFrom-Json
             }
