@@ -9,7 +9,7 @@ function Set-GTMResource {
         [string]
         $ResourceName,
 
-        [Parameter(ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
 
         [Parameter()]
@@ -40,8 +40,8 @@ function Set-GTMResource {
             'Body'              = $Body
             'EdgeRCFile'        = $EdgeRCFile
             'Section'           = $Section
-            'AccountSwitchKey' = $AccountSwitchKey
-            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+            'AccountSwitchKey'  = $AccountSwitchKey
+            'Debug'             = ($PSBoundParameters.Debug -eq $true)
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
@@ -54,8 +54,8 @@ function Set-GTMResource {
 # SIG # Begin signature block
 # MIIpmwYJKoZIhvcNAQcCoIIpjDCCKYgCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBbz0WFXr4NnrfR
-# OT2bdv0S+2SdRPLQ9WxBY9a6fWVG3KCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCD0EyiuAeuieDcH
+# YxLHANYwKfB7D5oHar4QQ3ORahQ40qCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
 # TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
 # BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
@@ -138,22 +138,22 @@ function Set-GTMResource {
 # IFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTECEA+pA0h+kq5EeXpXIQBQ
 # X8IwDQYJYIZIAWUDBAIBBQCgfDAQBgorBgEEAYI3AgEMMQIwADAZBgkqhkiG9w0B
 # CQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAv
-# BgkqhkiG9w0BCQQxIgQgJvht4xbR6O4ZVfqa/ZCF6CA5YrViyCxT8I+DtIKhSHUw
-# DQYJKoZIhvcNAQEBBQAEggIAUn6gKnaFZ3O3OwwJZ0ZQh06ufWnzXXdv3Zpn+x0m
-# lAAtH+rPrfbSPLRmOY4pbMsu6H1kraX97v2dOYW02oNDRxcRzgz8vPxa57Qfj/Ny
-# AfUSOyAFFOzlOSxk7NQJYTvPCURqEDeniwzm/WH8COhjn+V0InXu92w/mazmVM00
-# Xmf8ZJU/UuTeqrDHJdQ4hfCOwJGv2RqsccrbK9p+qg8ol36nowvMnusX9+dbGkuv
-# FRs5FyxpPAKbdOG+80aYIp32IwpSJifE92a26LZ9EHMUtyoRIjHK4t3psbG2xIJp
-# PW2/D/uWz1HETqzN5tzbqusKBsTVSlxowsS+4CEAsxZ1duHhccayHoCjwqhPxiFp
-# cYCtyyjhn1M9YJsIe+gNH0GCqwkmE1lIFDB3Y6SI2RThas9vVfFrYMf7Xi3/sXff
-# Zl0zcsd1cLs8sOwuPlYdyY+FmOGy/+nCdfPX5GD1Xn/07tNcb/UiZWXiXG/0fJiX
-# ijXLsKP+avY0P2XJQ0si0zP3JQaqsfkyxr+t44jwjpdvUBFJjtnwTnYyeSGwbLq9
-# /cgb8oOo3Ith4MHxbk81RiDwO/IXT8r7yUW73D1UxFZse2EP1l5pmBS+QUCqY7D7
-# 9b/Wye4RTSWhgHyJ+yhmB2mOJ51FGHRNsJorfJKer687XnPejdcKPZ3/r6CErzE8
-# 6aehghc5MIIXNQYKKwYBBAGCNwMDATGCFyUwghchBgkqhkiG9w0BBwKgghcSMIIX
+# BgkqhkiG9w0BCQQxIgQgIbhuMs4BiL2FUkxJwZ4Fm0O4+W6oq3OIdh/ruzzkjB0w
+# DQYJKoZIhvcNAQEBBQAEggIATlTFhcZfD2P2ObKXGwGxxQ4LaTbmD981Ng/eBXYb
+# hAt1JdVEt5nRJR8Cc3ecUrOtvMJb9zbVG9WKS1EGsvo3xIlNA/C8bQfP6PvV5kNx
+# 0p9hjYljsSRlV2rTvWrE/8Yar5G0iq4vj1TsTEj4KEbL3Rtc9Smm4ekkI2Ve1qtY
+# /hyMrFO7RxENl4LvbKnWRWCOZCIY+th2SJNL43+7z+TERiP+dCPEN59nqhdvBYnV
+# N4um08Pt1vjafXLqvaMGzrDG9IgVoioq/iiw3nVd5lPD7nfyqOEvZmvc2e7TbBWb
+# oVYB8YV5mbIuKGDwIEWsnXmTjduLKwfKuOkjotEgvrQJVajj9oHHNnvbgDOd4U7K
+# CWmm3ZuOlXoVGMurrsySbVuYYUJzBC88Avrr5m+ND1qAWglNFGtBkPxs8ae6uL82
+# RwzuxQgJu24vKGbupv113LN6iYoTSfPu3cK7dBMpCVIswXV2kl5bIlLjPmdn2Bko
+# x8sFoWGwVfyD+mdpYRDiz2XL2e3Zn1zt3wt0UKni4MPUzewiJ7WmQnwTINnfs+M5
+# gW+x6GlF/mHg/wFZRxwyz9t1lEdDzDo+X50ShGkgDJrpVV2ocm6AFgl3FpLkhUZA
+# TPn6Gwjg0W0NcgivMUBOpt4IZKnTw9f2jsqDoKfkhWfCzGttPEfYFUcfuPUedD80
+# +Hehghc5MIIXNQYKKwYBBAGCNwMDATGCFyUwghchBgkqhkiG9w0BBwKgghcSMIIX
 # DgIBAzEPMA0GCWCGSAFlAwQCAQUAMHcGCyqGSIb3DQEJEAEEoGgEZjBkAgEBBglg
-# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQg4zh3Dw1sSDjs789QiFyGOA9rNHEi
-# PGktxygqoYDy3dECEHci6V41YzNjIhFRT1djg/oYDzIwMjUwNDAyMTgyNjQzWqCC
+# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQg1k/Gp2KGZGJLUKqkH8Yt/YR3/IiO
+# LLAJWm2YXaU1A3wCEERlIeGsjPnRxsU/P4r8C8MYDzIwMjUwNDE1MTgyODQyWqCC
 # EwMwgga8MIIEpKADAgECAhALrma8Wrp/lYfG+ekE4zMEMA0GCSqGSIb3DQEBCwUA
 # MGMxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UE
 # AxMyRGlnaUNlcnQgVHJ1c3RlZCBHNCBSU0E0MDk2IFNIQTI1NiBUaW1lU3RhbXBp
@@ -259,19 +259,19 @@ function Set-GTMResource {
 # UzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRy
 # dXN0ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhALrma8Wrp/
 # lYfG+ekE4zMEMA0GCWCGSAFlAwQCAQUAoIHRMBoGCSqGSIb3DQEJAzENBgsqhkiG
-# 9w0BCRABBDAcBgkqhkiG9w0BCQUxDxcNMjUwNDAyMTgyNjQzWjArBgsqhkiG9w0B
+# 9w0BCRABBDAcBgkqhkiG9w0BCQUxDxcNMjUwNDE1MTgyODQyWjArBgsqhkiG9w0B
 # CRACDDEcMBowGDAWBBTb04XuYtvSPnvk9nFIUIck1YZbRTAvBgkqhkiG9w0BCQQx
-# IgQgXGoLuvMSpPpEuNyOrj7+7AUuSVRcd94wSnvMAUNVFZkwNwYLKoZIhvcNAQkQ
+# IgQgIvMeQ1JqyvPVbtq+a4MrJwTcgo7ueKaFP4H6k7gZTdkwNwYLKoZIhvcNAQkQ
 # Ai8xKDAmMCQwIgQgdnafqPJjLx9DCzojMK7WVnX+13PbBdZluQWTmEOPmtswDQYJ
-# KoZIhvcNAQEBBQAEggIAij3wzTG4lqpOz0yHcSWwQjLN4wk26Y75zhqXxPpGqQal
-# 5xhPnPPQr5YsAinUQn5+h3wYLOwRnGScKt6XYAeoRR9gb18H5AqJS1dLmsvLab62
-# GaHNGhastDXuLhVLSkqTkHBxviHykDoW1ipyxk4UO923gpV2i4WskHeVPuDigpy/
-# WkYE4+StfulOLVmq8pdj7PyKnYtNeaIw0uU+lMxTtJVNEhZBRRzOQM93AEF4fmhW
-# ja5KUbMcTekSI4UodCcLBSWsL968B7/xVeujhyJMgdwzdeTQDQhv7zCzTHyxhxPy
-# FDAV5holoJDWLgiGU+6AkF+ewtAgrKeadoelBQq67jDnlOIQdYdB9bGNkrGhrg73
-# i2sn38hkhzVEzhYTw/aK7djh9FTPZa41xONmtcxnRW7Vx6BJjyOMr0qbCp7Qthrj
-# 7RUp7kpxrcSSHSqsPaITjAXMO6Jb9mzWaowermlpj8rYjF4iQicnITFVVEn6Fek+
-# QHt54tVnc3NAbNPq4VyKSoni5H+OZGO7/ZHnRFkbhcUVp5cZ5l7/+WkzMUYZDNaZ
-# 18EKbCB7Hj8inJzxR6Qfd4zjG7AJVEf2+be7jRcuIsyX1yBUXDHo7ZpDfgF8ekS2
-# G8OHcsAA/MKnoPWdWi/AMcJW8q/jKv4/dVS+wTX2tnD5pn/JjISVh6qKCcZgMGQ=
+# KoZIhvcNAQEBBQAEggIAHHxIXCB9c6IhsniTy/TrTkJ+3Rw2FJpovLjdhWx2Il0N
+# 1bv5TRjvXz79NDlV2MOJQ6zHawXxHV+E+iD5LseW5nCGThcDAOg6Q+jDs+VvpG1V
+# gPW3vPWzJppBEUsNTECSd9UrY+2xQKfjmry2H2aASlAuFpEoCAQO7cjwLQ4ZGOzK
+# 2YHGN/+Qm6T+wqNKzTDdlvNKvI7WCMqgLDh0mLKnbodTdUSIFTpnWtMRj1597OP+
+# IPQKdwVWk/fikKwcMX7C4iUCgq57TOxuV+tIwLsCZ7e7SBM9SSAgyWiYi+7itGr+
+# gnuZBkRa25DZ2vV2brLslNXPJSLYeOZTGpFOU5ghztmoUuP2rIiGXayaMX3nN3li
+# TS2mNnUAHgn+qNdGVv354PWmTTe0hvGQYAfYYWcOsgKDt36Ki58syvvFDAEb0+Hg
+# LrswJnxAzUXd3b15Chty+n85Pw3lyuU3jNEFi4xkMbIN2QGS9CAeFOeagO+iIBrf
+# 4bMM2M+pXfD8v3N8+EiVo7AjQj09sxfZLtHclmWVT8pX58ut4pcHhPiIKkjDM7U0
+# x2dUBXG/SHsy9gp35Y0ig4YULJZdd7v46JzSvvVo2lXTJslxx+3BwmYZyGhJ58ZZ
+# ZUShBGunSYTls/SQuGZe2DOph0heh8ubidGUYn4JK81Z3q/aiCVfdTtsquzYMiU=
 # SIG # End signature block

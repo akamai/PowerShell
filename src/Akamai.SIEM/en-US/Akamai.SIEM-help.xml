@@ -90,7 +90,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets security events data from your security configurations using one of the two modes: using the `-Offset` parameter or the `-From` and `-To` date ranges. You can optionally decode the data to make it human-readable by enabling the `-Decode` switch.</maml:para>
+      <maml:para>Gets security events data from your security configurations using one of the two modes: using the `-Offset` parameter or the `-From` and `-To` date ranges. You can optionally decode the data to make it human-readable by enabling the `-Decode` switch. </maml:para>
       <maml:para>&gt; Note: The user associated with your API client (or the client role in the case of a Service Account) is required to have the Manage SIEM role assigned and no others. Otherwise, the operation will return a 403 response.</maml:para>
     </maml:description>
     <command:syntax>
@@ -111,7 +111,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -158,7 +158,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Limit</maml:name>
           <maml:description>
-            <maml:para>The approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000` and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible.</maml:para>
+            <maml:para>The approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000` and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible. </maml:para>
             <maml:para>Expect requests to return a slightly higher number of security events than you set in the `limit` parameter, because data is stored in different buckets.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -210,7 +210,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -245,7 +245,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Limit</maml:name>
           <maml:description>
-            <maml:para>The approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000` and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible.</maml:para>
+            <maml:para>The approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000` and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible. </maml:para>
             <maml:para>Expect requests to return a slightly higher number of security events than you set in the `limit` parameter, because data is stored in different buckets.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
@@ -285,7 +285,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>An account switch key for use when you have access to multiple accounts and need to specify which one to use. Run `Get-AccountSwitchKey` to list the account switch keys available to you.</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -345,7 +345,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Limit</maml:name>
         <maml:description>
-          <maml:para>The approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000` and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible.</maml:para>
+          <maml:para>The approximate maximum number of security events each fetch returns, in both offset and time-based modes. The default limit is `10000` and the maximum limit available is `600000`. Listing an unlimited number of logs isn't possible. </maml:para>
           <maml:para>Expect requests to return a slightly higher number of security events than you set in the `limit` parameter, because data is stored in different buckets.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>

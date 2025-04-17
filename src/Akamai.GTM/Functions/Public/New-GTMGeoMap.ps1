@@ -5,11 +5,12 @@ function New-GTMGeoMap {
         [string]
         $DomainName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [Alias('name')]
         [string]
         $MapName,
 
-        [Parameter(ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
 
         [Parameter()]
@@ -40,12 +41,12 @@ function New-GTMGeoMap {
             'Body'              = $Body
             'EdgeRCFile'        = $EdgeRCFile
             'Section'           = $Section
-            'AccountSwitchKey' = $AccountSwitchKey
-            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+            'AccountSwitchKey'  = $AccountSwitchKey
+            'Debug'             = ($PSBoundParameters.Debug -eq $true)
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body 
+        return $Response.Body.resource
     }
 
     end {} 
@@ -55,8 +56,8 @@ function New-GTMGeoMap {
 # SIG # Begin signature block
 # MIIpmwYJKoZIhvcNAQcCoIIpjDCCKYgCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBpEv7mZ/pt6CUC
-# 7Jlfd3acsZOYtsrPaaTDeXqtH97eFKCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBkT03m5NBZJmoy
+# eIgSsQ8kxl83iXJniHgSdWRwnoCoPKCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
 # TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
 # BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
@@ -139,22 +140,22 @@ function New-GTMGeoMap {
 # IFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTECEA+pA0h+kq5EeXpXIQBQ
 # X8IwDQYJYIZIAWUDBAIBBQCgfDAQBgorBgEEAYI3AgEMMQIwADAZBgkqhkiG9w0B
 # CQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAv
-# BgkqhkiG9w0BCQQxIgQgVScC3VblWUT8NI25E4h1ldGfcMkXxH3dn/swIR48Rxww
-# DQYJKoZIhvcNAQEBBQAEggIAxIdAAu9ILnHK+widKAKy+htPVzQBPJId/MiZ+eMf
-# VdVDTKwcWg6DO7CQwNGbc2GWOzRbIWB1xTMRv/PDOCUzd/0VfatOcPXOAtbiRz4o
-# fhzb69hdRgveR9QuBF77GTl37S8m+I8J0+FotKrib3P1QO0tyULylll7y2hw3gWQ
-# chbPyaNdNhmVEHSk5oXlHLVxs2+LfAbz0o0VkUs/nxucDhcdvh5lP5EselGdKA4b
-# 0NGrbr+BYeO9SME5InFm/zNaT6ORozQZOyK4JhkXwavjDyRKPUpLd17qbTIHPZu6
-# clT66n+EoBU1Cisz8HiW5zN1X4MKoMxP+UZRkjAeQ+xhDbYTPp8RVXl4GUEzNPPV
-# T8pdFfe78IUsmKGdfBzi859l516OSa+LYHCDk5WvpBlwahrwVRGADs41cmFIy/hX
-# I883GVrssxnILE52x/dHhdkApIPY0B7iiju6XkHxorS19PXZFcyshycHX5puRxSv
-# B4+gqivWS3PZE7+G4o3ICGDmfn8J1Q2EUw9LpfWELRBoxvcnau3geNn6H/jAnaBV
-# WxkqGAZwjZRNqlIDc3VDkcrXuZhEp+xJLUaO2bL+94mzLxE3iFhR3kIQKqKmR17Q
-# 4JwDkbXvlcgLsPnwYfxwosCOYgzH9VZZZldoNdC7day9gzn1aKIIw73Gt3CkIPmM
-# OGmhghc5MIIXNQYKKwYBBAGCNwMDATGCFyUwghchBgkqhkiG9w0BBwKgghcSMIIX
+# BgkqhkiG9w0BCQQxIgQgLNXQ2sHD/oxO1ED/CaKGggMFynCF11XpMjk+4a/kbY4w
+# DQYJKoZIhvcNAQEBBQAEggIAcqKOSwGEn2eSdOhazjOte6ZIZUDtNmIr3ZkC/Kuq
+# /a1UbMUibjiIE2qq1Su3VZhmdSZZi+/UaRGiFdKLwyhO+HximG/Rv0vnPB/fNplc
+# 7pxDzfp4yO2Kkh0q87YHYdAiTPlEXO3xC5lSHb20TNS/ccsotOr0NuVhM4u4+eVh
+# FMI467sH/SAjncdzqKsSnveJpZByuvlhDx7HQ26WgRUAj0o98U8YB1Z+fYV1o87a
+# Ii0hGo/2msqc3eaeX3JVSV0VViG++cHQubE1u31D5AOngaFKrC4jS0ZI6BzlvE44
+# tb+f7l48nVO55u8jQL38YsQwLv14u7trIXwKwdkvwAXFOnj3X7AsETfKKUjBbulf
+# 6vcLGS3qEyYf+zALozpcaUiq+ILtXimk1KD4QM0zsb45oaM/DX28pe70qUf+i/f3
+# fT+boRnBd0TgxU3i8Bu+IeyMe6ptq/tG6W1YnwwWbi3nKAyww7p8i/sm5heovZA3
+# j0xLgkHRvhLN4n1MNi+F4M95TC6skHKN7GXpKEhX2okS80JI9xKhYw3RpLObU9zZ
+# 16uIKrMns4Kw3P5KYtzqa3ilLqtUt9JZE2v7s0L9wIb/JihDVgJ+r/GnqLJzsA8q
+# mtQSaBpUhTWm9N5EQ3mLJKD+7ylNCvh+IQHV35jd1cIAZsXzhqM9o41ZjV9JRV7m
+# Rsmhghc5MIIXNQYKKwYBBAGCNwMDATGCFyUwghchBgkqhkiG9w0BBwKgghcSMIIX
 # DgIBAzEPMA0GCWCGSAFlAwQCAQUAMHcGCyqGSIb3DQEJEAEEoGgEZjBkAgEBBglg
-# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgFVbTk2hcRlair1DqN4eh/ay6B7Ac
-# ES62GRiv0pEPLuYCEAfGa0bTwbR0lxLTt9yOeYMYDzIwMjUwNDAyMTgyNzQzWqCC
+# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgABHA3DvXcepjiKR9wtuOuuILUV6y
+# Mc/ZeW9FbfPUq4oCEHqpACvtr7mXjREsZkZAnwcYDzIwMjUwNDE1MTgyOTM0WqCC
 # EwMwgga8MIIEpKADAgECAhALrma8Wrp/lYfG+ekE4zMEMA0GCSqGSIb3DQEBCwUA
 # MGMxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UE
 # AxMyRGlnaUNlcnQgVHJ1c3RlZCBHNCBSU0E0MDk2IFNIQTI1NiBUaW1lU3RhbXBp
@@ -260,19 +261,19 @@ function New-GTMGeoMap {
 # UzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRy
 # dXN0ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhALrma8Wrp/
 # lYfG+ekE4zMEMA0GCWCGSAFlAwQCAQUAoIHRMBoGCSqGSIb3DQEJAzENBgsqhkiG
-# 9w0BCRABBDAcBgkqhkiG9w0BCQUxDxcNMjUwNDAyMTgyNzQzWjArBgsqhkiG9w0B
+# 9w0BCRABBDAcBgkqhkiG9w0BCQUxDxcNMjUwNDE1MTgyOTM0WjArBgsqhkiG9w0B
 # CRACDDEcMBowGDAWBBTb04XuYtvSPnvk9nFIUIck1YZbRTAvBgkqhkiG9w0BCQQx
-# IgQgjR8+GbBhZOZrraR5hcpy1V34jGFaV/MkqEBHIE9Fud4wNwYLKoZIhvcNAQkQ
+# IgQgwHGv8VF+A2X/TJeQL3GvCvnHhYTUe+2hroOjE86H5wIwNwYLKoZIhvcNAQkQ
 # Ai8xKDAmMCQwIgQgdnafqPJjLx9DCzojMK7WVnX+13PbBdZluQWTmEOPmtswDQYJ
-# KoZIhvcNAQEBBQAEggIAs3ltPizxUjCOs5vpRWv5VYXnjmevQ1XZvgzOSh5K/Rz1
-# kIV4JHHJjSnn27NyQXm72DBgsCp3Ejhlg3PZUT0+6r0Y/Xa6RCYP4xr3gg896I2R
-# WxNPAvbgpjV9s6lcAfSc1Sy0nc56rkUZfZyT/p/xAL9XP6OAWC5TxZWpORktBAIO
-# K7S4x28whIIRk8qqYsy7+tctGWXrwgbl9CKcFS/842ePFQ1HRQEpnd3dKRAsii1o
-# UqWMu8l+W3T5+mGiN7KR79gNB1YR7JiCFGVCyD49osj3thYgD8+UqzlGnQrIJeev
-# dxnGrrCyd6OGETdoQ5cvvt6/O94mbaWeNL3rdyMuzigPgX5Z+Wj3qJbEQbgq2VV2
-# pp9omgPXMc5GmbXIawHx4txkwIo+UshmmdwVDoo170O2NdkkGvKxww4qy07/itr9
-# 0ywsD7HiHfWAB9OfautqbECsnUU+MTUawlMLYiHnLj2LKYDsL+l5whSvkTg8gi0S
-# cQ/T6/h+Oo8572VzXI7+EInLsmqxg6GnDBFdpF7/t7Kcdp+b8XgZNw/tm1qmDoRr
-# MdHP6tJzOTrs3q+1IvZF0oIO5n+jyiYhi/mfbu6wk3I88f6LTAmzTJw934Aqq/6y
-# u0/U+x4mznqUBHbcHBs1YsJ75G8wIicFobpKzHWTxj7vkJ+HsRH8DUIWeS1of58=
+# KoZIhvcNAQEBBQAEggIAtTOZxU7DK4nSHe3DwItufT5ICBWX93mepGixSJBpZtjB
+# 5ADXVkqMjydSIDL384ItKlqTjNNWZDO3VuQ/gXtSx6B3LftsRZLN6uYK2bD/VunL
+# LkyydRXqk1yByL1JRhPOAo9jvkM6XQA6D8YSKHbX2osIAqyC4w1FlD0VbSnFHJk5
+# DtyXaYKFDqTBhhbkSNxYFZ2heyCNElRY7wxGTJBGVPkD1KF9+DQzd72BHDjLpuev
+# 8VdHxGsJoLbPr84abBV+NfRaNecK8u8GJAkcVGVbVYV8EOUu2sUvJE+u2Dd/K5U5
+# 9CNKhzAPKYfyn07soK900qZpDdXrsERgStSxm72NwrcH8ZKMFACmfTaht68kUkc9
+# EFvbGKRZ6rXW3vFQOvXi5Dmj8qb72rywK4FlRF/6DlvhDu6bPJZTB6f9V3qyt6rH
+# os0cem2FnJja+DHIsFioGM610nobdhNXjDndVPWK0DoBMq4VI05nJzODjR6ciZ6n
+# 0Teiq51rX11YPc+MBb5i9tVdSl5aFdjkrMI5uEYfAsPN+jvdogLVTnac09ydydGI
+# ANDUe/i0vKH+6Xebm/AjqeUPK9pouQov8LAm4t8Y48574+ewiZCEPgxQv4213RqZ
+# gpehFd4Cu71MLKpXSx0xezZrtZUmUa+dourFVMVun3cH7KfdP/QxjWy9oufn1KA=
 # SIG # End signature block
