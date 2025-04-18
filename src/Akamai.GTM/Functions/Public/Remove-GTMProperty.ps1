@@ -5,7 +5,8 @@ function Remove-GTMProperty {
         [string]
         $DomainName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('name')]
         [string]
         $PropertyName,
 
@@ -22,28 +23,30 @@ function Remove-GTMProperty {
         $AccountSwitchKey
     )
 
-    $Path = "/config-gtm/v1/domains/$DomainName/properties/$PropertyName"
-    $AdditionalHeaders = @{ 'Accept' = 'application/vnd.config-gtm.v1.6+json' }
-    $RequestParams = @{
-        'Path'              = $Path
-        'Method'            = 'DELETE'
-        'AdditionalHeaders' = $AdditionalHeaders
-        'EdgeRCFile'        = $EdgeRCFile
-        'Section'           = $Section
-        'AccountSwitchKey'  = $AccountSwitchKey
-        'Debug'             = ($PSBoundParameters.Debug -eq $true)
+    process {
+        $Path = "/config-gtm/v1/domains/$DomainName/properties/$PropertyName"
+        $AdditionalHeaders = @{ 'Accept' = 'application/vnd.config-gtm.v1.6+json' }
+        $RequestParams = @{
+            'Path'              = $Path
+            'Method'            = 'DELETE'
+            'AdditionalHeaders' = $AdditionalHeaders
+            'EdgeRCFile'        = $EdgeRCFile
+            'Section'           = $Section
+            'AccountSwitchKey'  = $AccountSwitchKey
+            'Debug'             = ($PSBoundParameters.Debug -eq $true)
+        }
+        # Make Request
+        $Response = Invoke-AkamaiRequest @RequestParams
+        return $Response.Body
     }
-    # Make Request
-    $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body  
 }
 
 
 # SIG # Begin signature block
 # MIIpnAYJKoZIhvcNAQcCoIIpjTCCKYkCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAV2q+QUexeMwDW
-# K/QqHUh9x3i4GmpxhDKKAh37QqVm7qCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDcOG33mtKUZ6gn
+# WR//rZaDv3RoabqUpAB351c0apSAdaCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
 # TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
 # BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
@@ -126,22 +129,22 @@ function Remove-GTMProperty {
 # IFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTECEA+pA0h+kq5EeXpXIQBQ
 # X8IwDQYJYIZIAWUDBAIBBQCgfDAQBgorBgEEAYI3AgEMMQIwADAZBgkqhkiG9w0B
 # CQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAv
-# BgkqhkiG9w0BCQQxIgQg6v66IHBFgKvwDP52JEdVGtft+8TgKlWuzsJ428zF5mEw
-# DQYJKoZIhvcNAQEBBQAEggIAmhBlnwRkgWVc2OBnkk6uoQH/aopLWzzQb5h8ckUi
-# OppWhctpd9KOXYv5f7ISlPKZvAerQ5bqZ3g4t6xLpJQLfuqxBgAps0gbKaykj7t0
-# 6q0l87WQjuyu4JCygcpjAsGugY6xLGX9YXpcCc635UwDoCX3Va0aZdmOeVOmb6z2
-# 7mbZ+uV/UFlLrUbQmgXgd4AOy1GQ1TYSzJXW4zONhbik/ErLNO+9vZA9kvRJafLe
-# 9p2M7SwNQe8QyC78nqE/5sE07ROVNx8glM2kzdW+gZL1SbFJfaiYe+8NXQ9KEqzI
-# 0xhKNnA5RoTSu8gWSE76n4ly//q0ja/Z6H/63XwFObl+HqXqsgUb0RkoLknQhWOF
-# y6mOBF48Xs67aQeraZVvdxVeBQgWC2JRyq64FHtdqDK5179vaKRSfQHW2RH5kzpV
-# bGR1sDUbG5GvRhWiaLhaFid/+UV/JO7G7JJobcVANciNU30pWjHkFfcU480G1Hfc
-# 30OhzwGux24AC/5pa7mcy69T8onakoCE67+6gGEMkj8MheFfByEwU0LhsH/bgmhP
-# quNgfL9Ut5ii2kSfl45DSVcddA0Gx3aXJh/xAZlQVmJtZO35rDxnbdEbYl/y7Tt+
-# 8GED0Rdn6swSJjYcRKjMmGHwBUtsGtAA3/bcvoweTBRTBn0BFlV/3e29qA/qMfP+
-# r5Ohghc6MIIXNgYKKwYBBAGCNwMDATGCFyYwghciBgkqhkiG9w0BBwKgghcTMIIX
+# BgkqhkiG9w0BCQQxIgQgfJ7jzfSxAOVTWCrCWE9ASVlMAJjqqbjD9XuS86NVwkAw
+# DQYJKoZIhvcNAQEBBQAEggIAgOfWeGsYzKLyqDjnHsWb02KzWXQp1Kb+UmHRdbsC
+# KTtxba8QJ9lH1zCAdD8AjFd1/0O1PvUQ/ly0/s9HlTdmW6IOflC2w6PjwyCIUTkX
+# 5Ob+HInLtNEEFXkiDJVv0GZvhc6KO5DTCBh0JhJgkM2XHGM/I0uBdwL0RC/b/G0G
+# H+E7pg1inYg0we9RsUJIJtPTjhbmZne+9371SOG7wAgl9hl/GVDrFWbppRsqryxk
+# e7vaxf6nB12IiaPdH0j91SgBDqvOaAef6nNpA/4gUFQL+sxWtxDthCBBkWowGH/+
+# SYIUvUE7lwaBm7xSCo410zUFpshoL/bhlQsn+W0ddN8ju2YKaivZR84SCKoRm1kq
+# K/vLWZe5R+ZIG2zUw+Yz3JOASTyW52XWJ7oSfZ5odI9h5+YlZgiESBhfkc+5H6O6
+# dz2J51NTe28t/mYxY75PyShehEi8yIoVZwgOIlIZ2ApeLybWCJq8XXkgi+RmjW6e
+# LVr5u6SkGZUO6uxRyCupchWwY/o/K3noXbyL4zkFdddBcDpB7RGhQtzrtC5J7Szp
+# m00RRO04vBPLdOZ9HrAR4qMbIk1CPwT7VgYqt/EhkqHIoLD6+erOxsyhkGyqPJXo
+# rsm3fUGgW7u7vIwu2r4+Cu76trZYHKbAiitSwBMkiKC4UE7lVvDUuDrKvWYp8etH
+# eXyhghc6MIIXNgYKKwYBBAGCNwMDATGCFyYwghciBgkqhkiG9w0BBwKgghcTMIIX
 # DwIBAzEPMA0GCWCGSAFlAwQCAQUAMHgGCyqGSIb3DQEJEAEEoGkEZzBlAgEBBglg
-# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgTMXFGMthY2ENc5IdVqlEfHWwobVn
-# KZBdUohERGfhy4ECEQCNy1BY4Nh0Xxx+0X9KMp7gGA8yMDI1MDQwMjE4MjMzMlqg
+# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgm/JeYFuLsoaruVJUUsEzDYYbqZeQ
+# P4wC5Qw4qhWU4HUCEQD6D0eek0GJq+CCDIjcd5QAGA8yMDI1MDQxNTE4MjU1MVqg
 # ghMDMIIGvDCCBKSgAwIBAgIQC65mvFq6f5WHxvnpBOMzBDANBgkqhkiG9w0BAQsF
 # ADBjMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNV
 # BAMTMkRpZ2lDZXJ0IFRydXN0ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1w
@@ -247,19 +250,19 @@ function Remove-GTMProperty {
 # VVMxFzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMTswOQYDVQQDEzJEaWdpQ2VydCBU
 # cnVzdGVkIEc0IFJTQTQwOTYgU0hBMjU2IFRpbWVTdGFtcGluZyBDQQIQC65mvFq6
 # f5WHxvnpBOMzBDANBglghkgBZQMEAgEFAKCB0TAaBgkqhkiG9w0BCQMxDQYLKoZI
-# hvcNAQkQAQQwHAYJKoZIhvcNAQkFMQ8XDTI1MDQwMjE4MjMzMlowKwYLKoZIhvcN
+# hvcNAQkQAQQwHAYJKoZIhvcNAQkFMQ8XDTI1MDQxNTE4MjU1MVowKwYLKoZIhvcN
 # AQkQAgwxHDAaMBgwFgQU29OF7mLb0j575PZxSFCHJNWGW0UwLwYJKoZIhvcNAQkE
-# MSIEILv0zUvIkxtswftN6GoSt9fa3D6tQuzg3H2RqhXBSyF5MDcGCyqGSIb3DQEJ
+# MSIEIIQPJzyUJD3YKo151/P3ttZXBlZX7+WV/L+mf072CzSAMDcGCyqGSIb3DQEJ
 # EAIvMSgwJjAkMCIEIHZ2n6jyYy8fQws6IzCu1lZ1/tdz2wXWZbkFk5hDj5rbMA0G
-# CSqGSIb3DQEBAQUABIICACi4lXXIbWkaOLDGP2NlheUMCOFctMONSWiztzwWUPah
-# wZHSSUmMoUe6Dx69ohllrY8iBR3yL2rgleBFQ6JifgDk3XoL3GaIikAfopld6/X2
-# 4J3fg5Swb4X9p3LK/4Bv/GYAk05yAb2CZyRIcVWSoS6kQNNqr4ZU5NOacN4OSqGV
-# ZmA6Q+s6YlPM9j2XvWNbp5/hlAirF7QInqy/N5h3f7F0KAG4Bg+CN9YLSyjMVOqe
-# YMtciapLh3ss1WAs1GB7MTpx5YMeNeMwp0NPQsk52yYL9CRQwxX642XJy+b8FtQj
-# XxFbiRh2m1otVbazA73C8TJ1kxU9ZwQCmsRTTlT6SONXRkWi+CLEvl/sinVKlOjq
-# To1xiDE1GbjFJQMfnFUpsjMVkew/neVDqWUwd+Md0GAi5RGrmFAxD7NrSYxLNrzp
-# 8u8KjjQpZPXCekDYgo9VIVAn60ChMOQpuxv9SIo8SrH8j6vt3IC/Wb+EWoOwGf0I
-# eab5MnDFzIYdtxaeIuSIqOVN69TK9S8pmPB9UToj7OSfHc2T8TZXW1X6SlUJsVoO
-# OpAy0yKfDYsOYc+6TTuXryScwRoDq1DhZzsn0gmo34/shAhjvKzs4bTFxYDUd3rm
-# j4D/O81m3RkW/xT/NsthXDtd0HEWuVlV1QWZUEXuHcMGq15Wz4/PIfs6uJ1KpP6B
+# CSqGSIb3DQEBAQUABIICAI6R2gdvuLcJT/55TxcD8nPlH8gbtXD+grwZIZgbI4ST
+# rPS71rbfMBHoC/BwHqIdoCl4FzhP5LGOhBpoUR5LvC4aUqm40mL1ps+fzkrzbX7A
+# ++GzUb8CMJULqbAkGbyXcRij3Q+RPqv3l6c8DZz5vhK6B7BJCAMKpYQKIwSJHXhf
+# Pn/9oCshry1xZcLaP+ZPnVE9WwBRxB41MRCue3cleALQr4HGv/tf2hRQVxB/bM0l
+# kBe3Vq0ONEsWY6m3vhw/sTodMarRDDN4LEZrd18LrEvTh0NvzGlMmWIU4koAyLe3
+# h/1iAydt0g3Hv3H3AzBBk5PalSuQvKwG51OGe2wK1yNlXsQaVmWUO0cKakE29ZX/
+# gqr78kKU5jmzb9r3Zfb6UxGxMHcPhJVTHbKyaYCi47wINQdTLOBwQ1FGLYutNYqb
+# uf0r6qy4dwGsAyI6+SNFovLlIVQQFHh+3gKzx0ZpVrLSmMNJxa815BFbSwSUr4bf
+# OTSSXBC1xyT6Na/wmCKF8zH6ifqGPm21VFgOyOajI7mjJNJ423oUg8jtXl2o3bNS
+# b9BtMjrtYGRd37GPJKGasQAiWXSneE6OuEbYmImKMndF1uZcZX1hIZ0qhwi5Kx7b
+# S3HdWc4RgpnetDa9dQrsnYEby0KpWsfmr3lV7D6iDy+pE15xKOXXmhKKG+Gm0Jn/
 # SIG # End signature block

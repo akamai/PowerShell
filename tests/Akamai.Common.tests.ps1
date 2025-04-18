@@ -23,7 +23,7 @@ Describe 'Safe Shared Tests' {
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestAuthFile = $env:PesterSafeAuthFile
+        $TestAuthFile = $env:PesterAuthFile
         $TestClearTextString = 'This is my test string!'
         $TestBase64EncodedString = 'VGhpcyBpcyBteSB0ZXN0IHN0cmluZyE='
         $TestURLEncodedString = 'This%20is%20my%20test%20string!'
@@ -423,7 +423,6 @@ account_key = $TestASK
         Context 'Clear-AkamaiDataCache' -Tag 'Clear-AkamaiDataCache' {
             BeforeAll {
                 $Modules = Get-Module
-                Write-Host "Clear modules = $Modules"
                 # Pull assets before enabling data cache
                 $AppSecConfigs = Get-AppSecConfiguration @CommonParams
                 $ClientLists = Get-ClientList @CommonParams

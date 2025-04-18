@@ -5,7 +5,7 @@ function New-GTMDatacenter {
         [string]
         $DomainName,
 
-        [Parameter(ValueFromPipeline)]
+        [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
 
         [Parameter()]
@@ -44,8 +44,8 @@ function New-GTMDatacenter {
             'Body'              = $Body
             'EdgeRCFile'        = $EdgeRCFile
             'Section'           = $Section
-            'AccountSwitchKey' = $AccountSwitchKey
-            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+            'AccountSwitchKey'  = $AccountSwitchKey
+            'Debug'             = ($PSBoundParameters.Debug -eq $true)
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
@@ -59,8 +59,8 @@ function New-GTMDatacenter {
 # SIG # Begin signature block
 # MIIpmwYJKoZIhvcNAQcCoIIpjDCCKYgCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCA8ccl3gmusreLI
-# M7P05xpTsrmZCpBHN55r4FkZ8S/cdaCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBO8FJiJX1VorO4
+# NGJbzsz6tB+5Q6n1UdL0pzUnStiX16CCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
 # TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
 # BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
@@ -143,22 +143,22 @@ function New-GTMDatacenter {
 # IFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTECEA+pA0h+kq5EeXpXIQBQ
 # X8IwDQYJYIZIAWUDBAIBBQCgfDAQBgorBgEEAYI3AgEMMQIwADAZBgkqhkiG9w0B
 # CQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAv
-# BgkqhkiG9w0BCQQxIgQgesOzpilvS2RQ/rthrstSpkgzu5lMLvWFKUuLfLwAms8w
-# DQYJKoZIhvcNAQEBBQAEggIA148e98cTfw+9q3C2O2VEvBFDvzJJ3ej2B9IElSJY
-# j6CLLjmQHum4o51/5KmNJcoy3QUEykuA4jI75WB2B2E+qWD3kGNiLz1RJasuR0Uv
-# zfta23ms343QsyQVgzk20h7lfLvV8l5xkvUVFn2GKuahxqne6hWQsixgxWdBXUPV
-# Zykt4kjC6JuPN54+1l99ocjOAXChXp8tpJMCKWwSpLh7b7kVlZ3SNJ9LCPvuRrKR
-# sXon4uPAMRAI1XUnawdOd0cK8J5Fyv05fIww7m6FmXyJAdOTXdtgxHMN0EzQSCDn
-# ylVo4kZkrY6QhKXGz6Zk7hth3YGTYkONKo/GmDUMg9GsuwEsahErfthuLI9GTJ6J
-# 7PBu6XzdouOoSoe4Nr8uWJajsMu+TwowmBRQAupOGokDfzRtshfeklalhQaaDvu4
-# jZkOr2hE0EcvQv1r4lnVzISWUllX/SQDor0pB0ZyE6XzqsaJArlfNrnEzuCy3a1y
-# L/Z3XlQ5WaQwcF81/kyCsS/0zlyNZAaQlB85N6lq9ucRbzEQvVPswDHiaXXXDUcw
-# u+YnVjOxGHu/ANPZCUFUd/3EkBB4XZqPdEAEVygRD1SZ0B8oHxz/ryFBfjix59Jq
-# HaI0SoCWeJ5s7epgrf5C+9w7wdPFaHjZelb7qSDSF5oggm3WFkEKfhyXwJnt9Cyy
-# Qkahghc5MIIXNQYKKwYBBAGCNwMDATGCFyUwghchBgkqhkiG9w0BBwKgghcSMIIX
+# BgkqhkiG9w0BCQQxIgQgBlTniKrTUslUCksItAXnZ2/yVD+GIWDlEFeYtCF/f7cw
+# DQYJKoZIhvcNAQEBBQAEggIAsArmbOuttCUOAAFTjBgf39+bodNBPgYsklbn1u+h
+# IODdj0kDX1NlkTPwArj0K14aZGUMauVhuGChvUNz02LjXC+ZDjaXfa42x9990Zhc
+# jyYziBX1T/5dYR9hllD6hkftUT6bb/ANMDvf+g34NaFCljrImJSGE6Bx6LYkvXyE
+# sZgI3KjI18cEWT4TL5UAmQNH5i95pavoVnfSDEvznqQaEMxs+5zm8B1lDR1Gnkl2
+# nuNOYiYzg6EmDt0qqkEJrijkt8YZlgQxK9rxO5FA1yDXJ3Lj2WlTg8W/a2mr00V4
+# XIbGlATrQIMK6P0zYDuplxgbzsQuI5C7+ct1JEsgF76ZCFdcVdYDfGOVGWWHVmBQ
+# 5RKiJq276tU+lclHgFkerqptOUHs3LHoUPzzEj9+obfwANOXmUe+J6mhNLkdQpF+
+# hXcpONNnM3r2nGFtZPjWhcm/u9mBK7CuPjT7D8RSkMyoOLxCyrEo4vx3bwuh/CHg
+# GuLXj/4vDxQAxUVVopKj+wWgdNwaNkKIpfQqt4YMitzJnHShEB4Vxo3DwVi5Cs4A
+# VOWXuFzEJ3Iuv0tqN7Y5nKOMmmG27fuaP1P9FzruhTHzwR67G+RN+AwvK75GTtaN
+# 72RyBAOcnwz3AHDN4mejgVGp/kPeBGI5vjsApHJR9VGPZpNV3sFj25l1gDv0ANXw
+# PN2hghc5MIIXNQYKKwYBBAGCNwMDATGCFyUwghchBgkqhkiG9w0BBwKgghcSMIIX
 # DgIBAzEPMA0GCWCGSAFlAwQCAQUAMHcGCyqGSIb3DQEJEAEEoGgEZjBkAgEBBglg
-# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQg/ZsP22EGPPSxYLQ0X9Jds9c+kXGC
-# YYLd8kQLkoLN0YgCEHfDAZC7t2SFZiTWQgaW7aAYDzIwMjUwNDAyMTgyNjI4WqCC
+# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgl2jn6mynCC3hVVk117NC27bkex82
+# USROlP5iGCpei74CEEuTRXj2Id9UApXxw0zVfAwYDzIwMjUwNDE1MTgyODI5WqCC
 # EwMwgga8MIIEpKADAgECAhALrma8Wrp/lYfG+ekE4zMEMA0GCSqGSIb3DQEBCwUA
 # MGMxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UE
 # AxMyRGlnaUNlcnQgVHJ1c3RlZCBHNCBSU0E0MDk2IFNIQTI1NiBUaW1lU3RhbXBp
@@ -264,19 +264,19 @@ function New-GTMDatacenter {
 # UzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFRy
 # dXN0ZWQgRzQgUlNBNDA5NiBTSEEyNTYgVGltZVN0YW1waW5nIENBAhALrma8Wrp/
 # lYfG+ekE4zMEMA0GCWCGSAFlAwQCAQUAoIHRMBoGCSqGSIb3DQEJAzENBgsqhkiG
-# 9w0BCRABBDAcBgkqhkiG9w0BCQUxDxcNMjUwNDAyMTgyNjI4WjArBgsqhkiG9w0B
+# 9w0BCRABBDAcBgkqhkiG9w0BCQUxDxcNMjUwNDE1MTgyODI5WjArBgsqhkiG9w0B
 # CRACDDEcMBowGDAWBBTb04XuYtvSPnvk9nFIUIck1YZbRTAvBgkqhkiG9w0BCQQx
-# IgQgAwaG5oyfPZ6h3qlU4ACRxD3mxD87uVKnU4fj5viGLdcwNwYLKoZIhvcNAQkQ
+# IgQghS9dooC9TwepHs1KcKquGFQ8xiW9nfzH6FB3R7f8PPQwNwYLKoZIhvcNAQkQ
 # Ai8xKDAmMCQwIgQgdnafqPJjLx9DCzojMK7WVnX+13PbBdZluQWTmEOPmtswDQYJ
-# KoZIhvcNAQEBBQAEggIAvbGzGgE4AiM3fTIVsOFy1N+X1STa0vZzAzow5qeYhNZG
-# kuyv1nUITJypqzUgXDj69zYmJ5y+4JQIazi82QndsoTjJRWGIAm+xo5XBlD5MYxr
-# ymFN1GTnFmj+XeZ2+2Y89szeBDVXgkRkqAA7KTL2/9TGXIBHdZoqtFH4j66F64/I
-# SuwtqDpLks4/tWqrh0lB0+2cGt435nw9AUuBQiwbiV/xFbtyAOVVJVthnLnx3+KL
-# Z3B9zHJT6kpOojoepz42CjsiL7azr+axzLFkYgK413Plz5BOjWBk+rY4Eu9G/S9z
-# UhlP1xBn/IMJfv0tJwcmLnY7AlI8TPkI5nRpnGuoWf1kP8HCsh+egD6exSK8zIpP
-# mFtRkCgnmK2a0gx5uy3zxzgf6KlmQQSapzr+Zo21OXdyIJ47zTlrIK5qKQqwnt0w
-# 5v7/hlkgPqzq2w7q4WVR8a7SH6cM0doTrcQWRkakdp8kOqbcghWbDvTsBwySJJW8
-# mgWWgdLaeA/YMhowVGoltdFYuKPvpYrFVwzZA1qzimLXVmBjhesEQdkUEut32Kap
-# fTWsXXYqaM97kxVIXWppqegtIAvVnn6J7C+YJaXb54PoZnSVuexEz3JQtqzMrWe9
-# ZVpdn/OuK1T0vWe/EmHplLf3ZbgavCxBrLHJzgr6DJlC9SKIAXcnsG8j4OrcFpc=
+# KoZIhvcNAQEBBQAEggIApsEb6M5DSECO7a81jXvXZZa6ZAGrUYRj7oIAlAkEqRlS
+# hmJ3TpxN7nnziNutrKT99UpXopx5NYoA4syYLr18rTp50R5Pj6WBQ3uQ4b0a/SnI
+# cg2nwb02TBTzICCUjm9gRxEQ+9AkrKYUSevY6COaNjR51h9KkbHgSm6JYDvFzLO4
+# 5hev0sbtA42R9l9KMV/sv+1bAucRiFi2XtGykkRfwwclnZM+n3tYDn/9/X7nxAr3
+# 6gmj5HHsqO8V/pp4UIEfRk3ZwxD+5m6FHYs9vzhzesXuH3oF7X+CBmVHb/5Rpbyd
+# tp8ehx+cymoU2gehbAwjnuNqar9RDMeBZu1VHAZJY3ykFy3KKx/bde1ntAPuQhvS
+# yFsyC6o01RVzZ0EnL9SParDpBWtg3T9cwNxfo2OFRu7s7mijsfSFJkMh1eNlM5im
+# 4Ns0hbkkoSufSjD0u1i0ItZKtpHt5vb5MvFQUoL60d3xfg2OSx14QUKzp8oY1Ien
+# xQYPzt2hIVplHZQ+dnJeH0INLwfxyF/T09kLhkjclnTt4P/vDRC4+rAN0L1wiJQ8
+# y3qsN0ECzBePOzj1t6nrH4TXM77Q1NsFwT15/6iFh93FgqjiiMdc0oUyKB3uat0O
+# YcbuY8N2z9S7kOvSVzX/HsS2hkT2OQ4srRbPiBBPK+12xZx+v6e89l8qi4+lE+0=
 # SIG # End signature block

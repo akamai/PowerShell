@@ -18,11 +18,145 @@ Describe 'Safe Akamai.GTM Tests' {
         $TestLoadDataRequest = @"
 {"domain":"$TestDomainName","datacenterId":1,"resource":"connections","current-load":20,"target-load":25,"max-load":30,"timestamp":"2023-06-07T17:38:53.188Z"}
 "@
+        $TestPropertyName = "property1"
+        $TestProperty = @"
+{
+  "name": "$TestPropertyName",
+  "trafficTargets": [
+    {
+      "datacenterId": 1,
+      "enabled": true,
+      "weight": 1.0,
+      "precedence": 0,
+      "handoutCName": "dc1.akamaipowershell.net",
+      "name": null,
+      "servers": []
+    },
+    {
+      "datacenterId": 2,
+      "enabled": true,
+      "weight": 0.0,
+      "precedence": 0,
+      "handoutCName": "dc2.akamaipowershell.net",
+      "name": null,
+      "servers": []
+    }
+  ],
+  "livenessTests": [],
+  "staticRRSets": [],
+  "mapName": "",
+  "handoutMode": "normal",
+  "handoutLimit": 0,
+  "scoreAggregationType": "worst",
+  "dynamicTTL": 60,
+  "type": "weighted-round-robin",
+  "ipv6": false,
+  "backupCName": null
+}
+"@ | ConvertFrom-Json
+        $TestASMapName = 'asmap1'
+        $TestASMap = @"
+{
+  "name": "$TestASMapName",
+  "assignments": [
+    {
+      "datacenterId": 1,
+      "asNumbers": [
+        12345
+      ],
+      "nickname": "aszone1"
+    }
+  ],
+  "defaultDatacenter": {
+    "datacenterId": 5400,
+    "nickname": "Default (all others)"
+  }
+}
+"@ | ConvertFrom-Json
+        $TestGeoMapName = 'GeoMap1'
+        $TestGeoMap = @"
+{
+  "name": "$TestGeoMapName",
+  "assignments": [
+    {
+      "datacenterId": 1,
+      "nickname": "GeoZone1",
+      "countries": [
+        "GB/SC"
+      ]
+    }
+  ],
+  "defaultDatacenter": {
+    "datacenterId": 5400,
+    "nickname": "Default Mapping"
+  }
+}
+"@ | ConvertFrom-Json
+        $TestCIDRMapName = 'CIDMap1'
+        $TestCIDRMap = @"
+{
+  "name": "$TestCIDRMapName",
+  "assignments": [
+    {
+      "datacenterId": 1,
+      "blocks": [
+        "1.2.3.0/24"
+      ],
+      "nickname": "CIDRZone1"
+    }
+  ],
+  "defaultDatacenter": {
+    "datacenterId": 5400,
+    "nickname": "All Other CIDR Blocks"
+  }
+}
+"@ | ConvertFrom-Json
+
+        $TestResourceName = 'resource1'
+        $TestResource = @"
+{
+  "aggregationType": "sum",
+  "constrainedProperty": null,
+  "decayRate": null,
+  "description": "Testing",
+  "hostHeader": "akamaipowershell.net",
+  "leaderString": "leader",
+  "leastSquaresDecay": null,
+  "loadImbalancePercentage": null,
+  "maxUMultiplicativeIncrement": null,
+  "name": "$TestResourceName",
+  "resourceInstances": [
+    {
+      "loadObject": null,
+      "loadObjectPort": 9999,
+      "loadServers": [
+        "0.0.0.1"
+      ],
+      "datacenterId": 1,
+      "useDefaultLoadObject": false
+    },
+    {
+      "loadObject": null,
+      "loadObjectPort": 9999,
+      "loadServers": [
+        "0.0.0.2"
+      ],
+      "datacenterId": 2,
+      "useDefaultLoadObject": false
+    }
+  ],
+  "type": "Non-XML load object via HTTP",
+  "upperBound": 0
+}
+"@ | ConvertFrom-Json
         $PD = @{}
     }
 
     AfterAll {
-
+        Get-GTMProperty -DomainName $TestDomainName @CommonParams | Remove-GTMProperty -DomainName $TestDomainName @CommonParams
+        Get-GTMASMap -DomainName $TestDomainName @CommonParams | Remove-GTMASMap -DomainName $TestDomainName @CommonParams
+        Get-GTMCIDRMap -DomainName $TestDomainName @CommonParams | Remove-GTMCIDRMap -DomainName $TestDomainName @CommonParams
+        Get-GTMGeoMap -DomainName $TestDomainName @CommonParams | Remove-GTMGeoMap -DomainName $TestDomainName @CommonParams
     }
 
     #------------------ Domains ---------------------#
@@ -76,52 +210,6 @@ Describe 'Safe Akamai.GTM Tests' {
         }
     }
 
-    #------------------ AS Maps ---------------------#
-
-    Context 'Get-GTMASMap - All' {
-        It 'returns a list' {
-            $PD.ASMaps = Get-GTMASMap -DomainName $TestDomainName @CommonParams
-            $PD.ASMaps[0].Name | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-GTMASMap - Single' {
-        It 'returns a list' {
-            $PD.ASMap = Get-GTMASMap -DomainName $TestDomainName -MapName $PD.ASMaps[0].Name @CommonParams
-            $PD.ASMap.Name | Should -Be $PD.ASMaps[0].Name
-        }
-    }
-    
-    Context 'Set-GTMASMap by pipeline' {
-        It 'returns the correct data' {
-            $TempASMap = $PD.ASMap.PSObject.Copy()
-            $TempASMap.Name += '-temp'
-            $PD.NewASMap = $TempASMap | Set-GTMASMap -DomainName $TestDomainName -MapName $TempASMap.Name @CommonParams
-            $PD.NewASMap.Name | Should -Be $TempASMap.Name
-        }
-    }
-
-    Context 'Set-GTMASMap by param' {
-        It 'returns the correct data' {
-            $PD.SetASMapByParam = Set-GTMASMap -DomainName $TestDomainName -MapName $PD.NewASMap.Name -Body $PD.NewASMap @CommonParams
-            $PD.SetASMapByParam.Name | Should -Be $PD.NewASMap.Name
-        }
-    }
-
-    Context 'Set-GTMASMap by json' {
-        It 'returns the correct data' {
-            $PD.SetASMapByJson = Set-GTMASMap -DomainName $TestDomainName -MapName $PD.NewASMap.Name -Body (ConvertTo-Json -Depth 10 $PD.NewASMap) @CommonParams
-            $PD.SetASMapByJson.Name | Should -Be $PD.NewASMap.Name
-        }
-    }
-
-    Context 'Remove-GTMASMap' {
-        It 'deletes correctly' {
-            $PD.RemoveASMap = Remove-GTMASMap -DomainName $TestDomainName -MapName $PD.NewASMap.Name @CommonParams
-            $PD.RemoveASMap.status.message | Should -Not -BeNullOrEmpty
-        }
-    }
-
     #------------------ Datacenters ---------------------#
 
     Context 'Get-GTMDatacenter - All' {
@@ -141,7 +229,7 @@ Describe 'Safe Akamai.GTM Tests' {
     }
 
     Context 'Set-GTMDatacenter by pipeline' {
-        It 'returns the correct data' {
+        It 'updates correctly' {
             $PD.SetDatacenterByPipeline = $PD.Datacenter | Set-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.Datacenter.datacenterId @CommonParams
             $PD.SetDatacenterByPipeline.datacenterId | Should -Be $PD.Datacenter.datacenterId
         }
@@ -155,7 +243,7 @@ Describe 'Safe Akamai.GTM Tests' {
     }
 
     Context 'Set-GTMDatacenter by json' {
-        It 'returns the correct data' {
+        It 'updates correctly' {
             $PD.SetDatacenterByJson = Set-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.Datacenter.datacenterId -Body (ConvertTo-Json -Depth 10 $PD.Datacenter) @CommonParams
             $PD.SetDatacenterByJson.datacenterId | Should -Be $PD.Datacenter.datacenterId
         }
@@ -175,7 +263,74 @@ Describe 'Safe Akamai.GTM Tests' {
         }
     }
 
+    #------------------ AS Maps ---------------------#
+
+    Context 'New-GTMASMap' {
+        It 'creates correctly' {
+            $TestParams = @{
+                DomainName = $TestDomainName
+                MapName    = $TestASMapName
+                Body       = $TestASMap
+            }
+            $PD.NewASMap = New-GTMASMap @TestParams @CommonParams
+            $PD.NewASMap.Name | Should -Be $TestASMapName
+        }
+    }
+
+    Context 'Get-GTMASMap - All' {
+        It 'returns a list' {
+            $PD.ASMaps = Get-GTMASMap -DomainName $TestDomainName @CommonParams
+            $PD.ASMaps[0].Name | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-GTMASMap - Single' {
+        It 'returns the correct object' {
+            $PD.ASMap = Get-GTMASMap -DomainName $TestDomainName -MapName $TestASMapName @CommonParams
+            $PD.ASMap.Name | Should -Be $TestASMapName
+        }
+    }
+    
+    Context 'Set-GTMASMap by pipeline' {
+        It 'updates correctly' {
+            $TempASMap = $PD.ASMap.PSObject.Copy()
+            $TempASMap.Name += '-temp'
+            $PD.SetASMap = $TempASMap | Set-GTMASMap -DomainName $TestDomainName -MapName $TempASMap.Name @CommonParams
+            $PD.SetASMap.Name | Should -Be $TempASMap.Name
+        }
+    }
+
+    Context 'Set-GTMASMap by param' {
+        It 'updates correctly' {
+            $PD.SetASMapByParam = Set-GTMASMap -DomainName $TestDomainName -MapName $PD.SetASMap.Name -Body $PD.SetASMap @CommonParams
+            $PD.SetASMapByParam.Name | Should -Be $PD.SetASMap.Name
+        }
+    }
+
+    Context 'Set-GTMASMap by json' {
+        It 'updates correctly' {
+            $PD.SetASMapByJson = Set-GTMASMap -DomainName $TestDomainName -MapName $PD.SetASMap.Name -Body (ConvertTo-Json -Depth 10 $PD.SetASMap) @CommonParams
+            $PD.SetASMapByJson.Name | Should -Be $PD.SetASMap.Name
+        }
+    }
+
+    Context 'Remove-GTMASMap' {
+        It 'deletes correctly' {
+            $PD.RemoveSetASMap = Remove-GTMASMap -DomainName $TestDomainName -MapName $PD.SetASMap.Name @CommonParams
+            $PD.RemoveSetASMap.status.message | Should -Not -BeNullOrEmpty
+            $PD.RemoveNewASMap = $PD.NewASMap | Remove-GTMASMap -DomainName $TestDomainName @CommonParams
+            $PD.RemoveNewASMap.status.message | Should -Not -BeNullOrEmpty
+        }
+    }
+
     #------------------ CIDR Map ---------------------#
+
+    Context 'New-GTMCIDRMap' {
+        It 'creates correctly' {
+            $PD.NewCIDRMap = $TestCIDRMap | New-GTMCIDRMap -DomainName $TestDomainName @CommonParams
+            $PD.NewCIDRMap.Name | Should -Be $TestCIDRMapName
+        }
+    }
 
     Context 'Get-GTMCIDRMap - All' {
         It 'returns a list' {
@@ -185,43 +340,57 @@ Describe 'Safe Akamai.GTM Tests' {
     }
 
     Context 'Get-GTMCIDRMap - Single' {
-        It 'returns a list' {
-            $PD.CIDRMap = Get-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.CIDRMaps[0].Name @CommonParams
-            $PD.CIDRMap.Name | Should -Be $PD.CIDRMaps[0].Name
+        It 'returns the correct object' {
+            $PD.CIDRMap = Get-GTMCIDRMap -DomainName $TestDomainName -MapName $TestCIDRMapName @CommonParams
+            $PD.CIDRMap.Name | Should -Be $TestCIDRMapName
         }
     }
 
     Context 'Set-GTMCIDRMap by pipeline' {
-        It 'returns the correct data' {
+        It 'updates correctly' {
             $TempCIDRMap = $PD.CIDRMap.PSObject.Copy()
             $TempCIDRMap.Name += '-temp'
-            $PD.NewCIDRMap = $TempCIDRMap | Set-GTMCIDRMap -DomainName $TestDomainName -MapName $TempCIDRMap.Name @CommonParams
-            $PD.NewCIDRMap.Name | Should -Be $TempCIDRMap.Name
+            $PD.SetCIDRMap = $TempCIDRMap | Set-GTMCIDRMap -DomainName $TestDomainName -MapName $TempCIDRMap.Name @CommonParams
+            $PD.SetCIDRMap.Name | Should -Be $TempCIDRMap.Name
         }
     }
 
     Context 'Set-GTMCIDRMap by param' {
-        It 'returns the correct data' {
-            $PD.SetCIDRMapByParam = Set-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.NewCIDRMap.Name -Body $PD.NewCIDRMap @CommonParams
-            $PD.SetCIDRMapByParam.Name | Should -Be $PD.NewCIDRMap.Name
+        It 'updates correctly' {
+            $PD.SetCIDRMapByParam = Set-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.SetCIDRMap.Name -Body $PD.SetCIDRMap @CommonParams
+            $PD.SetCIDRMapByParam.Name | Should -Be $PD.SetCIDRMap.Name
         }
     }
 
     Context 'Set-GTMCIDRMap by json' {
-        It 'returns the correct data' {
-            $PD.SetCIDRMapByJson = Set-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.NewCIDRMap.Name -Body (ConvertTo-Json -Depth 10 $PD.NewCIDRMap) @CommonParams
-            $PD.SetCIDRMapByJson.Name | Should -Be $PD.NewCIDRMap.Name
+        It 'updates correctly' {
+            $PD.SetCIDRMapByJson = Set-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.SetCIDRMap.Name -Body (ConvertTo-Json -Depth 10 $PD.SetCIDRMap) @CommonParams
+            $PD.SetCIDRMapByJson.Name | Should -Be $PD.SetCIDRMap.Name
         }
     }
 
     Context 'Remove-GTMCIDRMap' {
         It 'deletes correctly' {
-            $PD.RemoveCIDRMap = Remove-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.NewCIDRMap.Name @CommonParams
-            $PD.RemoveCIDRMap.status.message | Should -Not -BeNullOrEmpty
+            $PD.RemoveSetCIDRMap = Remove-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.SetCIDRMap.Name @CommonParams
+            $PD.RemoveSetCIDRMap.status.message | Should -Not -BeNullOrEmpty
+            $PD.RemoveNewCIDRMap = $PD.NewCIDRMap | Remove-GTMCIDRMap -DomainName $TestDomainName @CommonParams
+            $PD.RemoveNewCIDRMap.status.message | Should -Not -BeNullOrEmpty
         }
     }
     
     #------------------ Geo Maps ---------------------#
+
+    Context 'New-GTMGeoMap' {
+        It 'creates correctly' {
+            $TestParams = @{
+                DomainName = $TestDomainName
+                MapName    = $TestGeoMapName
+                Body       = $TestGeoMap
+            }
+            $PD.NewGeoMap = New-GTMGeoMap @TestParams @CommonParams
+            $PD.NewGeoMap.Name | Should -Be $TestGeoMapName
+        }
+    }
 
     Context 'Get-GTMGeoMap - All' {
         It 'returns a list' {
@@ -231,88 +400,57 @@ Describe 'Safe Akamai.GTM Tests' {
     }
 
     Context 'Get-GTMGeoMap - Single' {
-        It 'returns a list' {
-            $PD.GeoMap = Get-GTMGeoMap -DomainName $TestDomainName -MapName $PD.GeoMaps[0].Name @CommonParams
-            $PD.GeoMap.Name | Should -Be $PD.GeoMaps[0].Name
+        It 'returns the correct object' {
+            $PD.GeoMap = Get-GTMGeoMap -DomainName $TestDomainName -MapName $TestGeoMapName @CommonParams
+            $PD.GeoMap.Name | Should -Be $TestGeoMapName
         }
     }
 
     Context 'Set-GTMGeoMap by pipeline' {
-        It 'returns the correct data' {
+        It 'updates correctly' {
             $TempGeoMap = $PD.GeoMap.PSObject.Copy()
             $TempGeoMap.Name += '-temp'
-            $PD.NewGeoMap = $TempGeoMap | Set-GTMGeoMap -DomainName $TestDomainName -MapName $TempGeoMap.Name @CommonParams
-            $PD.NewGeoMap.Name | Should -Be $TempGeoMap.Name
+            $PD.SetGeoMap = $TempGeoMap | Set-GTMGeoMap -DomainName $TestDomainName -MapName $TempGeoMap.Name @CommonParams
+            $PD.SetGeoMap.Name | Should -Be $TempGeoMap.Name
         }
     }
 
     Context 'Set-GTMGeoMap by param' {
-        It 'returns the correct data' {
-            $PD.SetGeoMapByParam = Set-GTMGeoMap -DomainName $TestDomainName -MapName $PD.NewGeoMap.Name -Body $PD.NewGeoMap @CommonParams
-            $PD.SetGeoMapByParam.Name | Should -Be $PD.NewGeoMap.Name
+        It 'updates correctly' {
+            $PD.SetGeoMapByParam = Set-GTMGeoMap -DomainName $TestDomainName -MapName $PD.SetGeoMap.Name -Body $PD.SetGeoMap @CommonParams
+            $PD.SetGeoMapByParam.Name | Should -Be $PD.SetGeoMap.Name
         }
     }
 
     Context 'Set-GTMGeoMap by json' {
-        It 'returns the correct data' {
-            $PD.SetGeoMapByJson = Set-GTMGeoMap -DomainName $TestDomainName -MapName $PD.NewGeoMap.Name -Body (ConvertTo-Json -Depth 10 $PD.NewGeoMap) @CommonParams
-            $PD.SetGeoMapByJson.Name | Should -Be $PD.NewGeoMap.Name
+        It 'updates correctly' {
+            $PD.SetGeoMapByJson = Set-GTMGeoMap -DomainName $TestDomainName -MapName $PD.SetGeoMap.Name -Body (ConvertTo-Json -Depth 10 $PD.SetGeoMap) @CommonParams
+            $PD.SetGeoMapByJson.Name | Should -Be $PD.SetGeoMap.Name
         }
     }
 
     Context 'Remove-GTMGeoMap' {
         It 'deletes correctly' {
-            $PD.RemoveGeoMap = Remove-GTMGeoMap -DomainName $TestDomainName -MapName $PD.NewGeoMap.Name @CommonParams
-            $PD.RemoveGeoMap.status.message | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------ Properties ---------------------#
-
-    Context 'Get-GTMProperty - All' {
-        It 'returns a list' {
-            $PD.Properties = Get-GTMProperty -DomainName $TestDomainName @CommonParams
-            $PD.Properties[0].Name | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-GTMProperty - Single' {
-        It 'returns a list' {
-            $PD.Property = Get-GTMProperty -DomainName $TestDomainName -PropertyName $PD.Properties[0].Name @CommonParams
-            $PD.Property.Name | Should -Be $PD.Properties[0].Name
-        }
-    }
-
-    Context 'Set-GTMProperty by pipeline' {
-        It 'returns the correct data' {
-            $TempProperty = $PD.Property.PSObject.Copy()
-            $TempProperty.Name += '-temp'
-            $PD.NewProproperty = $TempProperty | Set-GTMProperty -DomainName $TestDomainName -PropertyName $TempProperty.Name @CommonParams
-            $PD.NewProproperty.Name | Should -Be $TempProperty.Name
-        }
-    }
-
-    Context 'Set-GTMProperty by param' {
-        It 'returns the correct data' {
-            $PD.SetPropertyByParam = Set-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProproperty.Name -Body $PD.NewProproperty @CommonParams
-            $PD.SetPropertyByParam.Name | Should -Be $PD.NewProproperty.Name
-        }
-    }
-
-    Context 'Set-GTMProperty by json' {
-        It 'returns the correct data' {
-            $PD.SetPropertyByJson = Set-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProproperty.Name -Body (ConvertTo-Json -Depth 10 $PD.NewProproperty) @CommonParams
-            $PD.SetPropertyByJson.Name | Should -Be $PD.NewProproperty.Name
-        }
-    }
-    
-    Context 'Remove-GTMProperty' {
-        It 'throws no errors' {
-            Remove-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProproperty.Name @CommonParams
+            $PD.RemoveSetGeoMap = Remove-GTMGeoMap -DomainName $TestDomainName -MapName $PD.SetGeoMap.Name @CommonParams
+            $PD.RemoveSetGeoMap.status.message | Should -Not -BeNullOrEmpty
+            $PD.RemoveNewGeoMap = $PD.NewGeoMap | Remove-GTMGeoMap -DomainName $TestDomainName @CommonParams
+            $PD.RemoveNewGeoMap.status.message | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------ Resources ---------------------#
+
+    Context 'New-GTMResource' {
+        It 'creates correctly' {
+            $TestParams = @{
+                DomainName   = $TestDomainName
+                ResourceName = $TestResourceName
+                Body         = $TestResource
+            }
+            $PD.NewResource = New-GTMResource @TestParams @CommonParams
+            $PD.NewResource.Name | Should -Be $TestResourceName
+        }
+    }
 
     Context 'Get-GTMResource - All' {
         It 'returns a list' {
@@ -322,39 +460,104 @@ Describe 'Safe Akamai.GTM Tests' {
     }
 
     Context 'Get-GTMResource - Single' {
-        It 'returns a list' {
-            $PD.Resource = Get-GTMResource -DomainName $TestDomainName -ResourceName $PD.Resources[0].Name @CommonParams
-            $PD.Resource.Name | Should -Be $PD.Resources[0].Name
+        It 'returns the correct object' {
+            $PD.Resource = Get-GTMResource -DomainName $TestDomainName -ResourceName $TestResourceName @CommonParams
+            $PD.Resource.Name | Should -Be $TestResourceName
         }
     }
     
     Context 'Set-GTMResource by pipeline' {
-        It 'returns the correct data' {
+        It 'updates correctly' {
             $TempResource = $PD.Resource.PSObject.Copy()
             $TempResource.Name += $PD.Resource.Name + '-temp'
-            $PD.NewResource = $TempResource | Set-GTMResource -DomainName $TestDomainName -ResourceName $TempResource.Name @CommonParams
-            $PD.NewResource.Name | Should -Be $TempResource.Name
+            $PD.SetResource = $TempResource | Set-GTMResource -DomainName $TestDomainName -ResourceName $TempResource.Name @CommonParams
+            $PD.SetResource.Name | Should -Be $TempResource.Name
         }
     }
 
     Context 'Set-GTMResource by param' {
-        It 'returns the correct data' {
-            $PD.SetResourceByParam = Set-GTMResource -DomainName $TestDomainName -ResourceName $PD.NewResource.Name -Body $PD.NewResource @CommonParams
-            $PD.SetResourceByParam.Name | Should -Be $PD.NewResource.Name
+        It 'updates correctly' {
+            $PD.SetResourceByParam = Set-GTMResource -DomainName $TestDomainName -ResourceName $PD.SetResource.Name -Body $PD.SetResource @CommonParams
+            $PD.SetResourceByParam.Name | Should -Be $PD.SetResource.Name
         }
     }
 
     Context 'Set-GTMResource by json' {
-        It 'returns the correct data' {
-            $PD.SetResourceByJson = Set-GTMResource -DomainName $TestDomainName -ResourceName $PD.NewResource.Name -Body (ConvertTo-Json -Depth 10 $PD.NewResource) @CommonParams
-            $PD.SetResourceByJson.Name | Should -Be $PD.NewResource.Name
+        It 'updates correctly' {
+            $PD.SetResourceByJson = Set-GTMResource -DomainName $TestDomainName -ResourceName $PD.SetResource.Name -Body (ConvertTo-Json -Depth 10 $PD.SetResource) @CommonParams
+            $PD.SetResourceByJson.Name | Should -Be $PD.SetResource.Name
         }
     }
 
     Context 'Remove-GTMResource' {
         It 'deletes correctly' {
-            $PD.RemoveResource = Remove-GTMResource -DomainName $TestDomainName -ResourceName $PD.NewResource.Name @CommonParams
-            $PD.RemoveDatacenter.status.message | Should -Not -BeNullOrEmpty
+            $PD.RemoveSetResource = Remove-GTMResource -DomainName $TestDomainName -ResourceName $PD.SetResource.Name @CommonParams
+            $PD.RemoveSetResource.status.message | Should -Not -BeNullOrEmpty
+            $PD.RemoveNewResource = $PD.NewResource | Remove-GTMResource -DomainName $TestDomainName @CommonParams
+            $PD.RemoveNewResource.status.message | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------ Properties ---------------------#
+
+    Context 'New-GTMProperty' {
+        It 'creates correctly' {
+            $TestParams = @{
+                DomainName   = $TestDomainName
+                PropertyName = $TestPropertyName
+                Body         = $TestProperty
+            }
+            $PD.NewProperty = New-GTMProperty @TestParams @CommonParams
+            $PD.NewProperty.Name | Should -Be $TestPropertyName
+        }
+    }
+
+    Context 'Get-GTMProperty - All' {
+        It 'returns a list' {
+            $PD.Properties = Get-GTMProperty -DomainName $TestDomainName @CommonParams
+            $PD.Properties[0].Name | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-GTMProperty - Single' {
+        It 'returns the correct object' {
+            $PD.Property = Get-GTMProperty -DomainName $TestDomainName -PropertyName $TestPropertyName @CommonParams
+            $PD.Property.Name | Should -Be $TestPropertyName
+            $PD.Property.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
+            $PD.Property.Type | Should -Be $PD.NewProperty.Type
+        }
+    }
+
+    Context 'Set-GTMProperty by pipeline' {
+        It 'updates correctly' {
+            $PD.SetProperty = $PD.NewProperty | Set-GTMProperty -DomainName $TestDomainName @CommonParams
+            $PD.SetProperty.Name | Should -Be $TestPropertyName
+            $PD.SetProperty.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
+            $PD.SetProperty.Type | Should -Be $PD.NewProperty.Type
+        }
+    }
+
+    Context 'Set-GTMProperty by param' {
+        It 'updates correctly' {
+            $PD.SetPropertyByParam = Set-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProperty.Name -Body $PD.NewProperty @CommonParams
+            $PD.SetPropertyByParam.Name | Should -Be $PD.NewProperty.Name
+            $PD.SetPropertyByParam.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
+            $PD.SetPropertyByParam.Type | Should -Be $PD.NewProperty.Type
+        }
+    }
+
+    Context 'Set-GTMProperty by json' {
+        It 'updates correctly' {
+            $PD.SetPropertyByJson = Set-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProperty.Name -Body (ConvertTo-Json -Depth 10 $PD.NewProperty) @CommonParams
+            $PD.SetPropertyByJson.Name | Should -Be $PD.NewProperty.Name
+            $PD.SetPropertyByJson.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
+            $PD.SetPropertyByJson.Type | Should -Be $PD.NewProperty.Type
+        }
+    }
+    
+    Context 'Remove-GTMProperty' {
+        It 'throws no errors' {
+            $PD.NewProperty | Remove-GTMProperty -DomainName $TestDomainName @CommonParams
         }
     }
 }
