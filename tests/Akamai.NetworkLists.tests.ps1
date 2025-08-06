@@ -78,13 +78,41 @@ Describe 'Safe Akamai.NetworkLists Tests' {
 
     Context 'New-NetworkListSubscription' {
         It 'throws no errors' {
-            New-NetworkListSubscription -Recipients mail@example.com -UniquedIDs $PD.NewList.uniqueId @CommonParams 
+            $TestParams = @{
+                'Recipients' = 'mail@example.com', 'noreply@example.com'
+                'UniqueIDs'  = $PD.NewList.uniqueId
+            }
+            New-NetworkListSubscription @TestParams @CommonParams 
         }
     }
 
     Context 'Remove-NetworkListSubscription' {
         It 'throws no errors' {
-            Remove-NetworkListSubscription -Recipients mail@example.com -UniquedIDs $PD.NewList.uniqueId @CommonParams 
+            $TestParams = @{
+                'Recipients' = 'mail@example.com', 'noreply@example.com'
+                'UniqueIDs'  = $PD.NewList.uniqueId
+            }
+            Remove-NetworkListSubscription @TestParams @CommonParams 
+        }
+    }
+
+    Context 'New-NetworkListSubscription (old param alias)' {
+        It 'throws no errors' {
+            $TestParams = @{
+                'Recipients' = 'mail@example.com', 'noreply@example.com'
+                'UniquedIDs' = $PD.NewList.uniqueId
+            }
+            New-NetworkListSubscription @TestParams @CommonParams 
+        }
+    }
+
+    Context 'Remove-NetworkListSubscription (old param alias)' {
+        It 'throws no errors' {
+            $TestParams = @{
+                'Recipients' = 'mail@example.com', 'noreply@example.com'
+                'UniquedIDs' = $PD.NewList.uniqueId
+            }
+            Remove-NetworkListSubscription @TestParams @CommonParams 
         }
     }
 
@@ -111,7 +139,13 @@ Describe 'Unsafe Akamai.NetworkLists Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-NetworkListActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $Activate = New-NetworkListActivation -NetworkListID 123_EXAMPLE -Environment STAGING -Comments "Activating" -NotificationRecipients 'email@example.com'
+            $TestParams = @{
+                'NetworkListID'          = '123_EXAMPLE'
+                'Environment'            = 'STAGING'
+                'Comments'               = 'Activating'
+                'NotificationRecipients' = 'email@example.com', 'email2@example.com'
+            }
+            $Activate = New-NetworkListActivation @TestParams
             $Activate.activationStatus | Should -Not -BeNullOrEmpty
         }
     }

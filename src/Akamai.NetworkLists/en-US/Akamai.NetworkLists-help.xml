@@ -1417,9 +1417,9 @@
           <maml:description>
             <maml:para>A list of email addresses of Control Center users who receive an email when activation of the list is complete. Don't add addresses to the list without the recipients' consents.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1540,9 +1540,9 @@
         <maml:description>
           <maml:para>A list of email addresses of Control Center users who receive an email when activation of the list is complete. Don't add addresses to the list without the recipients' consents.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1633,21 +1633,21 @@
           <maml:description>
             <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>UniquedIDs</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="UniquedIDs">
+          <maml:name>UniqueIDs</maml:name>
           <maml:description>
-            <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+            <maml:para>{{ Fill UniqueIDs Description }}</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1720,9 +1720,9 @@
         <maml:description>
           <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1739,14 +1739,14 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>UniquedIDs</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="UniquedIDs">
+        <maml:name>UniqueIDs</maml:name>
         <maml:description>
-          <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+          <maml:para>{{ Fill UniqueIDs Description }}</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2149,21 +2149,21 @@
           <maml:description>
             <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>UniquedIDs</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="UniquedIDs">
+          <maml:name>UniqueIDs</maml:name>
           <maml:description>
-            <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+            <maml:para>{{ Fill UniqueIDs Description }}</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2236,9 +2236,9 @@
         <maml:description>
           <maml:para>A full set of email addresses, at least one, that receive notifications about any changes to the network lists specified in `-UniquedIDs`.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2255,14 +2255,14 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>UniquedIDs</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="UniquedIDs">
+        <maml:name>UniqueIDs</maml:name>
         <maml:description>
-          <maml:para>A full set of network list identifiers, at least one, the recipients are notified about.</maml:para>
+          <maml:para>{{ Fill UniqueIDs Description }}</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -2319,7 +2319,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Modifies the network list items and properties. You can edit the name, description, and a set of network list items to the resource. You can't edit the type. When running the operation, the current state of the list is replaced with the properties and items you provide. </maml:para>
+      <maml:para>Modifies the network list items and properties. You can edit the name, description, and a set of network list items to the resource. You can't edit the type. When running the operation, the current state of the list is replaced with the properties and items you provide.</maml:para>
       <maml:para>&gt; Note: To retrieve a network list with its elements, run the `Get-NetworkList` operation with the `-NetworkListID` parameter and the `-IncludeElements` switch, edit the content locally, and pipe it to this command. Make sure to use the `-IncludeElements` switch when retrieving. Otherwise, the operation won't return any elements.</maml:para>
     </maml:description>
     <command:syntax>

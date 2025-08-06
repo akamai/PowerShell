@@ -618,20 +618,19 @@
       <command:verb>Confirm</command:verb>
       <command:noun>Auth</command:noun>
       <maml:description>
-        <maml:para>EdgeGrid credential validation.</maml:para>
+        <maml:para>Validate Akamai credentials.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Confirm-Auth` cmdlet verifies the format of EdgeGrid authentication credentials against regular expressions.</maml:para>
+      <maml:para>Checks whether each of the credential elements, `access_token`, `client_token`, `host`, and `client_secret`, is in the expected format.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Confirm-Auth</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Auth</maml:name>
           <maml:description>
-            <maml:para>An authentication object containing your credentials. </maml:para>
-            <maml:para>To get the object, run the `Get-AkamaiCredentials` cmdlet and save the output to a variable. Use the variable as the value.</maml:para>
+            <maml:para>The auth in a `PSCustomObject` to test.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -643,11 +642,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Auth</maml:name>
         <maml:description>
-          <maml:para>An authentication object containing your credentials. </maml:para>
-          <maml:para>To get the object, run the `Get-AkamaiCredentials` cmdlet and save the output to a variable. Use the variable as the value.</maml:para>
+          <maml:para>The auth in a `PSCustomObject` to test.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -657,22 +655,32 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Confirm-Auth -Auth $MyAuthObject</dev:code>
-        <dev:remarks>
-          <maml:para>There is no response if all credentials match standard format.</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
@@ -938,19 +946,19 @@
       <command:verb>Format</command:verb>
       <command:noun>FileName</command:noun>
       <maml:description>
-        <maml:para>Formats a filename for consistency.</maml:para>
+        <maml:para>Format file name.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Format-Filename` cmdlet encodes invalid characters in `file/directory` names.</maml:para>
+      <maml:para>URL-encodes various characters that can't be used in filenames on any of the supported platforms.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Format-FileName</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Filename</maml:name>
           <maml:description>
-            <maml:para>The name of the file to format.</maml:para>
+            <maml:para>A file name to format.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -962,10 +970,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>Filename</maml:name>
         <maml:description>
-          <maml:para>The name of the file to format.</maml:para>
+          <maml:para>A file name to format.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -975,11 +983,20 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
     <command:returnValues>
       <command:returnValue>
         <dev:type>
-          <maml:name>A `PSCustomObject` converted from a JSON formatted API response.</maml:name>
+          <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -991,15 +1008,7 @@
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Format-FileName -FileName "My*Bad/File\Name!.txt"</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
@@ -1285,19 +1294,31 @@
       <command:verb>Get</command:verb>
       <command:noun>AkamaiCredentials</command:noun>
       <maml:description>
-        <maml:para>Gets EdgeGrid credentials.</maml:para>
+        <maml:para>Retrieve Akamai credentials from session, disk, or environment variables.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Get-AkamaiCredentials` cmdlet gets EdgeGrid credentials from session or environment variables or an authentication file.</maml:para>
+      <maml:para>Retrieves Akamai credentials from one of these sources: an existing session created with `New-AkamaiSession`, an `.edgerc` file, or from environment variables. The search for credentials follows a priority order. If a valid session is found that contains the requested credentials section (defaulting to `default`), that session is returned. If the required data isn't available in the session, the function checks environment variables, followed by an `.edgerc` file. Multiple credentials may exist in each source, depending on the specified section. See the Authentication (https://techdocs.akamai.com/powershell/docs/authentication)guide for details.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-AkamaiCredentials</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1307,21 +1328,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1333,34 +1342,34 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>Section</maml:name>
-        <maml:description>
-          <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1370,29 +1379,32 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Get-AkamaiCredentials</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Get-AkamaiCredentials -Section "notdefault" -AccountSwitchKey "my-account-switch-key"</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
@@ -1465,7 +1477,7 @@
       <command:verb>Get</command:verb>
       <command:noun>AkamaiSession</command:noun>
       <maml:description>
-        <maml:para>The `Get-AkamaiSession` cmdlet gets the current Akamai session information. Used with `Set-AkamaiSession` to switch session information.</maml:para>
+        <maml:para>Get an Akamai session.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -1477,8 +1489,26 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
@@ -1880,19 +1910,19 @@
       <command:verb>Get</command:verb>
       <command:noun>NetstorageCredentials</command:noun>
       <maml:description>
-        <maml:para>Gets NetStorage credentials.</maml:para>
+        <maml:para>Get NetStorage credentials.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Get-NetstorageCredentials` cmdlet gets NetStorage authentication credentials from environment variables or an authentication file.</maml:para>
+      <maml:para>Gets NetStorage authentication credentials from environment variables or a `.nsrc` file.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-NetstorageCredentials</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>AuthFile</maml:name>
           <maml:description>
-            <maml:para>The path to an authentication file.</maml:para>
+            <maml:para>Your NetStorage auth file (NSRC) to read credentials from.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1901,10 +1931,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>Auththentication `file/env` variable section.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1916,10 +1946,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>AuthFile</maml:name>
         <maml:description>
-          <maml:para>The path to an authentication file.</maml:para>
+          <maml:para>Your NetStorage auth file (NSRC) to read credentials from.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1928,10 +1958,10 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>Auththentication `file/env` variable section.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1941,38 +1971,33 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Get-NetstorageCredentials</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Get-NetstorageCredentials -AuthFile "/path/to/auth" -Section "MySection"</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>PowerShell overview: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Online version: https://techdocs.akamai.com/powershell/reference/get-netstoragecredentials</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
@@ -2202,19 +2227,19 @@
       <command:verb>Invoke</command:verb>
       <command:noun>AkamaiNSAPIRequest</command:noun>
       <maml:description>
-        <maml:para>NetStorage authorization wrapper.</maml:para>
+        <maml:para>Send NetStorage authorization wrapper.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Invoke-AkamaiNSAPIRequest` cmdlet provides an authorization wrapper around `Invoke-RestMethod` for use with the NetStorage API.</maml:para>
+      <maml:para>Provides an authorization wrapper around `Invoke-RestMethod` for use with the NetStorage API.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Invoke-AkamaiNSAPIRequest</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>The API endpoint's request path.</maml:para>
+            <maml:para>Your request path.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2223,11 +2248,26 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
             <maml:para>The API endpoint's action type.</maml:para>
           </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">delete</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">dir</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">download</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">du</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">list</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">mkdir</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">mtime</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">quick-delete</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">rename</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">rmdir</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">stat</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">symlink</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">upload</command:parameterValue>
+          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -2235,7 +2275,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>AdditionalOptions</maml:name>
           <maml:description>
             <maml:para>A hashtable of additional options for a request.</maml:para>
@@ -2247,11 +2287,22 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>The data sent to the endpoint. Value is a hashtable that includes values for each parameter.</maml:para>
-            <maml:para>&gt; Important: Because `Body` is a free field, our PowerShell module doesn't validate the data you include, the API does.</maml:para>
+            <maml:para>The request body to include in the auth calculation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+          <maml:name>InputFile</maml:name>
+          <maml:description>
+            <maml:para>An input file to be read as part of the auth calculation.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2261,9 +2312,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>InputFile</maml:name>
+          <maml:name>OutputFile</maml:name>
           <maml:description>
-            <maml:para>If needed by an endpoint, an input file's location.</maml:para>
+            <maml:para>The file to write response data to.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2273,9 +2324,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
-          <maml:name>OutputFile</maml:name>
+          <maml:name>AuthFile</maml:name>
           <maml:description>
-            <maml:para>If provided by an endpoint, where to place an output file.</maml:para>
+            <maml:para>Your NetStorage auth file (NSRC) to read credentials from.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2285,21 +2336,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-          <maml:name>AuthFile</maml:name>
-          <maml:description>
-            <maml:para>The path to an authentication file.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>The authentication file's section name.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2312,18 +2351,6 @@
     </command:syntax>
     <command:parameters>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Path</maml:name>
-        <maml:description>
-          <maml:para>The API endpoint's request path.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
           <maml:para>The API endpoint's action type.</maml:para>
@@ -2335,7 +2362,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>AdditionalOptions</maml:name>
         <maml:description>
           <maml:para>A hashtable of additional options for a request.</maml:para>
@@ -2347,11 +2374,34 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <maml:name>AuthFile</maml:name>
+        <maml:description>
+          <maml:para>Your NetStorage auth file (NSRC) to read credentials from.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>The data sent to the endpoint. Value is a hashtable that includes values for each parameter.</maml:para>
-          <maml:para>&gt; Important: Because `Body` is a free field, our PowerShell module doesn't validate the data you include, the API does.</maml:para>
+          <maml:para>The request body to include in the auth calculation.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <maml:name>InputFile</maml:name>
+        <maml:description>
+          <maml:para>An input file to be read as part of the auth calculation.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2361,9 +2411,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-        <maml:name>InputFile</maml:name>
+        <maml:name>OutputFile</maml:name>
         <maml:description>
-          <maml:para>If needed by an endpoint, an input file's location.</maml:para>
+          <maml:para>The file to write response data to.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2372,10 +2422,10 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
-        <maml:name>OutputFile</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Path</maml:name>
         <maml:description>
-          <maml:para>If provided by an endpoint, where to place an output file.</maml:para>
+          <maml:para>Your request path.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2385,21 +2435,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-        <maml:name>AuthFile</maml:name>
-        <maml:description>
-          <maml:para>The path to an authentication file.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>The authentication file's section name.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2409,31 +2447,33 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiNSAPIRequest -Path $Path -Action "download" -OutputFile ./"localfile.txt"</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>PowerShell overview: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Online version: https://techdocs.akamai.com/powershell/reference/invoke-akamainsapirequest</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
@@ -2450,19 +2490,19 @@
       <command:verb>Invoke</command:verb>
       <command:noun>AkamaiRequest</command:noun>
       <maml:description>
-        <maml:para>Sends a HTTPS request to an Akamai RESTful web service.</maml:para>
+        <maml:para>Send an authorized HTTPS request to an Akamai RESTful web service.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Invoke-Akamai RestMethod` cmdlet sends a HTTPS request to Akamai RESTful web services and formats the response based on data type. When the REST endpoint returns multiple objects, the objects are received as an array. If you pipe the output from `Invoke-AkamaiRequest` to another command, it's sent as a single `[Object[]]` object. The contents of that array are not enumerated for the next command on the pipeline.</maml:para>
+      <maml:para>Constructs a call to `Invoke-WebRequest` from the given `-Path`, `-Method`, and other additional parameters and adds necessary authorization details retrieved from `Get-AkamaiCredentials`. The response is formatted into a `PSCustomObject` including `Status`, a hashtable of headers, and a `PSCustomObject` of the response body. Error handling is configured based on the current `AkamaiOptions` variable.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Invoke-AkamaiRequest</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>A resource's path minus the host.</maml:para>
+            <maml:para>Your request path.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2471,10 +2511,30 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Method</maml:name>
           <maml:description>
-            <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
+            <maml:para>The request method.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">GET</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">HEAD</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">PUT</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">POST</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">DELETE</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">PATCH</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2484,21 +2544,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="11" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="12" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2508,21 +2556,21 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>Method</maml:name>
-          <maml:description>
-            <maml:para>Specifies the method used for the web request. Values are `GET`, `HEAD`, `POST`, `PUT`, `DELETE` and `PATCH`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>GET</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>QueryParameters</maml:name>
           <maml:description>
-            <maml:para>A hashtable of request query parameters to add to request. If the same key is found in `Path` and `QueryParameters`, the `QueryParameters` value persists.</maml:para>
+            <maml:para>The query parameters in a hashtable.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+          <dev:type>
+            <maml:name>Hashtable</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>AdditionalHeaders</maml:name>
+          <maml:description>
+            <maml:para>An additional headers in a hashtable.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -2532,21 +2580,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AdditionalHeaders</maml:name>
-          <maml:description>
-            <maml:para>A hashtable of any additional request headers.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-          <dev:type>
-            <maml:name>Hashtable</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>The data sent to the endpoint. Value is a hashtable that includes values for each parameter. &gt; Important: Because `Body` is a free field, our PowerShell module doesn't validate the data you include, the API does.</maml:para>
+            <maml:para>The request body to include in the auth calculation.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2555,10 +2591,22 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>InputFile</maml:name>
           <maml:description>
-            <maml:para>If needed by an endpoint, an input file's location.</maml:para>
+            <maml:para>An input file to be read as part of the auth calculation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+          <maml:name>OutputFile</maml:name>
+          <maml:description>
+            <maml:para>The file to write response data to.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2568,9 +2616,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-          <maml:name>OutputFile</maml:name>
+          <maml:name>MaxBody</maml:name>
           <maml:description>
-            <maml:para>If provided by an endpoint, where to place an output file.</maml:para>
+            <maml:para>The maximum size of the body parameter. Defaults to `128KB`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2580,33 +2628,34 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
-          <maml:name>MaxBody</maml:name>
-          <maml:description>
-            <maml:para>The maximum message body size. Default is `2048` bytes. Increase as needed up to `131072` bytes.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>131072</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
           <maml:name>Retry</maml:name>
           <maml:description>
-            <maml:para>Retry index. Used when handling error retries</maml:para>
+            <maml:para>The retry index. Used to determine whether a failed request should be retried.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
             <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>0</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SkipHttpErrorCheck</maml:name>
           <maml:description>
-            <maml:para>Switch to be passed through to Invoke-WebRequest in order to avoid status codes 300+ throwing an error. Note: only compatible with Pwsh7+</maml:para>
+            <maml:para>When the switch parameter is present, this ignores HTTP error statuses and continues to process responses. The error responses are written to the pipeline just as if they were successful.</maml:para>
+            <maml:para>&gt; Note: This parameter is only applicable with PowerShell 7+.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -2617,10 +2666,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Path</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="11" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>A resource's path minus the host.</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2629,22 +2678,10 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>Method</maml:name>
-        <maml:description>
-          <maml:para>Specifies the method used for the web request. Values are `GET`, `HEAD`, `POST`, `PUT`, `DELETE` and `PATCH`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>GET</dev:defaultValue>
-      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>QueryParameters</maml:name>
+        <maml:name>AdditionalHeaders</maml:name>
         <maml:description>
-          <maml:para>A hashtable of request query parameters to add to request. If the same key is found in `Path` and `QueryParameters`, the `QueryParameters` value persists.</maml:para>
+          <maml:para>An additional headers in a hashtable.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -2654,21 +2691,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>AdditionalHeaders</maml:name>
-        <maml:description>
-          <maml:para>A hashtable of any additional request headers.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-        <dev:type>
-          <maml:name>Hashtable</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>The data sent to the endpoint. Value is a hashtable that includes values for each parameter. &gt; Important: Because `Body` is a free field, our PowerShell module doesn't validate the data you include, the API does.</maml:para>
+          <maml:para>The request body to include in the auth calculation.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -2677,10 +2702,22 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>InputFile</maml:name>
         <maml:description>
-          <maml:para>If needed by an endpoint, an input file's location.</maml:para>
+          <maml:para>An input file to be read as part of the auth calculation.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2690,9 +2727,9 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-        <maml:name>OutputFile</maml:name>
+        <maml:name>MaxBody</maml:name>
         <maml:description>
-          <maml:para>If provided by an endpoint, where to place an output file.</maml:para>
+          <maml:para>The maximum size of the body parameter. Defaults to `128KB`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2701,22 +2738,83 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
-        <maml:name>MaxBody</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Method</maml:name>
         <maml:description>
-          <maml:para>The maximum message body size. Default is `2048` bytes. Increase as needed up to `131072` bytes.</maml:para>
+          <maml:para>The request method.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>131072</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <maml:name>OutputFile</maml:name>
+        <maml:description>
+          <maml:para>The file to write response data to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Your request path.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>QueryParameters</maml:name>
+        <maml:description>
+          <maml:para>The query parameters in a hashtable.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+        <dev:type>
+          <maml:name>Hashtable</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
+        <maml:name>Retry</maml:name>
+        <maml:description>
+          <maml:para>The retry index. Used to determine whether a failed request should be retried.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SkipHttpErrorCheck</maml:name>
         <maml:description>
-          <maml:para>Switch to be passed through to Invoke-WebRequest in order to avoid status codes 300+ throwing an error. Note: only compatible with Pwsh7+</maml:para>
+          <maml:para>When the switch parameter is present, this ignores HTTP error statuses and continues to process responses. The error responses are written to the pipeline just as if they were successful.</maml:para>
+          <maml:para>&gt; Note: This parameter is only applicable with PowerShell 7+.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -2725,126 +2823,34 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
-        <maml:name>Retry</maml:name>
-        <maml:description>
-          <maml:para>Retry index. Used when handling error retries</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>0</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="11" aliases="none">
-        <maml:name>Section</maml:name>
-        <maml:description>
-          <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="12" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
-        <maml:description>
-          <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRequest -Method "GET" -Path "/path/to/api"
-`GET` without query parameters.</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRequest -Method "POST" -Path "/path/to/api" -Body @{"key" = @{"key2" = "value"; "key3" = "value"}}
-Request: `POST` without query parameters and an inline body.
-Response: The data returned is dependent upon the endpoint and varies.</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRequest -Method "POST" -Path "/path/to/api" -InputFile "~./path/to/body.json"
-Request: `POST` without query parameters and path to the JSON body containing the body of the call.
-Response: The data returned is dependent upon the endpoint and varies.</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRequest -Method "PUT" -Path "/path/to/api?withParams=true" -Body @{"key" = @{"key2" = "value"; "key3" = "value"}
-Request: `PUT` with query parameters for an existing item and an inline body.
-Response: The data returned is dependent upon the endpoint and varies.</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 5 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRequest -Method "PATCH" -Path "/path/to/api?withParams=true" -Body '{"key":{"key3": "value"}}'
-Request: `PATCH` with query parameters for an existing item and an inline body.
-Response: The data returned is dependent upon the endpoint and varies.</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 6 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRequest -Method "DELETE" -Path "/path/to/api?itemId"
-Request: `DELETE` with an ID for the item to delete as a query parameter.
-Response: The data returned is dependent upon the endpoint and varies.</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>PowerShell overview: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Online version: https://techdocs.akamai.com/powershell/reference/Invoke-AkamaiRequest</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
@@ -2861,45 +2867,28 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       <command:verb>Invoke</command:verb>
       <command:noun>AkamaiRestMethod</command:noun>
       <maml:description>
-        <maml:para>Sends a HTTPS request to an Akamai RESTful web service.</maml:para>
+        <maml:para>Send an authorized HTTPS request to an Akamai RESTful web service.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Invoke-Akamai RestMethod` cmdlet sends a HTTPS request to Akamai RESTful web services and formats the response based on data type.</maml:para>
-      <maml:para>When the REST endpoint returns multiple objects, the objects are received as an array. If you pipe the output from `Invoke-AkamaiRestMethod` to another command, it's sent as a single `[Object[]]` object. The contents of that array are not enumerated for the next command on the pipeline.</maml:para>
+      <maml:para>Constructs a call to `Invoke-RestMethod` from the given `-Path`, `-Method`, and other additional parameters and adds necessary authorization details retrieved from `Get-AkamaiCredentials`. The response is formatted into a `PSCustomObject` of the response body.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Invoke-AkamaiRestMethod</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>Method</maml:name>
           <maml:description>
-            <maml:para>Specifies the method used for the web request. Values are `GET`, `POST`, `PUT`, `DELETE` and `PATCH`.</maml:para>
+            <maml:para>The request method.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>GET</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="11" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
-          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">GET</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">HEAD</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">PUT</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">POST</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">DELETE</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">PATCH</command:parameterValue>
+          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -2907,22 +2896,46 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>Path</maml:name>
           <maml:description>
-            <maml:para>A resource's path minus the host.</maml:para>
+            <maml:para>Your request path.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>QueryParameters</maml:name>
+          <maml:description>
+            <maml:para>The query parameters in a hashtable.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+          <dev:type>
+            <maml:name>Hashtable</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>QueryParameters</maml:name>
+          <maml:name>AdditionalHeaders</maml:name>
           <maml:description>
-            <maml:para>A hashtable of request query parameters to add to request. If the same key is found in `Path` and `QueryParameters`, the `QueryParameters` value persists.</maml:para>
+            <maml:para>An additional headers in a hashtable.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
           <dev:type>
@@ -2932,22 +2945,9 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AdditionalHeaders</maml:name>
-          <maml:description>
-            <maml:para>A hashtable of any additional request headers.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-          <dev:type>
-            <maml:name>Hashtable</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
-            <maml:para>The data sent to the endpoint. Value is a hashtable that includes values for each parameter.</maml:para>
-            <maml:para>&gt; Important: Because `Body` is a free field, our PowerShell module doesn't validate the data you include, the API does.</maml:para>
+            <maml:para>The request body to include in the auth calculation.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
@@ -2956,10 +2956,22 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
           <maml:name>InputFile</maml:name>
           <maml:description>
-            <maml:para>If needed by an endpoint, an input file's location.</maml:para>
+            <maml:para>An input file to be read as part of the auth calculation.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+          <maml:name>OutputFile</maml:name>
+          <maml:description>
+            <maml:para>The file to write response data to.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2969,9 +2981,9 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-          <maml:name>OutputFile</maml:name>
+          <maml:name>MaxBody</maml:name>
           <maml:description>
-            <maml:para>If provided by an endpoint, where to place an output file.</maml:para>
+            <maml:para>The maximum size of the body parameter. Defaults to `128KB`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2981,21 +2993,21 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
-          <maml:name>MaxBody</maml:name>
+          <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>The maximum message body size. Default is `2048` bytes. Increase as needed up to `131072` bytes.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>131072</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
+          <maml:name>Section</maml:name>
           <maml:description>
-            <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3007,7 +3019,7 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IncludeResponseHeaders</maml:name>
           <maml:description>
-            <maml:para>Flag to include headers in the function response</maml:para>
+            <maml:para>When the switch parameter is present, this includes the response header data in the output.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -3018,22 +3030,10 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Method</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>Specifies the method used for the web request. Values are `GET`, `POST`, `PUT`, `DELETE` and `PATCH`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>GET</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>Path</maml:name>
-        <maml:description>
-          <maml:para>A resource's path minus the host.</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3043,9 +3043,9 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>QueryParameters</maml:name>
+        <maml:name>AdditionalHeaders</maml:name>
         <maml:description>
-          <maml:para>A hashtable of request query parameters to add to request. If the same key is found in `Path` and `QueryParameters`, the `QueryParameters` value persists.</maml:para>
+          <maml:para>An additional headers in a hashtable.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
         <dev:type>
@@ -3055,22 +3055,9 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>AdditionalHeaders</maml:name>
-        <maml:description>
-          <maml:para>A hashtable of any additional request headers.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
-        <dev:type>
-          <maml:name>Hashtable</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
-          <maml:para>The data sent to the endpoint. Value is a hashtable that includes values for each parameter.</maml:para>
-          <maml:para>&gt; Important: Because `Body` is a free field, our PowerShell module doesn't validate the data you include, the API does.</maml:para>
+          <maml:para>The request body to include in the auth calculation.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
@@ -3079,10 +3066,34 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>IncludeResponseHeaders</maml:name>
+        <maml:description>
+          <maml:para>When the switch parameter is present, this includes the response header data in the output.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>InputFile</maml:name>
         <maml:description>
-          <maml:para>If needed by an endpoint, an input file's location.</maml:para>
+          <maml:para>An input file to be read as part of the auth calculation.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3092,69 +3103,69 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-        <maml:name>OutputFile</maml:name>
-        <maml:description>
-          <maml:para>If provided by an endpoint, where to place an output file.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
         <maml:name>MaxBody</maml:name>
         <maml:description>
-          <maml:para>The maximum message body size. Default is `2048` bytes. Increase as needed up to `131072` bytes.</maml:para>
+          <maml:para>The maximum size of the body parameter. Defaults to `128KB`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>131072</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>IncludeResponseHeaders</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>Method</maml:name>
         <maml:description>
-          <maml:para>Flag to include headers in the function response</maml:para>
+          <maml:para>The request method.</maml:para>
         </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
-          <maml:name>SwitchParameter</maml:name>
+          <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <maml:name>OutputFile</maml:name>
+        <maml:description>
+          <maml:para>The file to write response data to.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Your request path.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>QueryParameters</maml:name>
+        <maml:description>
+          <maml:para>The query parameters in a hashtable.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Hashtable</command:parameterValue>
+        <dev:type>
+          <maml:name>Hashtable</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="9" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="10" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="11" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
-        <maml:description>
-          <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3164,71 +3175,33 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRestMethod -Method "GET" -Path "/path/to/api"</dev:code>
-        <dev:remarks>
-          <maml:para>`GET` without query parameters.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRestMethod -Method "POST" -Path "/path/to/api" -Body '{@{"key":{"key2": "value", "key3":"value"}}'</dev:code>
-        <dev:remarks>
-          <maml:para>Request: `POST` without query parameters and an inline body.</maml:para>
-          <maml:para>Response: The data returned is dependent upon the endpoint and varies.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 3 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRestMethod -Method "POST" -Path "/path/to/api" -InputFile "~./path/to/body.json"</dev:code>
-        <dev:remarks>
-          <maml:para>Request: `POST` without query parameters and path to the JSON body containing the body of the call.</maml:para>
-          <maml:para>Response: The data returned is dependent upon the endpoint and varies.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 4 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRestMethod -Method "PUT" -Path "/path/to/api?withParams=true" -Body '{@{"key":{"key2": "value", "key3":"value"}}'</dev:code>
-        <dev:remarks>
-          <maml:para>Request: `PUT` with query parameters for an existing item and an inline body.</maml:para>
-          <maml:para>Response: The data returned is dependent upon the endpoint and varies.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 5 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRestMethod -Method "PATCH" -Path "/path/to/api?withParams=true" -Body '{@{"key":{"key3": "value"}}'</dev:code>
-        <dev:remarks>
-          <maml:para>Request: `PATCH` with query parameters for an existing item and an inline body.</maml:para>
-          <maml:para>Response: The data returned is dependent upon the endpoint and varies.</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 6 --------------------------</maml:title>
-        <dev:code>Invoke-AkamaiRestMethod -Method "DELETE" -Path "/path/to/api?itemId"</dev:code>
-        <dev:remarks>
-          <maml:para>Request: `DELETE` with an ID for the item to delete as a query parameter.</maml:para>
-          <maml:para>Response: The data returned is dependent upon the endpoint and varies.</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>PowerShell overview: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Online version: https://techdocs.akamai.com/powershell/reference/invoke-akamairestmethod</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
@@ -3351,31 +3324,19 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       <command:verb>New</command:verb>
       <command:noun>AkamaiSession</command:noun>
       <maml:description>
-        <maml:para>Creates a new Akamai Session info variable in the Script scope</maml:para>
+        <maml:para>Create an Akamai authorization session.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `New-AkamaiSession` cmdlet creates a new Akamai Session variable. Used by the `Invoke-AkamaiRestMethod` cmdlet's authentication scheme.</maml:para>
+      <maml:para>Creates a `PSCustomObject` holding the provided authorization parameters to be re-used by any request to `Invoke-AkamaiRestMethod` or `Invoke-AkamaiRequest`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-AkamaiSession</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ClientSecret</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>An API client's client secret.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>HostName</maml:name>
-          <maml:description>
-            <maml:para>The API credential's hostname.</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3397,9 +3358,9 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>ClientToken</maml:name>
+          <maml:name>ClientSecret</maml:name>
           <maml:description>
-            <maml:para>An API client's client token.</maml:para>
+            <maml:para>The API credential's client secret.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3408,10 +3369,10 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ClientToken</maml:name>
           <maml:description>
-            <maml:para>Account switch key, for use when an API client has access to multiple accounts.</maml:para>
+            <maml:para>The API credential's client token.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3423,19 +3384,31 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Section">
           <maml:name>Environment</maml:name>
           <maml:description>
-            <maml:para>Alias = Section. The environment for which the authorization information is used. Default is `default`.</maml:para>
+            <maml:para>The session environment. Similar to the use of the `-Section` parameter in an `.edgerc` file.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>Default</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>HostName</maml:name>
+          <maml:description>
+            <maml:para>The API credential's hostname.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Passthrough</maml:name>
           <maml:description>
-            <maml:para>Returns the session variable instead of setting the script scope session variable.</maml:para>
+            <maml:para>When the switch parameter is present, the function returns session data.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -3449,7 +3422,7 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCJSON</maml:name>
           <maml:description>
-            <maml:para>The path to a JSON file that contains API credentials. Multiple credential sections allowed. If used, individual authorization parameters are ignored.</maml:para>
+            <maml:para>The JSON string representing the session data.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3461,7 +3434,7 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Passthrough</maml:name>
           <maml:description>
-            <maml:para>Returns the session variable instead of setting the script scope session variable.</maml:para>
+            <maml:para>When the switch parameter is present, the function returns session data.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -3472,22 +3445,10 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>ClientSecret</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>An API client's client secret.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>HostName</maml:name>
-        <maml:description>
-          <maml:para>The API credential's hostname.</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3509,9 +3470,9 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>ClientToken</maml:name>
+        <maml:name>ClientSecret</maml:name>
         <maml:description>
-          <maml:para>An API client's client token.</maml:para>
+          <maml:para>The API credential's client secret.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3520,10 +3481,22 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ClientToken</maml:name>
         <maml:description>
-          <maml:para>Account switch key, for use when an API client has access to multiple accounts.</maml:para>
+          <maml:para>The API credential's client token.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>EdgeRCJSON</maml:name>
+        <maml:description>
+          <maml:para>The JSON string representing the session data.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3535,19 +3508,19 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="Section">
         <maml:name>Environment</maml:name>
         <maml:description>
-          <maml:para>Alias = Section. The environment for which the authorization information is used. Default is `default`.</maml:para>
+          <maml:para>The session environment. Similar to the use of the `-Section` parameter in an `.edgerc` file.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>Default</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>EdgeRCJSON</maml:name>
+        <maml:name>HostName</maml:name>
         <maml:description>
-          <maml:para>The path to a JSON file that contains API credentials. Multiple credential sections allowed. If used, individual authorization parameters are ignored.</maml:para>
+          <maml:para>The API credential's hostname.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3559,7 +3532,7 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Passthrough</maml:name>
         <maml:description>
-          <maml:para>Returns the session variable instead of setting the script scope session variable.</maml:para>
+          <maml:para>When the switch parameter is present, the function returns session data.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -3569,29 +3542,32 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>New-AkamaiSession -ClientSecret "C113nt53KR3TN6N90yVuAgICxIRwsObLi0E67/N8eRN=" -HostName "akab-h05tnam3wl42son7nktnlnnx-kbob3i3v.luna.akamaiapis.net" -AccessToken "akab-acc35t0k3nodujqunph3w7hzp7-gtm6ij" -ClientToken "akab-c113ntt0k3n4qtari252bfxxbsl-yvsdj"</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>New-AkamaiSession -EdgeRCJSON "~./path/to/edgerc.json"</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
@@ -4192,11 +4168,11 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       <command:verb>Remove</command:verb>
       <command:noun>AkamaiSession</command:noun>
       <maml:description>
-        <maml:para>Removes existing Akamai session object.</maml:para>
+        <maml:para>Remove a session.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Remove-AkamaiSession` cmdlet deletes session variable.</maml:para>
+      <maml:para>Removes an in-memory authorization session.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4204,22 +4180,32 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       </command:syntaxItem>
     </command:syntax>
     <command:parameters />
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Remove-AkamaiSession</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
@@ -4765,7 +4751,7 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates any of the supported Akamai options, either as booleans to enable or disable certain features, for example, `-EnableErrorRetried $true`, or as integers to set various thresholds and limits, for example, `-MaxErrorRetries 2`. You can also reset all options to their defaults with `-RestoreDefaults`. </maml:para>
+      <maml:para>Updates any of the supported Akamai options, either as booleans to enable or disable certain features, for example, `-EnableErrorRetried $true`, or as integers to set various thresholds and limits, for example, `-MaxErrorRetries 2`. You can also reset all options to their defaults with `-RestoreDefaults`.</maml:para>
       <maml:para>&gt; Note: You can't set any options and restore the others to default in a single command. You need to restore the defaults first, then set whatever options you wish.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5060,19 +5046,19 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       <command:verb>Set</command:verb>
       <command:noun>AkamaiSession</command:noun>
       <maml:description>
-        <maml:para>Switches Akamai session information.</maml:para>
+        <maml:para>Update Akamai session.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `Set-AkamaiSession` cmdlet switches the Akamai session information passed in session. Use with `New-AkamaiSession` to initially create a session hashtable.</maml:para>
+      <maml:para>Updates the in-memory Akamai session with a provided `PSCustomObject`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-AkamaiSession</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>AkamaiSession</maml:name>
           <maml:description>
-            <maml:para>A session variable created with `New-AkamaiSession`. Use `Get-AkamaiSession` to fetch the session information in the correct format.</maml:para>
+            <maml:para>The Akamai session in a `PSCustomObject` to update.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
           <dev:type>
@@ -5084,10 +5070,10 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>AkamaiSession</maml:name>
         <maml:description>
-          <maml:para>A session variable created with `New-AkamaiSession`. Use `Get-AkamaiSession` to fetch the session information in the correct format.</maml:para>
+          <maml:para>The Akamai session in a `PSCustomObject` to update.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
         <dev:type>
@@ -5097,22 +5083,32 @@ Response: The data returned is dependent upon the endpoint and varies.</dev:code
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Set-AkamaiSession -AkamaiSession $MySessionObject</dev:code>
-        <dev:remarks>
-          <maml:para></maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>

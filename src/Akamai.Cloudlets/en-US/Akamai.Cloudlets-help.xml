@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Clones the staging, production, and last modified versions of a shared or non-shared policy into a new shared policy. You can also specify any additional versions that you want to clone into the new policy as a comma-separated string. </maml:para>
+      <maml:para>Clones the staging, production, and last modified versions of a shared or non-shared policy into a new shared policy. You can also specify any additional versions that you want to clone into the new policy as a comma-separated string.</maml:para>
       <maml:para>When cloning a non-shared policy to a shared policy, you need to provide the `-GroupID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -650,7 +650,7 @@
       <command:verb>Get</command:verb>
       <command:noun>Cloudlet</command:noun>
       <maml:description>
-        <maml:para>List Cloudlets.</maml:para>
+        <maml:para>Get a Cloudlet policy.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
@@ -819,7 +819,7 @@
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/cloudlets/reference/get-cloudlets</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/cloudlets/reference/get-policies</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1949,7 +1949,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all policy activations or returns a specific activation by its ID. Use the `-Legacy` switch to specify v2 policies (both when listing policies or retrieving a single policy); otherwise, the command will apply only to v3 (shared) policies. </maml:para>
+      <maml:para>Gets all policy activations or returns a specific activation by its ID. Use the `-Legacy` switch to specify v2 policies (both when listing policies or retrieving a single policy); otherwise, the command will apply only to v3 (shared) policies.</maml:para>
       <maml:para>When listing all activations, you can control paging with the `-Page` and `-Size` parameters. When listing v2 policy activations, you can additionally filter them by network and property name.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2742,8 +2742,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all versions of a given Cloudlet policy or returns a specific policy version. The `-Version` parameter is an integer or the word `latest`. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 (shared) policies. </maml:para>
-      <maml:para>When listing all versions, you can control paging with the `-Page` and `-Size` parameters as well as include the Cloudlet rules in the version response with the `-IncludeRules` switch parameter. </maml:para>
+      <maml:para>Gets all versions of a given Cloudlet policy or returns a specific policy version. The `-Version` parameter is an integer or the word `latest`. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 (shared) policies.</maml:para>
+      <maml:para>When listing all versions, you can control paging with the `-Page` and `-Size` parameters as well as include the Cloudlet rules in the version response with the `-IncludeRules` switch parameter.</maml:para>
       <maml:para>When retrieving a specific version of a v2 policy, you can also optionally omit its rules from the output with the `-OmitRules` switch parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3509,7 +3509,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>SchemaName</maml:name>
           <maml:description>
-            <maml:para>The name of the JSON schema file. JSON schema filenames include: </maml:para>
+            <maml:para>The name of the JSON schema file. JSON schema filenames include:</maml:para>
             <maml:para>- `create-policy.json`</maml:para>
             <maml:para>- `update-policy.json`</maml:para>
             <maml:para>- `clone-policy.json`</maml:para>
@@ -3580,7 +3580,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>SchemaName</maml:name>
         <maml:description>
-          <maml:para>The name of the JSON schema file. JSON schema filenames include: </maml:para>
+          <maml:para>The name of the JSON schema file. JSON schema filenames include:</maml:para>
           <maml:para>- `create-policy.json`</maml:para>
           <maml:para>- `update-policy.json`</maml:para>
           <maml:para>- `clone-policy.json`</maml:para>
@@ -4298,7 +4298,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new Cloudlet policy either as a v3 policy (shared) or a legacy policy enabled with the `-Legacy` switch. You need to specify the `-CloudletType` parameter as the full product name (for example, `Phased Release`). </maml:para>
+      <maml:para>Creates a new Cloudlet policy either as a v3 policy (shared) or a legacy policy enabled with the `-Legacy` switch. You need to specify the `-CloudletType` parameter as the full product name (for example, `Phased Release`).</maml:para>
       <maml:para>When creating a v2 policy, you also have the option of cloning an existing policy with the `-ClonePolicyId` and `-ClonePolicyVersion` parameters.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4608,7 +4608,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Activates a Cloudlet policy version. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 policies. </maml:para>
+      <maml:para>Activates a Cloudlet policy version. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 policies.</maml:para>
       <maml:para>When using v2 policies, you can also provide additional properties with the `-AdditionalPropertyNames` parameter. You can also specify multiple properties as a comma-separated string.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5072,7 +5072,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 policies. </maml:para>
+      <maml:para>Creates a new version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 policies.</maml:para>
       <maml:para>&gt; Note: Request bodies are automatically sanitized to enable you to retrieve a version with the `Get-CloudletPolicyVersion` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6066,7 +6066,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates an existing Cloudlet Load Balancer's version. The `-Version` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates an existing Cloudlet Load Balancer's version. The `-Version` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request object, it's recommended that you retrieve the existing configuration with the `Get-CloudletLoadBalancer` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6717,7 +6717,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the description and match rules for a given version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, this command will apply only to v3 policies. The `-Version` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates the description and match rules for a given version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, this command will apply only to v3 policies. The `-Version` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Request bodies are automatically sanitized to enable you to retrieve a version with the `Get-CloudletPolicyVersion` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>

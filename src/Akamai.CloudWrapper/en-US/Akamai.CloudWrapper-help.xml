@@ -1313,7 +1313,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Create a Cloud Wrapper configuration, either as a JSON string or PSCustomObject, and optionally activate upon creation with the `-Activate` switch. </maml:para>
+      <maml:para>Create a Cloud Wrapper configuration, either as a JSON string or PSCustomObject, and optionally activate upon creation with the `-Activate` switch.</maml:para>
       <maml:para>Verify your capacity by running `Get-CloudWrapperCapacity`, and you can work with your account team to include Cloud Wrapper locations and capacity on your contract.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1493,8 +1493,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Activates a Cloud Wrapper configuration. It takes 3-4 hours for the configuration to complete. </maml:para>
-      <maml:para>You can use the configuration's `configId` to run the `Get-CloudWrapperConfiguration` operation and review its `status`. Once it's `ACTIVE`, enable the Cloud Wrapper behavior in your property. </maml:para>
+      <maml:para>Activates a Cloud Wrapper configuration. It takes 3-4 hours for the configuration to complete.</maml:para>
+      <maml:para>You can use the configuration's `configId` to run the `Get-CloudWrapperConfiguration` operation and review its `status`. Once it's `ACTIVE`, enable the Cloud Wrapper behavior in your property.</maml:para>
       <maml:para>To deactivate a configuration, run `Set-CloudWrapperConfiguration` and add the `-Deactivate` switch.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1651,8 +1651,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a specific Cloud Wrapper configuration. The delete can take up to three hours to complete. </maml:para>
-      <maml:para>You can use the configuration's `configId` to run the `Get-CloudWrapperConfiguration` operation to check the status. `DELETE_IN_PROGRESS` indicates the request has been accepted. A 404 response indicates the configuration has been deleted. </maml:para>
+      <maml:para>Deletes a specific Cloud Wrapper configuration. The delete can take up to three hours to complete.</maml:para>
+      <maml:para>You can use the configuration's `configId` to run the `Get-CloudWrapperConfiguration` operation to check the status. `DELETE_IN_PROGRESS` indicates the request has been accepted. A 404 response indicates the configuration has been deleted.</maml:para>
       <maml:para>Before you delete a configuration, ensure that all the properties that use it have the Cloud Wrapper behavior disabled. Then run the `Set-CloudWrapperConfiguration` operation to deactivate it by providing the `-Deactivate` switch.</maml:para>
     </maml:description>
     <command:syntax>

@@ -103,11 +103,11 @@ Describe 'Safe Shared Tests' {
                 $PreviousAccountSwitchKey = $env:AKAMAI_ACCOUNT_KEY
                 # Set edgerc file
                 $TestEdgeRCFile = New-Item -ItemType File -Path 'TestDrive:/.edgerc'
-                $TestHost = 'akab-s1xcwas8oesoh43d-6rb2dj3zcusyr9zf.luna.akamaiapis.net'
-                $TestClientSecret = 'tQi7/x5DbFoZG7Ojv62AQ2U0iBOEpzTlHn07KeYpyZs='
-                $TestAccessToken = 'akab-rba8e9xa19gxbttd-rtyjm0rhcynqfslf'
-                $TestClientToken = 'akab-fp5z3sp714x155hr-mv7hrcu7j4iohgl9'
-                $TestASK = '1-2A345B:1-2RBL'
+                $TestHost = 'akab-h05tnam3wl42son7nktnlnnx-kbob3i3v.luna.akamaiapis.net'
+                $TestClientSecret = 'C113nt53KR3TN6N90yVuAgICxIRwsObLi0E67/N8eRN='
+                $TestAccessToken = 'akab-acc35t0k3nodujqunph3w7hzp7-gtm6ij'
+                $TestClientToken = 'akab-c113ntt0k3n4qtari252bfxxbsl-yvsdj'
+                $TestASK = '1-2A345B:1-2ABC'
                 @"
 [not-default]
 client_secret = $TestClientSecret
@@ -247,13 +247,31 @@ account_key = $TestASK
     }
 
     Context 'Get-NetstorageCredentials from file' {
+        BeforeAll {
+            $Key = 'ab1cd2e3fgh46uhjk7l8mn90opq1rstu23vw4xyza5bc6d7'
+            $ID = 'sample'
+            $Group = 'sample_group'
+            $HostName = 'sample-nsu.akamaihd.net'
+            $CPCode = 123456
+
+            $Content = @"
+[default]
+key=$Key
+id=$ID
+group=$Group
+host=$Hostname
+cpcode=$CPCode
+"@
+            $AuthFile = 'TestDrive:/.nsrc'
+            $Content | Set-Content -Path $AuthFile
+        }
         It 'parses correctly' {
-            $PD.NSAuth = Get-NetstorageCredentials -AuthFile $TestAuthFile -Section $Section
-            $PD.NSAuth.cpcode | Should -Not -BeNullOrEmpty
-            $PD.NSAuth.group | Should -Not -BeNullOrEmpty
-            $PD.NSAuth.key | Should -Not -BeNullOrEmpty
-            $PD.NSAuth.id | Should -Not -BeNullOrEmpty
-            $PD.NSAuth.host | Should -Not -BeNullOrEmpty
+            $PD.NSAuth = Get-NetstorageCredentials -AuthFile $AuthFile -Section $Section
+            $PD.NSAuth.cpcode | Should -Be $CPCode
+            $PD.NSAuth.group | Should -Be $Group
+            $PD.NSAuth.key | Should -Be $Key
+            $PD.NSAuth.id | Should -Be $ID
+            $PD.NSAuth.host | Should -Be $Hostname
         }
     }
 
@@ -312,96 +330,147 @@ account_key = $TestASK
         }
     }
 
-    Context 'Get-AkamaiOptions' -Tag 'Get-AkamaiOptions' {
-        BeforeAll {
-            $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+    Context 'Options' -Tag 'Options' {
+        Context 'New-AkamaiOptions' -Tag 'New-AkamaiOptions' {
+            BeforeAll {
+                $PreviousOptionsPath = $env:AkamaiOptionsPath
+                $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+            }
+            It 'populates the file with the correct options' {
+                New-AkamaiOptions
+                $Options = Get-Content -Raw -Path $env:AkamaiOptionsPath | ConvertFrom-Json
+                $Options.EnableErrorRetries | Should -BeOfType bool
+                $Options.EnableRateLimitRetries | Should -BeOfType bool
+                $Options.DisablePapiPrefixes | Should -BeOfType bool
+                $Options.EnableRateLimitWarnings | Should -BeOfType bool
+                $Options.InitialErrorWait | Should -Match '^[0-9]+$'
+                $Options.MaxErrorRetries | Should -Match '^[0-9]+$'
+                $Options.RateLimitWarningPercentage | Should -Match '^[0-9]+$'
+                $Options.EnableRecommendedActions | Should -BeOfType bool
+                $Options.EnableDataCache | Should -BeOfType bool
+            }
+            AfterAll {
+                Remove-Item -Path $env:AkamaiOptionsPath -Force
+                $env:AkamaiOptionsPath = $PreviousOptionsPath
+            }
         }
-        It 'returns options as expected' {
-            Get-AkamaiOptions
-            $AkamaiOptions.EnableErrorRetries | Should -BeOfType bool
-            $AkamaiOptions.EnableRateLimitRetries | Should -BeOfType bool
-            $AkamaiOptions.DisablePapiPrefixes | Should -BeOfType bool
-            $AkamaiOptions.EnableRateLimitWarnings | Should -BeOfType bool
-            $AkamaiOptions.InitialErrorWait | Should -BeOfType int
-            $AkamaiOptions.MaxErrorRetries | Should -BeOfType int
-            $AkamaiOptions.RateLimitWarningPercentage | Should -BeOfType int
-            $AkamaiOptions.EnableRecommendedActions | Should -BeOfType bool
-            $AkamaiOptions.EnableDataCache | Should -BeOfType bool
-        }
-        It 'should exist at default path' {
-            $env:AkamaiOptionsPath | Should -Exist
-        }
-        AfterAll {
-            Remove-Item -Path $env:AkamaiOptionsPath -Force
-            $env:AkamaiOptionsPath = $PreviousOptionsPath
-        }
-    }
 
-    Context 'Set-AkamaiOptions' -Tag 'Set-AkamaiOptions' {
-        BeforeAll {
-            $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+        Context 'Get-AkamaiOptions' -Tag 'Get-AkamaiOptions' {
+            BeforeAll {
+                $PreviousOptionsPath = $env:AkamaiOptionsPath
+                $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+            }
+            It 'returns options as expected' {
+                Get-AkamaiOptions
+                $Global:AkamaiOptions.EnableErrorRetries | Should -BeOfType bool
+                $Global:AkamaiOptions.EnableRateLimitRetries | Should -BeOfType bool
+                $Global:AkamaiOptions.DisablePapiPrefixes | Should -BeOfType bool
+                $Global:AkamaiOptions.EnableRateLimitWarnings | Should -BeOfType bool
+                $Global:AkamaiOptions.InitialErrorWait | Should -Match '^[0-9]+$'
+                $Global:AkamaiOptions.MaxErrorRetries | Should -Match '^[0-9]+$'
+                $Global:AkamaiOptions.RateLimitWarningPercentage | Should -Match '^[0-9]+$'
+                $Global:AkamaiOptions.EnableRecommendedActions | Should -BeOfType bool
+                $Global:AkamaiOptions.EnableDataCache | Should -BeOfType bool
+            }
+            It 'should exist at default path' {
+                $env:AkamaiOptionsPath | Should -Exist
+            }
+            AfterAll {
+                Remove-Item -Path $env:AkamaiOptionsPath -Force
+                $env:AkamaiOptionsPath = $PreviousOptionsPath
+            }
         }
-        It 'should update correctly' {
-            $TestParams = @{
-                EnableErrorRetries         = $true
-                InitialErrorWait           = 2
-                MaxErrorRetries            = 10
-                EnableRateLimitRetries     = $true
-                DisablePAPIPrefixes        = $true
-                EnableRateLimitWarnings    = $true
-                RateLimitWarningPercentage = 12
-                EnableDataCache            = $true
-                EnableRecommendedActions   = $true
+    
+        Context 'Set-AkamaiOptions' -Tag 'Set-AkamaiOptions' {
+            BeforeAll {
+                $PreviousOptionsPath = $env:AkamaiOptionsPath
+                $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
+            }
+            It 'should update correctly' {
+                $TestParams = @{
+                    EnableErrorRetries         = $true
+                    InitialErrorWait           = 2
+                    MaxErrorRetries            = 10
+                    EnableRateLimitRetries     = $true
+                    DisablePAPIPrefixes        = $true
+                    EnableRateLimitWarnings    = $true
+                    RateLimitWarningPercentage = 12
+                    EnableDataCache            = $true
+                    EnableRecommendedActions   = $true
+                }
+    
+                # Check defaults
+                Get-AkamaiOptions
+                $Global:AkamaiOptions.EnableErrorRetries | Should -be $False
+                $Global:AkamaiOptions.InitialErrorWait | Should -be 1
+                $Global:AkamaiOptions.MaxErrorRetries | Should -be 5
+                $Global:AkamaiOptions.EnableRateLimitRetries | Should -Be $False
+                $Global:AkamaiOptions.DisablePapiPrefixes | Should -Be $False
+                $Global:AkamaiOptions.EnableRateLimitWarnings | Should -Be $False
+                $Global:AkamaiOptions.RateLimitWarningPercentage | Should -Be 90
+                $Global:AkamaiOptions.EnableDataCache | Should -Be $False
+                $Global:AkamaiOptions.EnableRecommendedActions | Should -Be $False
+    
+                # Update
+                Set-AkamaiOptions @TestParams | Out-Null
+    
+                # Check new values
+                $Global:AkamaiOptions.EnableErrorRetries | Should -be $true
+                $Global:AkamaiOptions.InitialErrorWait | Should -be 2
+                $Global:AkamaiOptions.MaxErrorRetries | Should -be 10
+                $Global:AkamaiOptions.EnableRateLimitRetries | Should -Be $true
+                $Global:AkamaiOptions.DisablePapiPrefixes | Should -Be $true
+                $Global:AkamaiOptions.EnableRateLimitWarnings | Should -Be $true
+                $Global:AkamaiOptions.RateLimitWarningPercentage | Should -Be 12
+                $Global:AkamaiOptions.EnableDataCache | Should -Be $true
+                $Global:AkamaiOptions.EnableRecommendedActions | Should -Be $true
+            }
+            It 'should create the data cache' {
+                $SetOptions = Set-AkamaiOptions -EnableDataCache $true
+                $SetOptions.EnableDataCache | Should -Be $true
+                $Global:AkamaiDataCache | Should -Not -BeNullOrEmpty
+                $Global:AkamaiDataCache.APIDefinitions | Should -Not -BeNullOrEmpty
+                $Global:AkamaiDataCache.AppSec | Should -Not -BeNullOrEmpty
+                $Global:AkamaiDataCache.ClientLists | Should -Not -BeNullOrEmpty
+                $Global:AkamaiDataCache.METS | Should -Not -BeNullOrEmpty
+                $Global:AkamaiDataCache.MOKS | Should -Not -BeNullOrEmpty
+                $Global:AkamaiDataCache.Property | Should -Not -BeNullOrEmpty
+            }
+            It 'should respond with rate limit warnings' {
+                Set-AkamaiOptions -EnableRateLimitWarnings $true -RateLimitWarningPercentage 0 | Out-Null
+                $Global:AkamaiOptions.RateLimitWarningPercentage | Should -Be 0
+                $Global:AkamaiOptions.EnableRateLimitWarnings | Should -Be $true
+                Get-PropertyContract @CommonParams -WarningAction Continue -WarningVariable RateWarning
+                $RateWarning | Should -BeLike "Akamai Rate Limit used = *"
+            }
+            AfterAll {
+                Remove-Item -Path $env:AkamaiOptionsPath -Force
+                $env:AkamaiOptionsPath = $PreviousOptionsPath
+            }
+        }
+        Context 'check options persist' {
+            BeforeAll {
+                $PreviousOptionsPath = $env:AkamaiOptionsPath
+                $env:AkamaiOptionsPath = [System.Io.Path]::GetTempFileName()
             }
 
-            # Check defaults
-            $AkamaiOptions.EnableErrorRetries | Should -be $False
-            $AkamaiOptions.InitialErrorWait | Should -be 1
-            $AkamaiOptions.MaxErrorRetries | Should -be 5
-            $AkamaiOptions.EnableRateLimitRetries | Should -Be $False
-            $AkamaiOptions.DisablePapiPrefixes | Should -Be $False
-            $AkamaiOptions.EnableRateLimitWarnings | Should -Be $False
-            $AkamaiOptions.RateLimitWarningPercentage | Should -Be 90
-            $AkamaiOptions.EnableDataCache | Should -Be $False
-            $AkamaiOptions.EnableRecommendedActions | Should -Be $False
+            It 'should keep options beyond module re-import' {
+                $OptionsParams = @{
+                    RateLimitWarningPercentage = 12
+                    InitialErrorWait           = 5
+                    MaxErrorRetries            = 6
+                }
+                Set-AkamaiOptions @OptionsParams
+                Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
+                $Global:AkamaiOptions.RateLimitWarningPercentage | Should -Be 12
+                $Global:AkamaiOptions.InitialErrorWait | Should -Be 5
+                $Global:AkamaiOptions.MaxErrorRetries | Should -Be 6
+            }
 
-            # Update
-            Set-AkamaiOptions @TestParams | Out-Null
-
-            # Check new values
-            $AkamaiOptions.EnableErrorRetries | Should -be $true
-            $AkamaiOptions.InitialErrorWait | Should -be 2
-            $AkamaiOptions.MaxErrorRetries | Should -be 10
-            $AkamaiOptions.EnableRateLimitRetries | Should -Be $true
-            $AkamaiOptions.DisablePapiPrefixes | Should -Be $true
-            $AkamaiOptions.EnableRateLimitWarnings | Should -Be $true
-            $AkamaiOptions.RateLimitWarningPercentage | Should -Be 12
-            $AkamaiOptions.EnableDataCache | Should -Be $true
-            $AkamaiOptions.EnableRecommendedActions | Should -Be $true
-        }
-        It 'should create the data cache' {
-            $SetOptions = Set-AkamaiOptions -EnableDataCache $true
-            $SetOptions.EnableDataCache | Should -Be $true
-            $AkamaiDataCache | Should -Not -BeNullOrEmpty
-            $AkamaiDataCache.APIDefinitions | Should -Not -BeNullOrEmpty
-            $AkamaiDataCache.AppSec | Should -Not -BeNullOrEmpty
-            $AkamaiDataCache.ClientLists | Should -Not -BeNullOrEmpty
-            $AkamaiDataCache.METS | Should -Not -BeNullOrEmpty
-            $AkamaiDataCache.MOKS | Should -Not -BeNullOrEmpty
-            $AkamaiDataCache.Property | Should -Not -BeNullOrEmpty
-        }
-        It 'should respond with rate limit warnings' {
-            Set-AkamaiOptions -EnableRateLimitWarnings $true -RateLimitWarningPercentage 0 | Out-Null
-            $AkamaiOptions.RateLimitWarningPercentage | Should -Be 0
-            $AkamaiOptions.EnableRateLimitWarnings | Should -Be $true
-            Get-PropertyContract @CommonParams -WarningAction Continue -WarningVariable RateWarning
-            $RateWarning | Should -BeLike "Akamai Rate Limit used = *"
-        }
-        AfterAll {
-            Remove-Item -Path $env:AkamaiOptionsPath -Force
-            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            AfterAll {
+                Remove-Item -Path $env:AkamaiOptionsPath -Force
+                $env:AkamaiOptionsPath = $PreviousOptionsPath
+            }
         }
     }
 
@@ -832,6 +901,18 @@ account_key = $TestASK
         AfterAll {
             Remove-Item -Path 'TestDrive:/Modules' -Force -Recurse
             $ProgressPreference = $OldProgressPreference
+        }
+    }
+
+    Context 'Aliases' -Tag 'Aliases' {
+        It 'has an alias for Invoke-AkamaiRequest' {
+            $Alias = Get-Alias -Definition Invoke-AkamaiRequest
+            $Alias.name | Should -Be 'iar'
+        }
+        
+        It 'has an alias for Invoke-AkamaiRestMethod' {
+            $Alias = Get-Alias -Definition Invoke-AkamaiRestMethod
+            $Alias.name | Should -Be 'iarm'
         }
     }
 

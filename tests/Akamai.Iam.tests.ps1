@@ -264,6 +264,11 @@ Describe 'Safe Akamai.IAM Tests' {
             $PD.GetIAMPropertySingle = Get-IAMProperty -GroupID $TestGroupID -AssetID $TestAssetID @CommonParams
             $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
         }
+
+        It 'returns the correct data with alias' {
+          $PD.GetIAMPropertySingle = Get-IAMProperty -GroupID $TestGroupID -PropertyID $TestAssetID @CommonParams
+          $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
@@ -275,6 +280,11 @@ Describe 'Safe Akamai.IAM Tests' {
             $PD.GetIAMPropertyResources = Get-IAMPropertyResources -GroupID $TestGroupID -AssetID $TestAssetID @CommonParams
             $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
         }
+
+        It 'returns the correct data with alias' {
+          $PD.GetIAMPropertyResources = Get-IAMPropertyResources -GroupID $TestGroupID -PropertyID $TestAssetID @CommonParams
+          $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
@@ -285,6 +295,11 @@ Describe 'Safe Akamai.IAM Tests' {
         It 'returns the correct data' {
             $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers -AssetID $TestAssetID @CommonParams
             $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
+        }
+
+        It 'returns the correct data with alias' {
+          $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers -PropertyID $TestAssetID @CommonParams
+          $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -899,6 +914,15 @@ Describe 'UnSafe Akamai.IAM Tests' {
             $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers -AssetID 123456789 -UIIdentityID 'A-1-23CDEF'
             $BlockIAMPropertyUsersByParam[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
+
+        It 'returns the correct data with alias' {
+          Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+              $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
+              return $Response | ConvertFrom-Json
+          }
+          $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers -PropertyID 123456789 -UIIdentityID 'A-1-23CDEF'
+          $BlockIAMPropertyUsersByParam[0].uiIdentityId | Should -Not -BeNullOrEmpty
+      }
     }
 
     Context 'Block-IAMPropertyUsers by pipeline' {
@@ -910,6 +934,15 @@ Describe 'UnSafe Akamai.IAM Tests' {
             $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers -AssetID 123456789
             $BlockIAMPropertyUsersByPipeline[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
+
+        It 'returns the correct data with alias' {
+          Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+              $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
+              return $Response | ConvertFrom-Json
+          }
+          $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers -PropertyID 123456789
+          $BlockIAMPropertyUsersByPipeline[0].uiIdentityId | Should -Not -BeNullOrEmpty
+      }
     }
 
     #------------------------------------------------
@@ -994,6 +1027,14 @@ Describe 'UnSafe Akamai.IAM Tests' {
             }
             Move-IAMProperty -DestinationGroupID 11111 -AssetID 12345678 -SourceGroupID 22222 
         }
+
+        It 'throws no errors when alias is used' {
+          Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+              $Response = Get-Content -Raw "$ResponseLibrary/Move-IAMProperty.json"
+              return $Response | ConvertFrom-Json
+          }
+          Move-IAMProperty -DestinationGroupID 11111 -PropertyID 12345678 -SourceGroupID 22222 
+      }
     }
 
     #------------------------------------------------

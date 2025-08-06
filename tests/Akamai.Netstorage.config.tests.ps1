@@ -326,7 +326,13 @@ Describe 'Safe Akamai.Netstorage Config Tests' {
 
     Context 'New-NetstorageAuth' {
         It 'should create new file called .nsrc at root' {
-            $PD.NewNetstorageAuth = New-NetstorageAuth -UploadAccountID $TestUploadAccountID -OutputDirectory $TestOutputDirectory -AuthSection $PD.Section @CommonParams
+            $Section = 'default'
+            $TestParams = @{
+                'UploadAccountID' = $TestUploadAccountID
+                'OutputDirectory' = $TestOutputDirectory
+                'AuthSection'     = $Section
+            }
+            $PD.NewNetstorageAuth = New-NetstorageAuth @TestParams @CommonParams
             $TestNewNSAuthKey = $($PD.GetNetstorageUploadAccountSingle.keys.g2o.key)
             $PD.File = "$TestOutputDirectory/.nsrc"
             $PD.File | Should -Exist
@@ -339,7 +345,7 @@ Describe 'Safe Akamai.Netstorage Config Tests' {
         }
 
         It 'should fail because a default section already exists' {
-            New-NetstorageAuth -UploadAccountID $TestUploadAccountID -OutputDirectory $TestOutputDirectory @CommonParams
+            { New-NetstorageAuth -UploadAccountID $TestUploadAccountID -OutputDirectory $TestOutputDirectory @CommonParams } | Should -Throw
         }
 
         It 'should create new section on existing .nsrc' {

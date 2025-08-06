@@ -1377,7 +1377,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Initializes EdgeKV (you need to do this only once) and adds the `default` EdgeKV namespace to Akamai's staging and production networks. It also creates a new dedicated CP code for you to track your EdgeKV usage. </maml:para>
+      <maml:para>Initializes EdgeKV (you need to do this only once) and adds the `default` EdgeKV namespace to Akamai's staging and production networks. It also creates a new dedicated CP code for you to track your EdgeKV usage.</maml:para>
       <maml:para>&gt; Note: You'll be able to use the EdgeKV API operations or your EdgeKV database only after initialization completes. You should only use the `default` namespace for experimentation and testing purposes. When deploying your EdgeKV database to production, use a new namespace with a different name.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1690,7 +1690,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Generates an access token that allows an EdgeWorkers code bundle to access the specified namespace. Each token name needs to be unique and has a defined expiration of no longer than six months. You can't renew a token once it expires. </maml:para>
+      <maml:para>Generates an access token that allows an EdgeWorkers code bundle to access the specified namespace. Each token name needs to be unique and has a defined expiration of no longer than six months. You can't renew a token once it expires.</maml:para>
       <maml:para>&gt; Note: You can specify the token attributes as individual parameters or pipe a complete object to this function.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2028,7 +2028,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates or updates an EdgeKV item (name-value) on a given network. You need to specify the namespace and group to which the item belongs. The target namespace ID needs to already exist before writing. Whereas, the group ID is automatically created for you if it doesn't exist yet. </maml:para>
+      <maml:para>Creates or updates an EdgeKV item (name-value) on a given network. You need to specify the namespace and group to which the item belongs. The target namespace ID needs to already exist before writing. Whereas, the group ID is automatically created for you if it doesn't exist yet.</maml:para>
       <maml:para>&gt; Note: If you don't specify the group ID, a value of `0` is used, which makes the item available to all groups.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2317,8 +2317,8 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>GeoLocation</maml:name>
           <maml:description>
-            <maml:para>The storage location for data when creating a namespace on the production network. This can help optimize performance by storing data where most of your users are located. Once you set this value, you can't modify it. </maml:para>
-            <maml:para>The value defaults to `US` on the `STAGING` and `PRODUCTION` networks. The available locations on the `PRODUCTION` network also include `EU` (Europe), `JP` (Japan), and `GLOBAL`. </maml:para>
+            <maml:para>The storage location for data when creating a namespace on the production network. This can help optimize performance by storing data where most of your users are located. Once you set this value, you can't modify it.</maml:para>
+            <maml:para>The value defaults to `US` on the `STAGING` and `PRODUCTION` networks. The available locations on the `PRODUCTION` network also include `EU` (Europe), `JP` (Japan), and `GLOBAL`.</maml:para>
             <maml:para>The `GLOBAL` location automatically replicates data to `US`, `EU`, and `JP` storage locations. If you use the `GLOBAL` location, reads are faster but write operations are slightly slower.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -2349,7 +2349,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
             <maml:para>Your EdgeKV access group's ID.</maml:para>
@@ -2361,7 +2361,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+          <maml:name>RestrictDataAccess</maml:name>
+          <maml:description>
+            <maml:para>The default `dataAccessPolicy` for new namespaces. If present, this allows new namespaces to access Akamai's Enhanced TLS network. If absent, this allows access on both the Enhanced TLS and the Standard TLS networks. To disable it, you need access to the EdgeKV Beta for Standard TLS.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+          <dev:type>
+            <maml:name>Boolean</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -2373,7 +2385,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -2385,7 +2397,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
             <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -2400,7 +2412,7 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -2412,7 +2424,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -2427,8 +2439,8 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>GeoLocation</maml:name>
         <maml:description>
-          <maml:para>The storage location for data when creating a namespace on the production network. This can help optimize performance by storing data where most of your users are located. Once you set this value, you can't modify it. </maml:para>
-          <maml:para>The value defaults to `US` on the `STAGING` and `PRODUCTION` networks. The available locations on the `PRODUCTION` network also include `EU` (Europe), `JP` (Japan), and `GLOBAL`. </maml:para>
+          <maml:para>The storage location for data when creating a namespace on the production network. This can help optimize performance by storing data where most of your users are located. Once you set this value, you can't modify it.</maml:para>
+          <maml:para>The value defaults to `US` on the `STAGING` and `PRODUCTION` networks. The available locations on the `PRODUCTION` network also include `EU` (Europe), `JP` (Japan), and `GLOBAL`.</maml:para>
           <maml:para>The `GLOBAL` location automatically replicates data to `US`, `EU`, and `JP` storage locations. If you use the `GLOBAL` location, reads are faster but write operations are slightly slower.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2438,7 +2450,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
           <maml:para>Your EdgeKV access group's ID.</maml:para>
@@ -2474,6 +2486,18 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <maml:name>RestrictDataAccess</maml:name>
+        <maml:description>
+          <maml:para>The default `dataAccessPolicy` for new namespaces. If present, this allows new namespaces to access Akamai's Enhanced TLS network. If absent, this allows access on both the Enhanced TLS and the Standard TLS networks. To disable it, you need access to the EdgeKV Beta for Standard TLS.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
+        <dev:type>
+          <maml:name>Boolean</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>RetentionInSeconds</maml:name>
         <maml:description>
@@ -2486,7 +2510,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -2550,7 +2574,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Revokes a specified access token. Once you revoke it, you can't undo it. You also need to update any deployed EdgeWorkers code bundles that use the old token with a new token; otherwise, the requests to EdgeKV fail. Any requests from an EdgeWorkers code bundle using a revoked token cause a 401 error. </maml:para>
+      <maml:para>Revokes a specified access token. Once you revoke it, you can't undo it. You also need to update any deployed EdgeWorkers code bundles that use the old token with a new token; otherwise, the requests to EdgeKV fail. Any requests from an EdgeWorkers code bundle using a revoked token cause a 401 error.</maml:para>
       <maml:para>To learn more about access tokens, see the EdgeKV guide (https://techdocs.akamai.com/edgekv/docs/generate-and-retrieve-edgekv-access-tokens).</maml:para>
     </maml:description>
     <command:syntax>
@@ -2707,7 +2731,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes an EdgeKV item. You need to specify the namespace and group to which the item belongs. It can take 10 seconds or longer for a deleted item to be removed from the database. </maml:para>
+      <maml:para>Deletes an EdgeKV item. You need to specify the namespace and group to which the item belongs. It can take 10 seconds or longer for a deleted item to be removed from the database.</maml:para>
       <maml:para>If you attempt a `read` operation before the value has been updated globally, the stale data may be returned until the update is complete.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3549,8 +3573,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the retention period for any existing namespace other than the default namespace. It can take up to five minutes for a new retention policy to apply. </maml:para>
-      <maml:para>The new retention period applies only to data added or updated in the namespace after this operation is complete. The retention period of existing data remains unchanged from the old retention period. </maml:para>
+      <maml:para>Updates the retention period for any existing namespace other than the default namespace. It can take up to five minutes for a new retention policy to apply.</maml:para>
+      <maml:para>The new retention period applies only to data added or updated in the namespace after this operation is complete. The retention period of existing data remains unchanged from the old retention period.</maml:para>
       <maml:para>Once you perform this operation, you can't query the previously existing data. If you want to ensure that all data in the namespace has the same retention period, you need to update the entire data set once the retention period has been updated.</maml:para>
     </maml:description>
     <command:syntax>

@@ -202,7 +202,15 @@ Describe 'Safe Akamai.EdgeKV Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-EdgeKVNamespace.json"
                 return $Response | ConvertFrom-Json
             }
-            $SafeNamespace = New-EdgeKVNamespace -Network PRODUCTION -GeoLocation US -Name MyNamespace -RetentionInSeconds 0
+            $TestParams = @{
+                Network            = 'PRODUCTION'
+                GeoLocation        = 'US'
+                Name               = 'MyNamespace'
+                RetentionInSeconds = 123
+                RestrictDataAccess = $false
+                GroupID            = 12345
+            }
+            $SafeNamespace = New-EdgeKVNamespace @TestParams
             $SafeNamespace.namespace | Should -Not -BeNullOrEmpty
         }
     }

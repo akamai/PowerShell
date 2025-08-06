@@ -1,6 +1,63 @@
-# Release notes
+## 2.3.0 (Aug 4, 2025)
 
-## 2.2.1 (Apr 15 2025)
+### New 
+
+#### CPS
+
+* `Get-CPSActiveCertificate`. Gets active certificates for a given account or contract.
+
+#### Datastream
+
+* `Get-DatastreamEDNSZones`. Returns Edge DNS zones on your contract.
+* `Get-DatastreamGTMProperties`. Returns Global Traffic Management (GTM) domain properties on your contract.
+
+#### EdgeWorkers
+
+* `Get-EdgeWorkerLoggingOverride`. Get status information about a specific logging override. 
+* `New-EdgeWorkerLoggingOverride`. Override the default JavaScript logging level for an EdgeWorker specified by its `EdgeWorkerName` or `EdgeWorkerID`.
+
+#### Test Center
+
+`Initialize-TestSuite`. Generates the request body for a new test suite. This addition clears up a confusing workflow when using `New-TestSuite -AutoGenerate`.
+
+### Bug Fixes
+
+This update fixes the following issues.
+
+* `Akamai.Common` module. Options are no longer reset when module is imported.
+* `Akamai.GTM` module. `MapName` is now mandatory on `Remove-GTMCIDRMap`.
+* `Akamai.EdgeDNS` module. Unified casing of EdgeDNS.
+* `Akamai.Reporting` module. `Limit` and `Filters` are now applied correctly.
+* `New-EdgeKVNamespace`. The `GroupID` parameter is now mandatory.
+
+### Updates
+
+#### Common
+
+* Added support for `$ENV:proxy_use_default_credentials` that was available in v1 but missed in the upgrade to v2.
+* Improved handling of unexpected errors whose response body does not contain the HTTP status.
+
+#### Datastream
+
+* Migrated to v3 of the API. This adds stream support for CDN, EdgeWorkers, EdgeDNS and GTM. All functions now have a `LogType` parameter that defaults to `cdn` for backwards compatibility.
+
+#### EdgeKV
+
+* `New-EdgeKVNamespace`. Added `RestrictDataAccess` parameter so you can control namespace access in Standard TLS.
+
+#### IAM
+
+* Added `PropertyID` alias to any command using `AssetID` for backwards compatibility.
+
+#### SIEM
+
+* `Get-SIEMData`. The `To` parameter is no longer mandatory to match the API.
+
+#### Test Center
+
+* `New-TestSuite`. Added parameters option to better support creation of simple test suites.
+
+## 2.2.1 (Apr 15, 2025)
 
 ### Bug Fixes
 
@@ -25,7 +82,7 @@ Added Pipeline support for multiple functions.
 * `Remove-GTMProperty`
 * `Remove-GTMResource`
 
-## 2.2.0 (Apr 8 2025)
+## 2.2.0 (Apr 8, 2025)
 
 ### New
 
@@ -33,41 +90,40 @@ Added Pipeline support for multiple functions.
 
 MTLS Origin Keystore (MOKS)
 
-* Functionality
-  * General
-   * Improved API handling and migration help.
-      * `Invoke-AkamaiRequest`. Replaces `Invoke-AkamaiRestMethod` in all higher functions. It's based on `Invoke-WebRequest` rather than `Invoke-RestMethod`, so all functions work the same for PowerShell v5.1 and ≥7.0.
-      * `Uninstall-Akamai`. Handles migration from Akamaipowershell v1.
-   
-  * Added options architecture that manage server and rate limiting error impact, provides troubleshooting information, and stores Akamai asset IDs for reuse. 
-      * Error Retries
-      * Rate Limit Retries
-      * Rate Limit Warnings
-      * Property API Prefixes
-      * Suggested Actions
-      * Data Cache
+#### General
 
-  * EdgeKV
-      * `Get-EdgeKVNamespaceDelete`. Gets the namespace delete time.
-      * `Get-EdgeKVNamespaceGroup`. Lists groups within a namespace.
-      * `Remove-EdgeKVNamespace`. Deletes a namespace.
-      * `Restore-EdgeKVNamespace`. Cancels a scheduled namespace delete.
-      * `Update-EdgeKVAccessToken`. Refreshes an access token.
- 
-  * NetStorage<br />
-  `Read-NetstorageDirectory`. Recursively downloads an entire directory from a storage group.
+* `Invoke-AkamaiRequest`. Replaces `Invoke-AkamaiRestMethod` in all higher function. It's based on `Invoke-WebRequest` rather than `Invoke-RestMethod`, so all functions work the same for PowerShell v5.1 and ≥7.0.
+* `Uninstall-Akamai`. Handles migration from Akamaipowershell v1.
+* Added options architecture that manage server and rate limiting error impact, provides troubleshooting information, and stores Akamai asset IDs for reuse. 
+  * Error retries
+  * Rate Limit retries and warnings
+  * Property API prefixes
+  * Suggested actions
+  * Data cache
 
+#### EdgeKV
+
+* `Get-EdgeKVNamespaceDelete`. Gets the namespace delete time.
+* `Get-EdgeKVNamespaceGroup`. Lists groups within a namespace.
+* `Remove-EdgeKVNamespace`. Deletes a namespace.
+* `Restore-EdgeKVNamespace`. Cancels a scheduled namespace delete.
+* `Update-EdgeKVAccessToken`. Refreshes an access token.
+
+#### NetStorage
+
+`Read-NetstorageDirectory`. Recursively downloads an entire directory from a storage group.
+    
 ### Bug Fixes
 
 This update fixes the following issues.
 
-* `AllowCancelPendingChanges`. A typo prevented its use.
-* `*-EdgeKVItem`. Overloaded use of the word _group_ in functions that fused item and access control groups. Access control groups now use a string.
+* `New-Property`. Always placed a cloned property in the existing property's group. Resolves [Issue 11](https://github.com/akamai/powershell/issues/11).
 * `Get-PropertyIncludeRulesDigest`. Didn't require the`-IncludeVersion` parameter, missing mandatory annotation on the parameter.
 * `Get-PropertyHostname`. Didn't pass the `-Network` parameter to recursive calls.
+* `AllowCancelPendingChanges`. A typo prevented its use.
 * `Get-IAMGroup`. Unexpected behavior when using the `-Flatten` option in PowerShell 5.1. Resolves [Akamaipowershell issue 54](https://github.com/akamai/akamaipowershell/issues/54).
+* `*-EdgeKVItem`. Overloaded use of the word _group_ in functions that fused item and access control groups. Access control groups now use a string.
 * `New-AppSecActivation`. Body data not sent if not a string.
-* `New-Property`. Always placed a cloned property in the existing property's group. Resolves [Issue 11](https://github.com/akamai/powershell/issues/11).
     
 ### Updates
 
@@ -120,19 +176,15 @@ Forced inclusion of `useStaging` in request body to mitigate an API issue.
 
 Improved pipeline support.
 
-### Deprecated
+### End-of-Life
 
-All Media Delivery Reports functions.
+The Media Delivery Reports service hit end end-of-life. This service's functions were available in v1 but had yet to be added to v2. Because of its lifecycle state, they will not be added to v2.
 
 ### Removed
 
 Redundant `Set-APIEndpointVersionPIIParameters` function from API Definitions submodule.
 
-### Known issues
-
-There is no 1:1 support for these v1 services. To use Akamai PowerShell with these services, continue to use v1. 
-
-## 2.1.0 (Aug 16 2024)
+## 2.1.0 (Aug 16, 2024)
 
 ### New
 
@@ -187,8 +239,6 @@ ImageCollection functions.
 
 ### Known issues
 
-There is no 1:1 support for these v1 services. To use Akamai PowerShell with these services, continue to use v1.
-
 All other previous known issues are resolved with this release's new submodules.
 
 ## 2.0.0 (Apr 17, 2024)
@@ -230,6 +280,5 @@ At the time of this release, there is no 1:1 support for these v1 services. To u
 
 * API Key Manager
 * China CDN
-* Media Delivery Reports
 * Media Services Live
 * Service Level Agreement

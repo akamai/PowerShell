@@ -18,8 +18,9 @@ Describe 'Safe Akamai.APIDefinitions Tests' {
         $TestContract = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
         $TestEndpointName = "akamaipowershell"
-        $TestEndpointNameClone1 = $TestEndpointName + "-clone1"
-        $TestEndpointNameClone2 = $TestEndpointName + "-clone2"
+        $TestEndpointNameClone1 = $TestEndpointName + '-clone1'
+        $TestEndpointNameClone2 = $TestEndpointName + '-clone2'
+        $TestFileEndpointName = $TestEndpointName + '-fromfile'
         $TestHostname = $env:PesterHostname
         $TestAPIDefinitionJSON = @"
 {
@@ -111,7 +112,7 @@ Describe 'Safe Akamai.APIDefinitions Tests' {
         $TestSwaggerContent = @"
 openapi: 3.0.0
 info:
-  title: akamaipowershell-fromfile
+  title: $TestFileEndpointName
   description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
   version: 0.1.9
 
@@ -151,9 +152,16 @@ paths:
     }
 
     AfterAll {
-        $TestEndpointName, "$TestEndpointName`2", $TestEndpointNameClone1, $TestEndpointNameClone2 | foreach-object {
-            Try { Remove-APIEndpoint -APIEndpointName $_ @CommonParams }
+        $TestEndpointName, "$TestEndpointName`2", $TestEndpointNameClone1, $TestEndpointNameClone2, $TestFileEndpointName | foreach-object {
+            Try { 
+                Show-APIEndpoint -APIEndpointName $_ @CommonParams
+            }
             Catch {}
+            
+            try {
+                Remove-APIEndpoint -APIEndpointName $_ @CommonParams
+            }
+            catch {}
         }
     }
 
@@ -249,7 +257,7 @@ paths:
     Context 'Expand-APIEndpointDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "./options.json"
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
             # Creat options
             New-AkamaiOptions
             # Enable data cache
@@ -722,8 +730,9 @@ paths:
     
     Context 'New-APIEndpointFromFile by attributes' {
         It 'returns the correct data' {
-            $PD.NewAPIEndpointFromFileByAttr = New-APIEndpointFromFile -ImportFileFormat swagger -ImportFileSource BODY_BASE64 -ImportFileContent $TestEncodedSwaggerContent -ContractID $TestContract -GroupID $TestGroupID @CommonParams
-            $PD.NewAPIEndpointFromFileByAttr.apiEndpointId | Should -Not -BeNullOrEmpty
+            $PD.NewAPIEndpointFromFile = New-APIEndpointFromFile -ImportFileFormat swagger -ImportFileSource BODY_BASE64 -ImportFileContent $TestEncodedSwaggerContent -ContractID $TestContract -GroupID $TestGroupID @CommonParams
+            $PD.NewAPIEndpointFromFile.apiEndpointId | Should -Not -BeNullOrEmpty
+            $PD.NewAPIEndpointFromFile.apiEndpointName | Should -Be $TestFileEndpointName
         }
     }
 
@@ -733,22 +742,22 @@ paths:
 
     Context 'Set-APIEndpointVersionFromFile by attributes' {
         It 'returns the correct data' {
-            $PD.SetAPIEndpointVersionFromFileIdByAttr = Set-APIEndpointVersionFromFile -APIEndpointID $PD.NewAPIEndpointFromFileByAttr.apiEndpointId -VersionNumber 1 -ImportFileFormat swagger -ImportFileSource BODY_BASE64 -ImportFileContent $TestEncodedSwaggerContent -ContractID $TestContract -GroupID $TestGroupID @CommonParams
-            $PD.SetAPIEndpointVersionFromFileIdByAttr.apiEndPointId | Should -Be $PD.NewAPIEndpointFromFileByAttr.apiEndpointId
+            $PD.SetAPIEndpointVersionFromFileIdByAttr = Set-APIEndpointVersionFromFile -APIEndpointID $PD.NewAPIEndpointFromFile.apiEndpointId -VersionNumber 1 -ImportFileFormat swagger -ImportFileSource BODY_BASE64 -ImportFileContent $TestEncodedSwaggerContent -ContractID $TestContract -GroupID $TestGroupID @CommonParams
+            $PD.SetAPIEndpointVersionFromFileIdByAttr.apiEndPointId | Should -Be $PD.NewAPIEndpointFromFile.apiEndpointId
         }
     }
 
     Context 'Set-APIEndpointVersionFromFile - Parameter Set id, by pipeline' {
         It 'Set-APIEndpointVersionFromFile by pipeline returns the correct data' {
-            $PD.SetAPIEndpointVersionFromFileIdByPipeline = ($TestAPIFromFileJSON | Set-APIEndpointVersionFromFile -APIEndpointID $PD.NewAPIEndpointFromFileByAttr.apiEndpointId -VersionNumber 1 @CommonParams)
-            $PD.SetAPIEndpointVersionFromFileIdByPipeline.apiEndPointId | Should -Be $PD.NewAPIEndpointFromFileByAttr.apiEndpointId
+            $PD.SetAPIEndpointVersionFromFileIdByPipeline = ($TestAPIFromFileJSON | Set-APIEndpointVersionFromFile -APIEndpointID $PD.NewAPIEndpointFromFile.apiEndpointId -VersionNumber 1 @CommonParams)
+            $PD.SetAPIEndpointVersionFromFileIdByPipeline.apiEndPointId | Should -Be $PD.NewAPIEndpointFromFile.apiEndpointId
         }
     }
 
     Context 'Set-APIEndpointVersionFromFile - Parameter Set name, by parameter' {
         It 'Set-APIEndpointVersionFromFile by param returns the correct data' {
-            $PD.SetAPIEndpointVersionFromFileNameByParam = Set-APIEndpointVersionFromFile -APIEndpointID $PD.NewAPIEndpointFromFileByAttr.apiEndpointId -Body $TestAPIFromFile -VersionNumber 1 @CommonParams
-            $PD.SetAPIEndpointVersionFromFileNameByParam.apiEndPointId | Should -Be $PD.NewAPIEndpointFromFileByAttr.apiEndpointId
+            $PD.SetAPIEndpointVersionFromFileNameByParam = Set-APIEndpointVersionFromFile -APIEndpointID $PD.NewAPIEndpointFromFile.apiEndpointId -Body $TestAPIFromFile -VersionNumber 1 @CommonParams
+            $PD.SetAPIEndpointVersionFromFileNameByParam.apiEndPointId | Should -Be $PD.NewAPIEndpointFromFile.apiEndpointId
         }
     }
 
@@ -825,7 +834,7 @@ paths:
             Remove-APIEndpoint -APIEndpointID $PD.NewAPIEndpointByPipeline.apiEndpointId @CommonParams 
             Remove-APIEndpoint -APIEndpointID $PD.CopyAPIEndpointByParam.apiEndpointId @CommonParams 
             Remove-APIEndpoint -APIEndpointID $PD.CopyAPIEndpointByPipeline.apiEndpointId @CommonParams 
-            Remove-APIEndpoint -APIEndpointID $PD.NewAPIEndpointFromFileByAttr.apiEndpointId @CommonParams 
+            Remove-APIEndpoint -APIEndpointID $PD.NewAPIEndpointFromFile.apiEndpointId @CommonParams 
         }
     }
 }

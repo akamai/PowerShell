@@ -91,24 +91,44 @@ Describe 'Safe Akamai.CPS Tests' {
 
     Context 'New-CPSEnrollment' {
         It 'creates an enrollment' {
-            $PD['3PEnrollment'] = New-CPSEnrollment -ContractId $TestContract -Body $TestNewEnrollmentBody @CommonParams
-            $PD['3PEnrollment'].enrollment | Should -Not -BeNullOrEmpty
-            $PD['3PEnrollmentID'] = $PD['3PEnrollment'].enrollment.replace("/cps/v2/enrollments/", "")
-            $PD['3PChangeID'] = $PD['3PEnrollment'].changes.substring($PD['3PEnrollment'].changes.LastIndexOf('/') + 1)
+            $PD.TPEnrollment = New-CPSEnrollment -ContractId $TestContract -Body $TestNewEnrollmentBody @CommonParams
+            $PD.TPEnrollment.enrollment | Should -Not -BeNullOrEmpty
+            $PD.TPEnrollment.enrollmentId | Should -Match '^[0-9]+$'
+            $PD.TPEnrollment.changes | Should -Not -BeNullOrEmpty
+            $PD.TPEnrollment.changeIds | Should -Not -BeNullOrEmpty
+            $PD.TPEnrollment.changeIds[0] | Should -Match '^[0-9]+$'
         }
     }
 
     Context 'Get-CPSEnrollment - all' {
-        It 'Get-CPSEnrollment returns a list' {
+        It 'returns a list' {
             $PD.Enrollments = Get-CPSEnrollment -ContractID $TestContract @CommonParams
-            $PD.Enrollments.count | Should -Not -BeNullOrEmpty
+            $PD.Enrollments[0].id | Should -Match '^[0-9]+$'
+            $PD.Enrollments[0].csr | Should -Not -BeNullOrEmpty
+
+            $EnrollmentsPending = $PD.Enrollments | Where-Object { $_.pendingChanges.count -gt 0 }
+            Write-Host "Found $($EnrollmentsPending.count) enrollments with pending changes"
+            if ($EnrollmentsPending) {
+                $EnrollmentsPending[0].pendingChanges[0].changeId | Should -Match '^[0-9]+$'
+            }
         }
     }
 
     Context 'Get-CPSEnrollment - individual' {
-        It 'Get-CPSEnrollment with ID returns an enrollment' {
+        It 'returns an enrollment' {
             $PD.Enrollment = Get-CPSEnrollment -EnrollmentID $TestEnrollmentID @CommonParams
             $PD.Enrollment.id | Should -Be $TestEnrollmentID
+            $PD.Enrollment.csr.cn | Should -Be "akamaipowershell-testing.edgesuite.net"
+        }
+    }
+
+    Context 'Get-CPSEnrollment' {
+        It 'lists active certificates' {
+            $PD.ActiveCerts = Get-CPSActiveCertificate -ContractID $TestContract @CommonParams
+            $PD.ActiveCerts.count | Should -BeGreaterThan 0
+            $PD.ActiveCerts[0].id | Should -Not -BeNullOrEmpty
+            $PD.ActiveCerts[0].productionSlots | Should -Not -BeNullOrEmpty
+            $PD.ActiveCerts[0].stagingSlots | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -153,14 +173,16 @@ Describe 'Safe Akamai.CPS Tests' {
             $PD.Enrollment.csr.sans += $TestNewHostname
             $PD.UpdateEnrollment = $PD.Enrollment | Set-CPSEnrollment -EnrollmentID $PD.Enrollment.id -AllowCancelPendingChanges @CommonParams
             $PD.UpdateEnrollment.enrollment | Should -Match $PD.Enrollment.id
-            # Retrieve Change ID for later tests
-            $PD.ChangeID = $PD.UpdateEnrollment.changes[0].SubString($PD.UpdateEnrollment.changes[0].LastIndexOf('/') + 1)
+            $PD.UpdateEnrollment.enrollmentId | Should -Match '^[0-9]+$'
+            $PD.UpdateEnrollment.changes | Should -Not -BeNullOrEmpty
+            $PD.UpdateEnrollment.changeIds | Should -Not -BeNullOrEmpty
+            $PD.UpdateEnrollment.changeIds[0] | Should -Match '^[0-9]+$'
         }
     }
 
     Context 'Get-CPSChangeStatus' {
         It 'returns the correct info' {
-            $PD.ChangeStatus = Get-CPSChangeStatus -EnrollmentID $TestEnrollmentID -ChangeID $PD.ChangeID @CommonParams
+            $PD.ChangeStatus = Get-CPSChangeStatus -EnrollmentID $TestEnrollmentID -ChangeID $PD.UpdateEnrollment.changeIds[0] @CommonParams
             $PD.ChangeStatus.statusInfo.status | Should -Not -BeNullOrEmpty
             Write-Host -ForegroundColor Yellow 'Taking a break to wait for LE challenges...'
             Start-Sleep -Seconds 120
@@ -170,7 +192,7 @@ Describe 'Safe Akamai.CPS Tests' {
 
     Context 'Get-CPSLetsEncryptChallenges' {
         It 'returns the correct info' {
-            $PD.LEChallenges = Get-CPSLetsEncryptChallenges -EnrollmentID $TestEnrollmentID -ChangeID $PD.ChangeID @CommonParams
+            $PD.LEChallenges = Get-CPSLetsEncryptChallenges -EnrollmentID $TestEnrollmentID -ChangeID $PD.UpdateEnrollment.changeIds[0] @CommonParams
             $PD.LEChallenges.dv[0].status | Should -Not -BeNullOrEmpty
         }
     }
@@ -187,29 +209,31 @@ Describe 'Safe Akamai.CPS Tests' {
             $Now = Get-Date
             $AWeekFromNow = $Now.AddDays(7)
             $NotBefore = Get-Date $AWeekFromNow -Format 'yyyy-MM-ddT00:00:00Z'
-            $PD.SetSchedule = Set-CPSDeploymentSchedule -EnrollmentID $TestEnrollmentID -ChangeID $PD.ChangeID -NotBefore $NotBefore @CommonParams
+            $PD.SetSchedule = Set-CPSDeploymentSchedule -EnrollmentID $TestEnrollmentID -ChangeID $PD.UpdateEnrollment.changeIds[0] -NotBefore $NotBefore @CommonParams
             $PD.SetSchedule.change | Should -Match $TestEnrollmentID
+            $PD.SetSchedule.changeId | Should -Match '^[0-9]+$'
         }
     }
 
     Context 'Remove-CPSChange' {
         It 'returns the correct info' {
-            $PD.ChangeRemoval = Remove-CPSChange -EnrollmentID $TestEnrollmentID -ChangeID $PD.ChangeID @CommonParams
+            $PD.ChangeRemoval = Remove-CPSChange -EnrollmentID $TestEnrollmentID -ChangeID $PD.UpdateEnrollment.changeIds[0] @CommonParams
             $PD.ChangeRemoval | Should -Match $TestEnrollmentID
+            $PD.ChangeRemoval.changeId | Should -Match '^[0-9]+$'
         }
     }
 
     Context 'Get-CPSCSR' {
         It 'returns the correct data' {
-            $PD.CSR = Get-CPSCSR -EnrollmentID $PD['3PEnrollmentID'] -ChangeID $PD['3PChangeID'] @CommonParams
+            $PD.CSR = Get-CPSCSR -EnrollmentID $PD.TPEnrollment.enrollmentID -ChangeID $PD.TPEnrollment.changeIds[0] @CommonParams
             $PD.CSR.csrs[0].csr | Should -Match "BEGIN CERTIFICATE REQUEST"
         }
     }
 
     Context 'Remove-CPSEnrollment' {
         It 'deletes the enrollment' {
-            $PD.RemoveEnrollment = Remove-CPSEnrollment -EnrollmentID $PD['3PEnrollmentID'] -AllowCancelPendingChanges @CommonParams
-            $PD.RemoveEnrollment.enrollment | Should -Be "/cps/v2/enrollments/$($PD['3PEnrollmentID'])"
+            $PD.RemoveEnrollment = Remove-CPSEnrollment -EnrollmentID $PD.TPEnrollment.enrollmentID -AllowCancelPendingChanges @CommonParams
+            $PD.RemoveEnrollment.enrollmentId | Should -Be $PD.TPEnrollment.enrollmentID
         }
     }
 }
@@ -251,6 +275,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
             }
             $AckPreWarnings = Confirm-CPSPreVerificationWarnings -EnrollmentID 123456 -ChangeID 123456 -Acknowledgement acknowledge
             $AckPreWarnings.change | Should -Not -BeNullOrEmpty
+            $AckPreWarnings.changeId | Should -Match '^[0-9]+$'
         }
     }
 
@@ -262,6 +287,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
             }
             $AckPostWarnings = Confirm-CPSPostVerificationWarnings -EnrollmentID 123456 -ChangeID 123456 -Acknowledgement acknowledge
             $AckPostWarnings.change | Should -Not -BeNullOrEmpty
+            $AckPostWarnings.changeId | Should -Match '^[0-9]+$'
         }
     }
 
@@ -273,6 +299,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
             }
             $UploadCert = Add-CPSThirdPartyCert -EnrollmentID 123456 -ChangeID 123456 -Certificate "--- BEGIN CERTIFICATE ------ END CERTIFICATE ---" -KeyAlgorithm RSA
             $UploadCert.change | Should -Not -BeNullOrEmpty
+            $UploadCert.changeId | Should -Match '^[0-9]+$'
         }
     }
 
@@ -284,6 +311,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
             }
             $CompleteChange = Complete-CPSChange -EnrollmentID 123456 -ChangeID 123456 -Acknowledgement acknowledge
             $CompleteChange.change | Should -Not -BeNullOrEmpty
+            $CompleteChange.changeId | Should -Match '^[0-9]+$'
         }
     }
 
@@ -295,6 +323,7 @@ Describe 'Unsafe Akamai.CPS Tests' {
             }
             $LEComplete = Confirm-CPSLetsEncryptChallengesCompleted -EnrollmentID 123456 -ChangeID $ChangeID -Acknowledgement acknowledge
             $LEComplete.change | Should -Not -BeNullOrEmpty
+            $LEComplete.changeId | Should -Match '^[0-9]+$'
         }
     }
 }
