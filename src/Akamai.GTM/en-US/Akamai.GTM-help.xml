@@ -1750,9 +1750,9 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>GTM combines scores (based on liveness tests) from all web agents to calculate server scores and makes liveness decisions. </maml:para>
-      <maml:para>The cutoff value is computed for each property from the median scores for all the servers in the property. Any property server with a score over the cutoff value is considered dead and it won't be handed out. </maml:para>
-      <maml:para>In the request, you should provide values either for the `-Start` and `-End` time or the `-MostRecent` parameter, and not both. </maml:para>
+      <maml:para>GTM combines scores (based on liveness tests) from all web agents to calculate server scores and makes liveness decisions.</maml:para>
+      <maml:para>The cutoff value is computed for each property from the median scores for all the servers in the property. Any property server with a score over the cutoff value is considered dead and it won't be handed out.</maml:para>
+      <maml:para>In the request, you should provide values either for the `-Start` and `-End` time or the `-MostRecent` parameter, and not both.</maml:para>
       <maml:para>In the response, the `handedOut` parameter in JSON or the `handOut` parameter in CSV indicates whether the server was handed out. The `alive` parameter indicates whether GTM considered the server as alive or not.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2052,7 +2052,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves a collection of reports containing logs of individual liveness tests that have failed. Liveness tests are run periodically by web agents installed in customer data centers. Liveness scores are used by GTM to decide whether a data center is alive or not. </maml:para>
+      <maml:para>Retrieves a collection of reports containing logs of individual liveness tests that have failed. Liveness tests are run periodically by web agents installed in customer data centers. Liveness scores are used by GTM to decide whether a data center is alive or not.</maml:para>
       <maml:para>Liveness tests that fail in succession (tests that run from the same testing agent to the same origin server, which fail with the same error code) are grouped together and represented with a duration. This duration value is in seconds and can sustain for up to 86400 seconds (one day). If it crosses that boundary, GTM logs it as a new failure at the beginning of the next day (00:00 UTC), with the duration reset to that point.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4841,10 +4841,6 @@
         <maml:linkText>Function Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmdomain</maml:uri>
       </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/gtm/reference/post-domain</maml:uri>
-      </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
@@ -5682,7 +5678,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="name">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="name">
           <maml:name>MapName</maml:name>
           <maml:description>
             <maml:para>A unique name for a geographic map.</maml:para>
@@ -5769,7 +5765,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="name">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="name">
         <maml:name>MapName</maml:name>
         <maml:description>
           <maml:para>A unique name for a geographic map.</maml:para>
@@ -6975,7 +6971,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates a data center. </maml:para>
+      <maml:para>Updates a data center.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing datacenter, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
@@ -8014,7 +8010,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits load data in either XML or JSON format. The timestamp string should be in XSD format. The URL specifies the domain, resource, and datacenter ID of the instance to which the load data pertains. </maml:para>
+      <maml:para>Submits load data in either XML or JSON format. The timestamp string should be in XSD format. The URL specifies the domain, resource, and datacenter ID of the instance to which the load data pertains.</maml:para>
       <maml:para>To support legacy clients, you can use a region as an alias for a datacenter ID.</maml:para>
     </maml:description>
     <command:syntax>

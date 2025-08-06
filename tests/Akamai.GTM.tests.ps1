@@ -153,7 +153,7 @@ Describe 'Safe Akamai.GTM Tests' {
     }
 
     AfterAll {
-        Get-GTMProperty -DomainName $TestDomainName @CommonParams | Remove-GTMProperty -DomainName $TestDomainName @CommonParams
+        Get-GTMProperty -DomainName $TestDomainName @CommonParams | Where-Object type -ne 'static' | Remove-GTMProperty -DomainName $TestDomainName @CommonParams
         Get-GTMASMap -DomainName $TestDomainName @CommonParams | Remove-GTMASMap -DomainName $TestDomainName @CommonParams
         Get-GTMCIDRMap -DomainName $TestDomainName @CommonParams | Remove-GTMCIDRMap -DomainName $TestDomainName @CommonParams
         Get-GTMGeoMap -DomainName $TestDomainName @CommonParams | Remove-GTMGeoMap -DomainName $TestDomainName @CommonParams

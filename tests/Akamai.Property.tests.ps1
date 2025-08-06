@@ -24,6 +24,14 @@ Describe 'Safe Akamai.Property Tests' {
         $TestBucketPropertyName = 'akamaipowershell-bucket'
         $TestProductName = 'Fresca'
         $TestRuleFormat = 'v2024-02-12'
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+        $TestPropertyPrefix = "powershell-property-$Timestamp"
+        $TestIncludePrefix = "powershell-include-$Timestamp"
+        $TestNewTraditionalPropertyName = "$TestPropertyPrefix-traditional"
+        $TestNewBucketPropertyName = "$TestPropertyPrefix-bucket"
+        $TestClonePropertyName = "$TestPropertyPrefix-clone"
+        $TestCopyPropertyName = "$TestPropertyPrefix-copy"
+        $TestCopyIncludeName = "$TestIncludePrefix-copy"
         $TestRuleName = "Test Rule"
         $TestRule = @"
 {
@@ -71,6 +79,13 @@ Describe 'Safe Akamai.Property Tests' {
                     Remove-Item -Path $_ -Recurse -Force
                 }
             }
+        }
+
+        Context 'Remove Created Properties' {
+            Get-Property -GroupID $TestGroupID -ContractId $TestContract @CommonParams | Where-Object { $_.propertyName.StartsWith($TestPropertyPrefix ) } | Remove-Property @CommonParams
+        }
+        Context 'Remove Created Includes' {
+            Get-PropertyInclude -GroupID $TestGroupID -ContractId $TestContract @CommonParams | Where-Object { $_.includeName.StartsWith($TestIncludePrefix ) } | Remove-PropertyInclude @CommonParams
         }
     }
 
@@ -216,6 +231,175 @@ Describe 'Safe Akamai.Property Tests' {
     #-------------------------------------------------
     #                Property
     #-------------------------------------------------
+
+    Context 'New-Property' -Tag 'New-Property' {
+        BeforeAll {
+            $PreviousOptionsPath = $env:AkamaiOptionsPath
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
+            # Creat options
+            New-AkamaiOptions
+            # Enable data cache
+            Set-AkamaiOptions -EnableDataCache $true | Out-Null
+            Clear-AkamaiDataCache
+        }
+        Context 'Traditional' {
+            It 'creates a property' {
+                # Create property
+                $TestParams = @{
+                    'Name'       = $TestNewTraditionalPropertyName
+                    'ProductID'  = $TestProductName
+                    'RuleFormat' = $TestRuleFormat
+                    'GroupID'    = $TestGroupID
+                    'ContractId' = $TestContract
+                }
+                $PD.NewPropertyTrad = New-Property @TestParams @CommonParams
+
+                # Result checks
+                $PD.NewPropertyTrad.propertyLink | Should -Not -BeNullOrEmpty
+                $PD.NewPropertyTrad.propertyId | Should -Not -BeNullOrEmpty
+
+                # Retrieve property and check
+                $CreatedProperty = Get-Property -PropertyID $PD.NewPropertyTrad.propertyId @CommonParams
+                $CreatedProperty.propertyName | Should -Be $TestNewTraditionalPropertyName
+                $CreatedProperty.groupId | Should -Be $TestGroupID
+                $CreatedProperty.contractId | Should -Be $TestContract
+
+                # Update rules to confirm clone status later
+                $RulesParams = @{
+                    PropertyID      = $PD.NewPropertyTrad.propertyId
+                    PropertyVersion = 1
+                    GroupID         = $TestGroupID
+                    ContractId      = $TestContract
+                }
+                $Rules = Get-PropertyRules @RulesParams @CommonParams
+                $Rules.rules.behaviors[0].options | Add-Member -NotePropertyName 'hostname' -NotePropertyValue 'origin.example.com' -Force
+                $Rules | Set-PropertyRules @RulesParams @CommonParams
+
+                # Confirm data cache
+                $AkamaiDataCache.Property.Properties.$TestNewTraditionalPropertyName.PropertyID | Should -Be $PD.NewPropertyTrad.propertyId
+                $AkamaiDataCache.Property.Properties.$TestNewTraditionalPropertyName.ContractID | Should -Be $PD.NewPropertyTrad.contractId
+                $AkamaiDataCache.Property.Properties.$TestNewTraditionalPropertyName.GroupID | Should -Be $PD.NewPropertyTrad.groupId
+            }
+        }
+        Context 'Bucket' {
+            It 'creates a property' {
+                # Create property
+                $TestParams = @{
+                    'Name'              = $TestNewBucketPropertyName
+                    'ProductID'         = $TestProductName
+                    'RuleFormat'        = $TestRuleFormat
+                    'UseHostnameBucket' = $true
+                    'GroupID'           = $TestGroupID
+                    'ContractId'        = $TestContract
+                }
+                $PD.NewPropertyBucket = New-Property @TestParams @CommonParams
+                
+                # Result tests
+                $PD.NewPropertyBucket.propertyLink | Should -Not -BeNullOrEmpty
+                $PD.NewPropertyBucket.propertyId | Should -Not -BeNullOrEmpty
+                
+                # Retrieve property and test
+                $CreatedProperty = Get-Property -PropertyID $PD.NewPropertyBucket.propertyId @CommonParams
+                $CreatedProperty.propertyName | Should -Be $TestNewBucketPropertyName
+                $CreatedProperty.groupId | Should -Be $TestGroupID
+                $CreatedProperty.contractId | Should -Be $TestContract
+                $CreatedProperty.propertyType | Should -Be 'HOSTNAME_BUCKET'
+                
+                # Confirm data cache
+                $AkamaiDataCache.Property.Properties.$TestNewBucketPropertyName.PropertyID | Should -Be $PD.NewPropertyBucket.propertyId
+                $AkamaiDataCache.Property.Properties.$TestNewBucketPropertyName.ContractID | Should -Be $PD.NewPropertyBucket.contractId
+                $AkamaiDataCache.Property.Properties.$TestNewBucketPropertyName.GroupID | Should -Be $PD.NewPropertyBucket.groupId
+            }
+        }
+        Context 'Clone' {
+            It 'creates a property' {
+                # Create property
+                $TestParams = @{
+                    'Name'                 = $TestClonePropertyName
+                    'ProductID'            = $TestProductName
+                    'RuleFormat'           = $TestRuleFormat
+                    'UseHostnameBucket'    = $true
+                    'GroupID'              = $TestGroupID
+                    'ContractId'           = $TestContract
+                    'ClonePropertyName'    = $TestNewTraditionalPropertyName
+                    'ClonePropertyVersion' = 1
+                }
+                $PD.NewPropertyClone = New-Property @TestParams @CommonParams
+                
+                # Result tests
+                $PD.NewPropertyClone.propertyLink | Should -Not -BeNullOrEmpty
+                $PD.NewPropertyClone.propertyId | Should -Not -BeNullOrEmpty
+                
+                # Retrieve property and test
+                $CreatedProperty = Get-Property -PropertyID $PD.NewPropertyClone.propertyId @CommonParams
+                $CreatedProperty.propertyName | Should -Be $TestClonePropertyName
+                $CreatedProperty.groupId | Should -Be $TestGroupID
+                $CreatedProperty.contractId | Should -Be $TestContract
+
+                # Pull rules to confirm clone was successful
+                $RulesParams = @{
+                    PropertyID      = $PD.NewPropertyClone.propertyId
+                    PropertyVersion = 1
+                    GroupID         = $TestGroupID
+                    ContractId      = $TestContract
+                }
+                $Rules = Get-PropertyRules @RulesParams @CommonParams
+                $Rules.rules.behaviors[0].options.hostname | Should -Be 'origin.example.com'
+
+                # Confirm data cache
+                $AkamaiDataCache.Property.Properties.$TestClonePropertyName.PropertyID | Should -Be $PD.NewPropertyClone.propertyId
+                $AkamaiDataCache.Property.Properties.$TestClonePropertyName.ContractID | Should -Be $PD.NewPropertyClone.contractId
+                $AkamaiDataCache.Property.Properties.$TestClonePropertyName.GroupID | Should -Be $PD.NewPropertyClone.groupId
+            }
+        }
+        AfterAll {
+            Remove-Item -Path $env:AkamaiOptionsPath -Force
+            $env:AkamaiOptionsPath = $PreviousOptionsPath
+            Clear-AkamaiDataCache
+        }
+    }
+
+    Context 'Copy-Property' -Tag 'Copy-Property' {
+        It 'copies a property' {
+            # Copy property
+            $TestParams = @{
+                'Name'                 = $TestCopyPropertyName
+                'ProductID'            = $TestProductName
+                'RuleFormat'           = $TestRuleFormat
+                'UseHostnameBucket'    = $true
+                'GroupID'              = $TestGroupID
+                'ContractId'           = $TestContract
+                'ClonePropertyId'      = $PD.NewPropertyTrad.propertyId
+                'ClonePropertyVersion' = 1
+            }
+            $PD.CopyProperty = Copy-Property @TestParams @CommonParams
+
+            # Result tests
+            $PD.CopyProperty.propertyLink | Should -Not -BeNullOrEmpty
+            $PD.CopyProperty.propertyId | Should -Not -BeNullOrEmpty
+
+            # Retrieve property and test
+            $CreatedProperty = Get-Property -PropertyID $PD.CopyProperty.propertyId @CommonParams
+            $CreatedProperty.propertyName | Should -Be $TestCopyPropertyName
+            $CreatedProperty.groupId | Should -Be $TestGroupID
+            $CreatedProperty.contractId | Should -Be $TestContract
+
+            # Pull rules to confirm clone was successful
+            $RulesParams = @{
+                PropertyID      = $PD.CopyProperty.propertyId
+                PropertyVersion = 1
+                GroupID         = $TestGroupID
+                ContractId      = $TestContract
+            }
+            $Rules = Get-PropertyRules @RulesParams @CommonParams
+            $Rules.rules.behaviors[0].options.hostname | Should -Be 'origin.example.com'
+
+            # Confirm data cache
+            $AkamaiDataCache.Property.Properties.$TestCopyPropertyName.PropertyID | Should -Be $PD.CopyProperty.propertyId
+            $AkamaiDataCache.Property.Properties.$TestCopyPropertyName.ContractID | Should -Be $PD.CopyProperty.contractId
+            $AkamaiDataCache.Property.Properties.$TestCopyPropertyName.GroupID | Should -Be $PD.CopyProperty.groupId
+        }
+    }
     
     Context 'Get-Property' {
         It 'lists properties' {
@@ -224,9 +408,15 @@ Describe 'Safe Akamai.Property Tests' {
             $PD.Properties[0].propertyId | Should -Not -BeNullOrEmpty
         }
         It 'lists properties (pipeline)' {
-            $PD.Properties = Get-Group @CommonParams | Select -First 5 | Get-Property @CommonParams
+            $PD.Properties = Get-Group @CommonParams | Select-Object -First 5 | Get-Property @CommonParams
             $PD.Properties.count | Should -BeGreaterThan 0
             $PD.Properties[0].propertyId | Should -Not -BeNullOrEmpty
+        }
+        It 'handles an empty property response' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
+                [PSCustomObject] @{ "properties" = [PSCustomObject] @{ "items" = @() } }
+            }
+            Get-Property -GroupID 123456 -ContractId 1-2AB34C
         }
     }
 
@@ -243,7 +433,7 @@ Describe 'Safe Akamai.Property Tests' {
     Context 'Expand-PropertyDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "./options.json"
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
             # Creat options
             New-AkamaiOptions
             # Enable data cache
@@ -276,6 +466,31 @@ Describe 'Safe Akamai.Property Tests' {
         It 'finds properties by ID' {
             $PD.PropertyByID = Get-Property -PropertyID $PD.FoundProperty.propertyId @CommonParams
             $PD.PropertyByID | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Remove-Property' {
+        Context 'single by param' {
+            It 'removes a property' {
+                $TestParams = @{
+                    PropertyID = $PD.NewPropertyTrad.propertyId
+                }
+                $RemoveProperty = Remove-Property @TestParams @CommonParams
+                $RemoveProperty.message | Should -Be "Deletion Successful."
+            }
+        }
+        Context 'single by pipeline' {
+            It 'removes a property' {
+                $RemoveProperty = $PD.NewPropertyBucket | Remove-Property  @CommonParams
+                $RemoveProperty.message | Should -Be "Deletion Successful."
+            }
+        }
+        Context 'multi by pipeline' {
+            It 'removes a property' {
+                $PropertiesToRemove = Get-Property -GroupID $TestGroupID -ContractId $TestContract @CommonParams | Where-Object { $_.propertyName.StartsWith($TestPropertyPrefix ) }
+                $PropertiesToRemove.Count | Should -Be 2
+                $PropertiesToRemove | Remove-Property @CommonParams
+            }
         }
     }
 
@@ -665,7 +880,15 @@ Describe 'Safe Akamai.Property Tests' {
 
     Context 'New-PropertyInclude' {
         It 'creates an include' {
-            $PD.NewInclude = New-PropertyInclude -Name $TestIncludeName -ProductID $TestProductName -GroupID $TestGroupID -RuleFormat $TestRuleFormat -IncludeType MICROSERVICES -ContractId $TestContract @CommonParams
+            $TestParams = @{
+                'Name'        = $TestIncludeName
+                'ProductID'   = $TestProductName
+                'RuleFormat'  = $TestRuleFormat
+                'IncludeType' = 'MICROSERVICES'
+                'ContractId'  = $TestContract
+                'GroupID'     = $TestGroupID
+            }
+            $PD.NewInclude = New-PropertyInclude @TestParams @CommonParams
             $PD.NewInclude.includeLink | Should -Not -BeNullOrEmpty
             $PD.NewInclude.includeId | Should -Not -BeNullOrEmpty
 
@@ -674,10 +897,69 @@ Describe 'Safe Akamai.Property Tests' {
         }
     }
 
+    Context 'Copy-PropertyInclude' -Tag 'Copy-PropertyInclude' {
+        It 'copies an include' {
+            # Update first include's rules so we can check the copy status
+            $SourceRulesParams = @{
+                IncludeID      = $PD.NewInclude.includeId
+                IncludeVersion = 1
+                GroupID        = $TestGroupID
+                ContractId     = $TestContract
+            }
+            $SourceRules = Get-PropertyIncludeRules @SourceRulesParams @CommonParams
+            $SourceRules.rules.behaviors += @{
+                name    = "denyAccess"
+                options = @{
+                    reason  = "pester test"
+                    enabled = $true
+                }
+            }
+            $SourceRules | Set-PropertyIncludeRules @SourceRulesParams @CommonParams
+
+            # Copy include
+            $TestParams = @{
+                'Name'                = $TestCopyIncludeName
+                'ProductID'           = $TestProductName
+                'RuleFormat'          = $TestRuleFormat
+                'IncludeType'         = 'MICROSERVICES'
+                'GroupID'             = $TestGroupID
+                'ContractId'          = $TestContract
+                'CloneIncludeName'    = $TestIncludeName
+                'CloneIncludeVersion' = 'latest'
+            }
+            $PD.CopyInclude = Copy-PropertyInclude @TestParams @CommonParams
+
+            # Result tests
+            $PD.CopyInclude.includeLink | Should -Not -BeNullOrEmpty
+            $PD.CopyInclude.includeId | Should -Not -BeNullOrEmpty
+
+            # Retrieve property and test
+            $PD.CopiedInclude = Get-PropertyInclude -IncludeID $PD.CopyInclude.includeId @CommonParams
+            $PD.CopiedInclude.includeName | Should -Be $TestCopyIncludeName
+            $PD.CopiedInclude.groupId | Should -Be $TestGroupID
+            $PD.CopiedInclude.contractId | Should -Be $TestContract
+
+            # Pull rules to confirm clone was successful
+            $RulesParams = @{
+                IncludeID      = $PD.CopyInclude.includeId
+                IncludeVersion = 1
+                GroupID        = $TestGroupID
+                ContractId     = $TestContract
+            }
+            $Rules = Get-PropertyIncludeRules @RulesParams @CommonParams
+            $Rules.rules.behaviors[0].options.reason | Should -Be 'pester test'
+
+            # Confirm data cache
+            $AkamaiDataCache.Property.Includes.$TestCopyIncludeName.IncludeID | Should -Be $PD.CopyInclude.includeId
+            $AkamaiDataCache.Property.Includes.$TestCopyIncludeName.ContractID | Should -Be $PD.CopyInclude.contractId
+            $AkamaiDataCache.Property.Includes.$TestCopyIncludeName.GroupID | Should -Be $PD.CopyInclude.groupId
+        }
+    }
+
     Context 'Expand-PropertyIncludeDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "./options.json"
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
             # Creat options
             New-AkamaiOptions
             # Enable data cache
@@ -817,9 +1099,17 @@ Describe 'Safe Akamai.Property Tests' {
     }
 
     Context 'Remove-PropertyInclude' {
-        It 'completes successfully' {
-            $PD.RemoveInclude = Remove-PropertyInclude -IncludeID $PD.NewInclude.includeId @CommonParams
-            $PD.RemoveInclude.message | Should -Be "Deletion Successful."
+        Context 'by param' {
+            It 'completes successfully' {
+                $PD.RemoveIncludeParam = Remove-PropertyInclude -IncludeID $PD.NewInclude.includeId @CommonParams
+                $PD.RemoveIncludeParam.message | Should -Be "Deletion Successful."
+            }
+        }
+        Context 'by pipeline' {
+            It 'completes successfully' {
+                $PD.RemoveIncludePipeline = $PD.CopiedInclude | Remove-PropertyInclude @CommonParams
+                $PD.RemoveIncludePipeline.message | Should -Be "Deletion Successful."
+            }
         }
     }
 
@@ -901,28 +1191,6 @@ Describe 'Unsafe Akamai.Property Tests' {
 "@
         $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Property"
         $PD = @{}
-    }
-    Context 'New-Property' {
-        It 'creates a property' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-Property.json"
-                return $Response | ConvertFrom-Json
-            }
-            $NewProperty = New-Property -Name myproperty -ProductID $TestProductName -RuleFormat $TestRuleFormat -GroupID $TestGroupID -ContractId $TestContract
-            $NewProperty.propertyLink | Should -Not -BeNullOrEmpty
-            $NewProperty.propertyId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Remove-Property' {
-        It 'removes a property' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Remove-Property.json"
-                return $Response | ConvertFrom-Json
-            }
-            $RemoveProperty = Remove-Property -PropertyID 000000
-            $RemoveProperty.message | Should -Be "Deletion Successful."
-        }
     }
 
     Context 'New-EdgeHostname' {

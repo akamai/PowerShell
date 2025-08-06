@@ -514,10 +514,6 @@
         <maml:linkText>Function Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/get-report</maml:uri>
       </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/reporting/reference/get-report-version-data</maml:uri>
-      </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
@@ -779,10 +775,6 @@
         <maml:linkText>Function Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/get-reporttype</maml:uri>
       </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/reporting/reference/get-report-version</maml:uri>
-      </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
@@ -981,10 +973,6 @@
         <maml:linkText>Function Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/get-reporttypeversions</maml:uri>
       </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/reporting/reference/get-report-versions</maml:uri>
-      </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
@@ -1027,6 +1015,30 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DataWrapLabel</maml:name>
+          <maml:description>
+            <maml:para>Label used as title for grouped record.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DataWrapNumberOfItems</maml:name>
+          <maml:description>
+            <maml:para>For reports that allow non-top values to cluster, this specifies the number of top values to report on separately.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -1062,18 +1074,6 @@
             <command:parameterValue required="false" command:variableLength="false">WEEK</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">MONTH</command:parameterValue>
           </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Limit</maml:name>
-          <maml:description>
-            <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
-          </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -1122,9 +1122,9 @@
           <maml:description>
             <maml:para>The version of the report type.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1140,6 +1140,30 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DataWrapLabel</maml:name>
+          <maml:description>
+            <maml:para>Label used as title for grouped record.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>DataWrapNumberOfItems</maml:name>
+          <maml:description>
+            <maml:para>For reports that allow non-top values to cluster, this specifies the number of top values to report on separately.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1204,9 +1228,9 @@
           <maml:description>
             <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1276,9 +1300,9 @@
           <maml:description>
             <maml:para>The version of the report type.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1306,6 +1330,30 @@
         <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
           <maml:name>Object</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DataWrapLabel</maml:name>
+        <maml:description>
+          <maml:para>Label used as title for grouped record.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>DataWrapNumberOfItems</maml:name>
+        <maml:description>
+          <maml:para>For reports that allow non-top values to cluster, this specifies the number of top values to report on separately.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1363,9 +1411,9 @@
         <maml:description>
           <maml:para>Limits the number of entries returned. Not supported on all report types.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1435,9 +1483,9 @@
         <maml:description>
           <maml:para>The version of the report type.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1477,10 +1525,6 @@
       <maml:navigationLink>
         <maml:linkText>Function Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/new-report</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/reporting/reference/post-report-version-data</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>

@@ -130,7 +130,7 @@ Describe 'Safe Akamai.METS Tests' {
     Context 'Expand-METSCASetDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "./options.json"
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
             # Create options
             New-AkamaiOptions
             # Enable data cache

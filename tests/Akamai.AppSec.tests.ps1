@@ -255,23 +255,25 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     Context 'Get-AppSecPolicy' {
-        It 'returns a list' {
+        It 'returns a list with no policy name or ID' {
             $PD.Policies = Get-AppSecPolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
             $PD.Policies[0].policyId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-AppSecPolicy by ID and version' {
         It 'by ID returns the correct policy' {
             $PD.PolicyByID = Get-AppSecPolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId  @CommonParams
             $PD.PolicyByID.policyId | Should -Be $PD.NewPolicy.policyId
         }
-    }
-
-    Context 'Get-AppSecPolicy by name and latest' {
         It 'by name returns the correct policy' {
             $PD.PolicyByName = Get-AppSecPolicy -ConfigName $TestConfigName -VersionNumber latest -PolicyID $PD.NewPolicy.policyId  @CommonParams
             $PD.PolicyByName.policyId | Should -Be $PD.NewPolicy.policyId
+        }
+        It 'fails when name does not exist' {
+            $TestParams = @{
+                ConfigName    = $TestConfigName
+                VersionNumber = 'latest'
+                PolicyName    = "not-a-real-policy"
+            }
+            { Get-AppSecPolicy @TestParams @CommonParams } | Should -Throw
         }
     }
 
@@ -335,6 +337,11 @@ Describe 'Safe Akamai.AppSec Tests' {
         It 'does not include names when set to do so' {
             # Pull again to check OmitChildObjects param
             $MatchTargetNoNames = Get-AppSecMatchTarget -OmitChildObjectName @TestParams @CommonParams
+            $MatchTargetNoNames.apis[0].name | Should -BeNullOrEmpty
+        }
+        It 'does not include names when set to do so with alias' {
+            # Pull again to check aliased IncludeChildObjectName param
+            $MatchTargetNoNames = Get-AppSecMatchTarget -IncludeChildObjectName @TestParams @CommonParams
             $MatchTargetNoNames.apis[0].name | Should -BeNullOrEmpty
         }
     }
@@ -1433,7 +1440,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     Context 'Expand-AppSecConfigDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "./options.json"
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
             # Creat options
             New-AkamaiOptions
             # Enable data cache

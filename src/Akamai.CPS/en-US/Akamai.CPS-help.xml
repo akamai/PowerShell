@@ -1201,6 +1201,234 @@
   </command:command>
   <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
     <command:details>
+      <command:name>Format-CPSResponse</command:name>
+      <command:verb>Format</command:verb>
+      <command:noun>CPSResponse</command:noun>
+      <maml:description>
+        <maml:para>Format CPS response objects</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Adds ID references to various objects for ease of use</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Format-CPSResponse</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>ResponseBody</maml:name>
+          <maml:description>
+            <maml:para>{{ Fill ResponseBody Description }}</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+          <dev:type>
+            <maml:name>PSObject</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+        <maml:name>ResponseBody</maml:name>
+        <maml:description>
+          <maml:para>{{ Fill ResponseBody Description }}</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">PSObject</command:parameterValue>
+        <dev:type>
+          <maml:name>PSObject</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-CPSActiveCertificate</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>CPSActiveCertificate</command:noun>
+      <maml:description>
+        <maml:para>List active certificates</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Lists enrollments with active certificates. Note that the rate limit for this operation is 10 requests per minute per account.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-CPSActiveCertificate</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ContractID</maml:name>
+          <maml:description>
+            <maml:para>Your contract's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>ContractID</maml:name>
+        <maml:description>
+          <maml:para>Your contract's ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cps/reference/get-active-certificates</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
       <command:name>Get-CPSCertificateHistory</command:name>
       <command:verb>Get</command:verb>
       <command:noun>CPSCertificateHistory</command:noun>
@@ -3624,7 +3852,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new certificate enrollment. </maml:para>
+      <maml:para>Creates a new certificate enrollment.</maml:para>
       <maml:para>&gt; Note: The request body for this function can be quite complex, therefore, it's recommended, where possible, that you retrieve an existing enrollment, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4056,8 +4284,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Removes an enrollment from the CPS. The response type will vary depending on the state of the enrollment. </maml:para>
-      <maml:para>Deleting an enrollment in the future or when the enrollment has a certificate deployed to the network may return HTTP Status 202 (Accepted). </maml:para>
+      <maml:para>Removes an enrollment from the CPS. The response type will vary depending on the state of the enrollment.</maml:para>
+      <maml:para>Deleting an enrollment in the future or when the enrollment has a certificate deployed to the network may return HTTP Status 202 (Accepted).</maml:para>
       <maml:para>Deleting an enrollment that hasn't deployed a certificate to the network yet will complete immediately and return HTTP Status 200 (OK).</maml:para>
     </maml:description>
     <command:syntax>
@@ -4513,7 +4741,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates an enrollment with changes. </maml:para>
+      <maml:para>Updates an enrollment with changes.</maml:para>
       <maml:para>&gt; Note: The request body for this function can be quite complex, therefore, it's recommended that you retrieve the existing enrollment with the `Get-CPSEnrollment` operation, make your changes locally, and then pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4650,7 +4878,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>RenewalDateCheckOverride</maml:name>
           <maml:description>
-            <maml:para>If present, this starts a change to renew certificates in time before they expire. This automatic change is started when a certificate's expiration is within a renewal window, and the system will protect against other changes started during this renewal window. </maml:para>
+            <maml:para>If present, this starts a change to renew certificates in time before they expire. This automatic change is started when a certificate's expiration is within a renewal window, and the system will protect against other changes started during this renewal window.</maml:para>
             <maml:para>Setting `renewal-date-check-override=true` will allow creating a change during the renewal window, potentially running the risk of ending up with an expired certificate on the network.</maml:para>
           </maml:description>
           <dev:type>
@@ -4785,7 +5013,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>RenewalDateCheckOverride</maml:name>
         <maml:description>
-          <maml:para>If present, this starts a change to renew certificates in time before they expire. This automatic change is started when a certificate's expiration is within a renewal window, and the system will protect against other changes started during this renewal window. </maml:para>
+          <maml:para>If present, this starts a change to renew certificates in time before they expire. This automatic change is started when a certificate's expiration is within a renewal window, and the system will protect against other changes started during this renewal window.</maml:para>
           <maml:para>Setting `renewal-date-check-override=true` will allow creating a change during the renewal window, potentially running the risk of ending up with an expired certificate on the network.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>

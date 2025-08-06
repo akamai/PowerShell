@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Appends one or more hostnames to a configuration's list of selected hostnames. The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`. </maml:para>
+      <maml:para>Appends one or more hostnames to a configuration's list of selected hostnames. The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -524,8 +524,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Appends one or more hostnames to a configuration's selected hostnames. </maml:para>
-      <maml:para>The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`. </maml:para>
+      <maml:para>Appends one or more hostnames to a configuration's selected hostnames.</maml:para>
+      <maml:para>The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2126,7 +2126,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the hostnames for a given contract and group. </maml:para>
+      <maml:para>Gets the hostnames for a given contract and group.</maml:para>
       <maml:para>Use this operation for a new configuration, and use `Get-AppSecSelectableHostnames` to see a list of hostnames you can add to an existing configuration. This operation shows you every acceptable hostname you can use, whereas the other hostname operation omits any hostnames already included in your configuration.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2843,8 +2843,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all versions of a configuration or returns a specific configuration version by its version number. </maml:para>
-      <maml:para>To get a more extensive object with detailed information about a version's security policies, rate policies, rules, and other additional settings, run the `Export-AppSecConfiguration` operation. </maml:para>
+      <maml:para>Gets all versions of a configuration or returns a specific configuration version by its version number.</maml:para>
+      <maml:para>To get a more extensive object with detailed information about a version's security policies, rate policies, rules, and other additional settings, run the `Export-AppSecConfiguration` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4393,7 +4393,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the evaluation hostnames for a configuration version. Run hostnames in evaluation mode to see how your configuration settings protect traffic for that hostname before adding it directly to a live configuration. </maml:para>
+      <maml:para>Gets the evaluation hostnames for a configuration version. Run hostnames in evaluation mode to see how your configuration settings protect traffic for that hostname before adding it directly to a live configuration.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4649,8 +4649,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the evasive path match setting for a configuration. By default, it's disabled (set to `false`). This setting applies at the configuration level and to all policies within a configuration. </maml:para>
-      <maml:para>To view this setting for a specific policy, run the `Get-AppSecPolicyEvasivePathMatch` operation. </maml:para>
+      <maml:para>Gets the evasive path match setting for a configuration. By default, it's disabled (set to `false`). This setting applies at the configuration level and to all policies within a configuration.</maml:para>
+      <maml:para>To view this setting for a specific policy, run the `Get-AppSecPolicyEvasivePathMatch` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5803,9 +5803,9 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets HTTP header logging controls for a configuration. </maml:para>
-      <maml:para>HTTP header logging is enabled by default, and in most cases, it's recommended you keep the default configuration. You can filter requests by header type, including or excluding requests with a specific header, or by cookie. </maml:para>
-      <maml:para>This operation applies at the configuration level, and therefore applies to all policies within a configuration. If you want to view these settings for a specific policy, run the `Get-AppSecPolicyLogging` operation. </maml:para>
+      <maml:para>Gets HTTP header logging controls for a configuration.</maml:para>
+      <maml:para>HTTP header logging is enabled by default, and in most cases, it's recommended you keep the default configuration. You can filter requests by header type, including or excluding requests with a specific header, or by cookie.</maml:para>
+      <maml:para>This operation applies at the configuration level, and therefore applies to all policies within a configuration. If you want to view these settings for a specific policy, run the `Get-AppSecPolicyLogging` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6660,7 +6660,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="IncludeChildObjectName">
           <maml:name>OmitChildObjectName</maml:name>
           <maml:description>
             <maml:para>If present, the function omits names of child objects such as client lists from the response object. IDs are always returned.</maml:para>
@@ -6746,7 +6746,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="IncludeChildObjectName">
           <maml:name>OmitChildObjectName</maml:name>
           <maml:description>
             <maml:para>If present, the function omits names of child objects such as client lists from the response object. IDs are always returned.</maml:para>
@@ -6832,7 +6832,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="IncludeChildObjectName">
         <maml:name>OmitChildObjectName</maml:name>
         <maml:description>
           <maml:para>If present, the function omits names of child objects such as client lists from the response object. IDs are always returned.</maml:para>
@@ -7187,7 +7187,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all security policies in your configuration or returns a specific security policy by its name or ID. </maml:para>
+      <maml:para>Gets all security policies in your configuration or returns a specific security policy by its name or ID.</maml:para>
       <maml:para>When making a request, you can specify a configuration in the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7835,7 +7835,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets information on whether adaptive intelligence is enabled. Adaptive intelligence allows our network to better tune rules for better accuracy. </maml:para>
+      <maml:para>Gets information on whether adaptive intelligence is enabled. Adaptive intelligence allows our network to better tune rules for better accuracy.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -9195,7 +9195,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all attack group actions for a policy or returns a specific attack group action by its ID. </maml:para>
+      <maml:para>Gets all attack group actions for a policy or returns a specific attack group action by its ID.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -10222,7 +10222,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets available tuning recommendations for an attack group. Our system can identify patterns of false positives and suggest exceptions for you to include in your attack group. </maml:para>
+      <maml:para>Gets available tuning recommendations for an attack group. Our system can identify patterns of false positives and suggest exceptions for you to include in your attack group.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -10736,8 +10736,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a security policy's settings for attack payload logging. Attack payload logging is enabled by default and, in most cases, it's recommended you keep the default configuration. </maml:para>
-      <maml:para>This operation applies at the security policy level and overrides the attack payload logging settings at the configuration level on a per-policy basis. </maml:para>
+      <maml:para>Gets a security policy's settings for attack payload logging. Attack payload logging is enabled by default and, in most cases, it's recommended you keep the default configuration.</maml:para>
+      <maml:para>This operation applies at the security policy level and overrides the attack payload logging settings at the configuration level on a per-policy basis.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID`. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -11644,8 +11644,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a list of all configured custom rules for the specified configuration. </maml:para>
-      <maml:para>It includes information for rules that are associated with this policy, as well as the latest versions of the rules in the configuration that aren't associated with the current policy. Unassociated rules have an action of `none`. </maml:para>
+      <maml:para>Gets a list of all configured custom rules for the specified configuration.</maml:para>
+      <maml:para>It includes information for rules that are associated with this policy, as well as the latest versions of the rules in the configuration that aren't associated with the current policy. Unassociated rules have an action of `none`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -12099,7 +12099,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all attack group actions for a policy in evaluation mode or returns an individual attack group action by its `AttackGroupID`. </maml:para>
+      <maml:para>Gets all attack group actions for a policy in evaluation mode or returns an individual attack group action by its `AttackGroupID`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID`. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -12613,7 +12613,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets an attack group's exceptions on a given policy in evaluation mode. </maml:para>
+      <maml:para>Gets an attack group's exceptions on a given policy in evaluation mode.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -13127,7 +13127,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the evaluation hostnames for a security policy. Run hostnames in evaluation mode to see how your configuration settings protect traffic for that hostname before adding it directly to a live configuration. </maml:para>
+      <maml:para>Gets the evaluation hostnames for a security policy. Run hostnames in evaluation mode to see how your configuration settings protect traffic for that hostname before adding it directly to a live configuration.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID`. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -13581,8 +13581,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the penalty box settings for a security policy in evaluation mode. </maml:para>
-      <maml:para>When the penalty box is enabled for a policy, clients that trigger a Web Application Firewall deny action are placed in the penalty box. There, the action you select for the penalty box, either `alert` or `deny`, continues to apply to any requests from those clients for the next 10 minutes. </maml:para>
+      <maml:para>Gets the penalty box settings for a security policy in evaluation mode.</maml:para>
+      <maml:para>When the penalty box is enabled for a policy, clients that trigger a Web Application Firewall deny action are placed in the penalty box. There, the action you select for the penalty box, either `alert` or `deny`, continues to apply to any requests from those clients for the next 10 minutes.</maml:para>
       <maml:para>In the request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -14036,8 +14036,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the rules for a policy in evaluation mode or returns a specific rule by its ID. This applies to both ASE auto and ASE manual upgrade modes. </maml:para>
-      <maml:para>Note that you'll probably need additional permissions to add or update rule actions in ASE auto mode. </maml:para>
+      <maml:para>Gets the rules for a policy in evaluation mode or returns a specific rule by its ID. This applies to both ASE auto and ASE manual upgrade modes.</maml:para>
+      <maml:para>Note that you'll probably need additional permissions to add or update rule actions in ASE auto mode.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -15064,7 +15064,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the evasive path match setting for a security policy. It's disabled (set to `false`) by default. This setting applies at the security policy level and overrides the setting at the configuration level on a per-policy basis. </maml:para>
+      <maml:para>Gets the evasive path match setting for a security policy. It's disabled (set to `false`) by default. This setting applies at the security policy level and overrides the setting at the configuration level on a per-policy basis.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -15518,7 +15518,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets which network lists are used in the IP/Geo Firewall settings. In Control Center, this method is called `mode`. In this API the method is called `blocked`. The response shows blocked and allowed IPs depending on which network lists you include and which version of the mode you choose. </maml:para>
+      <maml:para>Gets which network lists are used in the IP/Geo Firewall settings. In Control Center, this method is called `mode`. In this API the method is called `blocked`. The response shows blocked and allowed IPs depending on which network lists you include and which version of the mode you choose.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -15972,8 +15972,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a security policy's settings for HTTP header logging. HTTP header logging is enabled by default, and in most cases, you should keep the default configuration. </maml:para>
-      <maml:para>You can filter requests by header type, including or excluding requests with a specific header, or by cookie. This operation applies at the security policy level and overrides the HTTP header log settings at the configuration level on a per-policy basis. </maml:para>
+      <maml:para>Gets a security policy's settings for HTTP header logging. HTTP header logging is enabled by default, and in most cases, you should keep the default configuration.</maml:para>
+      <maml:para>You can filter requests by header type, including or excluding requests with a specific header, or by cookie. This operation applies at the security policy level and overrides the HTTP header log settings at the configuration level on a per-policy basis.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -16880,7 +16880,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets details regarding the mode to which your rules' updates are currently set in a given policy. When using Web Application Firewall in your security policy, the mode determines how the rules get updated: </maml:para>
+      <maml:para>Gets details regarding the mode to which your rules' updates are currently set in a given policy. When using Web Application Firewall in your security policy, the mode determines how the rules get updated:</maml:para>
       <maml:para>- `KRS` for manual updates.</maml:para>
       <maml:para>- `AAG` for automatic updates if using a legacy configuration.</maml:para>
       <maml:para>- `ASE_AUTO` or `ASE_MANUAL` for newer configurations.</maml:para>
@@ -17791,8 +17791,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the `Pragma` header's excluded conditions. By default, the `Pragma` header debugging information is stripped from an operation's response except in cases where you set `excludeCondition`. </maml:para>
-      <maml:para>This operation applies at the security policy level. To modify `Pragma` header settings at the security configuration level, run the `Set-AppSecPragmaSettings` operation. </maml:para>
+      <maml:para>Gets the `Pragma` header's excluded conditions. By default, the `Pragma` header debugging information is stripped from an operation's response except in cases where you set `excludeCondition`.</maml:para>
+      <maml:para>This operation applies at the security policy level. To modify `Pragma` header settings at the security configuration level, run the `Set-AppSecPragmaSettings` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -18246,7 +18246,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets information on whether specific protection methods (such as API constraints, application layer controls, malware controls, and more) are enabled or disabled in a security policy. </maml:para>
+      <maml:para>Gets information on whether specific protection methods (such as API constraints, application layer controls, malware controls, and more) are enabled or disabled in a security policy.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -18700,7 +18700,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a list of all rate policies currently in use with the actions each policy takes when conditions are met. </maml:para>
+      <maml:para>Gets a list of all rate policies currently in use with the actions each policy takes when conditions are met.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -19607,7 +19607,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all reputation profile actions for a security policy or returns a specific reputation profile action by its ID. </maml:para>
+      <maml:para>Gets all reputation profile actions for a security policy or returns a specific reputation profile action by its ID.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -20121,7 +20121,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the request body inspection limit settings for a security policy. To run this operation, contact your account team. </maml:para>
+      <maml:para>Gets the request body inspection limit settings for a security policy. To run this operation, contact your account team.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -20575,7 +20575,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets WAF rule actions for a security policy or returns a specific WAF rule action by its ID. </maml:para>
+      <maml:para>Gets WAF rule actions for a security policy or returns a specific WAF rule action by its ID.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -22115,7 +22115,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the hostnames that the configuration version selects as candidates of protected hostnames, which you can use in match targets. </maml:para>
+      <maml:para>Gets the hostnames that the configuration version selects as candidates of protected hostnames, which you can use in match targets.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its `ConfigName` or `ConfigID`. The `VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `PolicyName` or `PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -23475,8 +23475,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets details of the available updates to your rule sets. </maml:para>
-      <maml:para>It's recommended that you run this operation before you upgrade to verify the WAF rule changes in the rule sets. To test how the updates affect your site, you can run the updated rules in evaluation mode. </maml:para>
+      <maml:para>Gets details of the available updates to your rule sets.</maml:para>
+      <maml:para>It's recommended that you run this operation before you upgrade to verify the WAF rule changes in the rule sets. To test how the updates affect your site, you can run the updated rules in evaluation mode.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -23930,7 +23930,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a list of all URL protection policies currently in use, along with the actions each policy takes when conditions are met. </maml:para>
+      <maml:para>Gets a list of all URL protection policies currently in use, along with the actions each policy takes when conditions are met.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID`. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -24384,8 +24384,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the `Pragma` header excluded conditions. By default, the `Pragma` header is stripped from an operation's response except in cases where you set `excludeCondition`. </maml:para>
-      <maml:para>This operation applies at the security configuration level. To see settings at the security policy level, run the `Get-AppSecPolicyPragmaSettings` operation. </maml:para>
+      <maml:para>Gets the `Pragma` header excluded conditions. By default, the `Pragma` header is stripped from an operation's response except in cases where you set `excludeCondition`.</maml:para>
+      <maml:para>This operation applies at the security configuration level. To see settings at the security policy level, run the `Get-AppSecPolicyPragmaSettings` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -25733,7 +25733,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the hostnames that a given configuration version can protect. Hostnames can show as error hosts when they aren't currently available. For example, when a contract expires. </maml:para>
+      <maml:para>Gets the hostnames that a given configuration version can protect. Hostnames can show as error hosts when they aren't currently available. For example, when a contract expires.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -25989,7 +25989,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the hostnames that the configuration version selects as candidates of protected hostnames, which you can use in match targets. </maml:para>
+      <maml:para>Gets the hostnames that the configuration version selects as candidates of protected hostnames, which you can use in match targets.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -27469,8 +27469,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Reason</maml:name>
           <maml:description>
-            <maml:para>The reason you've decided to hide the API from the API list. </maml:para>
-            <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time. </maml:para>
+            <maml:para>The reason you've decided to hide the API from the API list.</maml:para>
+            <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time.</maml:para>
             <maml:para>- Use `FALSE_POSITIVE` for APIs you feel are incorrectly included in the data.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -27574,8 +27574,8 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Reason</maml:name>
         <maml:description>
-          <maml:para>The reason you've decided to hide the API from the API list. </maml:para>
-          <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time. </maml:para>
+          <maml:para>The reason you've decided to hide the API from the API list.</maml:para>
+          <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time.</maml:para>
           <maml:para>- Use `FALSE_POSITIVE` for APIs you feel are incorrectly included in the data.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -27649,9 +27649,9 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Activates one or more configurations globally. </maml:para>
-      <maml:para>Note that you need to explicitly list any invalid hosts in the `-AcknowledgedInvalidHosts` parameter to successfully activate a configuration that includes invalid hostnames. </maml:para>
-      <maml:para>You can choose to provide activation settings individually, but, by doing so, the command can only activate a single configuration. To activate multiple configurations at once, you need to use the `-Body` parameter and provide the request body as a string or `PSCustomObject`. </maml:para>
+      <maml:para>Activates one or more configurations globally.</maml:para>
+      <maml:para>Note that you need to explicitly list any invalid hosts in the `-AcknowledgedInvalidHosts` parameter to successfully activate a configuration that includes invalid hostnames.</maml:para>
+      <maml:para>You can choose to provide activation settings individually, but, by doing so, the command can only activate a single configuration. To activate multiple configurations at once, you need to use the `-Body` parameter and provide the request body as a string or `PSCustomObject`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -27684,7 +27684,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AcknowledgedInvalidHosts</maml:name>
           <maml:description>
-            <maml:para>The list of invalid hostnames in the security configuration to activate. </maml:para>
+            <maml:para>The list of invalid hostnames in the security configuration to activate.</maml:para>
             <maml:para>In some cases, you may want to activate a security configuration with hostnames that WAF can't protect (for example, hostnames not managed as Akamai properties, or managed under a different contract than the configuration)</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -27788,7 +27788,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AcknowledgedInvalidHosts</maml:name>
           <maml:description>
-            <maml:para>The list of invalid hostnames in the security configuration to activate. </maml:para>
+            <maml:para>The list of invalid hostnames in the security configuration to activate.</maml:para>
             <maml:para>In some cases, you may want to activate a security configuration with hostnames that WAF can't protect (for example, hostnames not managed as Akamai properties, or managed under a different contract than the configuration)</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -27955,7 +27955,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AcknowledgedInvalidHosts</maml:name>
         <maml:description>
-          <maml:para>The list of invalid hostnames in the security configuration to activate. </maml:para>
+          <maml:para>The list of invalid hostnames in the security configuration to activate.</maml:para>
           <maml:para>In some cases, you may want to activate a security configuration with hostnames that WAF can't protect (for example, hostnames not managed as Akamai properties, or managed under a different contract than the configuration)</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -32307,7 +32307,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Moves hostnames you're evaluating to active protection in a specified configuration version. When you move a hostname from the evaluation hostnames list, it's added to your security policy as a protected hostname. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter. </maml:para>
+      <maml:para>Moves hostnames you're evaluating to active protection in a specified configuration version. When you move a hostname from the evaluation hostnames list, it's added to your security policy as a protected hostname. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -32807,7 +32807,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Moves hostnames you're evaluating to active protection in a specified security policy. When you move a hostname from the evaluation hostnames list, it's added to your security policy as a protected hostname. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter. </maml:para>
+      <maml:para>Moves hostnames you're evaluating to active protection in a specified security policy. When you move a hostname from the evaluation hostnames list, it's added to your security policy as a protected hostname. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -33980,7 +33980,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes the specified configuration version. You can't delete a version that is actively in use. </maml:para>
+      <maml:para>Deletes the specified configuration version. You can't delete a version that is actively in use.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -34236,7 +34236,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a custom deny action from a specific configuration version. You can't delete a custom deny action that is actively in use. To delete the custom deny action, first, activate an older configuration version or create a new version without the policy in place. </maml:para>
+      <maml:para>Deletes a custom deny action from a specific configuration version. You can't delete a custom deny action that is actively in use. To delete the custom deny action, first, activate an older configuration version or create a new version without the policy in place.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -34783,7 +34783,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a specific malware policy that's not actively in use. To delete an active malware policy, first activate an older configuration version or create a new version without the policy in place. </maml:para>
+      <maml:para>Deletes a specific malware policy that's not actively in use. To delete an active malware policy, first activate an older configuration version or create a new version without the policy in place.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -35366,7 +35366,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes the specified security policy from a configuration version. You can't delete a security policy that is actively in use. Before you run this operation, you need to create a new version of your security configuration. </maml:para>
+      <maml:para>Deletes the specified security policy from a configuration version. You can't delete a security policy that is actively in use. Before you run this operation, you need to create a new version of your security configuration.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -35884,7 +35884,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Removes one or more hostnames from a configuration's selected hostnames. The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`. </maml:para>
+      <maml:para>Removes one or more hostnames from a configuration's selected hostnames. The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -36398,7 +36398,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes the specified rate policy from a configuration version. You can't delete a rate policy that is actively in use. To delete the rate policy, first activate an older configuration version or create a new version without the policy in place. </maml:para>
+      <maml:para>Deletes the specified rate policy from a configuration version. You can't delete a rate policy that is actively in use. To delete the rate policy, first activate an older configuration version or create a new version without the policy in place.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -36690,7 +36690,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a reputation profile from a configuration version. You can't delete a reputation profile that is actively in use. To delete the reputation profile, first activate an older configuration version or create a new version without that policy in place. </maml:para>
+      <maml:para>Deletes a reputation profile from a configuration version. You can't delete a reputation profile that is actively in use. To delete the reputation profile, first activate an older configuration version or create a new version without that policy in place.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -37273,7 +37273,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Removes one or more subscribers from receiving updates for a given feature. The `-Subscribers` parameter is a comma-separated string of email addresses. The available subscription feature values are: </maml:para>
+      <maml:para>Removes one or more subscribers from receiving updates for a given feature. The `-Subscribers` parameter is a comma-separated string of email addresses. The available subscription feature values are:</maml:para>
       <maml:para>- `AAG_TUNING_REC` for AAG and ASE rule sets.</maml:para>
       <maml:para>- `WAF_RULE_UPDATE` for ASE rule sets.</maml:para>
       <maml:para></maml:para>
@@ -37568,7 +37568,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes the specified URL protection policy. You can't delete a URL protection policy that's actively in use. To delete an active URL protection policy, either activate an older configuration version or create a new version without the policy in place. </maml:para>
+      <maml:para>Deletes the specified URL protection policy. You can't delete a URL protection policy that's actively in use. To delete an active URL protection policy, either activate an older configuration version or create a new version without the policy in place.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -38159,7 +38159,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables, disables, or updates the attack payload log settings for a configuration. When set to `NONE`, the request body and response body show as `redacted` in the log. To override these settings for a specific policy, run the `Set-AppSecPolicyAttackPayload` operation. </maml:para>
+      <maml:para>Enables, disables, or updates the attack payload log settings for a configuration. When set to `NONE`, the request body and response body show as `redacted` in the log. To override these settings for a specific policy, run the `Set-AppSecPolicyAttackPayload` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -38451,8 +38451,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates which network lists to use in the bypass network lists settings for a specified configuration version. </maml:para>
-      <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates which network lists to use in the bypass network lists settings for a specified configuration version.</maml:para>
+      <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: This function takes only a list of network list IDs as its input, whereas the `Get-AppSecBypassNetworkGets` returns multiple attributes. Make sure to limit the function's input to only the IDs, either as an array or a comma-separated string.</maml:para>
     </maml:description>
     <command:syntax>
@@ -38744,8 +38744,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates details for a specific custom deny action or a specified configuration version. </maml:para>
-      <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates details for a specific custom deny action or a specified configuration version.</maml:para>
+      <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing custom deny action with the `Get-AppSecCustomDenyAction` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -39073,7 +39073,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates an existing custom rule or a configuration. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates an existing custom rule or a configuration. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing custom rule with the `Get-AppSecCustomRule` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -39373,7 +39373,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the list of hostnames you want to evaluate for a configuration version. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter. </maml:para>
+      <maml:para>Updates the list of hostnames you want to evaluate for a configuration version. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -39873,7 +39873,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables, disables, or updates evasive path match settings for a configuration. This operation applies at the configuration level and to all policies within a configuration. To override these settings for a specific policy, run the `Set-AppSecPolicyEvasivePathMatch` operation. </maml:para>
+      <maml:para>Enables, disables, or updates evasive path match settings for a configuration. This operation applies at the configuration level and to all policies within a configuration. To override these settings for a specific policy, run the `Set-AppSecPolicyEvasivePathMatch` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -40165,8 +40165,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables, disables, or updates HTTP header logging settings for a configuration. This operation applies at the configuration level and to all policies within a configuration. To override these settings for a specific policy, run the `Set-AppSecPolicyLogging` operation. </maml:para>
-      <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Enables, disables, or updates HTTP header logging settings for a configuration. This operation applies at the configuration level and to all policies within a configuration. To override these settings for a specific policy, run the `Set-AppSecPolicyLogging` operation.</maml:para>
+      <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing settings with the `Get-AppSecLogging` operation, edit them locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -40458,7 +40458,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates details for a malware policy. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates details for a malware policy. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing settings with the `Get-AppSecMalwarePolicy` operation, edit them locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -40786,7 +40786,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates details about the specified match target in a configuration version. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates details about the specified match target in a configuration version. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing settings with the `Get-AppSecMatchTarget` operation, edit them locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -41114,7 +41114,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the sequence of match targets in a configuration version. The `website` and `api` match targets' sequence require updates from separate requests by passing the `type` attribute in the JSON request. </maml:para>
+      <maml:para>Updates the sequence of match targets in a configuration version. The `website` and `api` match targets' sequence require updates from separate requests by passing the `type` attribute in the JSON request.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -41406,7 +41406,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables or disables the PII learning setting for your API definition. To enable it, submit your request with the `-EnablePIILearning` switch included. To disable it, run the same command without this parameter. This operation applies at the security configuration level. </maml:para>
+      <maml:para>Enables or disables the PII learning setting for your API definition. To enable it, submit your request with the `-EnablePIILearning` switch included. To disable it, run the same command without this parameter. This operation applies at the security configuration level.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -41696,8 +41696,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the name of a specific security policy in a configuration version. With this operation, you can currently edit only a security policy's name. </maml:para>
-      <maml:para>For any changes to settings within a security policy, run the modify operation for that specific setting. For example, to update your IP/Geo settings, run the `Set-AppSecPolicyIPGeoFirewall` operation. </maml:para>
+      <maml:para>Updates the name of a specific security policy in a configuration version. With this operation, you can currently edit only a security policy's name.</maml:para>
+      <maml:para>For any changes to settings within a security policy, run the modify operation for that specific setting. For example, to update your IP/Geo settings, run the `Set-AppSecPolicyIPGeoFirewall` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -42299,7 +42299,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -42403,7 +42403,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -42507,7 +42507,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -42587,7 +42587,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -42655,7 +42655,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -42801,8 +42801,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates what action to take when the API request constraint triggers. This operation modifies an individual API constraint action. </maml:para>
-      <maml:para>To use this operation, run the `Get-AppSecPolicyAPIRequestConstraints` operation and select an API from the response list. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action. </maml:para>
+      <maml:para>Updates what action to take when the API request constraint triggers. This operation modifies an individual API constraint action.</maml:para>
+      <maml:para>To use this operation, run the `Get-AppSecPolicyAPIRequestConstraints` operation and select an API from the response list. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -42847,7 +42847,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -42964,7 +42964,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43081,7 +43081,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43174,7 +43174,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43255,7 +43255,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -43401,7 +43401,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates what action to take when an attack group's rule triggers. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action. </maml:para>
+      <maml:para>Updates what action to take when an attack group's rule triggers. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -43434,7 +43434,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43551,7 +43551,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43668,7 +43668,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43761,7 +43761,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -43842,7 +43842,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -44573,7 +44573,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the attack payload logging settings for a specific policy. This operation applies at the security policy level and overrides the attack payload logging settings at the configuration level on a per-policy basis. When set to `NONE`, the request body and response body appear as `redacted` in the log. </maml:para>
+      <maml:para>Updates the attack payload logging settings for a specific policy. This operation applies at the security policy level and overrides the attack payload logging settings at the configuration level on a per-policy basis. When set to `NONE`, the request body and response body appear as `redacted` in the log.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -45087,7 +45087,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates which network lists to use in the bypass network lists settings. When set to `NONE`, the request body and response body appear as `redacted` in the log. </maml:para>
+      <maml:para>Updates which network lists to use in the bypass network lists settings. When set to `NONE`, the request body and response body appear as `redacted` in the log.</maml:para>
       <maml:para>In the request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
       <maml:para>&gt; Note: This function takes only a list of network list IDs as its input, whereas the `Get-AppSecBypassNetworkGets` operation returns multiple attributes. Make sure to limit the function's input to only the IDs, either as an array or a comma-separated string.</maml:para>
     </maml:description>
@@ -45634,7 +45634,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -45751,7 +45751,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -45868,7 +45868,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -45961,7 +45961,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -46042,7 +46042,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -46200,7 +46200,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates what action to take when an evaluation attack group's rule triggers. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action. </maml:para>
+      <maml:para>Updates what action to take when an evaluation attack group's rule triggers. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its `ConfigName` or `ConfigID`. The `VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `PolicyName` or `PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -46233,7 +46233,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -46350,7 +46350,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -46467,7 +46467,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -46560,7 +46560,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -46641,7 +46641,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -47372,7 +47372,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the list of hostnames you want to evaluate for a security policy. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter. </maml:para>
+      <maml:para>Updates the list of hostnames you want to evaluate for a security policy. You can provide `-Hostnames` and `-Mode` as individual parameters or all at once with the `-Body` parameter.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -48326,7 +48326,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Evaluation mode runs concurrently with your existing Web Application Firewall rule settings and records how the rules would respond if they were applied to live traffic. The default action for evaluation rules is `alert`. Use the `START` value in the `Eval` request parameter to begin evaluation mode. </maml:para>
+      <maml:para>Evaluation mode runs concurrently with your existing Web Application Firewall rule settings and records how the rules would respond if they were applied to live traffic. The default action for evaluation rules is `alert`. Use the `START` value in the `Eval` request parameter to begin evaluation mode.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -48383,7 +48383,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Eval</maml:name>
           <maml:description>
-            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade. </maml:para>
+            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade.</maml:para>
             <maml:para>If you set `eval` to `start`, `restart`, or `update`, the response object will have an `eval` value of `enabled`. The value is `disabled` for requests of `stop` or `complete`. For more information, see `Set-AppSecPolicyEvaluationMode`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -48506,7 +48506,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Eval</maml:name>
           <maml:description>
-            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade. </maml:para>
+            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade.</maml:para>
             <maml:para>If you set `eval` to `start`, `restart`, or `update`, the response object will have an `eval` value of `enabled`. The value is `disabled` for requests of `stop` or `complete`. For more information, see `Set-AppSecPolicyEvaluationMode`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -48617,7 +48617,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Eval</maml:name>
           <maml:description>
-            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade. </maml:para>
+            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade.</maml:para>
             <maml:para>If you set `eval` to `start`, `restart`, or `update`, the response object will have an `eval` value of `enabled`. The value is `disabled` for requests of `stop` or `complete`. For more information, see `Set-AppSecPolicyEvaluationMode`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -48716,7 +48716,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Eval</maml:name>
           <maml:description>
-            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade. </maml:para>
+            <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade.</maml:para>
             <maml:para>If you set `eval` to `start`, `restart`, or `update`, the response object will have an `eval` value of `enabled`. The value is `disabled` for requests of `stop` or `complete`. For more information, see `Set-AppSecPolicyEvaluationMode`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -48827,7 +48827,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Eval</maml:name>
         <maml:description>
-          <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade. </maml:para>
+          <maml:para>Set `eval` to `start`, `stop`, `restart`, `complete`, or `update` to manage the evaluation of new rules you want to test before you upgrade.</maml:para>
           <maml:para>If you set `eval` to `start`, `restart`, or `update`, the response object will have an `eval` value of `enabled`. The value is `disabled` for requests of `stop` or `complete`. For more information, see `Set-AppSecPolicyEvaluationMode`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -48949,7 +48949,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the penalty box setting for a security policy in evaluation mode. If this setting is enabled, you can `deny` requests coming from a client in the penalty box or trigger an `alert`. </maml:para>
+      <maml:para>Updates the penalty box setting for a security policy in evaluation mode. If this setting is enabled, you can `deny` requests coming from a client in the penalty box or trigger an `alert`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -48994,7 +48994,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -49106,7 +49106,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -49182,7 +49182,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -49294,7 +49294,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -49718,7 +49718,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -49888,7 +49888,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the action for a specific rule you want to evaluate. Possible actions are: `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action. </maml:para>
+      <maml:para>Updates the action for a specific rule you want to evaluate. Possible actions are: `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -49921,7 +49921,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -50038,7 +50038,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -50155,7 +50155,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -50248,7 +50248,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -50329,7 +50329,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -50487,7 +50487,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates an evaluation rule's conditions and exceptions. When the conditions are met, the rule's actions are ignored and not applied to that specific traffic. The rule action you update with this operation is for the rule you are evaluating and not for the rule currently in use on your site or app. </maml:para>
+      <maml:para>Updates an evaluation rule's conditions and exceptions. When the conditions are met, the rule's actions are ignored and not applied to that specific traffic. The rule action you update with this operation is for the rule you are evaluating and not for the rule currently in use on your site or app.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -51061,7 +51061,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables, disables, or updates evasive path match setting for a security policy. This operation applies at the security policy level and overrides the setting at the configuration level on a per-policy basis. </maml:para>
+      <maml:para>Enables, disables, or updates evasive path match setting for a security policy. This operation applies at the security policy level and overrides the setting at the configuration level on a per-policy basis.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -52088,7 +52088,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables, disables, or updates HTTP header logging settings for a specific policy. This operation applies at the security policy level and overrides the HTTP header log settings at the configuration level on a per-policy basis. </maml:para>
+      <maml:para>Enables, disables, or updates HTTP header logging settings for a specific policy. This operation applies at the security policy level and overrides the HTTP header log settings at the configuration level on a per-policy basis.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -52602,7 +52602,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the actions in a malware policy using the `-Action` and `-UnscannedAction` parameters. Both can have a value of `alert`, `deny` or `none`. </maml:para>
+      <maml:para>Updates the actions in a malware policy using the `-Action` and `-UnscannedAction` parameters. Both can have a value of `alert`, `deny` or `none`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -52635,7 +52635,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -52713,7 +52713,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UnscannedAction</maml:name>
           <maml:description>
-            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`. </maml:para>
+            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. When the `action` is `none`, it behaves as if you aren't using malware protections.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -52770,7 +52770,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -52836,7 +52836,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UnscannedAction</maml:name>
           <maml:description>
-            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`. </maml:para>
+            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. When the `action` is `none`, it behaves as if you aren't using malware protections.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -52905,7 +52905,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -52959,7 +52959,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UnscannedAction</maml:name>
           <maml:description>
-            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`. </maml:para>
+            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. When the `action` is `none`, it behaves as if you aren't using malware protections.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -53016,7 +53016,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -53082,7 +53082,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>UnscannedAction</maml:name>
           <maml:description>
-            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`. </maml:para>
+            <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. When the `action` is `none`, it behaves as if you aren't using malware protections.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -53115,7 +53115,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -53212,7 +53212,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>UnscannedAction</maml:name>
         <maml:description>
-          <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`. </maml:para>
+          <maml:para>Specifies the action to take when the file is outside the 5MB scan limit, either `alert`, `deny`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. When the `action` is `none`, it behaves as if you aren't using malware protections.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -53286,7 +53286,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Changes the rule upgrade mode. The mode you set determines how your rule sets are updated. If your configuration is still using the Kona Rule Set, use `KRS` mode to update the rule sets manually or `AAG` to have them updated automatically. Otherwise, use `ASE_MANUAL` mode to update the rule sets manually or `ASE_AUTO` to have them updated automatically. </maml:para>
+      <maml:para>Changes the rule upgrade mode. The mode you set determines how your rule sets are updated. If your configuration is still using the Kona Rule Set, use `KRS` mode to update the rule sets manually or `AAG` to have them updated automatically. Otherwise, use `ASE_MANUAL` mode to update the rule sets manually or `ASE_AUTO` to have them updated automatically.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -53824,7 +53824,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Modifies the penalty box settings for a security policy. When the penalty box is enabled for a policy, clients that trigger a WAF deny action are placed in the penalty box. There, the action you select for the penalty box (either `alert` or `deny`) continues to apply to any requests from those clients for the next 10 minutes. </maml:para>
+      <maml:para>Modifies the penalty box settings for a security policy. When the penalty box is enabled for a policy, clients that trigger a WAF deny action are placed in the penalty box. There, the action you select for the penalty box (either `alert` or `deny`) continues to apply to any requests from those clients for the next 10 minutes.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -53869,7 +53869,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -53981,7 +53981,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -54057,7 +54057,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -54169,7 +54169,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -54593,7 +54593,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -54763,7 +54763,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the `Pragma` header excluded conditions. By default, the `Pragma` header debugging information is stripped from an operation's response except in cases where you set `excludeCondition`. To remove the existing settings, submit your request with an empty payload `{}`. To modify `Pragma` header settings at the security configuration level, run the `Set-AppSecPragmaSettings` operation. </maml:para>
+      <maml:para>Updates the `Pragma` header excluded conditions. By default, the `Pragma` header debugging information is stripped from an operation's response except in cases where you set `excludeCondition`. To remove the existing settings, submit your request with an empty payload `{}`. To modify `Pragma` header settings at the security configuration level, run the `Set-AppSecPragmaSettings` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -55277,7 +55277,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the security policy protections. This operation applies a set of protections that you can enable individually. </maml:para>
+      <maml:para>Updates the security policy protections. This operation applies a set of protections that you can enable individually.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -55847,8 +55847,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv4Action</maml:name>
           <maml:description>
-            <maml:para>The IPv4 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. </maml:para>
+            <maml:para>The IPv4 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy.</maml:para>
             <maml:para></maml:para>
@@ -55869,8 +55869,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv6Action</maml:name>
           <maml:description>
-            <maml:para>The IPv6 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. </maml:para>
+            <maml:para>The IPv6 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run `Set-AppSecCustomDenyAction` to manage your custom deny actions.</maml:para>
             <maml:para></maml:para>
@@ -55990,8 +55990,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv4Action</maml:name>
           <maml:description>
-            <maml:para>The IPv4 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. </maml:para>
+            <maml:para>The IPv4 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy.</maml:para>
             <maml:para></maml:para>
@@ -56012,8 +56012,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv6Action</maml:name>
           <maml:description>
-            <maml:para>The IPv6 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. </maml:para>
+            <maml:para>The IPv6 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run `Set-AppSecCustomDenyAction` to manage your custom deny actions.</maml:para>
             <maml:para></maml:para>
@@ -56121,8 +56121,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv4Action</maml:name>
           <maml:description>
-            <maml:para>The IPv4 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. </maml:para>
+            <maml:para>The IPv4 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy.</maml:para>
             <maml:para></maml:para>
@@ -56143,8 +56143,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv6Action</maml:name>
           <maml:description>
-            <maml:para>The IPv6 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. </maml:para>
+            <maml:para>The IPv6 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run `Set-AppSecCustomDenyAction` to manage your custom deny actions.</maml:para>
             <maml:para></maml:para>
@@ -56240,8 +56240,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv4Action</maml:name>
           <maml:description>
-            <maml:para>The IPv4 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. </maml:para>
+            <maml:para>The IPv4 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy.</maml:para>
             <maml:para></maml:para>
@@ -56262,8 +56262,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPv6Action</maml:name>
           <maml:description>
-            <maml:para>The IPv6 action to assign to this rate policy. </maml:para>
-            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. </maml:para>
+            <maml:para>The IPv6 action to assign to this rate policy.</maml:para>
+            <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`.</maml:para>
             <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
             <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run `Set-AppSecCustomDenyAction` to manage your custom deny actions.</maml:para>
             <maml:para></maml:para>
@@ -56371,8 +56371,8 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>IPv4Action</maml:name>
         <maml:description>
-          <maml:para>The IPv4 action to assign to this rate policy. </maml:para>
-          <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action. </maml:para>
+          <maml:para>The IPv4 action to assign to this rate policy.</maml:para>
+          <maml:para>- For `BOTMAN` policies, choose `monitor`, `delay`, `slow`, `deny`,` tarpit`, `none`, or a custom action.</maml:para>
           <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
           <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy.</maml:para>
           <maml:para></maml:para>
@@ -56388,8 +56388,8 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>IPv6Action</maml:name>
         <maml:description>
-          <maml:para>The IPv6 action to assign to this rate policy. </maml:para>
-          <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`. </maml:para>
+          <maml:para>The IPv6 action to assign to this rate policy.</maml:para>
+          <maml:para>- For `BOTMAN` policies, specify the same action you chose for `ipv4Action`.</maml:para>
           <maml:para>- For `WAF` policies, choose `alert`, `deny`, or `none`.</maml:para>
           <maml:para>- Use `deny_custom_{custom_deny_id}` to apply a custom action to your WAF rate policy. Run `Set-AppSecCustomDenyAction` to manage your custom deny actions.</maml:para>
           <maml:para></maml:para>
@@ -56514,8 +56514,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Toggles the `forwardToHTTPHeader` and `forwardSharedIPToHTTPHeaderAndSIEM` options. </maml:para>
-      <maml:para>- The `forwardToHTTPHeader` option adds the client reputation details to requests forwarded to the origin in an HTTP header. </maml:para>
+      <maml:para>Toggles the `forwardToHTTPHeader` and `forwardSharedIPToHTTPHeaderAndSIEM` options.</maml:para>
+      <maml:para>- The `forwardToHTTPHeader` option adds the client reputation details to requests forwarded to the origin in an HTTP header.</maml:para>
       <maml:para>- The `forwardSharedIPToHTTPHeaderAndSIEM` option adds a value indicating that the shared IPs are included in the HTTP header and SIEM integration when used.</maml:para>
       <maml:para></maml:para>
       <maml:para>In the request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
@@ -57031,7 +57031,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates what action to take when the reputation profile's rule triggers. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action. </maml:para>
+      <maml:para>Updates what action to take when the reputation profile's rule triggers. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -57064,7 +57064,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -57181,7 +57181,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -57298,7 +57298,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -57391,7 +57391,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -57472,7 +57472,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -57630,7 +57630,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates inspection settings for a security policy. It's recommended that you use the default value for the request body inspection size limit. In exceptional cases, you can change the default to a set limit: `8`, `16`, or `32` KB. </maml:para>
+      <maml:para>Updates inspection settings for a security policy. It's recommended that you use the default value for the request body inspection size limit. In exceptional cases, you can change the default to a set limit: `8`, `16`, or `32` KB.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -58224,7 +58224,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates what action a rule takes when it's triggered. This applies to both ASE auto and ASE manual upgrade modes. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action. </maml:para>
+      <maml:para>Updates what action a rule takes when it's triggered. This applies to both ASE auto and ASE manual upgrade modes. Use `alert` to record the trigger of the event, `deny` to block the request, or `none` to take no action.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -58257,7 +58257,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -58374,7 +58374,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -58491,7 +58491,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -58584,7 +58584,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -58665,7 +58665,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -58823,7 +58823,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates a rule's conditions and exceptions. When the conditions are met, the rule's actions are ignored and not applied to that specific traffic. </maml:para>
+      <maml:para>Updates a rule's conditions and exceptions. When the conditions are met, the rule's actions are ignored and not applied to that specific traffic.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -59397,7 +59397,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the entire list of selected hostnames for a configuration. The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`. </maml:para>
+      <maml:para>Updates the entire list of selected hostnames for a configuration. The request body needs to be in the format returned by the `Get-AppSecSelectedHostnames` operation, for example, `@{hostnameList = @(@{hostname = 'www.example.com'})}`.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -60424,7 +60424,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Accepts, declines, or resets the recommended exception. Accepting a tuning recommendation creates or updates the exception for the attack group. Use `RESET` to restore a declined recommendation to a neutral state so that you can accept it or decline it again later. </maml:para>
+      <maml:para>Accepts, declines, or resets the recommended exception. Accepting a tuning recommendation creates or updates the exception for the attack group. Use `RESET` to restore a declined recommendation to a neutral state so that you can accept it or decline it again later.</maml:para>
       <maml:para>When making a request, you can specify a configuration with the `-ConfigName` or `-ConfigID` parameter. The `-VersionNumber` parameter is an integer or the word `latest`. To specify a policy, use the `-PolicyName` or `-PolicyID` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -60457,7 +60457,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -60574,7 +60574,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -60691,7 +60691,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -60784,7 +60784,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -60865,7 +60865,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -61055,7 +61055,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -61167,7 +61167,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -61279,7 +61279,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -61367,7 +61367,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Action</maml:name>
           <maml:description>
-            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+            <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
             <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -61443,7 +61443,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Action</maml:name>
         <maml:description>
-          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`. </maml:para>
+          <maml:para>Specifies the action that the rule should trigger. Either `alert`, `deny`, `deny_custom_{custom_deny_id}`, or `none`.</maml:para>
           <maml:para>Use `deny_custom_{custom_deny_id}` to apply a custom action instead of Akamai's default. If the action is `none`, it isn't associated with the policy.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -61601,7 +61601,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the `Pragma` header excluded conditions. By default, the `Pragma` header debugging information is stripped from an operation's response except in cases where you set `excludeCondition`. To remove the existing settings, submit your request with an empty payload `{}`. To modify `Pragma` header settings at the security policy level, run the `Set-AppSecPolicyPragmaSettings` operation. </maml:para>
+      <maml:para>Updates the `Pragma` header excluded conditions. By default, the `Pragma` header debugging information is stripped from an operation's response except in cases where you set `excludeCondition`. To remove the existing settings, submit your request with an empty payload `{}`. To modify `Pragma` header settings at the security policy level, run the `Set-AppSecPolicyPragmaSettings` operation.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -61893,8 +61893,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Enables or disables the prefetch requests. Enabling this protection causes your application firewall rules to inspect the internal requests (those between your origin and Akamai's servers) for the file types you specify. </maml:para>
-      <maml:para>You can also apply rate controls to prefetch requests. This operation applies at the configuration level. </maml:para>
+      <maml:para>Enables or disables the prefetch requests. Enabling this protection causes your application firewall rules to inspect the internal requests (those between your origin and Akamai's servers) for the file types you specify.</maml:para>
+      <maml:para>You can also apply rate controls to prefetch requests. This operation applies at the configuration level.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -62186,7 +62186,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates details for a specific rate policy. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates details for a specific rate policy. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing object with the `Get-AppSecRatePolicy` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -62522,7 +62522,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates details for a specific reputation profile. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`. </maml:para>
+      <maml:para>Updates details for a specific reputation profile. When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
       <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you retrieve the existing object with the `Get-AppSecReputationProfile` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
@@ -62858,7 +62858,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Modifies the request body inspection limit settings for a configuration. It's recommended that you use the default value for the request body inspection size limit. In exceptional cases, you can change the default value to a set limit: `8`, `16`, or `32` KB. </maml:para>
+      <maml:para>Modifies the request body inspection limit settings for a configuration. It's recommended that you use the default value for the request body inspection size limit. In exceptional cases, you can change the default value to a set limit: `8`, `16`, or `32` KB.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -64403,8 +64403,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>Reason</maml:name>
           <maml:description>
-            <maml:para>The reason you've decided to hide the API from the API list. </maml:para>
-            <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time. </maml:para>
+            <maml:para>The reason you've decided to hide the API from the API list.</maml:para>
+            <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time.</maml:para>
             <maml:para>- Use `FALSE_POSITIVE` for APIs you feel are incorrectly included in the data.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -64508,8 +64508,8 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>Reason</maml:name>
         <maml:description>
-          <maml:para>The reason you've decided to hide the API from the API list. </maml:para>
-          <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time. </maml:para>
+          <maml:para>The reason you've decided to hide the API from the API list.</maml:para>
+          <maml:para>- Use `NOT_ELIGIBLE` if you want to hide it for now and decide what to do with the API at a later time.</maml:para>
           <maml:para>- Use `FALSE_POSITIVE` for APIs you feel are incorrectly included in the data.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -64583,8 +64583,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Upgrades to the most recent version of the KRS rule set. </maml:para>
-      <maml:para>Akamai periodically updates these rules to keep protections current. However, the rules you use in your security policies don't automatically upgrade to the latest version when `mode` is set to `KRS`. These rules update automatically when `mode` is set to `AAG`. </maml:para>
+      <maml:para>Upgrades to the most recent version of the KRS rule set.</maml:para>
+      <maml:para>Akamai periodically updates these rules to keep protections current. However, the rules you use in your security policies don't automatically upgrade to the latest version when `mode` is set to `KRS`. These rules update automatically when `mode` is set to `AAG`.</maml:para>
       <maml:para>When making a request, you can specify a configuration by its name or ID. The `-VersionNumber` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>

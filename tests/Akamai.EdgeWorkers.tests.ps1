@@ -221,6 +221,46 @@ Describe 'Safe Akamai.Edgeworkers Tests' {
         }
     }
 
+    Context 'Logging' {
+        Context 'New-EdgeWorkerLoggingOverride' {
+            It 'adds a logging override in the right format' {
+                $LogLevel = 'DEBUG'
+                $TestParams = @{
+                    'EdgeWorkerID' = $PD.NewEdgeWorker.edgeWorkerId
+                    'Network'      = 'STAGING'
+                    'Level'        = 'DEBUG'
+                }
+                $PD.NewLoggingOverride = New-EdgeWorkerLoggingOverride @TestParams @CommonParams
+                $PD.NewLoggingOverride.edgeWorkerId | Should -Be $PD.NewEdgeWorker.edgeWorkerId
+                $PD.NewLoggingOverride.network | Should -Be 'STAGING'
+                $PD.NewLoggingOverride.level | Should -Be 'DEBUG'
+            }
+        }
+
+        Context 'Get-EdgeWorkerLoggingOverride' {
+            It 'lists logging overrides' {
+                $TestParams = @{
+                    'EdgeWorkerID' = $PD.NewEdgeWorker.edgeWorkerId
+                }
+                $PD.LoggingOverrides = Get-EdgeWorkerLoggingOverride @TestParams @CommonParams
+                $PD.LoggingOverrides[0].edgeWorkerId | Should -Be $PD.NewEdgeWorker.edgeWorkerId
+                $PD.LoggingOverrides[0].network | Should -Not -BeNullOrEmpty
+                $PD.LoggingOverrides[0].level | Should -Not -BeNullOrEmpty
+            }
+
+            It 'retrieves a single logging overrides' {
+                $TestParams = @{
+                    'EdgeWorkerID' = $PD.NewEdgeWorker.edgeWorkerId
+                    'LoggingID'    = $PD.LoggingOverrides[0].loggingId
+                }
+                $PD.LoggingOverride = Get-EdgeWorkerLoggingOverride @TestParams @CommonParams
+                $PD.LoggingOverride.edgeWorkerId | Should -Be $PD.NewEdgeWorker.edgeWorkerId
+                $PD.LoggingOverride.network | Should -Be $PD.LoggingOverrides[0].network
+                $PD.LoggingOverride.level | Should -Be $PD.LoggingOverrides[0].level
+            }
+        }
+    }
+
     Context 'Remove-EdgeWorker' {
         It 'completes successfully' {
             Remove-EdgeWorker -EdgeWorkerID $PD.NewEdgeWorker.edgeWorkerId @CommonParams 

@@ -106,7 +106,7 @@ value,description,tags,expirationDate
     Context 'Expand-ClientListDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "./options.json"
+            $env:AkamaiOptionsPath = "TestDrive:/options.json"
             # Creat options
             New-AkamaiOptions
             # Enable data cache

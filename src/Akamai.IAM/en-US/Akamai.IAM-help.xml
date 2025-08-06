@@ -10,13 +10,13 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Blocks a user from accessing one or more properties by specifying their IDs. </maml:para>
+      <maml:para>Blocks a user from accessing one or more properties by specifying their IDs.</maml:para>
       <maml:para>&gt; Note: You can retrieve the property IDs in the IAM API by running the `Get-IAMProperty` operation. The property IDs are equivalent to the asset IDs from the Property API.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Block-IAMPropertyUsers</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
           <maml:name>AssetID</maml:name>
           <maml:description>
             <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -91,7 +91,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
         <maml:name>AssetID</maml:name>
         <maml:description>
           <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -191,7 +191,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deactivates all credentials for a given client ID or deactivates an individual credential by its credential ID. </maml:para>
+      <maml:para>Deactivates all credentials for a given client ID or deactivates an individual credential by its credential ID.</maml:para>
       <maml:para>&gt; Note: If you don't specify a value for the `-ClientID` parameter, it takes the value `self` and operates on the API client you're using to perform this operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -924,7 +924,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the supported contact types. You should use the values from this operation to add or update your user's contact type. </maml:para>
+      <maml:para>Gets the supported contact types. You should use the values from this operation to add or update your user's contact type.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserContactTypes` operation before modifying your contact type.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1189,7 +1189,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets supported languages. You should use the values from this operation to set your user's preferred language. </maml:para>
+      <maml:para>Gets supported languages. You should use the values from this operation to set your user's preferred language.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserLanguages` operation before setting your preferred language.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1322,7 +1322,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the password policy for an account. You should use the values from this operation to set your user's password policy. </maml:para>
+      <maml:para>Retrieves the password policy for an account. You should use the values from this operation to set your user's password policy.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserPasswordPolicy` operation before setting your password policy.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1455,7 +1455,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the products your users can subscribe to and receive notifications for on an account. You should use the values from this operation to set your user's product notifications. </maml:para>
+      <maml:para>Gets the products your users can subscribe to and receive notifications for on an account. You should use the values from this operation to set your user's product notifications.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserProducts` operation before setting your product notifications.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1588,7 +1588,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the supported U.S. states or Canadian provinces. You should use the values from this operation to add or update your user's state or province. If your user's state or province is unknown, use 'TBD'. </maml:para>
+      <maml:para>Gets the supported U.S. states or Canadian provinces. You should use the values from this operation to add or update your user's state or province. If your user's state or province is unknown, use 'TBD'.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserStates` operation before modifying your state or province.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1749,7 +1749,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the supported session timeout policies. The `name` for each timeout period is in minutes, and the time `value` is in seconds. You should use the values from this operation to set your user's session timeout policy. </maml:para>
+      <maml:para>Gets the supported session timeout policies. The `name` for each timeout period is in minutes, and the time `value` is in seconds. You should use the values from this operation to set your user's session timeout policy.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserTimeoutPolicy` operation before setting your session timeout policy.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1882,7 +1882,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets supported time zones. You should use the values from this operation to set your user's time zone. </maml:para>
+      <maml:para>Gets supported time zones. You should use the values from this operation to set your user's time zone.</maml:para>
       <maml:para>If you're not an admin, you should run the `Get-IAMUserTimeZones` operation before setting your time zone.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2674,7 +2674,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all API credentials or returns a specific API credential by its ID. </maml:para>
+      <maml:para>Gets all API credentials or returns a specific API credential by its ID.</maml:para>
       <maml:para>&gt; Note: If you don't specify a value for the `-ClientID` parameter, it takes the value of `self` and operates on the API client you're using to perform this operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3321,7 +3321,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all groups or returns a specific group by its ID that you, as an admin, can manage for the current account and contract type or other managed accounts. </maml:para>
+      <maml:para>Gets all groups or returns a specific group by its ID that you, as an admin, can manage for the current account and contract type or other managed accounts.</maml:para>
       <maml:para>&gt; Note: It's different to how other APIs return the group data, that is, the IAM API nests groups inside their parents. If you want a flattened list of groups without nesting, use the `-Flatten` parameter.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3524,8 +3524,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets users who are affected when you move a group. Users may lose or gain access to resources depending on the roles and permissions inherited from the new parent group. Users with a `-UserType` of `lostAccess` lose their access to the source group. If the `-UserType` is `gainAccess`, they gain access to the resources in the source group. </maml:para>
-      <maml:para>Users who have inherited access to a group lose access to that group if it moves out of its hierarchy that gives them those access rights. </maml:para>
+      <maml:para>Gets users who are affected when you move a group. Users may lose or gain access to resources depending on the roles and permissions inherited from the new parent group. Users with a `-UserType` of `lostAccess` lose their access to the source group. If the `-UserType` is `gainAccess`, they gain access to the resources in the source group.</maml:para>
+      <maml:para>Users who have inherited access to a group lose access to that group if it moves out of its hierarchy that gives them those access rights.</maml:para>
       <maml:para>If the group moves to another parent group to which they have access, they still have access to the group you move. Likewise, when you move a group to a new location, users who inherit their access rights from the new parent group gain access to the resources in the group you move.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3866,7 +3866,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all properties or returns a specific property by its ID. </maml:para>
+      <maml:para>Gets all properties or returns a specific property by its ID.</maml:para>
       <maml:para>&gt; Note: The property ID in this API isn't the same as the property ID from the Property API. If you have the data only from the Property API, the property ID from the IAM API is equivalent to the asset ID from the Property API.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3884,7 +3884,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="PropertyID">
           <maml:name>AssetID</maml:name>
           <maml:description>
             <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -3998,7 +3998,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="PropertyID">
         <maml:name>AssetID</maml:name>
         <maml:description>
           <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -4103,7 +4103,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IAMPropertyResources</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
           <maml:name>AssetID</maml:name>
           <maml:description>
             <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -4178,7 +4178,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
         <maml:name>AssetID</maml:name>
         <maml:description>
           <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -4283,7 +4283,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-IAMPropertyUsers</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
           <maml:name>AssetID</maml:name>
           <maml:description>
             <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -4362,7 +4362,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
         <maml:name>AssetID</maml:name>
         <maml:description>
           <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -6703,7 +6703,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Locks a specified user's account, preventing them from accessing Control Center. The result shows as a read-only `isLocked: true` attribute in the user data. </maml:para>
+      <maml:para>Locks a specified user's account, preventing them from accessing Control Center. The result shows as a read-only `isLocked: true` attribute in the user data.</maml:para>
       <maml:para>To allow the user to access Control Center, run the `Unlock-IAMUser` operation. This sets the `isLocked` attribute to `false`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7045,7 +7045,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Move-IAMProperty</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
           <maml:name>AssetID</maml:name>
           <maml:description>
             <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -7132,7 +7132,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="PropertyID">
         <maml:name>AssetID</maml:name>
         <maml:description>
           <maml:para>Unique identifier for each asset, either a property or an include. To get this value, run Get-IAMProperty.</maml:para>
@@ -7244,7 +7244,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new API client. Optionally, you can automatically assign a credential for the client when you create it. If you choose not to assign the credential automatically, see the Create authentication credentials (https://techdocs.akamai.com/developer/docs/set-up-authentication-credentials)guide for details. </maml:para>
+      <maml:para>Creates a new API client. Optionally, you can automatically assign a credential for the client when you create it. If you choose not to assign the credential automatically, see the Create authentication credentials (https://techdocs.akamai.com/developer/docs/set-up-authentication-credentials)guide for details.</maml:para>
       <maml:para>&gt; Note: As the format of the request body is complex, if you have an existing user, it's recommended that you retrieve it with the `Get-IAMAPIClient` operation, edit it locally, and pipe the edited object to this function.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7401,7 +7401,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new credential for your API client or for another API client by specifying their client ID. If you want to create a credential for your API client, specify a value of `self` in the `-ClientID` parameter. </maml:para>
+      <maml:para>Creates a new credential for your API client or for another API client by specifying their client ID. If you want to create a credential for your API client, specify a value of `self` in the `-ClientID` parameter.</maml:para>
       <maml:para>&gt; Note: This is the only time you'll see the client secret. Save the credential to avoid the need to create a new one.</maml:para>
     </maml:description>
     <command:syntax>
@@ -8097,7 +8097,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a user or clones an existing user's role assignments. Optionally, you can send a randomly generated one-time use password to the new user with the `SendEmail` switch parameter. </maml:para>
+      <maml:para>Creates a user or clones an existing user's role assignments. Optionally, you can send a randomly generated one-time use password to the new user with the `SendEmail` switch parameter.</maml:para>
       <maml:para>If you send an email with the password directly to the user, the response for this operation doesn't include that password. If you don't send this email, the password is included in the response.</maml:para>
     </maml:description>
     <command:syntax>
@@ -8613,9 +8613,9 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a CIDR block from the IP allowlist. After you delete a CIDR block, any requests from the IP addresses you deleted fail the next time someone tries to log in from that address. </maml:para>
-      <maml:para>Users accessing Control Center from an IP address you delete aren't automatically logged out of Control Center at the time you delete the IP address. </maml:para>
-      <maml:para>When the IP allowlist is enabled for your account, you can't delete the last CIDR block in the allowlist or the CIDR block allowing access to the current user. </maml:para>
+      <maml:para>Deletes a CIDR block from the IP allowlist. After you delete a CIDR block, any requests from the IP addresses you deleted fail the next time someone tries to log in from that address.</maml:para>
+      <maml:para>Users accessing Control Center from an IP address you delete aren't automatically logged out of Control Center at the time you delete the IP address.</maml:para>
+      <maml:para>When the IP allowlist is enabled for your account, you can't delete the last CIDR block in the allowlist or the CIDR block allowing access to the current user.</maml:para>
       <maml:para>There are no restrictions on CIDR block deletion when the IP allowlist is disabled on your account.</maml:para>
     </maml:description>
     <command:syntax>
@@ -9396,7 +9396,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Resets the password for a user specified by their `UIIdentityID`. Optionally, you can send a randomly generated one-time use password to the user by adding the `-SendEmail` switch parameter. </maml:para>
+      <maml:para>Resets the password for a user specified by their `UIIdentityID`. Optionally, you can send a randomly generated one-time use password to the user by adding the `-SendEmail` switch parameter.</maml:para>
       <maml:para>If you send an email with the password directly to the user, the response for this operation doesn't include that password. If you don't send it, the password is included in the response.</maml:para>
     </maml:description>
     <command:syntax>
@@ -12315,7 +12315,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Unlocks a specified user's account, allowing them to access Control Center. The result shows as a read-only `isLocked:false` attribute in the user data. </maml:para>
+      <maml:para>Unlocks a specified user's account, allowing them to access Control Center. The result shows as a read-only `isLocked:false` attribute in the user data.</maml:para>
       <maml:para>To prevent the user from accessing Control Center, run the `Lock-IAMUser` operation. This sets the `isLocked` attribute to `true`.</maml:para>
     </maml:description>
     <command:syntax>

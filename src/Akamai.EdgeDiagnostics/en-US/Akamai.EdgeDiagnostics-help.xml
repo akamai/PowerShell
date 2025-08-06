@@ -579,7 +579,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Delivery</maml:name>
           <maml:description>
-            <maml:para>The type of network you want to get traffic data for, either `STANDARD_TLS` or `ENHANCED_TLS`. Without this filter, Edge Diagnostics checks on its own the type of delivery used by the requested CP code or URL and returns data for it. </maml:para>
+            <maml:para>The type of network you want to get traffic data for, either `STANDARD_TLS` or `ENHANCED_TLS`. Without this filter, Edge Diagnostics checks on its own the type of delivery used by the requested CP code or URL and returns data for it.</maml:para>
             <maml:para>If it uses both types, then Edge Diagnostics returns data for the type that got all data collected faster. If you choose the delivery type not used by your resource, then the results are empty.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -651,7 +651,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Delivery</maml:name>
           <maml:description>
-            <maml:para>The type of network you want to get traffic data for, either `STANDARD_TLS` or `ENHANCED_TLS`. Without this filter, Edge Diagnostics checks on its own the type of delivery used by the requested CP code or URL and returns data for it. </maml:para>
+            <maml:para>The type of network you want to get traffic data for, either `STANDARD_TLS` or `ENHANCED_TLS`. Without this filter, Edge Diagnostics checks on its own the type of delivery used by the requested CP code or URL and returns data for it.</maml:para>
             <maml:para>If it uses both types, then Edge Diagnostics returns data for the type that got all data collected faster. If you choose the delivery type not used by your resource, then the results are empty.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
@@ -747,7 +747,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Delivery</maml:name>
         <maml:description>
-          <maml:para>The type of network you want to get traffic data for, either `STANDARD_TLS` or `ENHANCED_TLS`. Without this filter, Edge Diagnostics checks on its own the type of delivery used by the requested CP code or URL and returns data for it. </maml:para>
+          <maml:para>The type of network you want to get traffic data for, either `STANDARD_TLS` or `ENHANCED_TLS`. Without this filter, Edge Diagnostics checks on its own the type of delivery used by the requested CP code or URL and returns data for it.</maml:para>
           <maml:para>If it uses both types, then Edge Diagnostics returns data for the type that got all data collected faster. If you choose the delivery type not used by your resource, then the results are empty.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -857,7 +857,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the status of the `New-EdgeDiagnosticsErrorTranslation` operation. </maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsErrorTranslation` operation.</maml:para>
       <maml:para>Operations with the `executionStatus` of `SUCCESS` include also details about the error. For operations in progress, the returned object contains `retryAfter` and `requestId`. In this case, wait for the duration of the `retryAfter` interval, then run this operation again.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1395,7 +1395,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the GTM properties you have access to. You can use the returned `hostname` values to run the `New-EdgeDiagnosticsMTR` and `New-EdgeDiagnosticsDig` operations for a GTM hostname. </maml:para>
+      <maml:para>Gets the GTM properties you have access to. You can use the returned `hostname` values to run the `New-EdgeDiagnosticsMTR` and `New-EdgeDiagnosticsDig` operations for a GTM hostname.</maml:para>
       <maml:para>Note that the `New-EdgeDiagnosticsMTR` operation also requires the hostname's test and target IP values that you can get by running the `Get-EdgeDiagnosticsGTMPropertyIPs` operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1528,7 +1528,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets test and target IPs for a GTM property. You can use the returned data to run the `New-EdgeDiagnosticsMTR` operation for a GTM hostname. </maml:para>
+      <maml:para>Gets test and target IPs for a GTM property. You can use the returned data to run the `New-EdgeDiagnosticsMTR` operation for a GTM hostname.</maml:para>
       <maml:para>To get the data necessary for this request, run the `Get-EdgeDiagnosticsGTMProperties` operation first.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1841,8 +1841,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets active edge server locations. </maml:para>
-      <maml:para>Use the `id` values from this operation in the `-EdgeLocationId` parameter when you run `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsDig`, `New-EdgeDiagnosticsMTR`, `New-EdgeDiagnosticsURLHealthCheck`, `New-EdgeDiagnosticsConnectivityProblem`, or `New-EdgeDiagnosticsContentProblem` operation. </maml:para>
+      <maml:para>Gets active edge server locations.</maml:para>
+      <maml:para>Use the `id` values from this operation in the `-EdgeLocationId` parameter when you run `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsDig`, `New-EdgeDiagnosticsMTR`, `New-EdgeDiagnosticsURLHealthCheck`, `New-EdgeDiagnosticsConnectivityProblem`, or `New-EdgeDiagnosticsContentProblem` operation.</maml:para>
       <maml:para>To get a subset of edge servers supporting metadata tracer, run the `Get-EdgeDiagnosticsMetadataTraceLocations` operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1975,7 +1975,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Using the GREP command returns logs that match the parameters that you specify in your request. </maml:para>
+      <maml:para>Using the GREP command returns logs that match the parameters that you specify in your request.</maml:para>
       <maml:para>This operation retrieves the data directly. If you don't get detailed information about the logs or want to avoid latency, run the `New-EdgeDiagnosticsGrep` operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2352,7 +2352,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the status of the `New-EdgeDiagnosticsMetadataTrace` operation. </maml:para>
+      <maml:para>Gets the status of the `New-EdgeDiagnosticsMetadataTrace` operation.</maml:para>
       <maml:para>Operations with the `executionStatus` of `SUCCESS` include also the metadata details. For requests with the added `-HTMLFormat` switch parameter, results are in static HTML format.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2532,7 +2532,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets active locations. Use the `id` values from this operation in the `-MtLocationId` parameter when you run the `New-EdgeDiagnosticsMetadataTrace` operation together with information about supported HTTP methods. </maml:para>
+      <maml:para>Gets active locations. Use the `id` values from this operation in the `-MtLocationId` parameter when you run the `New-EdgeDiagnosticsMetadataTrace` operation together with information about supported HTTP methods.</maml:para>
       <maml:para>The operation responds with a subset of edge servers returned by the `Get-EdgeDiagnosticsLocations` operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3446,7 +3446,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep` and `New-EdgeDiagnosticsCurl` operations for a URL. </maml:para>
+      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep` and `New-EdgeDiagnosticsCurl` operations for a URL.</maml:para>
       <maml:para>Use the response results to diagnose issues with slow download and high response time. Operations with the `executionStatus` of `SUCCESS` return the fetched GREP and cURL data.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3813,8 +3813,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Requests content using the cURL command to provide the raw HTML for a URL, including request headers. You can run this operation for a specific location, an edge server IP, or a Site Shield map. </maml:para>
-      <maml:para>To get the data for a location, run the `Get-EdgeDiagnosticsLocations` operation first to get the `edgeLocationId`. </maml:para>
+      <maml:para>Requests content using the cURL command to provide the raw HTML for a URL, including request headers. You can run this operation for a specific location, an edge server IP, or a Site Shield map.</maml:para>
+      <maml:para>To get the data for a location, run the `Get-EdgeDiagnosticsLocations` operation first to get the `edgeLocationId`.</maml:para>
       <maml:para>To run this operation for an IP, run the `Test-EdgeDiagnosticsIP` operation to verify if it belongs to an edge server. If you don't provide a location or an edge server IP, then Edge Diagnostics runs the operation using a random edge server IP.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4283,9 +4283,9 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Using the DIG command provides DNS details for the location of an edge server, a hostname, a domain name, or a GTM hostname. The results can help you diagnose issues with the domain name resolutions. You can run this operation either for a specific location or an edge server IP. </maml:para>
-      <maml:para>To get the data for a location, run the `Get-EdgeDiagnosticsLocations operation` first to get the `edgeLocationId`. </maml:para>
-      <maml:para>To run this operation for an IP, run the `Test-EdgeDiagnosticsIP` operation first to verify if it belongs to an edge server. </maml:para>
+      <maml:para>Using the DIG command provides DNS details for the location of an edge server, a hostname, a domain name, or a GTM hostname. The results can help you diagnose issues with the domain name resolutions. You can run this operation either for a specific location or an edge server IP.</maml:para>
+      <maml:para>To get the data for a location, run the `Get-EdgeDiagnosticsLocations operation` first to get the `edgeLocationId`.</maml:para>
+      <maml:para>To run this operation for an IP, run the `Test-EdgeDiagnosticsIP` operation first to verify if it belongs to an edge server.</maml:para>
       <maml:para>To run this operation for a GTM hostname, run the `Get-EdgeDiagnosticsGTMProperties` operation first. If you don't provide a location ID or an edge server IP, then Edge Diagnostics runs the operation using a random edge server IP.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4700,8 +4700,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an asynchronous request to fetch a summary and logs for an error with a specific reference code. The error logs are from the last 6 or 24 hours depending on the server and traffic conditions. </maml:para>
-      <maml:para>You can also translate any Global Request Number (GRN) generated by the Property Manager's `Global Request Number` behavior. </maml:para>
+      <maml:para>Launches an asynchronous request to fetch a summary and logs for an error with a specific reference code. The error logs are from the last 6 or 24 hours depending on the server and traffic conditions.</maml:para>
+      <maml:para>You can also translate any Global Request Number (GRN) generated by the Property Manager's `Global Request Number` behavior.</maml:para>
       <maml:para>For operations in progress, the returned object contains `retryAfter`, `requestId`, and `link`. In this case, wait for the duration of the `retryAfter` interval, then either use the `requestId` to run the `Get-EdgeDiagnosticsErrorTranslation` operation or simply GET the `link`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5171,8 +5171,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an asynchronous request to fetch logs for an edge server IP address using the GREP command. </maml:para>
-      <maml:para>To verify if an IP belongs to an edge server, run the `Test-EdgeDiagnosticsIP` operation first. </maml:para>
+      <maml:para>Launches an asynchronous request to fetch logs for an edge server IP address using the GREP command.</maml:para>
+      <maml:para>To verify if an IP belongs to an edge server, run the `Test-EdgeDiagnosticsIP` operation first.</maml:para>
       <maml:para>If you know the exact values to filter the logs by and want to get the data directly, run the synchronous `Get-EdgeDiagnosticsLogs` operation.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5329,7 +5329,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Generates a diagnostic link for you to share with your users of a particular URL or IP acceleration hostname experiencing similar issues. After your user clicks the link, the tool gathers necessary diagnostic data and asks them to submit it. Once submitted, you can check the collected data with the `Get-EdgeDiagnosticsGroup` operation. Each link is valid for 7 days of 50 submissions. </maml:para>
+      <maml:para>Generates a diagnostic link for you to share with your users of a particular URL or IP acceleration hostname experiencing similar issues. After your user clicks the link, the tool gathers necessary diagnostic data and asks them to submit it. Once submitted, you can check the collected data with the `Get-EdgeDiagnosticsGroup` operation. Each link is valid for 7 days of 50 submissions.</maml:para>
       <maml:para>To get the list of IP acceleration hostnames for which you can collect diagnostic data, run the `Get-EdgeDiagnosticsIPAHostnames` operation first.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5648,7 +5648,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an asynchronous request to trace metadata for a URL configured in Property Manager. The metadata tracing works for the current property version active either on the staging or production network. </maml:para>
+      <maml:para>Launches an asynchronous request to trace metadata for a URL configured in Property Manager. The metadata tracing works for the current property version active either on the staging or production network.</maml:para>
       <maml:para>To run the operation for a location, run the `Get-EdgeDiagnosticsMetadataTraceLocations` operation first to get the required values. If you don't provide a location ID or an edge server IP, then Edge Diagnostics runs the operation using a random location.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6119,8 +6119,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Using MTR provides information about packet loss and latency between an edge server IP and a location or between a Site Shield map and a remote destination. </maml:para>
-      <maml:para>To run this operation for an IP, run the `Test-EdgeDiagnosticsIP` operation first to verify if it belongs to an edge server. </maml:para>
+      <maml:para>Using MTR provides information about packet loss and latency between an edge server IP and a location or between a Site Shield map and a remote destination.</maml:para>
+      <maml:para>To run this operation for an IP, run the `Test-EdgeDiagnosticsIP` operation first to verify if it belongs to an edge server.</maml:para>
       <maml:para>To run this operation for a GTM hostname, run the `Get-EdgeDiagnosticsGTMProperties` and `Get-EdgeDiagnosticsGTMPropertyIPs` operations first to get the test and target IPs for the hostname.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6192,8 +6192,8 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Destination</maml:name>
           <maml:description>
-            <maml:para>An MTR destination compliant with the `destinationType`, either a hostname or a destination IP. </maml:para>
-            <maml:para>To build an object for a GTM hostname, enter the `target` value returned by the List test and target IPs for a GTM hostname (https://techdocs.akamai.com/edge-diagnostics/reference/get-gtm-property-domain-gtm-property-ips)operation. </maml:para>
+            <maml:para>An MTR destination compliant with the `destinationType`, either a hostname or a destination IP.</maml:para>
+            <maml:para>To build an object for a GTM hostname, enter the `target` value returned by the List test and target IPs for a GTM hostname (https://techdocs.akamai.com/edge-diagnostics/reference/get-gtm-property-domain-gtm-property-ips)operation.</maml:para>
             <maml:para>For a Site Shield hostname, enter a destination IP address.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -6323,9 +6323,9 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Source</maml:name>
           <maml:description>
-            <maml:para>An MTR source compliant with the `sourceType`, either an edge server IP or a location. </maml:para>
-            <maml:para>For locations, enter `edgeLocationId` for an edge server location closest to your end users. To get this value, run `Get-EdgeDiagnosticsLocations` first. </maml:para>
-            <maml:para>For edge IPs, use the edge server IP value from the `answerSection` array in the `New-EdgeDiagnosticsDig` response. </maml:para>
+            <maml:para>An MTR source compliant with the `sourceType`, either an edge server IP or a location.</maml:para>
+            <maml:para>For locations, enter `edgeLocationId` for an edge server location closest to your end users. To get this value, run `Get-EdgeDiagnosticsLocations` first.</maml:para>
+            <maml:para>For edge IPs, use the edge server IP value from the `answerSection` array in the `New-EdgeDiagnosticsDig` response.</maml:para>
             <maml:para>To build an object for a GTM hostname, enter the `testIp` value returned by `Get-EdgeDiagnosticsGTMPropertyIPs`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -6381,8 +6381,8 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Destination</maml:name>
         <maml:description>
-          <maml:para>An MTR destination compliant with the `destinationType`, either a hostname or a destination IP. </maml:para>
-          <maml:para>To build an object for a GTM hostname, enter the `target` value returned by the List test and target IPs for a GTM hostname (https://techdocs.akamai.com/edge-diagnostics/reference/get-gtm-property-domain-gtm-property-ips)operation. </maml:para>
+          <maml:para>An MTR destination compliant with the `destinationType`, either a hostname or a destination IP.</maml:para>
+          <maml:para>To build an object for a GTM hostname, enter the `target` value returned by the List test and target IPs for a GTM hostname (https://techdocs.akamai.com/edge-diagnostics/reference/get-gtm-property-domain-gtm-property-ips)operation.</maml:para>
           <maml:para>For a Site Shield hostname, enter a destination IP address.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -6503,9 +6503,9 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Source</maml:name>
         <maml:description>
-          <maml:para>An MTR source compliant with the `sourceType`, either an edge server IP or a location. </maml:para>
-          <maml:para>For locations, enter `edgeLocationId` for an edge server location closest to your end users. To get this value, run `Get-EdgeDiagnosticsLocations` first. </maml:para>
-          <maml:para>For edge IPs, use the edge server IP value from the `answerSection` array in the `New-EdgeDiagnosticsDig` response. </maml:para>
+          <maml:para>An MTR source compliant with the `sourceType`, either an edge server IP or a location.</maml:para>
+          <maml:para>For locations, enter `edgeLocationId` for an edge server location closest to your end users. To get this value, run `Get-EdgeDiagnosticsLocations` first.</maml:para>
+          <maml:para>For edge IPs, use the edge server IP value from the `answerSection` array in the `New-EdgeDiagnosticsDig` response.</maml:para>
           <maml:para>To build an object for a GTM hostname, enter the `testIp` value returned by `Get-EdgeDiagnosticsGTMPropertyIPs`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -6579,7 +6579,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep`, `New-EdgeDiagnosticsDig`, `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsMTR`, and `Get-EdgeDiagnosticsURLTranslation` operations for a URL. </maml:para>
+      <maml:para>Launches an asynchronous request to run in parallel the `New-EdgeDiagnosticsGrep`, `New-EdgeDiagnosticsDig`, `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsMTR`, and `Get-EdgeDiagnosticsURLTranslation` operations for a URL.</maml:para>
       <maml:para>Operations with the `executionStatus` of `SUCCESS` return the fetched GREP, DIG, cURL, and MTR data as well as Akamaized URL (ARL) (https://techdocs.akamai.com/edge-diagnostics/docs/arl-syntax)details.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7063,8 +7063,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Verifies if an IP belongs to an edge server and gets the geolocation data of its network. </maml:para>
-      <maml:para>For IPs verified positively, you can continue gathering diagnostic data with the `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsDig`, or `New-EdgeDiagnosticsMTR` operation. </maml:para>
+      <maml:para>Verifies if an IP belongs to an edge server and gets the geolocation data of its network.</maml:para>
+      <maml:para>For IPs verified positively, you can continue gathering diagnostic data with the `New-EdgeDiagnosticsCurl`, `New-EdgeDiagnosticsDig`, or `New-EdgeDiagnosticsMTR` operation.</maml:para>
       <maml:para>The `-IPAddress` parameter is a single IP or a comma-separated string of up to 10 IPs.</maml:para>
     </maml:description>
     <command:syntax>

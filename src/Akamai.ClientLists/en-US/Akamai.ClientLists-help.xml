@@ -10,7 +10,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Adds items to a client list in two ways: either as individual items within the `-Items` parameter (an array of strings or a comma-separated string are accepted) or from a CSV file using the `-File` parameter. Your CSV file needs to include the following four columns: `value`, `description`, `tags`, and `expirationDate`. </maml:para>
+      <maml:para>Adds items to a client list in two ways: either as individual items within the `-Items` parameter (an array of strings or a comma-separated string are accepted) or from a CSV file using the `-File` parameter. Your CSV file needs to include the following four columns: `value`, `description`, `tags`, and `expirationDate`.</maml:para>
       <maml:para>When making a request, you can specify the client list by either its name or ID. The `-Version` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -1072,6 +1072,14 @@
           <maml:description>
             <maml:para>Filters the output to lists of specified types: `IP`, `GEO`, `ASN`, `TLS_FINGERPRINT`, or `FILE_HASH`. Repeat the parameter to filter on more than one type.</maml:para>
           </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">IP</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">GEO</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">ASN</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">TLS_FINGERPRINT</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">FILE_HASH</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">USER_ID</command:parameterValue>
+          </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
@@ -2359,7 +2367,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets the version of a client list in its state when activated. You can only get the client list versions that have been activated. </maml:para>
+      <maml:para>Gets the version of a client list in its state when activated. You can only get the client list versions that have been activated.</maml:para>
       <maml:para>When making a request, you can specify the list by its name or ID. The `-Version` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3319,6 +3327,7 @@
             <command:parameterValue required="false" command:variableLength="false">ASN</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">TLS_FINGERPRINT</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">FILE_HASH</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">USER_ID</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -5224,7 +5233,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Appends, deletes, and updates the client list entries in a single batch. You can provide items as an array (or via the pipeline), in which you also need to specify the `-Operation` (`update`, `append`, or `delete`). Alternatively, you can provide the entire request body with the `-Body` parameter. </maml:para>
+      <maml:para>Appends, deletes, and updates the client list entries in a single batch. You can provide items as an array (or via the pipeline), in which you also need to specify the `-Operation` (`update`, `append`, or `delete`). Alternatively, you can provide the entire request body with the `-Body` parameter.</maml:para>
       <maml:para>When making a request, you can specify the list by its name or ID.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5664,7 +5673,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Validates entries before creating a client list. It's similar in structure to the `Add-ClientListItem` operation, that is, you can provide items as an array or a comma-separated string or you can use a local CSV file. Your CSV file needs to include the following four columns: `value`, `description`, `tags`, and `expirationDate`. </maml:para>
+      <maml:para>Validates entries before creating a client list. It's similar in structure to the `Add-ClientListItem` operation, that is, you can provide items as an array or a comma-separated string or you can use a local CSV file. Your CSV file needs to include the following four columns: `value`, `description`, `tags`, and `expirationDate`.</maml:para>
       <maml:para>When making a request, you can specify the list by either its name or ID. The `-Version` parameter is an integer or the word `latest`.</maml:para>
     </maml:description>
     <command:syntax>

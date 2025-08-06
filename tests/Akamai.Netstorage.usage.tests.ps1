@@ -9,9 +9,20 @@ Describe 'Safe Akamai.Netstorage Usage Tests' {
     BeforeAll { 
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.Netstorage/Akamai.Netstorage.psd1 -Force
+
+        # Create custom NSRC for the tests
+        $AuthParams = @{
+            UploadAccountID = 'akamaipowershell'
+            AuthSection     = 'default'
+            OutputDirectory = 'TestDrive:/'
+            EdgeRCFile      = $env:PesterEdgeRCFile
+            Section         = $env:PesterEdgeRCSection
+        }
+        New-NetstorageAuth @AuthParams
+
         # Setup shared variables
         $CommonParams = @{
-            AuthFile = $env:PesterAuthFile
+            AuthFile = 'TestDrive:/.nsrc'
         }
         $TestDirectory = "ns-usage-temp"
         $TestNewDirName = "temp"

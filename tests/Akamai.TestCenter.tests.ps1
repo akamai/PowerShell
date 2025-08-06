@@ -19,6 +19,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
         $TestPropertyVersion = 126
         $TestSuiteName1 = 'Akamai PowerShell Testing 1'
         $TestSuiteName2 = 'Akamai PowerShell Testing 2'
+        $TestSuiteName3 = 'Akamai PowerShell Testing 3'
         $TestRequestURL1 = "http://$env:PesterHostname/"
         $TestRequestURL2 = "http://$env:PesterHostname/api"
         $TestVariableName1 = 'var1'
@@ -77,7 +78,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
         
         $TestSuite.PSObject.Members.Remove('testCases')
         $TestSuite.PSObject.Members.Remove('variables')
-        $TestSuiteAutoJSON = @"
+        $BuildTestSuiteJSON = @"
 {
     "configs": {
         "propertyManager": {
@@ -114,7 +115,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
     }
 
     AfterAll {
-        Get-TestSuite @CommonParams | Where-Object testSuiteName -in $TestSuiteName1, $TestSuiteName2 | Remove-TestSuite @CommonParams
+        Get-TestSuite @CommonParams | Where-Object testSuiteName -in $TestSuiteName1, $TestSuiteName2, $TestSuiteName3 | Remove-TestSuite @CommonParams
     }
 
 
@@ -137,10 +138,28 @@ Describe 'Safe Akamai.TestCenter Tests' {
         }
     }
     
-    Context 'New-TestSuite, auto generated' {
+    Context 'Initialize-TestSuite' {
         It 'Returns the correct data' {
-            $PD.NewTestSuiteAuto = ($TestSuiteAutoJSON | New-TestSuite -AutoGenerate @CommonParams)
-            $PD.NewTestSuiteAuto.configs.propertyManager.propertyName | Should -Be $TestPropertyName
+            $PD.BuildTestSuite = $BuildTestSuiteJSON | Initialize-TestSuite @CommonParams
+            $PD.BuildTestSuite.configs.propertyManager.propertyName | Should -Be $TestPropertyName
+        }
+    }
+
+    Context 'New-TestSuite with parameters' {
+        It 'creates successfully' {
+            $Description = 'Testing PowerShell'
+            $TestParams = @{
+                TestSuiteName        = $TestSuiteName3
+                TestSuiteDescription = $Description
+                IsStateful           = $true
+                PropertyName         = $TestPropertyName
+                PropertyVersion      = $TestPropertyVersion
+            }
+            $PD.NewTestSuiteParams = New-TestSuite @TestParams @CommonParams
+            $PD.NewTestSuiteParams.testSuiteName | Should -Be $TestSuiteName3
+            $PD.NewTestSuiteParams.testSuiteDescription | Should -Be $Description
+            $PD.NewTestSuiteParams.IsStateful | Should -Be $true
+            $PD.NewTestSuiteParams.IsLocked | Should -Be $false
         }
     }
 
@@ -177,7 +196,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
 
     Context 'Set-TestSuite by pipeline' {
         It 'Returns the correct suite' {
-            $PD.SetTestSuiteByPipeline = ($PD.NewTestSuiteBasic | Set-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+            $PD.SetTestSuiteByPipeline = $PD.NewTestSuiteBasic | Set-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             $PD.SetTestSuiteByPipeline.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
         }
     }
@@ -217,7 +236,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
 
     Context 'New-TestCase by pipeline' {
         It 'Returns the correct data' {
-            $PD.NewTestCaseByPipeline = ($TestCase | New-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+            $PD.NewTestCaseByPipeline = $TestCase | New-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             $PD.NewTestCaseByPipeline.testRequest.testRequestUrl | Should -Be $TestRequestURL2
         }
     }
@@ -245,21 +264,21 @@ Describe 'Safe Akamai.TestCenter Tests' {
 
     Context 'Set-TestCase by pipeline' {
         It 'Returns the correct data' {
-            $PD.SetTestCaseByPipeline = ($PD.GetTestCase | Set-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+            $PD.SetTestCaseByPipeline = $PD.GetTestCase | Set-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             $PD.SetTestCaseByPipeline[0].testCaseId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Remove-TestCase with multiple IDs, include status' {
         It 'Returns the correct data' {
-            $PD.RemoveTestCase = ($PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId | Remove-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -IncludeStatus @CommonParams)
+            $PD.RemoveTestCase = $PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId | Remove-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -IncludeStatus @CommonParams
             $PD.RemoveTestCase.successes | Should -Be @($PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId)
         }
     }
 
     Context 'Restore-TestCase with multiple IDs' {
         It 'Returns the correct data' {
-            $PD.RestoreTestCase = ($PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId | Restore-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+            $PD.RestoreTestCase = $PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId | Restore-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             $PD.RestoreTestCase.testCaseId | Should -Contain $PD.NewTestCaseByParam.testCaseId
             $PD.RestoreTestCase.testCaseId | Should -Contain $PD.NewTestCaseByPipeline.testCaseId
         }
@@ -280,7 +299,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
 
     Context 'Set-TestCaseOrder by pipeline' {
         It 'Returns the correct data' {
-            $PD.SetTestCaseOrderByPipeline = ($PD.TestCaseOrder | Set-TestCaseOrder -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+            $PD.SetTestCaseOrderByPipeline = $PD.TestCaseOrder | Set-TestCaseOrder -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             $PD.SetTestCaseOrderByPipeline[0].testCaseId | Should -Be $PD.GetTestCaseAll[0].testCaseId
         }
     }
@@ -348,7 +367,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
 
     Context 'Set-TestVariable by pipeline' {
         It 'Returns the correct data' {
-            $PD.SetTestVariableByPipeline = ($PD.GetTestVariableSingle | Set-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+            $PD.SetTestVariableByPipeline = $PD.GetTestVariableSingle | Set-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             $PD.SetTestVariableByPipeline[0].variableId | Should -Be $PD.GetTestVariableSingle.variableId
         }
     }
@@ -398,7 +417,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
         It 'Throws no errors' {
             Remove-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
             Remove-TestSuite -TestSuiteID $PD.NewTestSuiteChild.testSuiteId @CommonParams
-            #Remove-TestSuite -TestSuiteID $NewTestSuiteAuto.testSuiteId @CommonParams
+            Remove-TestSuite -TestSuiteID $PD.NewTestSuiteParams.testSuiteId @CommonParams
         }
     }
 }

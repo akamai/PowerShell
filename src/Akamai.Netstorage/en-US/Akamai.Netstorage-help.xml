@@ -2396,7 +2396,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a NetStorage directory, either with an optional `-Prefix` (dir) or recursively with `-Recurse` (list). </maml:para>
+      <maml:para>Gets a NetStorage directory, either with an optional `-Prefix` (dir) or recursively with `-Recurse` (list).</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2441,7 +2441,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2552,7 +2552,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2638,7 +2638,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EndPath</maml:name>
         <maml:description>
-          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
+          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
           <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2784,7 +2784,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves disk usage information for a specified directory in a NetStorage storage group. </maml:para>
+      <maml:para>Retrieves disk usage information for a specified directory in a NetStorage storage group.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3770,7 +3770,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the stat structure (information) for a named file, symlink, or directory. </maml:para>
+      <maml:para>Retrieves the stat structure (information) for a named file, symlink, or directory.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3815,7 +3815,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Implicit</maml:name>
           <maml:description>
-            <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path. </maml:para>
+            <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path.</maml:para>
             <maml:para>Note that including this argument will result in slower output, as it requires more NetStorage resources. Therefore, it's recommended that you use it sparingly.</maml:para>
           </maml:description>
           <dev:type>
@@ -3877,7 +3877,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Implicit</maml:name>
         <maml:description>
-          <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path. </maml:para>
+          <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path.</maml:para>
           <maml:para>Note that including this argument will result in slower output, as it requires more NetStorage resources. Therefore, it's recommended that you use it sparingly.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
@@ -3971,19 +3971,19 @@
       <command:verb>New</command:verb>
       <command:noun>NetstorageAuth</command:noun>
       <maml:description>
-        <maml:para>Creates and writes NetStorage credentials to an auth file.</maml:para>
+        <maml:para>Generate a NetStorage auth file.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>The `New-NetStorageAuth` cmdlet creates a new NetStorage auth file or appends an existing auth file with NetStorage Usage API credentials.</maml:para>
+      <maml:para>Generates an auth file in the correct format for NetStorage usage API functions by providing the upload account ID. The `-AuthFile` is created by default at `~/.nsrc` with a section header of `default`, but you can override both the path and section.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-NetstorageAuth</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
           <maml:name>UploadAccountID</maml:name>
           <maml:description>
-            <maml:para>A NetStorage upload account's ID.</maml:para>
+            <maml:para>The ID assigned to the target upload account. You can get this value by running `Get-NetstorageUploadAccount` and filtering the results.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3992,7 +3992,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>AuthSection</maml:name>
           <maml:description>
             <maml:para>A human-readable name for the new credentials section. Use only lowercase alpha, numbers, or dashes for the value. Defaults to `default`.</maml:para>
@@ -4002,9 +4002,9 @@
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>Default</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>OutputDirectory</maml:name>
           <maml:description>
             <maml:para>The path to the directory in which to place the new `.nsrc` file. Defaults to `~/.nsrc`.</maml:para>
@@ -4014,12 +4014,24 @@
             <maml:name>String</maml:name>
             <maml:uri />
           </dev:type>
-          <dev:defaultValue>~</dev:defaultValue>
+          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
-            <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4029,21 +4041,9 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4055,10 +4055,10 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>UploadAccountID</maml:name>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>A NetStorage upload account's ID.</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -4067,7 +4067,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>AuthSection</maml:name>
         <maml:description>
           <maml:para>A human-readable name for the new credentials section. Use only lowercase alpha, numbers, or dashes for the value. Defaults to `default`.</maml:para>
@@ -4077,9 +4077,21 @@
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>Default</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>OutputDirectory</maml:name>
         <maml:description>
           <maml:para>The path to the directory in which to place the new `.nsrc` file. Defaults to `~/.nsrc`.</maml:para>
@@ -4089,24 +4101,12 @@
           <maml:name>String</maml:name>
           <maml:uri />
         </dev:type>
-        <dev:defaultValue>~</dev:defaultValue>
+        <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>The path to an edgerc file. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
-          <maml:para>The edgerc section name. Defaults to `default`.</maml:para>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -4115,10 +4115,10 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>UploadAccountID</maml:name>
         <maml:description>
-          <maml:para>A key used to apply changes to an account external to your credentials' account.</maml:para>
+          <maml:para>The ID assigned to the target upload account. You can get this value by running `Get-NetstorageUploadAccount` and filtering the results.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -4128,38 +4128,33 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
     </command:parameters>
-    <command:inputTypes />
-    <command:returnValues />
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
     <maml:alertSet>
       <maml:alert>
         <maml:para></maml:para>
       </maml:alert>
     </maml:alertSet>
-    <command:examples>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 1 --------------------------</maml:title>
-        <dev:code>Creates a new `.nsrc` at the root directory with the defaults.</dev:code>
-        <dev:remarks>
-          <maml:para>New-NetStorageAuth -UploadAccountID my-upload-account-id</maml:para>
-        </dev:remarks>
-      </command:example>
-      <command:example>
-        <maml:title>-------------------------- EXAMPLE 2 --------------------------</maml:title>
-        <dev:code>Creates a new `.nsrc` at a given directory.</dev:code>
-        <dev:remarks>
-          <maml:para>New-NetStorageAuth -UploadAccountID my-upload-account-id -OutputDirectory "~/another/path"</maml:para>
-        </dev:remarks>
-      </command:example>
-    </command:examples>
+    <command:examples />
     <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>PowerShell overview: https://techdocs.akamai.com/powershell/docs/overview</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Online version: https://techdocs.akamai.com/powershell/reference/</maml:linkText>
-        <maml:uri></maml:uri>
-      </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
@@ -4360,7 +4355,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new explicit directory in a storage group. </maml:para>
+      <maml:para>Creates a new explicit directory in a storage group.</maml:para>
       <maml:para>&gt; Notes: &gt; - With object storage systems such as NetStorage, implicit directories are created automatically when creating objects. &gt; - You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4961,7 +4956,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a symlink pointing to an existing NetStorage object. </maml:para>
+      <maml:para>Creates a symlink pointing to an existing NetStorage object.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5318,7 +5313,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -5441,7 +5436,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -5551,7 +5546,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EndPath</maml:name>
         <maml:description>
-          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
+          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
           <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -5705,7 +5700,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Downloads a NetStorage file from its remote path to a local path on your local machine. </maml:para>
+      <maml:para>Downloads a NetStorage file from its remote path to a local path on your local machine.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6042,7 +6037,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a NetStorage directory either by using the `-DirectoryIsEmpty` (rmdir) switch parameter to indicate that the directory is empty or by using the quick-delete feature if it�s enabled on your NetStorage group. If using quick-delete, you can optionally provide the `-Force` switch to avoid receiving confirmation. </maml:para>
+      <maml:para>Deletes a NetStorage directory either by using the `-DirectoryIsEmpty` (rmdir) switch parameter to indicate that the directory is empty or by using the quick-delete feature if it�s enabled on your NetStorage group. If using quick-delete, you can optionally provide the `-Force` switch to avoid receiving confirmation.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP Code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6221,7 +6216,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Removes a file from NetStorage by its path. </maml:para>
+      <maml:para>Removes a file from NetStorage by its path.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7206,7 +7201,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Renames an object's filename. The `-Path` parameter is the full path to your file, whereas the `-NewFilename` parameter is the new filename you want to use. The rest of the object's path is unchanged. </maml:para>
+      <maml:para>Renames an object's filename. The `-Path` parameter is the full path to your file, whereas the `-NewFilename` parameter is the new filename you want to use. The rest of the object's path is unchanged.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7747,7 +7742,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the modification time ("touch") of a storage group object. </maml:para>
+      <maml:para>Updates the modification time ("touch") of a storage group object.</maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
