@@ -437,7 +437,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Converts a proxy zone filter mode to one of: all, automatic, manual, none. When the target `Mode` is `manual`, you must provide an array of `ManualFilterNames`. When the `Mode` is `automatic` you must provide a `TSigKeyAlgorithm`, `TSIGKeyName` and `TSIGKeySecret`.</maml:para>
+      <maml:para>Converts a proxy zone filter mode to automatic.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -829,7 +829,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits a request to convert one or more zones to alias asynchronously. All zones included in the request must belong to the same contract and group. You can use the response's `requestId` to check the task's status and view its results once it completes.</maml:para>
+      <maml:para>Submits a request to convert one or more zones to alias asynchronously. The request body contains a JSON array. Each object in the array contains the data necessary to convert to an alias zone. All zones are converted on the same contract and group.  An offline task converts the zones. You can use the response's `requestId` to check the task's status and view its results once it completes.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1029,7 +1029,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits an asynchronous request to convert one or more DNS zones to primary. All zones included in the request must belong to the same contract and group. Use the requestId returned in the response to track the task's progress and retrieve the results upon completion.</maml:para>
+      <maml:para>Submits an asynchronous request to convert one or more DNS zones to primary. The request body must be a JSON array, where each object provides the required data for converting a zone. All zones included in the request must belong to the same contract and group. The conversion is performed as an offline task. Use the requestId returned in the response to track the task's progress and retrieve the results upon completion.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1205,7 +1205,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits an asynchronous request to convert one or more DNS zones to secondary. All zones must belong to the same contract and group. Use the `requestId` returned in the response to monitor the task's progress and retrieve the results when complete.</maml:para>
+      <maml:para>Submits an asynchronous request to convert one or more DNS zones to secondary. The request body must be a JSON array, with each object containing the required data for the conversion. All zones must belong to the same contract and group. The conversion is handled by an offline task. Use the `requestId` returned in the response to monitor the task's progress and retrieve the results when complete.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1486,7 +1486,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the change lists that you've created for the specified zone names. Note that it's possible to own a change list on a zone that you're no longer allowed to access.</maml:para>
+      <maml:para>Retrieves the change lists that you've created for the specified zone names. If the input list is empty, the response doesn't return any change lists. Note that it's possible to own a change list on a zone that you're no longer allowed to access.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -3233,7 +3233,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the current status of a running or completed zone conversion request. The `RequestID` is returned when the conversion request is initiated.</maml:para>
+      <maml:para>Retrieves the current status of a running or completed zone conversion request. The `requestId` is returned when the conversion request is initiated.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4094,7 +4094,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get all proxies that the current user has access to manage, or an individual by its `ProxyID`.</maml:para>
+      <maml:para>Get the proxy that the current user has access to manage.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4437,7 +4437,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>List all proxy zones that the current user has access to manage, or an individual by its `Name`.</maml:para>
+      <maml:para>Get a proxy zone that the current user has access to manage by proxy zone name.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5128,7 +5128,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the current status of a running or completed request. The `RequestID` was returned when the create request was initiated.</maml:para>
+      <maml:para>Retrieves the current status of a running or completed request. The `requestId` was returned when the create request was initiated.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5648,7 +5648,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the current status of a running or completed request. The `RequestID` was returned when the delete request was initiated.</maml:para>
+      <maml:para>Retrieves the current status of a running or completed request. The `requestId` was returned when the delete request was initiated.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -5824,7 +5824,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get manual filter report for a proxy zone that the current user has access to manage.</maml:para>
+      <maml:para>Get manual filter report for a  proxy zone that the current user has access to manage.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6000,7 +6000,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get all TSIG keys for a proxy zone that the current user has access to manage, or an individual by its `Name`.</maml:para>
+      <maml:para>Get a TSIG key for a proxy zone that the current user has access to manage by proxy zone name.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -10846,7 +10846,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits a request to create one or more new Proxy Zones asynchronously. All proxy zones are created on the same contract and group. You can use the response's `requestId` to check the task's status and view its results once it completes.</maml:para>
+      <maml:para>Submits a request to create one or more new Proxy Zones asynchronously. The request body contains a JSON array. Each object in the array contains the data necessary to create a proxy zone. All proxy zones are created on the same contract and group.  An offline task creates the new proxy zones. You can use the response's `requestId` to check the task's status and view its results once it completes.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -12678,7 +12678,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits a request to delete one or more proxy zones asynchronously. Before deleting a zone from the Edge DNS system, the API makes sure Akamai servers aren't receiving DNS requests for that proxy zone. It also checks that the proxy zone isn't currently delegated to Akamai's name servers. The result of this operation is a `requestId`, which you can use to check the task's status and view its results once it completes.</maml:para>
+      <maml:para>Submits a request to delete one or more proxy zones asynchronously. Each element in the response array is the name of a proxy zone to be deleted.  Before deleting a zone from the Edge DNS system, the API makes sure Akamai servers aren't receiving DNS requests for that proxy zone. It also checks that the proxy zone isn't currently delegated to Akamai's name servers.  An offline task deletes the proxy zones. The result of this operation is a `requestId`, which you can use to check the task's status and view its results once it completes.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -13077,7 +13077,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Delete manual filter entries for a proxy zone that the current user has access to manage.</maml:para>
+      <maml:para>Manage manual filter entries for a proxy zone that the current user has access to manage.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -14913,7 +14913,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the proxy. Due to the complexity of the request body, it is recommended to retrieve the proxy with Get-EDNSProxy, edit the response object locally, and pipe to this function.</maml:para>
+      <maml:para>Updates the proxy.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -15297,7 +15297,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Replace the manual filter names for a proxy zone, either from a provided object/string or a BIND-format zone file. Alternatively, if you would like to add or remote, you can use Add-EDNSProxyZoneManualFilterName or Remove-EDNSProxyZoneManualFilterName respectively.</maml:para>
+      <maml:para>Initializes manual filter names for a proxy zone. Use Add-EDNSProxyZoneManualFilterName Remove-EDNSProxyZoneManualFilterName to update a proxy zone.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -15607,7 +15607,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Update the TSIG settings for a proxy zone.</maml:para>
+      <maml:para>Update the proxy zone.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
