@@ -1897,7 +1897,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Clone an existing property, specified by either its `ClonePropertyName` or `ClonePropertyID`, to a new property. `ClonePropertyVersion` can be an integer or the word 'latest'. You can also provide a `ClonePropertyVersionEtag` to ensure only the version you wish will be cloned. If the version has been updated and this parameter is provided, the function will throw an error. Note: this function uses the same API endpoint as New-Property, but is provided for easier discovery.</maml:para>
+      <maml:para>This operation either creates a new property from scratch or bases one on another property's rule tree and optionally its set of assigned hostnames. Version 1 of a new property is created automatically. PAPI's ability to create and clone new properties means that you can design a system of rule templates targeted to specific domains, rather than maintain a single set of rules with conditional logic for your full range of domains. Maintaining properties manually within the Control Center interface limited you to that more consolidated approach, but you can deploy rules more efficiently using PAPI. In either case, PAPI makes it much easier for you to support a large, flexible set of domains.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2515,7 +2515,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Clone an existing include, specified by either its `CloneIncludeName` or `CloneIncludeID`, to a new property. `CloneIncludeVersion` can be an integer or the word 'latest'. You can also provide a `CloneIncludeVersionEtag` to ensure only the version you wish will be cloned. If the version has been updated and this parameter is provided, the function will throw an error. Note: this function uses the same API endpoint as New-PropertyInclude, but is provided for easier discovery.</maml:para>
+      <maml:para>This operation either creates a new include from scratch or bases one on another include's rule tree. Version 1 of a new include is created automatically.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
