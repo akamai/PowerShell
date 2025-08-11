@@ -178,6 +178,11 @@ Describe 'Safe Akamai.CPS Tests' {
             $PD.UpdateEnrollment.changeIds | Should -Not -BeNullOrEmpty
             $PD.UpdateEnrollment.changeIds[0] | Should -Match '^[0-9]+$'
         }
+
+        It 'throws no errors when updating an enrollment with an existing change' {
+            $PD.PendingEnrollment = Get-CPSEnrollment -EnrollmentID $TestEnrollmentID @CommonParams
+            { $PD.PendingEnrollment | Set-CPSEnrollment -EnrollmentID $PD.Enrollment.id -AllowCancelPendingChanges @CommonParams } | Should -Not -Throw
+        }
     }
 
     Context 'Get-CPSChangeStatus' {
