@@ -1,4 +1,10 @@
-## 2.3.0 (Aug 15, 2025)
+## 2.3.1 (Aug 15, 2025)
+
+### Bug Fix
+
+`New-CPSEnrollment` and `Set-CPSEnrollment`. New response body elements added in 2.3.0 were invalid when sent with a `POST` or `PUT`. These are now filtered out. 
+
+## 2.3.0 (Aug 4, 2025)
 
 ### New 
 
