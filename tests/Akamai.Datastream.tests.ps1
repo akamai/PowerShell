@@ -7,7 +7,9 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.DataStream Tests' {
     
-    BeforeAll { 
+    BeforeAll {
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.DataStream/Akamai.DataStream.psd1 -Force
         # Setup shared variables
@@ -15,7 +17,7 @@ Describe 'Safe Akamai.DataStream Tests' {
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
         $TestStreamID = $env:PesterDataStreamID
         $TestPropertyID = $env:PesterPropertyID
@@ -23,18 +25,17 @@ Describe 'Safe Akamai.DataStream Tests' {
         $TestGTMDomain = $env:PesterGTMDomain
 
         $NowUTC = (Get-Date).ToUniversalTime()
-        $DateString = Get-date $NowUTC -Format 'yyyyMMddhhmmss'
         $StreamTemplate = @"
 {
   "streamName": "replaceme",
   "groupId": $TestGroupID,
-  "contractId": "$TestContract",
+  "contractId": "$TestContractID",
   "datasetFields": [],
   "destination": {
     "destinationType": "HTTPS",
-    "displayName": "httpbin",
+    "displayName": "httpbun",
     "authenticationType": "NONE",
-    "endpoint": "https://httpbin.org/post",
+    "endpoint": "https://httpbun.com/post",
     "compressLogs": true
   },
   "deliveryConfiguration": {
@@ -49,7 +50,7 @@ Describe 'Safe Akamai.DataStream Tests' {
         # ---- Configure stream objects
         ## CDN
         $TestCDNStream = $StreamTemplate | ConvertFrom-Json
-        $TestCDNStream.streamName = "powershell-cdn-$DateString"
+        $TestCDNStream.streamName = "powershell-cdn-$Timestamp"
         999, 1005, 1019, 1033 | ForEach-Object { $TestCDNStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         $Properties = @(
             @{
@@ -60,12 +61,12 @@ Describe 'Safe Akamai.DataStream Tests' {
 
         ## EdgeWorker
         $TestEWStream = $StreamTemplate | ConvertFrom-Json
-        $TestEWStream.streamName = "powershell-edgeworkers-$DateString"
+        $TestEWStream.streamName = "powershell-edgeworkers-$Timestamp"
         6000..6003 | ForEach-Object { $TestEWStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         
         ## EdgeDNS
         $TestEDNSStream = $StreamTemplate | ConvertFrom-Json
-        $TestEDNSStream.streamName = "powershell-edns-$DateString"
+        $TestEDNSStream.streamName = "powershell-edns-$Timestamp"
         4002, 4003, 4010, 4011 | ForEach-Object { $TestEDNSStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         $Zones = @(
             @{
@@ -76,7 +77,7 @@ Describe 'Safe Akamai.DataStream Tests' {
 
         ## GTM
         $TestGTMStream = $StreamTemplate | ConvertFrom-Json
-        $TestGTMStream.streamName = "powershell-gtm-$DateString"
+        $TestGTMStream.streamName = "powershell-gtm-$Timestamp"
         5002, 5003, 5010, 5011 | ForEach-Object { $TestGTMStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         $GTMProperties = @(
             @{
@@ -85,7 +86,7 @@ Describe 'Safe Akamai.DataStream Tests' {
         )
         $TestGTMStream | Add-Member -NotePropertyName properties -NotePropertyValue $GTMProperties
 
-
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.DataStream"
         $PD = @{}
     }
 
@@ -277,14 +278,14 @@ Describe 'Safe Akamai.DataStream Tests' {
     
     Context 'Get-DataStreamEDNSZones' {
         It 'returns a list' {
-            $Zones = Get-DataStreamEDNSZones -ContractID $TestContract @CommonParams
+            $Zones = Get-DataStreamEDNSZones -ContractID $TestContractID @CommonParams
             $Zones[0].zoneName | Should -Not -BeNullOrEmpty
         }
     }
     
     Context 'Get-DataStreamGTMProperties' {
         It 'returns a list' {
-            $GTMProperties = Get-DataStreamGTMProperties -ContractID $TestContract @CommonParams
+            $GTMProperties = Get-DataStreamGTMProperties -ContractID $TestContractID @CommonParams
             $GTMProperties[0].propertyName | Should -Not -BeNullOrEmpty
         }
     }
@@ -540,16 +541,8 @@ Describe 'Safe Akamai.DataStream Tests' {
             }
         }
     }
-}
 
-Describe 'Unsafe Akamai.DataStream Tests' {
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.DataStream/Akamai.DataStream.psd1 -Force
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.DataStream"
-        $PD = @{}
-    }
-    
+    # ---- Mocked tests
     Context 'New-DataStreamActivation' {
         It 'activates successfully' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.DataStream -MockWith {
@@ -594,5 +587,3 @@ Describe 'Unsafe Akamai.DataStream Tests' {
         }
     }
 }
-
-

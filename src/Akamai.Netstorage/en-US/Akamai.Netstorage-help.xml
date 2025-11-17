@@ -2396,7 +2396,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets a NetStorage directory, either with an optional `-Prefix` (dir) or recursively with `-Recurse` (list).</maml:para>
+      <maml:para>Gets a NetStorage directory, either with an optional `-Prefix` (dir) or recursively with `-Recurse` (list). </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2441,7 +2441,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2552,7 +2552,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2638,7 +2638,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EndPath</maml:name>
         <maml:description>
-          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
+          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
           <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -2784,7 +2784,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves disk usage information for a specified directory in a NetStorage storage group.</maml:para>
+      <maml:para>Retrieves disk usage information for a specified directory in a NetStorage storage group. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3770,7 +3770,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves the stat structure (information) for a named file, symlink, or directory.</maml:para>
+      <maml:para>Retrieves the stat structure (information) for a named file, symlink, or directory. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -3815,7 +3815,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Implicit</maml:name>
           <maml:description>
-            <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path.</maml:para>
+            <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path. </maml:para>
             <maml:para>Note that including this argument will result in slower output, as it requires more NetStorage resources. Therefore, it's recommended that you use it sparingly.</maml:para>
           </maml:description>
           <dev:type>
@@ -3877,7 +3877,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Implicit</maml:name>
         <maml:description>
-          <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path.</maml:para>
+          <maml:para>Adding this argument to the action header will look for an implicit directory that fits the specified path. </maml:para>
           <maml:para>Note that including this argument will result in slower output, as it requires more NetStorage resources. Therefore, it's recommended that you use it sparingly.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
@@ -4355,7 +4355,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new explicit directory in a storage group.</maml:para>
+      <maml:para>Creates a new explicit directory in a storage group. </maml:para>
       <maml:para>&gt; Notes: &gt; - With object storage systems such as NetStorage, implicit directories are created automatically when creating objects. &gt; - You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -4956,7 +4956,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a symlink pointing to an existing NetStorage object.</maml:para>
+      <maml:para>Creates a symlink pointing to an existing NetStorage object. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -5313,7 +5313,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -5436,7 +5436,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EndPath</maml:name>
           <maml:description>
-            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
+            <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
             <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -5546,7 +5546,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EndPath</maml:name>
         <maml:description>
-          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response.</maml:para>
+          <maml:para>A complete path to the last object to return in the list response. All other objects that exist after the noted path are left out of the response. </maml:para>
           <maml:para>The zero `0` character exists in place of the trailing slash to accommodate NetStorage directory logic. As a result, the list will display everything up to, and including the last object in the path and possibly a path named `[path]0` if one exists.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -5700,7 +5700,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Downloads a NetStorage file from its remote path to a local path on your local machine.</maml:para>
+      <maml:para>Downloads a NetStorage file from its remote path to a local path on your local machine. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6037,7 +6037,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Deletes a NetStorage directory either by using the `-DirectoryIsEmpty` (rmdir) switch parameter to indicate that the directory is empty or by using the quick-delete feature if it�s enabled on your NetStorage group. If using quick-delete, you can optionally provide the `-Force` switch to avoid receiving confirmation.</maml:para>
+      <maml:para>Deletes a NetStorage directory either by using the `-DirectoryIsEmpty` (rmdir) switch parameter to indicate that the directory is empty or by using the quick-delete feature if it�s enabled on your NetStorage group. If using quick-delete, you can optionally provide the `-Force` switch to avoid receiving confirmation. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP Code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -6216,7 +6216,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Removes a file from NetStorage by its path.</maml:para>
+      <maml:para>Removes a file from NetStorage by its path. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7201,7 +7201,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Renames an object's filename. The `-Path` parameter is the full path to your file, whereas the `-NewFilename` parameter is the new filename you want to use. The rest of the object's path is unchanged.</maml:para>
+      <maml:para>Renames an object's filename. The `-Path` parameter is the full path to your file, whereas the `-NewFilename` parameter is the new filename you want to use. The rest of the object's path is unchanged. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>
@@ -7742,7 +7742,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the modification time ("touch") of a storage group object.</maml:para>
+      <maml:para>Updates the modification time ("touch") of a storage group object. </maml:para>
       <maml:para>&gt; Note: You don't need to prepend paths with the upload directory CP code, this is implied.</maml:para>
     </maml:description>
     <command:syntax>

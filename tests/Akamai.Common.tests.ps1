@@ -48,23 +48,14 @@ Describe 'Safe Shared Tests' {
             $PD.RandomAlphabetical = Get-RandomString -Length 16 -Alphabetical
             $PD.RandomAlphabetical | Should -Match "[a-z]{16}"
         }
-    }
-
-    Context 'Get-RandomString - AlphaNumeric' {
         It 'produces alphanumeric string' {
             $PD.RandomAlphaNumeric = Get-RandomString -Length 16 -AlphaNumeric
             $PD.RandomAlphaNumeric | Should -Match "[a-z0-9]{16}"
         }
-    }
-
-    Context 'Get-RandomString - Numeric' {
         It 'produces numeric string' {
             $PD.RandomNumeric = Get-RandomString -Length 16 -Numeric
             $PD.RandomNumeric | Should -Match "[0-9]{16}"
         }
-    }
-
-    Context 'Get-RandomString - Hex' {
         It 'produces hex string' {
             $PD.RandomHex = Get-RandomString -Length 16 -Hex
             $PD.RandomHex | Should -Match "[a-f0-9]{16}"
@@ -77,11 +68,89 @@ Describe 'Safe Shared Tests' {
             $PD.ParsedQuery | Should -Be $TestSanitisedQuery
         }
     }
-
+    
+    
     Context 'Format-Filename' {
         It 'encodes invalid characters' {
             $PD.ParsedFileName = Format-Filename -Filename $TestUnsanitizedFileName
             $PD.ParsedFileName | Should -Be $TestSanitizedFilename
+        }
+    }
+    
+    Context 'New-EdgeAuthToken' -Tag 'New-EdgeAuthToken' {
+        BeforeAll {
+            $Date = Get-Date
+            $Now = ([DateTimeOffset]$Date).ToUnixTimeSeconds()
+            $15MinutesFromNow = $Now + 900
+            $HourFromNow = $Now + 3600
+            $Secret = '123456abcdef'
+            $Salt = 'sodiumchloride'
+            $Data = 'android'
+            $ID = 'hellomynameis'
+            $IP = '1.2.3.4'
+        }
+        It 'generates a token with start and end' {
+            $TestParams = @{
+                Secret    = $Secret
+                StartTime = $Now
+                EndTime   = $HourFromNow
+                IP        = $IP
+                Data      = $Data
+                ID        = $ID
+            }
+            $AuthToken = New-EdgeAuthToken @TestParams
+            $AuthToken | Should -BeLike "*st=$Now~*"
+            $AuthToken | Should -BeLike "*exp=$HourFromNow~*"
+            $AuthToken | Should -BeLike "*ip=$IP~*"
+            $AuthToken | Should -BeLike "*data=$data~*"
+            $AuthToken | Should -BeLike "*id=$ID~*"
+        }
+        It 'generates a token with duration in seconds' {
+            $TestParams = @{
+                Secret            = $Secret
+                Start             = $Now
+                DurationInSeconds = 900
+                URL               = $URL
+                IP                = $IP
+                Data              = $Data
+                ID                = $ID
+            }
+            $AuthToken = New-EdgeAuthToken @TestParams
+            $AuthToken | Should -BeLike "*exp=$15MinutesFromNow~*"
+        }
+        It 'generates a token with duration in minutes' {
+            $TestParams = @{
+                Secret            = $Secret
+                Start             = $Now
+                DurationInMinutes = 60
+            }
+            $AuthToken = New-EdgeAuthToken @TestParams
+            $AuthToken | Should -BeLike "*exp=$HourFromNow~*"
+        }
+        It 'generates a token with duration in hours' {
+            $TestParams = @{
+                Secret          = $Secret
+                Start           = $Now
+                DurationInHours = 1
+            }
+            $AuthToken = New-EdgeAuthToken @TestParams
+            $AuthToken | Should -BeLike "*exp=$HourFromNow~*"
+        }
+        It 'fails if the secret has invalid characters' {
+            $TestParams = @{
+                Secret          = '123456abcdeg'
+                Start           = $Now
+                DurationInHours = 1
+            }
+            { New-EdgeAuthToken @TestParams } | Should -Throw "Cannot validate argument on parameter 'Secret'*"
+        }
+        It 'fails if the secret has an odd number of characters' {
+            $TestParams = @{
+                Secret          = '123456abcdeff'
+                Start           = $Now
+                DurationInHours = 1
+            }
+            { New-EdgeAuthToken @TestParams } | Should -Throw "Secret must have an even number of hexadecimal characters"
         }
     }
 

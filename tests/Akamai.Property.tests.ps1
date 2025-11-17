@@ -65,22 +65,6 @@ Describe 'Safe Akamai.Property Tests' {
     }
 
     AfterAll {
-        Context 'Cleanup files' {
-            $ToDelete = @(
-                'snippets.json'
-                'rules.json'
-                'includeRules.json'
-                'default.json'
-                'snippets'
-                'includesnippets'
-            )
-            $ToDelete | ForEach-Object {
-                if ((Test-Path $_)) {
-                    Remove-Item -Path $_ -Recurse -Force
-                }
-            }
-        }
-
         Context 'Remove Created Properties' {
             Get-Property -GroupID $TestGroupID -ContractId $TestContract @CommonParams | Where-Object { $_.propertyName.StartsWith($TestPropertyPrefix ) } | Remove-Property @CommonParams
         }
@@ -133,17 +117,11 @@ Describe 'Safe Akamai.Property Tests' {
             $PD.Groups = Get-Group @CommonParams
             $PD.Groups.count | Should -BeGreaterThan 0
         }
-    }
-
-    Context 'Get-Group by ID' {
-        It 'gets a group' {
+        It 'gets a group by ID' {
             $PD.GroupByID = Get-Group -GroupID $TestGroupID @CommonParams
             $PD.GroupByID | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-Group by name' {
-        It 'gets a group' {
+        It 'gets a group by name' {
             $PD.GroupByName = Get-Group -GroupName $TestGroup.groupName @CommonParams
             $PD.GroupByName | Should -Not -BeNullOrEmpty
         }
@@ -161,14 +139,11 @@ Describe 'Safe Akamai.Property Tests' {
     #-------------------------------------------------
 
     Context 'Get-PropertyCPCode' {
-        It 'should not be null' {
+        It 'gets a list of CP Codes' {
             $PD.CPCodes = Get-PropertyCPCode -GroupId $TestGroupID -ContractId $TestContract @CommonParams
             $PD.CPCodes | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-PropertyCPCode by CpCode' {
-        It 'should not be null' {
+        It 'gets a specific CP Code by ID' {
             $PD.CPCode = Get-PropertyCPCode -CPCode $PD.CPCodes[0].cpcodeId -GroupId $TestGroupID -ContractId $TestContract @CommonParams
             $PD.CPCode | Should -Not -BeNullOrEmpty
         }
@@ -179,14 +154,11 @@ Describe 'Safe Akamai.Property Tests' {
     #-------------------------------------------------
 
     Context 'Get-PropertyEdgeHostname' {
-        It 'should not be null' {
+        It 'gets a list of edge hostnames' {
             $PD.EdgeHostnames = Get-PropertyEdgeHostname -GroupId $TestGroupID -ContractId $TestContract @CommonParams
             $PD.EdgeHostnames | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-PropertyEdgeHostname' {
-        It 'should not be null' {
+        It 'gets a specific edge hostname by ID' {
             $PD.EdgeHostname = Get-PropertyEdgeHostname -EdgeHostnameID $PD.EdgeHostnames[0].EdgeHostnameId -GroupId $TestGroupID -ContractId $TestContract @CommonParams
             $PD.EdgeHostname | Should -Not -BeNullOrEmpty
         }
@@ -197,14 +169,11 @@ Describe 'Safe Akamai.Property Tests' {
     #-------------------------------------------------
 
     Context 'Get-CustomBehavior' {
-        It 'should not be null' {
+        It 'gets a list of custom behaviors' {
             $PD.CustomBehaviors = Get-CustomBehavior @CommonParams
             $PD.CustomBehaviors | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-CustomBehavior by ID' {
-        It 'should not be null' {
+        It 'gets a specific custom behavior by ID' {
             $PD.CustomBehavior = Get-CustomBehavior -BehaviorId $PD.CustomBehaviors[0].behaviorId @CommonParams
             $PD.CustomBehavior | Should -Not -BeNullOrEmpty
         }
@@ -412,6 +381,14 @@ Describe 'Safe Akamai.Property Tests' {
             $PD.Properties.count | Should -BeGreaterThan 0
             $PD.Properties[0].propertyId | Should -Not -BeNullOrEmpty
         }
+        It 'finds properties by name' {
+            $PD.PropertyByName = Get-Property -PropertyName $TestPropertyName @CommonParams
+            $PD.PropertyByName.PropertyName | Should -Be $TestPropertyName
+        }
+        It 'finds properties by ID' {
+            $PD.PropertyByID = Get-Property -PropertyID $PD.NewPropertyTrad.propertyId @CommonParams
+            $PD.PropertyByID.propertyId | Should -Be $PD.NewPropertyTrad.propertyId
+        }
         It 'handles an empty property response' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 [PSCustomObject] @{ "properties" = [PSCustomObject] @{ "items" = @() } }
@@ -455,20 +432,6 @@ Describe 'Safe Akamai.Property Tests' {
         }
     }
 
-    Context 'Get-Property by name' {
-        It 'finds properties by name' {
-            $PD.PropertyByName = Get-Property -PropertyName $TestPropertyName @CommonParams
-            $PD.PropertyByName.PropertyName | Should -Be $TestPropertyName
-        }
-    }
-
-    Context 'Get-Property by ID' {
-        It 'finds properties by ID' {
-            $PD.PropertyByID = Get-Property -PropertyID $PD.FoundProperty.propertyId @CommonParams
-            $PD.PropertyByID | Should -Not -BeNullOrEmpty
-        }
-    }
-
     Context 'Remove-Property' {
         Context 'single by param' {
             It 'removes a property' {
@@ -505,16 +468,10 @@ Describe 'Safe Akamai.Property Tests' {
             $PD.PropertyVersions[0].productionStatus | Should -Not -BeNullOrEmpty
             $PD.PropertyVersions[0].stagingStatus | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-PropertyVersion, specific' {
         It 'finds specified version' {
             $PD.PropertyVersion = Get-PropertyVersion -PropertyID $PD.FoundProperty.propertyId -PropertyVersion $PD.FoundProperty.propertyVersion @CommonParams
             $PD.PropertyVersion | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-PropertyVersion using "latest"' {
         It 'finds "latest" version' {
             $PD.PropertyVersion = Get-PropertyVersion -PropertyID $PD.FoundProperty.propertyId -PropertyVersion 'latest' @CommonParams
             $PD.PropertyVersion | Should -Not -BeNullOrEmpty
@@ -534,29 +491,35 @@ Describe 'Safe Akamai.Property Tests' {
     #-------------------------------------------------
 
     Context 'Get-PropertyRules to variable' {
-        It 'returns rules object' {
+    }
+    
+    Context 'Get-PropertyRules' {
+        It 'returns rules object to object' {
             $PD.Rules = Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest @CommonParams
             $PD.Rules | Should -BeOfType [PSCustomObject]
             $PD.Rules.rules | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-PropertyRules to file' {
         It 'creates json file' {
-            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputToFile -OutputFileName rules.json @CommonParams
-            'rules.json' | Should -Exist
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputToFile -OutputFileName TestDrive:/rules.json @CommonParams
+            'TestDrive:/rules.json' | Should -Exist
+        }
+        It 'creates json file without -OutputToFile param' {
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputFileName TestDrive:/rules2.json @CommonParams
+            'TestDrive:/rules2.json' | Should -Exist
         }
         It 'fails without -Force if file exists' {
-            { Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputToFile -OutputFileName rules.json @CommonParams } | Should -Throw
+            { Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputToFile -OutputFileName TestDrive:/rules.json @CommonParams } | Should -Throw
+        }
+        It 'creates snippet files' {
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputSnippets -OutputDirectory TestDrive:/snippets @CommonParams
+            'TestDrive:/snippets/main.json' | Should -Exist
+        }
+        It 'creates snippet files without -OutputSnippets param' {
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputDirectory TestDrive:/snippets2 @CommonParams
+            'TestDrive:/snippets2/main.json' | Should -Exist
         }
     }
 
-    Context 'Get-PropertyRules to snippets' {
-        It 'creates expected files' {
-            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputSnippets -OutputDirectory snippets @CommonParams
-            'snippets\main.json' | Should -Exist
-        }
-    }
     
     Context 'Get-PropertyRulesDigest' {
         It 'matches the expected format' {
@@ -567,15 +530,15 @@ Describe 'Safe Akamai.Property Tests' {
     }
 
     Context 'Merge-PropertyRules' {
-        It 'creates expected json file' {
-            Merge-PropertyRules -SourceDirectory snippets -OutputToFile -OutputFileName snippets.json
-            'snippets.json' | Should -Exist
+        BeforeAll {
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputSnippets -OutputDirectory TestDrive:/snippets @CommonParams
         }
-    }
-
-    Context 'Merge-PropertyRules' {
+        It 'creates expected json file' {
+            Merge-PropertyRules -SourceDirectory TestDrive:/snippets -OutputToFile -OutputFileName TestDrive:/snippets.json
+            'TestDrive:/snippets.json' | Should -Exist
+        }
         It 'returns rules object' {
-            $PD.MergedRules = Merge-PropertyRules -SourceDirectory snippets
+            $PD.MergedRules = Merge-PropertyRules -SourceDirectory TestDrive:/snippets
             $PD.MergedRules | Should -BeOfType [PSCustomObject]
             $PD.MergedRules.rules | Should -Not -BeNullOrEmpty
         }
@@ -583,16 +546,19 @@ Describe 'Safe Akamai.Property Tests' {
     
     Context 'Get-ChildRuleSnippet' {
         It 'creates default rule json' {
-            Get-ChildRuleSnippet -Rules $PD.MergedRules.rules -Path . -CurrentDepth 0 -MaxDepth 0
-            'default.json' | Should -Exist
+            Get-ChildRuleSnippet -Rules $PD.MergedRules.rules -Path TestDrive:/ -CurrentDepth 0 -MaxDepth 0
+            'TestDrive:/default.json' | Should -Exist
         }
     }
     
     Context 'Expand-ChildRuleSnippet' {
+        BeforeAll {
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputSnippets -OutputDirectory TestDrive:/snippets @CommonParams
+        }
         It 'returns the correct object format' {
-            $Main = Get-Content snippets/main.json | ConvertFrom-Json
+            $Main = Get-Content TestDrive:/snippets/main.json | ConvertFrom-Json
             $ChildInclude = $Main.children[0]
-            $PD.childrule = Expand-ChildRuleSnippet -Include $ChildInclude -Path snippets -DefaultRuleDirectory snippets
+            $PD.childrule = Expand-ChildRuleSnippet -Include $ChildInclude -Path TestDrive:/snippets -DefaultRuleDirectory snippets
             $PD.childrule.name | Should -Not -BeNullOrEmpty
             Should -ActualValue $PD.childrule.children -BeOfType 'Array'
             Should -ActualValue $PD.childrule.behaviors -BeOfType 'Array'
@@ -601,33 +567,31 @@ Describe 'Safe Akamai.Property Tests' {
         }
     }
 
-    Context 'Set-PropertyRules via pipeline' {
-        It 'returns rules object' {
+    Context 'Set-PropertyRules' {
+        BeforeAll {
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputToFile -OutputFileName TestDrive:/rules.json @CommonParams
+            Get-PropertyRules -PropertyName $TestPropertyName -PropertyVersion latest -OutputSnippets -OutputDirectory TestDrive:/snippets @CommonParams
+        }
+        It 'updates by pipeline' {
             $PD.Rules = $PD.Rules | Set-PropertyRules -PropertyName $TestPropertyName -PropertyVersion $PD.NewPropertyVersion.propertyVersion @CommonParams
             $PD.Rules | Should -BeOfType PSCustomObject
             $PD.Rules.rules | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Set-PropertyRules from file' {
-        It 'returns rules object' {
+        It 'updates by json file' {
             $TestParams = @{
                 PropertyID      = $PD.FoundProperty.propertyId
                 PropertyVersion = $PD.NewPropertyVersion.propertyVersion
-                InputFile       = 'rules.json'
+                InputFile       = 'TestDrive:/rules.json'
             }
             $PD.RulesFromFile = Set-PropertyRules @TestParams @CommonParams
             $PD.RulesFromFile | Should -BeOfType PSCustomObject
             $PD.RulesFromFile.rules | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Set-PropertyRules from snippets' {
-        It 'returns rules object' {
+        It 'updates by snippets' {
             $TestParams = @{
                 PropertyID      = $PD.FoundProperty.propertyId
                 PropertyVersion = $PD.NewPropertyVersion.propertyVersion
-                InputDirectory  = 'snippets'
+                InputDirectory  = 'TestDrive:/snippets'
             }
             $PD.RulesFromDir = Set-PropertyRules @TestParams @CommonParams
             $PD.RulesFromDir | Should -BeOfType PSCustomObject
@@ -662,21 +626,18 @@ Describe 'Safe Akamai.Property Tests' {
         }
     }
 
-    Context 'Set-PropertyHostname by pipeline' {
-        It 'works via pipeline' {
+    Context 'Set-PropertyHostname' {
+        It 'updates by pipeline' {
             $PD.SetPropertyHostnamesByPipeline = $PD.PropertyHostnames | Set-PropertyHostname -PropertyName $TestPropertyName -PropertyVersion $PD.NewPropertyVersion.propertyVersion @CommonParams
             $PD.SetPropertyHostnamesByPipeline | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-PropertyHostname by param' {
-        It 'works via param' {
+        It 'updates by param' {
             $PD.PropertyHostnamesByParam = Set-PropertyHostname -PropertyName $TestPropertyName -PropertyVersion latest -Body $PD.PropertyHostnames @CommonParams
             $PD.PropertyHostnamesByParam | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Add-PropertyHostname via param' {
+    Context 'Add-PropertyHostname' {
         It 'works via param' {
             $PD.HostnameToAdd = @{ 
                 cnameType = "EDGE_HOSTNAME"
@@ -847,7 +808,7 @@ Describe 'Safe Akamai.Property Tests' {
         }
     }
 
-    Context 'Get-PropertyActivation by ID' {
+    Context 'Get-PropertyActivation' {
         It 'finds the correct activation' {
             # Sanitize activation ID from previous response
             $PD.ActivationID = ($PD.Activation.activationLink -split "/")[-1]
@@ -857,9 +818,6 @@ Describe 'Safe Akamai.Property Tests' {
             $PD.ActivationResult = Get-PropertyActivation -PropertyName $TestPropertyName -ActivationID $PD.ActivationID @CommonParams
             $PD.ActivationResult[0].activationId | Should -Be $PD.ActivationID
         }
-    }
-
-    Context 'Get-PropertyActivation' {
         It 'returns a list' {
             $PD.Activations = Get-PropertyActivation -PropertyName $TestPropertyName @CommonParams
             $PD.Activations[0].activationId | Should -Not -BeNullOrEmpty
@@ -986,77 +944,79 @@ Describe 'Safe Akamai.Property Tests' {
     }
 
     Context 'Get-PropertyInclude' {
-        It 'returns a list' {
+        It 'gets a list of includes' {
             $PD.Includes = Get-PropertyInclude -GroupID $TestGroupID -ContractId $TestContract @CommonParams
             $PD.Includes[0].includeId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-PropertyInclude by ID' {
-        It 'returns the correct data' {
+        It 'gets an include by ID' {
             $PD.IncludeByID = Get-PropertyInclude -IncludeID $PD.NewInclude.includeId @CommonParams
             $PD.IncludeByID.includeName | Should -Be $TestIncludeName
         }
-    }
-
-    Context 'Get-PropertyInclude by name' {
-        It 'returns the correct data' {
+        It 'gets an include by name' {
             $PD.Include = Get-PropertyInclude -IncludeName $TestIncludeName @CommonParams
             $PD.Include.includeName | Should -Be $TestIncludeName
         }
     }
 
-    Context 'Get-PropertyIncludeRules to object' {
-        It 'returns the correct data' {
+    Context 'Get-PropertyIncludeRules' {
+        It 'gets rules to object' {
             $PD.IncludeRules = Get-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion 1 @CommonParams
             $PD.IncludeRules.includeName | Should -Be $TestIncludeName
         }
-    }
-    
-    Context 'Get-PropertyIncludeRules to file' {
-        It 'creates the json file' {
+        It 'creates a json file' {
             $TestParams = @{
                 IncludeID      = $PD.NewInclude.includeId
                 IncludeVersion = 1
                 OutputToFile   = $true
-                OutputFileName = 'includeRules.json'
+                OutputFileName = 'TestDrive:/includeRules.json'
             }
             Get-PropertyIncludeRules @testParams @CommonParams
-            'includeRules.json' | Should -Exist
+            'TestDrive:/includeRules.json' | Should -Exist
         }
-    }
-
-    Context 'Get-PropertyIncludeRules to snippets' {
-        It 'creates expected files' {
-            Get-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion latest -OutputSnippets -OutputDir includesnippets @CommonParams
-            'includesnippets\main.json' | Should -Exist
+        It 'creates a json file without the OutputToFile param' {
+            $TestParams = @{
+                IncludeID      = $PD.NewInclude.includeId
+                IncludeVersion = 1
+                OutputFileName = 'TestDrive:/includeRules2.json'
+            }
+            Get-PropertyIncludeRules @testParams @CommonParams
+            'TestDrive:/includeRules2.json' | Should -Exist
+        }
+        It 'creates snippet files' {
+            Get-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion latest -OutputSnippets -OutputDir TestDrive:/includesnippets @CommonParams
+            'TestDrive:/includesnippets/main.json' | Should -Exist
+        }
+        It 'creates snippet files without OutputSnippets param' {
+            Get-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion latest -OutputDir TestDrive:/includesnippets2 @CommonParams
+            'TestDrive:/includesnippets2/main.json' | Should -Exist
         }
     }
 
     Context 'Set-PropertyIncludeRules by pipeline' {
-        It 'updates correctly' {
+        BeforeAll {
+            $TestParams = @{
+                IncludeID      = $PD.NewInclude.includeId
+                IncludeVersion = 1
+                OutputToFile   = $true
+                OutputFileName = 'TestDrive:/includeRules.json'
+            }
+            Get-PropertyIncludeRules @testParams @CommonParams
+            Get-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion latest -OutputSnippets -OutputDir TestDrive:/includesnippets @CommonParams
+        }
+        It 'updates rules by pipeline' {
             $PD.SetIncludeRulesByPipeline = ( $PD.IncludeRules | Set-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion 1 @CommonParams)
             $PD.SetIncludeRulesByPipeline.includeName | Should -Be $TestIncludeName
         }
-    }
-
-    Context 'Set-PropertyIncludeRules by body' {
-        It 'updates correctly' {
+        It 'updates rules by body' {
             $PD.SetIncludeRulesByBody = Set-PropertyIncludeRules -IncludeID $PD.NewInclude.includeId -IncludeVersion 1 -Body $PD.IncludeRules @CommonParams
             $PD.SetIncludeRulesByBody.includeName | Should -Be $TestIncludeName
         }
-    }
-
-    Context 'Set-PropertyIncludeRules from snippets directory' {
-        It 'updates successfully' {
-            $PD.SetIncludeRulesSnippets = Set-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion 1 -InputDirectory includesnippets @CommonParams
+        It 'updates rules from snippets' {
+            $PD.SetIncludeRulesSnippets = Set-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion 1 -InputDirectory TestDrive:/includesnippets @CommonParams
             $PD.SetIncludeRulesSnippets.includeName | Should -Be $TestIncludeName
         }
-    }
-    
-    Context 'Set-PropertyIncludeRules from file' {
-        It 'updates successfully' {
-            $PD.SetIncludeRulesSnippets = Set-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion 1 -InputFile 'includeRules.json' @CommonParams
+        It 'updates rules from json file' {
+            $PD.SetIncludeRulesSnippets = Set-PropertyIncludeRules -IncludeName $TestIncludeName -IncludeVersion 1 -InputFile 'TestDrive:/includeRules.json' @CommonParams
             $PD.SetIncludeRulesSnippets.includeName | Should -Be $TestIncludeName
         }
     }
@@ -1118,33 +1078,27 @@ Describe 'Safe Akamai.Property Tests' {
     #-------------------------------------------------
 
     Context 'Get-BucketActivation (all)' {
-        It 'returns a list' {
+        It 'gets a list of activations' {
             $PD.BucketActivations = Get-BucketActivation -PropertyName $TestBucketPropertyName @CommonParams
             $PD.BucketActivations[0].hostnameActivationId | Should -Not -BeNullOrEmpty
         }
     }
-
-    Context 'Get-BucketActivation (single)' {
-        It 'returns the correct data' {
-            $PD.BucketActivation = Get-BucketActivation -PropertyName $TestBucketPropertyName -HostnameActivationID $PD.BucketActivations[0].hostnameActivationId @CommonParams
-            $PD.BucketActivation.hostnameActivationId | Should -Be $PD.BucketActivations[0].hostnameActivationId
-        }
+    It 'gets a specific activation by ID' {
+        $PD.BucketActivation = Get-BucketActivation -PropertyName $TestBucketPropertyName -HostnameActivationID $PD.BucketActivations[0].hostnameActivationId @CommonParams
+        $PD.BucketActivation.hostnameActivationId | Should -Be $PD.BucketActivations[0].hostnameActivationId
     }
 
     #-------------------------------------------------
     #                Overrides
     #-------------------------------------------------
 
-    Context 'Get-CustomOverride (All)' {
-        It 'returns a list' {
+    Context 'Get-CustomOverride' {
+        It 'gets a list of overrides' {
             $PD.CustomOverrides = Get-CustomOverride @CommonParams
             $PD.CustomOverrides.count | Should -BeGreaterThan 0
             $PD.CustomOverrides[0].overrideId | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-CustomOverride (Single)' {
-        It 'returns a list' {
+        It 'gets a specific override by ID' {
             $PD.CustomOverride = Get-CustomOverride -OverrideID $PD.CustomOverrides[0].overrideId @CommonParams
             $PD.CustomOverride.overrideId | Should -Be $PD.CustomOverrides[0].overrideId
         }
@@ -1269,8 +1223,8 @@ Describe 'Unsafe Akamai.Property Tests' {
         }
     }
 
-    Context 'Get-PropertyIncludeActivation by ID' {
-        It 'returns the right data' {
+    Context 'Get-PropertyIncludeActivation' {
+        It 'returns the a specific activation by ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-PropertyIncludeActivation.json"
                 return $Response | ConvertFrom-Json
@@ -1278,9 +1232,6 @@ Describe 'Unsafe Akamai.Property Tests' {
             $IncludeActivation = Get-PropertyIncludeActivation -IncludeID 123456 -IncludeActivationID 123456789
             $IncludeActivation.includeId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-PropertyIncludeActivation' {
         It 'returns a list' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-PropertyIncludeActivation.json"
@@ -1395,10 +1346,7 @@ Describe 'Unsafe Akamai.Property Tests' {
             $NewBulkSearch = New-BulkSearch -Match '$.name'
             $NewBulkSearch.bulkSearchLink | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'New-BulkSearch, sync' {
-        It 'returns the correct data' {
+        It 'returns the correct data using -Synchronous' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Property -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-BulkSearch.json"
                 return $Response | ConvertFrom-Json

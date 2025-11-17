@@ -1,12 +1,24 @@
+## 2.3.2 (Nov 14, 2025)
+
+### Bug Fixes
+
+* `ValidateSet` on all AppSec Policy Action functions changed to `ValidatePattern` to allow custom deny actions and Bot Management policy actions in `Set-AppSecPolicyRatePolicy`. Previously, these only allowed `allow`, `deny` and `none`.
+* `Get-PropertyRules` and `Get-PropertyIncludeRules`. corrected an issue that failed when the destination folder was in a different drive.
+
+### Updates
+
+* Expanded environment variable support in `Invoke-AkamaiNSAPIRequest` to include `$env:proxy_use_default_credentials`.
+* Updated `New-EdgeAuthToken` to only pass the `$Start` parameter in the token when specified and validate a key is an even number of hex characters.
+
 ## 2.3.1 (Aug 15, 2025)
 
 ### Bug Fix
 
-`New-CPSEnrollment` and `Set-CPSEnrollment`. New response body elements added in 2.3.0 were invalid when sent with a `POST` or `PUT`. These are now filtered out. 
+`New-CPSEnrollment` and `Set-CPSEnrollment`. New response body elements added in 2.3.0 were invalid when sent with a `POST` or `PUT`. These are now filtered out.
 
 ## 2.3.0 (Aug 4, 2025)
 
-### New 
+### New
 
 #### CPS
 
@@ -19,7 +31,7 @@
 
 #### EdgeWorkers
 
-* `Get-EdgeWorkerLoggingOverride`. Get status information about a specific logging override. 
+* `Get-EdgeWorkerLoggingOverride`. Get status information about a specific logging override.
 * `New-EdgeWorkerLoggingOverride`. Override the default JavaScript logging level for an EdgeWorker specified by its `EdgeWorkerName` or `EdgeWorkerID`.
 
 #### Test Center
@@ -73,7 +85,7 @@ This update fixes the following issues.
 * `Invoke-AkamaiRequest`. It didn't parse correctly when using PowerShell 5.1 on Windows Server without Internet Explorer installed. Added a `-UseBasicParsing` parameter. Resolves [Issue 14](https://github.com/akamai/powershell/issues/14).
 * GTM `Body` parameter. A body is required in several functions but wasn't set to `Mandatory`. Corrected.
 * GTM `DatacenterID` parameter. It was a string. Updated to `int`.
-* GTM return object. It wasn't scoped properly in several `New` functions. Rescoped to `resource` property. 
+* GTM return object. It wasn't scoped properly in several `New` functions. Rescoped to `resource` property.
 
 ### Updates
 
@@ -100,7 +112,7 @@ MTLS Origin Keystore (MOKS)
 
 * `Invoke-AkamaiRequest`. Replaces `Invoke-AkamaiRestMethod` in all higher function. It's based on `Invoke-WebRequest` rather than `Invoke-RestMethod`, so all functions work the same for PowerShell v5.1 and ≥7.0.
 * `Uninstall-Akamai`. Handles migration from Akamaipowershell v1.
-* Added options architecture that manage server and rate limiting error impact, provides troubleshooting information, and stores Akamai asset IDs for reuse. 
+* Added options architecture that manage server and rate limiting error impact, provides troubleshooting information, and stores Akamai asset IDs for reuse.
   * Error retries
   * Rate Limit retries and warnings
   * Property API prefixes
@@ -118,7 +130,7 @@ MTLS Origin Keystore (MOKS)
 #### NetStorage
 
 `Read-NetstorageDirectory`. Recursively downloads an entire directory from a storage group.
-    
+
 ### Bug Fixes
 
 This update fixes the following issues.
@@ -130,22 +142,22 @@ This update fixes the following issues.
 * `Get-IAMGroup`. Unexpected behavior when using the `-Flatten` option in PowerShell 5.1. Resolves [Akamaipowershell issue 54](https://github.com/akamai/akamaipowershell/issues/54).
 * `*-EdgeKVItem`. Overloaded use of the word _group_ in functions that fused item and access control groups. Access control groups now use a string.
 * `New-AppSecActivation`. Body data not sent if not a string.
-    
+
 ### Updates
 
 #### General
-  
+
 * Overhauled error handling, making displayed errors much more useful.
 * Added the module version to`RequiredModules` in all submodules.
 * Added splatting to all functions using `Invoke-AkamaiRequest`.
 * Expanded debugging so parameters are passed down to `Invoke-AkamaiRequest`.
 
 #### AppSec
-  
+
 * Added error handling to `Expand-AppSecConfigDetails` if the given `ConfigName` is not found. Previously it just warned the user.
 * `Get-AppSecMatchTarget`: changed `IncludeChildObjectName` switch parameter to `OmitChildObjectName`. Inclusion of child objects is the default API behavior, so you could only previously remove them by the use of `-IncludeChildObjectName:$false`, which is confusing.
 * Improved pipeline handling, particularly with `Remove-*` functions.
-    
+
 #### CPS
 
 Added the `ContractID` parameter to `Get-CPSEnrollment` to allow for both get one and get all functionality.
@@ -157,7 +169,7 @@ Added `-Activate` switch to `New-DataStream` that combines creation and activati
 #### Edge DNS
 
 Included support for updating multiple records and to auto-increment zone SOA record if required to `Set-EdnsRecordSet`.
-  
+
 #### Edge Diagnostics
 
 Forced inclusion of `useStaging` in request body to mitigate an API issue.
@@ -166,7 +178,7 @@ Forced inclusion of `useStaging` in request body to mitigate an API issue.
 
 * Added an option that disables the implicit inclusion of account switch keys in `Get-AccountSwitchKey`.
 * Changed the `PropertyID` parameter to `AssetID` so that it's inline with API documentation and matches the Property API format.
-    
+
 #### Netstorage
 
 * Improved `Get-NetstorageDirectory` to properly handle `StartPath` and `EndPath` parameters.
@@ -230,7 +242,7 @@ Bumped deployment content-type to v8.
 * Added additional response body object members in cmdlets that only returned a link, removing the need to parse IDs for use downstream. For example, `New-Property` now returns both a `PropertyLink`, `/papi/v1/properties/prp_97654?contractId=ctr_C-0N7RAC7&groupId=grp_12345`, and an isolated `PropertyID`, `97654` or `prp_97654` depending on your client settings.
 * Simplified `Get-PropertyRules` and `Get-PropertyIncludeRules` to support multiple output types.
 * Broadened `Get-PropertyHostname` to list all account hostnames if no property information provided.
-  
+
 ### Removed
 
 #### Common
@@ -251,7 +263,7 @@ All other previous known issues are resolved with this release's new submodules.
 
 ### New
 
-Refactored entire module. 
+Refactored entire module.
 
 * Split module into parent and child architecture to improve import speed and flexibility.
 * Created parent manifest module that allows an install or import of all child modules in a single command.
