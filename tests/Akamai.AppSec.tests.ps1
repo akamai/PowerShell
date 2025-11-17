@@ -6,7 +6,7 @@ BeforeDiscovery {
 }
 
 Describe 'Safe Akamai.AppSec Tests' {
-    BeforeAll { 
+    BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.AppSec/Akamai.AppSec.psd1 -Force
         # Setup shared variables
@@ -14,7 +14,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestConfigName = "akamaipowershell"
+        $TestConfigName = "akamai-powershell"
         $TestConfigDescription = "Powershell pester testing. Will be deleted shortly."
         $TestContract = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
@@ -79,14 +79,14 @@ Describe 'Safe Akamai.AppSec Tests' {
 "@
         $PD = @{}
     }
-    
+
     AfterAll {
         # Cleanup, in case of error
         Get-AppSecConfiguration @CommonParams | Where-Object name -eq $TestConfigName | Remove-AppSecConfiguration @CommonParams
     }
 
     #-------------------------------------------------
-    #                 Configuration                  
+    #                 Configuration
     #-------------------------------------------------
 
     Context 'New-AppSecConfiguration' {
@@ -125,7 +125,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                  Custom Rules                  
+    #                  Custom Rules
     #-------------------------------------------------
 
     Context 'New-AppSecCustomRule' {
@@ -151,28 +151,28 @@ Describe 'Safe Akamai.AppSec Tests' {
 
     Context 'Set-AppSecCustomRule by pipeline' {
         It 'completes successfully' {
-            $PD.SetCustomRule = $PD.NewCustomRule | Set-AppSecCustomRule -ConfigID $PD.NewConfig.configId -RuleID $PD.NewCustomRule.id @CommonParams 
+            $PD.SetCustomRule = $PD.NewCustomRule | Set-AppSecCustomRule -ConfigID $PD.NewConfig.configId -RuleID $PD.NewCustomRule.id @CommonParams
         }
     }
 
     Context 'Set-AppSecCustomRule by body' {
         It 'completes successfully' {
-            $PD.SetCustomRule = Set-AppSecCustomRule -ConfigID $PD.NewConfig.configId -RuleID $PD.NewCustomRule.id -Body $TestCustomRule @CommonParams 
+            $PD.SetCustomRule = Set-AppSecCustomRule -ConfigID $PD.NewConfig.configId -RuleID $PD.NewCustomRule.id -Body $TestCustomRule @CommonParams
         }
     }
 
     #-------------------------------------------------
-    #               Failover Hostnames               
+    #               Failover Hostnames
     #-------------------------------------------------
 
     Context 'Get-AppSecFailoverHostnames' {
         It 'does not throw' {
-            $PD.FailoverHostnames = Get-AppSecFailoverHostnames -ConfigID $PD.NewConfig.configId @CommonParams 
+            $PD.FailoverHostnames = Get-AppSecFailoverHostnames -ConfigID $PD.NewConfig.configId @CommonParams
         }
     }
 
     #-------------------------------------------------
-    #               Version Notes                    
+    #               Version Notes
     #-------------------------------------------------
 
     Context 'Set-AppSecVersionNotes' {
@@ -190,7 +190,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                    Hostnames                   
+    #                    Hostnames
     #-------------------------------------------------
 
     Context 'Get-AppSecSelectableHostname' {
@@ -213,7 +213,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.AddedHostnames.hostnameList.hostname | Should -Contain $TestNewHostname
         }
     }
-    
+
     Context 'Set-AppSecSelectedHostnames' {
         It 'adds a hostname successfully' {
             $PD.UpdatedHostnames = Set-AppSecSelectedHostnames -ConfigID $PD.NewConfig.configId -VersionNumber 1 -Body $PD.AddedHostnames @CommonParams
@@ -236,7 +236,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                    Policies                    
+    #                    Policies
     #-------------------------------------------------
 
     Context 'New-AppSecPolicy' {
@@ -292,7 +292,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                  Match Targets                 
+    #                  Match Targets
     #-------------------------------------------------
 
     Context 'New-AppSecMatchTarget, API' {
@@ -302,7 +302,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.NewAPIMatchTarget.configId | Should -Be $PD.NewConfig.configId
         }
     }
-    
+
     Context 'New-AppSecMatchTarget, website' {
         It 'creates correctly' {
             $TestSiteMatchTarget.securityPolicy.policyId = $PD.NewPolicy.policyId
@@ -362,7 +362,7 @@ Describe 'Safe Akamai.AppSec Tests' {
 
 
     #-------------------------------------------------
-    #                IP/Geo Firewall                 
+    #                IP/Geo Firewall
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyIPGeoFirewall' {
@@ -387,7 +387,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                  Rate Policies                 
+    #                  Rate Policies
     #-------------------------------------------------
 
     Context 'New-AppSecRatePolicy by body' {
@@ -433,7 +433,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                   Custom Deny                  
+    #                   Custom Deny
     #-------------------------------------------------
 
     Context 'New-AppSecCustomDenyAction' {
@@ -474,10 +474,10 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                       SIEM                     
+    #                       SIEM
     #-------------------------------------------------
 
-    
+
     Context 'Set-AppSecSiemSettings by body' {
         It 'updates correctly' {
             $PD.SetSIEMSettings = Set-AppSecSiemSettings -ConfigID $PD.NewConfig.configId -VersionNumber 1 -Body $TestSiemSettingsBody @CommonParams
@@ -500,7 +500,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #               Reputation Profiles              
+    #               Reputation Profiles
     #-------------------------------------------------
 
     Context 'New-AppSecReputationProfile by body' {
@@ -546,7 +546,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                    Advanced                    
+    #                    Advanced
     #-------------------------------------------------
 
     Context 'Get-AppSecEvasivePathMatch' {
@@ -639,7 +639,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetRequestSizeLimit.requestBodyInspectionLimitInKB | Should -Be 32
         }
     }
-    
+
     Context 'Get-AppSecAttackPayloadSettings' {
         It 'returns the correct data' {
             $PD.AttackPayloadSettings = Get-AppSecAttackPayloadSettings -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
@@ -653,14 +653,14 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetAttackPayloadSettingsByBody.requestBody | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Set-AppSecAttackPayloadSettings by Pipeline' {
         It 'updates correctly' {
             $PD.SetAttackPayloadSettingsByPipeline = ($PD.AttackPayloadSettings | Set-AppSecAttackPayloadSettings -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams)
             $PD.SetAttackPayloadSettingsByPipeline.requestBody | Should -Not -BeNullOrEmpty
         }
     }
-   
+
     Context 'Get-AppSecPIISettings' {
         It 'returns the correct data' {
             $PD.PIISettings = Get-AppSecPIISettings -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
@@ -674,7 +674,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetPIISettingsByParam.enablePiiLearning | Should -Be $true
         }
     }
-    
+
     Context 'Set-AppSecPIISettings by pipeline' {
         It 'updates correctly' {
             $PD.SetPIISettingsByPipeline = ($PD.PIISettings | Set-AppSecPIISettings -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams)
@@ -683,14 +683,14 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                   Protections                  
+    #                   Protections
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyProtections' {
         It 'returns the correct data' {
             $PD.Protections = Get-AppSecPolicyProtections -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId @CommonParams
             $PD.Protections.applyApiConstraints | Should -Not -BeNullOrEmpty
-            
+
             # Enable all protections for later use
             $PD.Protections.PSObject.Properties.Name | ForEach-Object {
                 $PD.Protections.$_ = $true
@@ -714,7 +714,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                   Penalty Box                  
+    #                   Penalty Box
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyPenaltyBox' {
@@ -739,13 +739,21 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #               Rate Policy Actions              
+    #               Rate Policy Actions
     #-------------------------------------------------
 
     Context 'Set-AppSecPolicyRatePolicy' {
         It 'updates correctly' {
             $PD.SetRatePolicyAction = Set-AppSecPolicyRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RatePolicyID $PD.NewRatePolicyByBody.id -IPv4Action alert -IPv6Action alert @CommonParams
             $PD.SetRatePolicyAction.ipv4Action | Should -Be 'alert'
+        }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RatePolicyID $PD.NewRatePolicyByBody.id -IPv4Action 'pattern_fail' -IPv6Action alert @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -RatePolicyID $PD.NewRatePolicyByBody.id -IPv4Action alert -IPv6Action alert @CommonParams} | Should -Throw
         }
     }
 
@@ -757,7 +765,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #             API Request Constraints            
+    #             API Request Constraints
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyAPIRequestConstraints' {
@@ -767,22 +775,28 @@ Describe 'Safe Akamai.AppSec Tests' {
         }
     }
 
-    Context 'Set-AppSecPolicyAPIRequestConstraints without ID' {
-        It 'returns a list of actions' {
+    Context 'Set-AppSecPolicyAPIRequestConstraints' {
+        It 'without id - returns a list of actions' {
             $PD.SetAPIRequestConstraints = Set-AppSecPolicyAPIRequestConstraints -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -Action "alert" @CommonParams
             $PD.SetAPIRequestConstraints[0].action | Should -Not -BeNullOrEmpty
         }
-    }
 
-    Context 'Set-AppSecPolicyAPIRequestConstraints with ID' {
-        It 'returns the correct action' {
+        It 'with id - returns the correct action' {
             $PD.SetAPIRequestConstraint = Set-AppSecPolicyAPIRequestConstraints -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -ApiID $TestAPIEndpointID -Action "alert" @CommonParams
             $PD.SetAPIRequestConstraints[0].action | Should -Not -BeNullOrEmpty
+        }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyAPIRequestConstraints -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -ApiID $TestAPIEndpointID -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyAPIRequestConstraints -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -ApiID $TestAPIEndpointID -Action "alert" @CommonParams} | Should -Throw
         }
     }
 
     #-------------------------------------------------
-    #               Reputation Analysis              
+    #               Reputation Analysis
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyReputationAnalysis' {
@@ -807,7 +821,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #            Reputation Profile Actions          
+    #            Reputation Profile Actions
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyReputationProfile' {
@@ -829,10 +843,18 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetReputationProfileAction = Set-AppSecPolicyReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -ReputationProfileID $PD.ReputationProfileActions[0].id -Action "deny" @CommonParams
             $PD.SetReputationProfileAction.action | Should -Be "deny"
         }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -ReputationProfileID $PD.ReputationProfileActions[0].id -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -ReputationProfileID $PD.ReputationProfileActions[0].id -Action "deny" @CommonParams} | Should -Throw
+        }
     }
 
     #-------------------------------------------------
-    #                    Slow POST                   
+    #                    Slow POST
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicySlowPost' {
@@ -857,7 +879,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #               Custom Rule Actions              
+    #               Custom Rule Actions
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyCustomRules' {
@@ -872,17 +894,23 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetCustomRuleAction = Set-AppSecPolicyCustomRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $PD.NewCustomRule.id -Action 'deny' @CommonParams
             $PD.SetCustomRuleAction.action | Should -Be 'deny'
         }
-    }
 
-    Context 'Set-AppSecPolicyCustomRule (undo so we can delete later)' {
-        It 'updates successfully' {
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyCustomRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $PD.NewCustomRule.id -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyCustomRule -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -RuleID $PD.NewCustomRule.id -Action 'alert' @CommonParams} | Should -Throw
+        }
+
+        It 'updates successfully (undo so we can delete later)' {
             $PD.UnsetCustomRuleAction = Set-AppSecPolicyCustomRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $PD.NewCustomRule.id -Action 'none' @CommonParams
             $PD.UnsetCustomRuleAction.action | Should -Be 'none'
         }
     }
 
     #-------------------------------------------------
-    #             Policy Advanced Settings           
+    #             Policy Advanced Settings
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyEvasivePathMatch' {
@@ -905,7 +933,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.PolicyLogging.override | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Set-AppSecPolicyLogging by pipeline' {
         It 'updates correctly' {
             $PD.SetPolicyLoggingByPipeline = ($PD.PolicyLogging | Set-AppSecPolicyLogging -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId @CommonParams)
@@ -957,7 +985,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                      WAF                       
+    #                      WAF
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyAttackGroup' {
@@ -978,6 +1006,14 @@ Describe 'Safe Akamai.AppSec Tests' {
         It 'sets correctly' {
             $PD.SetAttackGroup = Set-AppSecPolicyAttackGroup -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -AttackGroupID $PD.AttackGroups[0].group -Action "deny" @CommonParams
             $PD.SetAttackGroup.action | Should -Be "deny"
+        }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyAttackGroup -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -AttackGroupID $PD.AttackGroups[0].group -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyAttackGroup -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -AttackGroupID $PD.AttackGroups[0].group -Action 'alert' @CommonParams} | Should -Throw
         }
     }
 
@@ -1056,6 +1092,14 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetRule = Set-AppSecPolicyRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $TestRuleID -Action 'deny' @CommonParams
             $PD.SetRule.action | Should -Be 'deny'
         }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $TestRuleID -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyRule -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -RuleID $TestRuleID -Action 'alert' @CommonParams} | Should -Throw
+        }
     }
 
     Context 'Update-AppSecKRSRuleSet' {
@@ -1087,7 +1131,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                WAF Evaluation                  
+    #                WAF Evaluation
     #-------------------------------------------------
 
     Context 'Set-AppSecPolicyEvaluationMode' {
@@ -1116,6 +1160,14 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.EvalSetRule = Set-AppSecPolicyEvaluationRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $TestRuleID -Action 'deny' @CommonParams
             $PD.EvalSetRule.action | Should -Be 'deny'
         }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyEvaluationRule -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -RuleID $TestRuleID -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyEvaluationRule -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -RuleID $TestRuleID -Action 'alert' @CommonParams} | Should -Throw
+        }
     }
 
     Context 'Get-AppSecPolicyEvaluationAttackGroup' {
@@ -1136,6 +1188,14 @@ Describe 'Safe Akamai.AppSec Tests' {
         It 'sets correctly' {
             $PD.EvalSetAttackGroup = Set-AppSecPolicyEvaluationAttackGroup -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -AttackGroupID $PD.AttackGroups[0].group -Action "deny" @CommonParams
             $PD.EvalSetAttackGroup.action | Should -Be "deny"
+        }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyEvaluationAttackGroup -ConfigID $PD.NewConfig.configId -VersionNumber 1 -PolicyID $PD.NewPolicy.policyId -AttackGroupID $PD.AttackGroups[0].group -Action 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyEvaluationAttackGroup -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -AttackGroupID $PD.AttackGroups[0].group -Action 'alert' @CommonParams} | Should -Throw
         }
     }
 
@@ -1182,7 +1242,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #               Penalty Box Evaluation           
+    #               Penalty Box Evaluation
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyEvaluationPenaltyBox' {
@@ -1207,7 +1267,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                     Export                     
+    #                     Export
     #-------------------------------------------------
 
     Context 'Export-AppSecConfiguration' {
@@ -1216,9 +1276,9 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.Export.configId | Should -Be $PD.Newconfig.configId
         }
     }
-    
+
     #-------------------------------------------------
-    #                  SIEM Versions                 
+    #                  SIEM Versions
     #-------------------------------------------------
 
     Context 'Export-AppSecConfigurationVersionDetails' {
@@ -1229,7 +1289,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                    Versions                    
+    #                    Versions
     #-------------------------------------------------
 
     Context 'Get-AppSecConfigurationVersion' {
@@ -1254,7 +1314,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #               ContractsAndGroups                    
+    #               ContractsAndGroups
     #-------------------------------------------------
 
     Context 'Get-AppSecContractsAndGroups' {
@@ -1263,7 +1323,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.Groups[0].groupId | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     #-------------------------------------------------
     #               URL Protection Policies
     #-------------------------------------------------
@@ -1274,28 +1334,28 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.NewURLProtectionPolicy.configId | Should -Be $PD.NewConfig.configId
         }
     }
-    
+
     Context 'Get-AppSecURLProtectionPolicy, all' {
         It 'returns the correct data' {
             $PD.GetURLProtectionPolicies = Get-AppSecURLProtectionPolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version @CommonParams
             $PD.GetURLProtectionPolicies[0].configId | Should -Be $PD.NewConfig.configId
         }
     }
-    
+
     Context 'Get-AppSecURLProtectionPolicy, single' {
         It 'returns the correct data' {
             $PD.GetURLProtectionPolicy = Get-AppSecURLProtectionPolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -URLProtectionPolicyID $PD.NewURLProtectionPolicy.policyId @CommonParams
             $PD.GetURLProtectionPolicy.configId | Should -Be $PD.NewConfig.configId
         }
     }
-    
+
     Context 'Set-AppSecURLProtectionPolicy by param' {
         It 'updates successfully' {
             $PD.SetURLProtectionPolicyByParam = Set-AppSecURLProtectionPolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -URLProtectionPolicyID $PD.NewURLProtectionPolicy.policyId -Body $PD.GetURLProtectionPolicy @CommonParams
             $PD.SetURLProtectionPolicyByParam.configId | Should -Be $PD.NewConfig.configId
         }
     }
-    
+
     Context 'Set-AppSecURLProtectionPolicy by pipeline' {
         It 'updates successfully' {
             $PD.SetURLProtectionPolicyByPipeline = ($PD.GetURLProtectionPolicy | Set-AppSecURLProtectionPolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -URLProtectionPolicyID $PD.NewURLProtectionPolicy.policyId @CommonParams)
@@ -1309,7 +1369,7 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.GetPolicyURLProtectionPolicies[0].policyId | Should -Be $PD.GetURLProtectionPolicy.policyId
         }
     }
-    
+
     Context 'Set-AppsecPolicyURLProtectionPolicy' {
         It 'returns the correct data' {
             $PD.SetPolicyURLProtectionPolicy = Set-AppsecPolicyURLProtectionPolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -URLProtectionPolicyID $PD.GetURLProtectionPolicy.policyId -Action none @CommonParams
@@ -1328,21 +1388,21 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.GetAttackPayloadSettings.enabled | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Set-AppSecAttackPayloadSettings by param' {
         It 'returns the correct data' {
             $PD.SetAttackPayloadSettingsByParam = Set-AppSecAttackPayloadSettings -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -Body $PD.GetAttackPayloadSettings @CommonParams
             $PD.SetAttackPayloadSettingsByParam.enabled | Should -Be $PD.GetAttackPayloadSettings.enabled
         }
     }
-    
+
     Context 'Set-AppSecAttackPayloadSettings by pipline' {
         It 'returns the correct data' {
             $PD.SetAttackPayloadSettingsByPipeline = ($PD.GetAttackPayloadSettings | Set-AppSecAttackPayloadSettings -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version @CommonParams)
             $PD.SetAttackPayloadSettingsByPipeline.enabled | Should -Be $PD.GetAttackPayloadSettings.enabled
         }
     }
-    
+
     Context 'Get-AppSecPolicyAttackPayload' {
         It 'returns the correct data' {
             $PD.GetPolicyAttackPayload = Get-AppSecPolicyAttackPayload -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId @CommonParams
@@ -1353,14 +1413,14 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.GetPolicyAttackPayload.override = $true
         }
     }
-    
+
     Context 'Set-AppSecPolicyAttackPayload by param' {
         It 'updates correctly' {
             $PD.SetPolicyAttackPayloadByParam = Set-AppSecPolicyAttackPayload -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -Body $PD.GetPolicyAttackPayload @CommonParams
             $PD.SetPolicyAttackPayloadByParam.enabled | Should -Be $false
         }
     }
-    
+
     Context 'Set-AppSecPolicyAttackPayload by pipeline' {
         It 'updates correctly' {
             $PD.SetPolicyAttackPayloadByPipeline = ($PD.GetPolicyAttackPayload | Set-AppSecPolicyAttackPayload -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId @CommonParams)
@@ -1378,14 +1438,14 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.NewMalwarePolicy.name | Should -Be $TestMalwarePolicyName
         }
     }
-    
+
     Context 'Get-AppSecMalwarePolicy, all' {
         It 'returns a list' {
             $PD.GetMalwarePolicies = Get-AppSecMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version @CommonParams
             $PD.GetMalwarePolicies[0].name | Should -Be $TestMalwarePolicyName
         }
     }
-    
+
     Context 'Get-AppSecMalwarePolicy, single' {
         It 'returns a list' {
             $PD.GetMalwarePolicy = Get-AppSecMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -MalwarePolicyID $PD.NewMalwarePolicy.id @CommonParams
@@ -1399,19 +1459,31 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.SetMalwarePolicyByParam.id | Should -Be $PD.NewMalwarePolicy.id
         }
     }
-    
+
     Context 'Set-AppSecMalwarePolicy by pipeline' {
         It 'updates correctly' {
             $PD.SetMalwarePolicyByPipeline = ($PD.GetMalwarePolicy | Set-AppSecMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -MalwarePolicyID $PD.NewMalwarePolicy.id @CommonParams)
             $PD.SetMalwarePolicyByPipeline.id | Should -Be $PD.NewMalwarePolicy.id
         }
     }
-    
+
     Context 'Set-AppSecPolicyMalwarePolicy' {
         It 'returns a list' {
             $PD.SetMalwarePolicyAction = Set-AppSecPolicyMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -MalwarePolicyID $PD.NewMalwarePolicy.id -Action alert -UnscannedAction alert @CommonParams
             $PD.SetMalwarePolicyAction.action | Should -Be 'alert'
             $PD.SetMalwarePolicyAction.unscannedAction | Should -Be 'alert'
+        }
+
+        It 'fails action pattern validation' {
+            {Set-AppSecPolicyMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -MalwarePolicyID $PD.NewMalwarePolicy.id -Action 'pattern_fail' -UnscannedAction alert @CommonParams} | Should -Throw
+        }
+
+        It 'fails unscannedaction pattern validation' {
+            {Set-AppSecPolicyMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -MalwarePolicyID $PD.NewMalwarePolicy.id -Action alert -UnscannedAction 'pattern_fail' @CommonParams} | Should -Throw
+        }
+
+        It 'fails version pattern validation' {
+            {Set-AppSecPolicyMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 'pattern_fail' -PolicyID $PD.NewPolicy.policyId -MalwarePolicyID $PD.NewMalwarePolicy.id -Action alert -UnscannedAction alert @CommonParams} | Should -Throw
         }
     }
 
@@ -1423,7 +1495,7 @@ Describe 'Safe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #               Policy API Endpoints                    
+    #               Policy API Endpoints
     #-------------------------------------------------
 
     Context 'Get-AppSecPolicyAPIEndpoints' {
@@ -1432,9 +1504,9 @@ Describe 'Safe Akamai.AppSec Tests' {
             $PD.PolicyAPIEndpoints[0].id | Should -Be $TestAPIEndpointID
         }
     }
-    
+
     #-------------------------------------------------
-    #                 Expand                  
+    #                 Expand
     #-------------------------------------------------
 
     Context 'Expand-AppSecConfigDetails' {
@@ -1467,23 +1539,23 @@ Describe 'Safe Akamai.AppSec Tests' {
         }
     }
 
-    
+
     #-------------------------------------------------
-    #                    Removals                    
+    #                    Removals
     #-------------------------------------------------
 
     Context 'Remove-AppSecMatchTarget' {
         It 'removes API target successfully' {
-            $PD.NewAPIMatchTarget | Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
+            $PD.NewAPIMatchTarget | Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
         }
         It 'removes website target successfully' {
-            $PD.NewWebsiteMatchTarget.targetId | Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
+            $PD.NewWebsiteMatchTarget.targetId | Remove-AppSecMatchTarget -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
         }
     }
 
     Context 'Remove-AppSecPolicy' {
         It 'completes successfully' {
-            $PD.NewPolicy | Remove-AppSecPolicy @CommonParams 
+            $PD.NewPolicy | Remove-AppSecPolicy @CommonParams
         }
     }
 
@@ -1492,34 +1564,34 @@ Describe 'Safe Akamai.AppSec Tests' {
 
     Context 'Remove-AppSecReputationProfile' {
         It 'completes successfully' {
-            $PD.NewReputationProfileByBody | Remove-AppSecReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
+            $PD.NewReputationProfileByBody | Remove-AppSecReputationProfile -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
         }
     }
 
     Context 'Remove-AppSecCustomDenyAction' {
         It 'completes successfully' {
-            $PD.NewCustomDenyAction | Remove-AppSecCustomDenyAction -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
+            $PD.NewCustomDenyAction | Remove-AppSecCustomDenyAction -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
         }
     }
 
     Context 'Remove-AppSecCustomRule' {
         It 'completes successfully' {
-            $PD.NewCustomRule | Remove-AppSecCustomRule -ConfigID $PD.NewConfig.ConfigId @CommonParams 
+            $PD.NewCustomRule | Remove-AppSecCustomRule -ConfigID $PD.NewConfig.ConfigId @CommonParams
         }
     }
 
     Context 'Remove-AppSecRatePolicy' {
         It 'completes successfully' {
-            $PD.NewRatePolicyByBody | Remove-AppSecRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams 
+            $PD.NewRatePolicyByBody | Remove-AppSecRatePolicy -ConfigID $PD.NewConfig.configId -VersionNumber 1 @CommonParams
         }
     }
 
     Context 'Remove-AppSecURLProtectionPolicy' {
         It 'completes successfully' {
-            $PD.GetURLProtectionPolicy | Remove-AppSecURLProtectionPolicy @CommonParams 
+            $PD.GetURLProtectionPolicy | Remove-AppSecURLProtectionPolicy @CommonParams
         }
     }
-    
+
     Context 'Remove-AppSecMalwarePolicy' {
         It 'completes successfully' {
             Set-AppSecPolicyMalwarePolicy -ConfigID $PD.NewConfig.configId -VersionNumber $PD.NewVersion.version -PolicyID $PD.NewPolicy.policyId -MalwarePolicyID $PD.NewMalwarePolicy.id -Action none -UnscannedAction none @CommonParams | Out-Null
@@ -1538,9 +1610,9 @@ Describe 'Safe Akamai.AppSec Tests' {
 
     Context 'Remove-AppSecConfiguration' {
         It 'completes successfully' {
-            $PD.NewConfig | Remove-AppSecConfiguration @CommonParams 
+            $PD.NewConfig | Remove-AppSecConfiguration @CommonParams
         }
-    } 
+    }
 }
 
 Describe 'Unsafe Akamai.AppSec Tests' {
@@ -1548,7 +1620,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.AppSec/Akamai.AppSec.psd1 -Force
-        
+
         $TestHostnames = $env:PesterHostname
         $TestNewHostname = $env:PesterHostname2
         $TestPolicyHostnamesToAdd = @"
@@ -1581,7 +1653,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                   Activations                  
+    #                   Activations
     #-------------------------------------------------
 
     Context 'New-AppSecActivation, by parameter' {
@@ -1594,7 +1666,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $Activate.activationId | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'New-AppSecActivation by body' {
         It 'activates correctly' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1640,7 +1712,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                  Subscriptions                 
+    #                  Subscriptions
     #-------------------------------------------------
 
     Context 'Get-AppSecSubscribers' {
@@ -1660,7 +1732,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-AppSecSubscription.json"
                 return $Response | ConvertFrom-Json
             }
-            New-AppSecSubscription -ConfigID 12345 -Feature AAG_TUNING_REC -Subscribers "email@example.com, email2@example.com" 
+            New-AppSecSubscription -ConfigID 12345 -Feature AAG_TUNING_REC -Subscribers "email@example.com, email2@example.com"
         }
     }
 
@@ -1670,14 +1742,14 @@ Describe 'Unsafe Akamai.AppSec Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-AppSecSubscription.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-AppSecSubscription -ConfigID 12345 -Feature AAG_TUNING_REC -Subscribers "email@example.com, email2@example.com" 
+            Remove-AppSecSubscription -ConfigID 12345 -Feature AAG_TUNING_REC -Subscribers "email@example.com, email2@example.com"
         }
     }
 
     #-------------------------------------------------
-    #             Tuning Recommendations             
+    #             Tuning Recommendations
     #-------------------------------------------------
-    
+
     Context 'Get-AppSecPolicyTuningRecommendations' {
         It 'returns a list' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1695,7 +1767,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-AppSecPolicyTuningRecommendations.json"
                 return $Response | ConvertFrom-Json
             }
-            Set-AppSecPolicyTuningRecommendations -ConfigID 12345 -VersionNumber 1 -PolicyID EX01_123456 -Action ACCEPT -SelectorID 84220 
+            Set-AppSecPolicyTuningRecommendations -ConfigID 12345 -VersionNumber 1 -PolicyID EX01_123456 -Action ACCEPT -SelectorID 84220
         }
     }
 
@@ -1722,7 +1794,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     }
 
     #-------------------------------------------------
-    #                 API Discovery             
+    #                 API Discovery
     #-------------------------------------------------
 
     Context 'Get-AppSecDiscoveredAPI, all' {
@@ -1735,7 +1807,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $DiscoveredAPIs.basePath | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Get-AppSecDiscoveredAPI, single' {
         It 'returns the correct data' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1746,7 +1818,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $DiscoveredAPI.apiEndpointIds | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Hide-AppSecDiscoveredAPI' {
         It 'returns the correct data' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1757,7 +1829,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $HideDiscoveredAPI.hidden | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Show-AppSecDiscoveredAPI' {
         It 'returns the correct data' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1794,10 +1866,10 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $HostnameMatchTargets.websiteTargets[0].configId | Should -Not -BeNullOrEmpty
         }
     }
- 
+
     #-------------------------------------------------
     #                Hostname Coverage
-    #  (moved to unsafe due to timeouts in test account)         
+    #  (moved to unsafe due to timeouts in test account)
     #-------------------------------------------------
 
     Context 'Get-AppSecHostnameCoverage' {
@@ -1884,7 +1956,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $PD.PolicyAddedHostnames.hostnameList.hostname | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Set-AppSecPolicySelectedHostnames' {
         It 'adds a hostname successfully' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1910,7 +1982,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
     #-------------------------------------------------
     #              Evaluation Hostnames
     #-------------------------------------------------
-    
+
     Context 'Get-AppSecEvaluationHostnames' {
         It 'gets a list' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1921,7 +1993,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $PD.GetEvaluationHostnames.hostnames | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Set-AppSecEvaluationHostnames' {
         It 'updates correctly' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1932,7 +2004,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $SetEvaluationHostnames.hostnames | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Protect-AppSecEvaluationHostnames' {
         It 'updates correctly' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1943,7 +2015,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $ProtectEvaluationHostnames.hostnames | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Get-AppSecPolicyEvaluationHostnames' {
         It 'gets a list' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1954,7 +2026,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $PD.GetPolicyEvaluationHostnames.hostnames | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Set-AppSecPolicyEvaluationHostnames' {
         It 'updates correctly' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {
@@ -1965,7 +2037,7 @@ Describe 'Unsafe Akamai.AppSec Tests' {
             $SetPolicyEvaluationHostnames.hostnames | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Protect-AppSecPolicyEvaluationHostnames' {
         It 'updates correctly' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.AppSec -MockWith {

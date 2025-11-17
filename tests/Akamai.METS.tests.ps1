@@ -98,7 +98,7 @@ Describe 'Safe Akamai.METS Tests' {
             $PD.CASetByName.caSetName | Should -Be $TestCASetName
         }
     }
-    
+
     Context 'Get-METSCASet - single, by ID' {
         It 'returns the correct set' {
             $TestParams = @{
@@ -120,13 +120,13 @@ Describe 'Safe Akamai.METS Tests' {
             $PD.Activities[0].activityDate | Should -Not -BeNullOrEmpty
         }
     }
-    
-    
+
+
 
     #------------------------------------------------
     #                 Private Functions
     #------------------------------------------------
-    
+
     Context 'Expand-METSCASetDetails' {
         BeforeAll {
             $PreviousOptionsPath = $env:AkamaiOptionsPath
@@ -153,7 +153,7 @@ Describe 'Safe Akamai.METS Tests' {
     }
 
     #------------------------------------------------
-    #                 Activations                  
+    #                 Activations
     #------------------------------------------------
 
 
@@ -181,9 +181,9 @@ Describe 'Safe Akamai.METS Tests' {
         }
     }
 
-    
+
     #------------------------------------------------
-    #                 Versions                  
+    #                 Versions
     #------------------------------------------------
 
     Context 'Get-METSCASetVersion - all' {
@@ -301,7 +301,7 @@ Describe 'Safe Akamai.METS Tests' {
     }
 
     #------------------------------------------------
-    #                 CASet Version Certificate                  
+    #                 CASet Version Certificate
     #------------------------------------------------
 
     Context 'Get-METSCASetVersionCertificate' {
@@ -318,7 +318,7 @@ Describe 'Safe Akamai.METS Tests' {
 
 
 Describe 'Unsafe METS Tests' {
-    
+
     BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.METS/Akamai.METS.psm1 -Force
@@ -336,13 +336,13 @@ Describe 'Unsafe METS Tests' {
     }
 
     AfterAll {
-        
+
     }
 
     #-------------------------------------------------
     #                   CA Set
     #-------------------------------------------------
-    
+
     Context 'New-METSCASet by parameters' {
         It 'creates successfully' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
@@ -358,7 +358,7 @@ Describe 'Unsafe METS Tests' {
             $NewSet.caSetName | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'New-METSCASet by pipeline' {
         It 'creates successfully' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
@@ -399,7 +399,7 @@ Describe 'Unsafe METS Tests' {
             $PD.Removals[0].deletionId | Should -Not -BeNullOrEmpty
         }
     }
-    
+
     Context 'Get-METSRemoval - Single' {
         It 'returns a single deletion' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.METS -MockWith {
@@ -417,7 +417,7 @@ Describe 'Unsafe METS Tests' {
     }
 
     #------------------------------------------------
-    #                 Deactivation                  
+    #                 Deactivation
     #------------------------------------------------
 
     Context 'New-METSCASetDeactivation' {
@@ -438,7 +438,7 @@ Describe 'Unsafe METS Tests' {
     }
 
     #------------------------------------------------
-    #                 Activation                  
+    #                 Activation
     #------------------------------------------------
 
     Context 'New-METSCASetActivation' {

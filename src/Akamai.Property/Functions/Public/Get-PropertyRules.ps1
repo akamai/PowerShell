@@ -79,119 +79,127 @@ function Get-PropertyRules {
         $AccountSwitchKey
     )
 
-    $PropertyID, $PropertyVersion, $GroupID, $ContractID = Expand-PropertyDetails @PSBoundParameters
-
-    $Path = "/papi/v1/properties/$PropertyID/versions/$PropertyVersion/rules"
-    $QueryParameters = @{
-        contractId    = $ContractId
-        groupId       = $GroupID
-        originalInput = $PSBoundParameters.OriginalInput.IsPresent
-    }
-
-    if ($RuleFormat) {
-        $AdditionalHeaders = @{
-            Accept = "application/vnd.akamai.papirules.$RuleFormat+json"
+    Process {
+        $PropertyID, $PropertyVersion, $GroupID, $ContractID = Expand-PropertyDetails @PSBoundParameters
+    
+        $Path = "/papi/v1/properties/$PropertyID/versions/$PropertyVersion/rules"
+        $QueryParameters = @{
+            contractId    = $ContractId
+            groupId       = $GroupID
+            originalInput = $PSBoundParameters.OriginalInput.IsPresent
         }
-    }
-    $RequestParams = @{
-        'Path'              = $Path
-        'Method'            = 'GET'
-        'AdditionalHeaders' = $AdditionalHeaders
-        'QueryParameters'   = $QueryParameters
-        'EdgeRCFile'        = $EdgeRCFile
-        'Section'           = $Section
-        'AccountSwitchKey'  = $AccountSwitchKey
-        'Debug'             = ($PSBoundParameters.Debug -eq $true)
-    }
-    # Make Request
-    $Response = Invoke-AkamaiRequest @RequestParams
-
-    if ($OutputToFile) {
-        if (!$OutputFileName) {
-            $OutputFileName = $Response.Body.propertyName + "_" + $Response.Body.propertyVersion + ".json"
+    
+        if ($RuleFormat) {
+            $AdditionalHeaders = @{
+                Accept = "application/vnd.akamai.papirules.$RuleFormat+json"
+            }
         }
-        elseif (!($OutputFileName.EndsWith(".json"))) {
-            $OutputFileName += ".json"
+        $RequestParams = @{
+            'Path'              = $Path
+            'Method'            = 'GET'
+            'AdditionalHeaders' = $AdditionalHeaders
+            'QueryParameters'   = $QueryParameters
+            'EdgeRCFile'        = $EdgeRCFile
+            'Section'           = $Section
+            'AccountSwitchKey'  = $AccountSwitchKey
+            'Debug'             = ($PSBoundParameters.Debug -eq $true)
         }
-
-        if ( (Test-Path $OutputFileName) -and !$Force) {
-            throw "Failed to write file. $OutputFileName exists and -Force not specified"
+        # Make Request
+        $Response = Invoke-AkamaiRequest @RequestParams
+    
+        if ($OutputToFile -or $OutputFileName) {
+            if (!$OutputFileName) {
+                $OutputFileName = $Response.Body.propertyName + "_" + $Response.Body.propertyVersion + ".json"
+            }
+            elseif (!($OutputFileName.EndsWith(".json"))) {
+                $OutputFileName += ".json"
+            }
+    
+            if ( (Test-Path $OutputFileName) -and !$Force) {
+                throw "Failed to write file. $OutputFileName exists and -Force not specified"
+            }
+            else {
+                $Response.Body | ConvertTo-Json -Depth 100 | Set-Content $OutputFileName -Force
+                Write-Host 'Wrote version ' -NoNewline
+                Write-Host -ForegroundColor Green $Response.Body.propertyVersion -NoNewline
+                Write-Host ' of property ' -NoNewline
+                Write-Host -ForegroundColor Green $Response.Body.propertyName -NoNewline
+                Write-Host ' to ' -NoNewline
+                Write-Host -ForegroundColor Green $OutputFileName -NoNewline
+                Write-Host '.'
+            }
         }
-        else {
-            $Response.Body | ConvertTo-Json -Depth 100 | Set-Content $OutputFileName -Force
-            Write-Host 'Wrote version ' -NoNewline
-            Write-Host -ForegroundColor Green $Response.Body.propertyVersion -NoNewline
+        if ($OutputSnippets -or $OutputDirectory) {
+            if (!$OutputDirectory) {
+                $OutputDirectory = $Response.Body.propertyName
+            }
+            
+            # Make Property Directory if required
+            if (!(Test-Path $OutputDirectory)) {
+                Write-Host "Creating new property directory " -NoNewLine
+                Write-Host -ForegroundColor Cyan $OutputDirectory -NoNewline
+                Write-Host "."
+                New-Item -Path $OutputDirectory -ItemType Directory | Out-Null
+            }
+            else {
+                $ExistingFiles = Get-ChildItem $OutputDirectory
+                if ($ExistingFiles.count -gt 0) {
+                    if ($Force) {
+                        Write-Debug "Get-PropertyRules: Deleting contents of $OutputDirectory."
+                        Remove-Item -Path $OutputDirectory/* -Force -Recurse
+                    }
+                    else {
+                        throw "Output directory $OutputDirectory already exists. To use this directory and overwrite its contents, use -Force."
+                    }
+                }
+            }
+        
+            for ($i = 0; $i -lt $Response.Body.rules.children.count; $i++) {
+                $ChildRuleSnippetParams = @{
+                    Rules        = $Response.Body.rules.children[$i]
+                    Path         = $OutputDirectory
+                    CurrentDepth = 0
+                    MaxDepth     = $MaxDepth
+                }
+                if ($ForceSlashStyle) { $ChildRuleSnippetParams['ForceSlashStyle'] = $ForceSlashStyle }
+                if ($PathFromMainJson) { $ChildRuleSnippetParams['PathFromMainJson'] = $PathFromMainJson }
+                Get-ChildRuleSnippet @ChildRuleSnippetParams
+                $SafeName = Format-Filename -FileName $Response.Body.rules.children[$i].Name
+                $Response.Body.rules.children[$i] = "#include:$SafeName.json"
+            }
+        
+            ### Split variables out to its own file
+            if ($Response.Body.rules.variables.count -gt 0) {
+                $Response.Body.rules.variables | ConvertTo-Json -depth 100 | Set-Content "$OutputDirectory\pmVariables.json" -Force
+            }
+            else {
+                '[]' | Set-Content "$OutputDirectory\pmVariables.json" -Force -NoNewline
+            }
+            $Response.Body.rules | Add-Member -NotePropertyName 'variables' -NotePropertyValue "#include:pmVariables.json" -Force
+        
+            ### Write default rule to main file
+            $Response.Body.rules | ConvertTo-Json -depth 100 | Set-Content "$OutputDirectory\main.json" -Force
+        
+            Write-Host 'Wrote version ' -NoNewLine
+            Write-Host -ForegroundColor Cyan $Response.Body.propertyVersion -NoNewline
             Write-Host ' of property ' -NoNewline
-            Write-Host -ForegroundColor Green $Response.Body.propertyName -NoNewline
+            Write-Host  -ForegroundColor Cyan $Response.Body.propertyName -NoNewline
             Write-Host ' to ' -NoNewline
-            Write-Host -ForegroundColor Green $OutputFileName -NoNewline
+            Write-Host  -ForegroundColor Cyan $OutputDirectory -NoNewline
             Write-Host '.'
         }
-    }
-    if ($OutputSnippets) {
-        if (!$OutputDirectory) {
-            $OutputDirectory = $Response.Body.propertyName
+        # Return object if other options not specified, or user has supplied -PassThru
+        if ( (-not $OutputToFile -and -not $OutputFileName -and -not $OutputSnippets -and -not $OutputDirectory) -or $PassThru) {
+            return $Response.Body
         }
-        
-        # Make Property Directory if required
-        if (!(Test-Path $OutputDirectory)) {
-            Write-Host "Creating new property directory " -NoNewLine
-            Write-Host -ForegroundColor Cyan $OutputDirectory -NoNewline
-            Write-Host "."
-            New-Item -Name $OutputDirectory -ItemType Directory | Out-Null
-        }
-        else {
-            $ExistingFiles = Get-ChildItem $OutputDirectory
-            if ($ExistingFiles.count -gt 0 -and !$Force) {
-                throw "Output directory $OutputDirectory already exists and is not empty. Please use -Force to bypass this error, but be aware that existing files will not be deleted."
-            }
-        }
-    
-        for ($i = 0; $i -lt $Response.Body.rules.children.count; $i++) {
-            $ChildRuleSnippetParams = @{
-                Rules        = $Response.Body.rules.children[$i]
-                Path         = $OutputDirectory
-                CurrentDepth = 0
-                MaxDepth     = $MaxDepth
-            }
-            if ($ForceSlashStyle) { $ChildRuleSnippetParams['ForceSlashStyle'] = $ForceSlashStyle }
-            if ($PathFromMainJson) { $ChildRuleSnippetParams['PathFromMainJson'] = $PathFromMainJson }
-            Get-ChildRuleSnippet @ChildRuleSnippetParams
-            $SafeName = Format-Filename -FileName $Response.Body.rules.children[$i].Name
-            $Response.Body.rules.children[$i] = "#include:$SafeName.json"
-        }
-    
-        ### Split variables out to its own file
-        if ($Response.Body.rules.variables.count -gt 0) {
-            $Response.Body.rules.variables | ConvertTo-Json -depth 100 | Set-Content "$OutputDirectory\pmVariables.json" -Force
-        }
-        else {
-            '[]' | Set-Content "$OutputDirectory\pmVariables.json" -Force -NoNewline
-        }
-        $Response.Body.rules | Add-Member -NotePropertyName 'variables' -NotePropertyValue "#include:pmVariables.json" -Force
-    
-        ### Write default rule to main file
-        $Response.Body.rules | ConvertTo-Json -depth 100 | Set-Content "$OutputDirectory\main.json" -Force
-    
-        Write-Host 'Wrote version ' -NoNewLine
-        Write-Host -ForegroundColor Cyan $Response.Body.propertyVersion -NoNewline
-        Write-Host ' of property ' -NoNewline
-        Write-Host  -ForegroundColor Cyan $Response.Body.propertyName -NoNewline
-        Write-Host ' to ' -NoNewline
-        Write-Host  -ForegroundColor Cyan $OutputDirectory -NoNewline
-        Write-Host '.'
-    }
-    # Return object if other options not specified, or user has supplied -PassThru
-    if ( (-not $OutputToFile -and -not $OutputSnippets) -or $PassThru) {
-        return $Response.Body
     }
 }
 
 # SIG # Begin signature block
 # MIIp2QYJKoZIhvcNAQcCoIIpyjCCKcYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAKWR81DJxraziC
-# DzOb+ga0D/aWzmsuXBpz5CfAPNDR9KCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDGboXLYOqxXVGb
+# d2LJMlGdVQ5zDgVC21+6tsBvmGUDwKCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
 # TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
 # BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
@@ -274,22 +282,22 @@ function Get-PropertyRules {
 # IFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTECEAlLxqaBIAbowjB5Gre6
 # JTcwDQYJYIZIAWUDBAIBBQCgfDAQBgorBgEEAYI3AgEMMQIwADAZBgkqhkiG9w0B
 # CQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAv
-# BgkqhkiG9w0BCQQxIgQg2ynC9pGSBHFXKkQvlANA8nF11gRlaNAGSLF+egc2c5cw
-# DQYJKoZIhvcNAQEBBQAEggIAsqirjk2EXhXyixuEJbhi1FYSAnXh04tQRWX6LNxH
-# QZHkfKNa9n9tT7HPyio89f1mwlknT4My0cAIZWYsnCvFq0XeqhyDFTaNGc573CA1
-# GxlxeYYc4FDAlOMv38xzIxznbh/7W4TlzkA2h4ruJ+ATmubw4cr3o2bz5ObAXbtn
-# ULQcwxf84VhkT7Iwa0NdbcHkkZ4ysR7y4tvoeuIDFQcdau2vx5GyzXDAuxgz+Dea
-# Nkh7YkZCzl/U8Ed3kyDUYhKujSxRNd9Gzo9Im1N2w40Ehx4688tulTBTWEmyQYx1
-# opl4t0Tg/QJmLB1qyXhAQl6fjIb4PQpWjQDA6bSMnbxAvjJsK/v+2NAItzUwZMxo
-# ottCWOIC7BFEuPbzLxYeCTe1odYbi5BujSsLZeKbvu7c/xOY2fXXba0xJ5/sndMW
-# 9GgxlR3mSPcFv83nj9yHaG3E87+OazyLg3v+2qlQlduzVpdGvuVRwGESXUowuoHq
-# hK0xZVFxWo5GHPzXMyALKNKHu0VoUhqQzOaJLIFTaksLz9/5zwCIp8J2PQED6vwK
-# hz4QSKIyUxL/Yhl4Lx5fe4MXsJSHVBiACBVFgJT4D3q1sH1pJD2osAxcZKnLbqcG
-# 9E1yYL4J2gCpcYPvGjW9xvOHvQHysyIcondQoaiDKv5KWCUJU3MvjNi6KkYyO815
-# m6Khghd3MIIXcwYKKwYBBAGCNwMDATGCF2MwghdfBgkqhkiG9w0BBwKgghdQMIIX
+# BgkqhkiG9w0BCQQxIgQg6L2FkydeeSsP0J7KOw924FiZz6iKR41vLUbzntL8cXkw
+# DQYJKoZIhvcNAQEBBQAEggIACn8KelLV/SJwwqs94M3ZmkP+Gh7wl1Xo1MNh978I
+# TE7MIy5hKtA6GZQF/bIzkEaXNgu29XwJBc1iwgHdGH/xG7w63A5H9nPoWZ5LlpiS
+# d0nlVc9rue4LmoWHGbew2DF9WuAu75PF3s2NI7SSFVXaxKsvmR6oA1uezN+4+lrq
+# JEbUCO3qIaFrgcYp1nXKa8ZZa6EtrrPpTQAxRVL9AXCHTGVVBEzcvWWFDZ2SDKBZ
+# +6EbpwfRDNP2HigCvTU8raw1C3XXpprEMiszxfZ2M24IXRrVlf0aCHug96KMKfVn
+# STQ19WZuvKk2tRYsQTVFDMFbu6OD6n9bBz8A+iDUoMw2mateSS1EGQ+2UMmKLjbe
+# 62Ol1sy6h8AoWmx060wTP3qvUiV4IPQ9vNbE/Di8bnh48rLQZHc5UX6/2r2hYXGu
+# P1DxJQl5eh4xynGXioPA5SlXhq8jWQ3R2S/CRexzbpBTIJm1SZ34/0FNVs1Jy65/
+# uaR5h4sVeY5/A5AGT3y/tGAT2ffpjLGmHydaseeNdo5BwU0es3XRdfkvcduVdBd1
+# oOEZ383r5hZJmvhIqaXfPKWi7y/UY8PWw13GaSux5wMVcA1SfpcAFHdhtiV4HLwy
+# gPOB6YyCiOkgY9JSQ5mKANCNCUAhI2uN68oPg5jObzuXOq9sPntp1JU4rRWEt3pK
+# YDKhghd3MIIXcwYKKwYBBAGCNwMDATGCF2MwghdfBgkqhkiG9w0BBwKgghdQMIIX
 # TAIBAzEPMA0GCWCGSAFlAwQCAQUAMHgGCyqGSIb3DQEJEAEEoGkEZzBlAgEBBglg
-# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgQcCOHzX3Y8wSGWR1k/utCGZCcri/
-# 43h/myWYdSSXMvACEQCeWuS+yPGX9rvHc69GrIf/GA8yMDI1MDgwNTE3NDQzOFqg
+# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgC9y5qZrpz45oPP5cETMzbWqfkUmF
+# exg3m/gu3BvnV9cCEQCMArMY8HNGkhiZ1pBL4piyGA8yMDI1MTExMzIzMjE1Mlqg
 # ghM6MIIG7TCCBNWgAwIBAgIQCoDvGEuN8QWC0cR2p5V0aDANBgkqhkiG9w0BAQsF
 # ADBpMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xQTA/BgNV
 # BAMTOERpZ2lDZXJ0IFRydXN0ZWQgRzQgVGltZVN0YW1waW5nIFJTQTQwOTYgU0hB
@@ -396,20 +404,20 @@ function Get-PropertyRules {
 # BgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjFBMD8GA1UEAxM4RGln
 # aUNlcnQgVHJ1c3RlZCBHNCBUaW1lU3RhbXBpbmcgUlNBNDA5NiBTSEEyNTYgMjAy
 # NSBDQTECEAqA7xhLjfEFgtHEdqeVdGgwDQYJYIZIAWUDBAIBBQCggdEwGgYJKoZI
-# hvcNAQkDMQ0GCyqGSIb3DQEJEAEEMBwGCSqGSIb3DQEJBTEPFw0yNTA4MDUxNzQ0
-# MzhaMCsGCyqGSIb3DQEJEAIMMRwwGjAYMBYEFN1iMKyGCi0wa9o4sWh5UjAH+0F+
-# MC8GCSqGSIb3DQEJBDEiBCACPV03k98J5gGf5Hbflc6g06fl+9/ZHTZq2oxIQdev
-# 7DA3BgsqhkiG9w0BCRACLzEoMCYwJDAiBCBKoD+iLNdchMVck4+CjmdrnK7Ksz/j
-# bSaaozTxRhEKMzANBgkqhkiG9w0BAQEFAASCAgB3y+BjEFWcLdoIWRpOi5Agak54
-# 7yqV0YtkHoIfbW3T7t4q21/FuzoJFv7ZE1ZRyTbg8k8Srq3ttYEDQc1REztR6pz8
-# NGpC2e+wm4AvpYVhRn5zz5pywV3v1Ou3HP/TXMYkUQVILkrfughnhnGXTXS9gD4B
-# lMg8jqAxjtTACj9drLSwvSzmGoiGQUAOvxQ0wXiikx1SuLJtdM0BYesvfv8lksL7
-# 6xcrC2s/vZ+2g1ZsWT0jfqH3MuDOTFnezDUqmKvbrMjYNMq7NCz8z1ugOfdZL+2N
-# rW4BrRcqPH3QxjOZPl87oGpx++prxS4gRUm9RNTWF8zzjbREJ9zjMdRMm7epTjb6
-# nBTALKwCZe2LXxu+/PKwFKordDssbWT5pB8bJyBEPI1DAsCtRHg5WPYteM4yrWEi
-# yZX7iBnENVDIFz77lunGJWYWcCIvjWgn3uDxhtkOd/f4ZK2FJgjVfY9UxQy/4a/1
-# 3JuQgXe6VYCoAOIermw8Dqv1fUTXzCROQlBR4n6LREraZqrS7DrKJ60vYt8OY9LE
-# 1vxZIZhf5rSolIIxeht+sROi4WLRQokB/AvRB/zKsyNqE6hIT0hHARCaNWLx7RUv
-# 4ObV28CzD6WLlcrGyujskEcR4RUWCfm4/yAMds03/wbD/N/0yd0VtfKfX5AOc9CA
-# 4AnOGQH0tzuNzjqIYA==
+# hvcNAQkDMQ0GCyqGSIb3DQEJEAEEMBwGCSqGSIb3DQEJBTEPFw0yNTExMTMyMzIx
+# NTJaMCsGCyqGSIb3DQEJEAIMMRwwGjAYMBYEFN1iMKyGCi0wa9o4sWh5UjAH+0F+
+# MC8GCSqGSIb3DQEJBDEiBCAs0cTyrzStvq3WfRVzlt4QcUyTRxngV6VKZ70ggVZW
+# 0DA3BgsqhkiG9w0BCRACLzEoMCYwJDAiBCBKoD+iLNdchMVck4+CjmdrnK7Ksz/j
+# bSaaozTxRhEKMzANBgkqhkiG9w0BAQEFAASCAgChCri95kGS+mQr/JuLQXj+0pAn
+# GRR4ocbcMfP9XOraFNzfRGdBxdUxqFuox1p414k8uL0X0aHtYRY4IwjnzLK+MqWM
+# XPZUgzpHnb8gRORYztaVtJlMktEgS4oQJjBdN53g5GWibtVao5ohF/a4JUOo/bfE
+# xM1veZnvaAd5E3Ef7DsIbxiyeWbBiVtPgk9l3cDT7Q/SAMxLuy04+wy/5yRWAu2y
+# uyNehZf8BY/YKyDz1tZJX3XKZh+Ozn0reNq6xzfmIINbLlyVoak93LDFy3zFgYwd
+# 5yJRybuFX7wKv2Qhz4pR37Isvnb4zHvsANFSauPTlDLmcOvj/vWrIvy0ITLSp9ei
+# S6rOkelAxEHRyW1UaDdcSnx5yvmeHa6kpIhjH5SWnBCH3HsqMUHB2deaVPxauC+z
+# Uz2dBf1Y3LRjEuY72EWI+tEcT7RWoZhhnnVJJ2pFcpyQOZSgthw2OFprar+JoXRC
+# coIormzqMoD7cTVjMdvKRJq+AJvVv9XCPO1mkDIQ4CAALaSbbf4wE1hnlUcunmcJ
+# R6Kif6Lp3MM8au6+qImcyrRNMThDa6akyLi54JssXf7DkgIrAXjaNqwUmFZcsz3h
+# s9s0DDf1Z0YIYDAcDU7T61g4sU6g4Ii3eYrZejddPiNcpdeNB6Sa+FS7kHi1GUxL
+# tyMM5g6kNGVhxQmeCg==
 # SIG # End signature block

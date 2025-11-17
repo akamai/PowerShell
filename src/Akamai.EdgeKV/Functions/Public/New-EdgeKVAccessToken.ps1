@@ -15,15 +15,15 @@ function New-EdgeKVAccessToken {
 
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [string]
-        $Expiry,
-
-        [Parameter(Mandatory, ParameterSetName = 'attributes')]
-        [string]
         $Namespace,
 
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [string]
         $Permissions,
+        
+        [Parameter(ParameterSetName = 'attributes')]
+        [string[]]
+        $RestrictToEdgeWorkerIds,
 
         [Parameter(Mandatory, ParameterSetName = 'body', ValueFromPipeline)]
         $Body,
@@ -41,36 +41,26 @@ function New-EdgeKVAccessToken {
         $AccountSwitchKey
     )
     
-    begin {}
-    process {
+    Process {
         $Path = "/edgekv/v1/tokens"
-
         if ($PSCmdlet.ParameterSetName -eq "attributes") {
-            ### Check expiry datetime
-            try {
-                Get-Date $Expiry -ErrorAction Stop | Out-Null
-            }
-            catch {
-                throw "$Expiry is not a valid datetime"
-            }
-
-            $BodyObj = @{
-                name                 = $Name
-                allowOnProduction    = $AllowOnProduction.IsPresent
-                allowOnStaging       = $AllowOnStaging.IsPresent
-                expiry               = $Expiry
-                namespacePermissions = @{ $Namespace = @() }
+            $Body = @{
+                'name'                 = $Name
+                'allowOnProduction'    = $AllowOnProduction.IsPresent
+                'allowOnStaging'       = $AllowOnStaging.IsPresent
+                'namespacePermissions' = @{ $Namespace = @() }
             }
 
             $Permissions.ToCharArray() | ForEach-Object {
                 if ($_ -ne 'r' -and $_ -ne 'w' -and $_ -ne 'd') {
                     throw "Permissions must be 'r', 'w' or 'd'"
                 }
-                $BodyObj.namespacePermissions.$Namespace += $_
+                $Body.namespacePermissions.$Namespace += $_
             }
 
-            $Body = $BodyObj | ConvertTo-Json -depth 100
-        
+            if ($RestrictToEdgeWorkerIds) {
+                $Body.restrictToEdgeWorkerIds = $RestrictToEdgeWorkerIds
+            }
         }
         $RequestParams = @{
             'Path'             = $Path
@@ -85,16 +75,14 @@ function New-EdgeKVAccessToken {
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
     }
-
-    end {}
 }
 
 
 # SIG # Begin signature block
 # MIIp2QYJKoZIhvcNAQcCoIIpyjCCKcYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCAiLgGALs9yajVa
-# 22x6LPXH1B35TMjSiB3+hcqLKA8aGqCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCCE1psBEP8nG06h
+# OWcHeYVr4+GGAqMMs/YUptpPqX3nRqCCDo4wggawMIIEmKADAgECAhAIrUCyYNKc
 # TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
 # EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
 # BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
@@ -177,22 +165,22 @@ function New-EdgeKVAccessToken {
 # IFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTECEAlLxqaBIAbowjB5Gre6
 # JTcwDQYJYIZIAWUDBAIBBQCgfDAQBgorBgEEAYI3AgEMMQIwADAZBgkqhkiG9w0B
 # CQMxDAYKKwYBBAGCNwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAv
-# BgkqhkiG9w0BCQQxIgQgbwwXGqK/gD/ABvTMTZKEZz75U23vI7jQzzEuvir+PGMw
-# DQYJKoZIhvcNAQEBBQAEggIAI5OuWkS16hbF5gKZT5MD5hUtlc9YRH3U9KZp7YgM
-# XdRcd/XVq71xZplbJ71K+ieBCWkGffLYIWZoKyW3b31G+ViAwTgRsWFsiAp/WgTl
-# Mqa+Cp+SpfelGxZBEzl8knHK9ggIkYuBVhjrZn5od1vdJo4YbToqvYR/kThM6MND
-# 8sOzd7exSuV9xZ5okG8SoDX5ycQHjTjtAN1ws8SLbh6MLSAirSTKq/lwslSKwt3y
-# ogTAf57RxFgwjxHtJmYMVsT3jXgztW9o6M5a5JO8865773zsnwvufX1WAWHe54C+
-# 3u0BFbQ955ET3VI9E7QxSrXTUEziRU7pgKcIznbX0Fg/cOnALmeuX+pZHuDuMQI1
-# Ly4wAcT+kkpSa54buapfXojH2jR0noaL8q/wNFBr007SLcuYU+VvmoMdd0O1384Q
-# OR+DwxCxpozoLVW74Oiwpgh8VKdZAiTfBbLt6T/w86KlsazTgnH9yyILUsaB/S73
-# b4S1lEq97MQhDx9uu4D1ufLBzDDPWny03mkxfkFqXWlvOT2FnDBSxXn8kccHZEC0
-# 4JwVLZr4IxBggEdXaB6+xC4RnITbvV+MlSpx0Z4gFsapwWuri5VyPJyML6f2YY1C
-# VTS2bILn/HSk1YTXCQBQelmTm7IU9/5W/YZfBLqY0A+1zaKRlfcdmTYgYFtjlDTR
-# r+yhghd3MIIXcwYKKwYBBAGCNwMDATGCF2MwghdfBgkqhkiG9w0BBwKgghdQMIIX
+# BgkqhkiG9w0BCQQxIgQgr1B9kGNGT7afvP7mRWXG8kKJHxJo5BALTVQBubWfIacw
+# DQYJKoZIhvcNAQEBBQAEggIAtaf6oetdZs9aq8IYXYF85Pu8mLoGMFvM4W4j5foj
+# LnXwTTpGrra/TCbOdmSMsI/+T6ADhqzI0O1o4uAnnNKSVFMT2EA/tWBCyjkWlmjI
+# 41Bmc/hMRIVOszZ7IEbQN75pWxiTp8oKtwf+t1uHZnDNL/dyAahsEpcEmO3me2uq
+# tuDO5hM6OJCaYfNfQYxS7P4OqwRTao/caM6zUsEipxKHoIl1b9laB1abtv9jI3Mk
+# USUXB/Ipr5QvTq0ur9kUh4Au5zjuQUKZI5mCr5RldIS/zQkvlrsIdptztBAPHEoi
+# v5hzPRoEgDcSUelWlb9AmYgc1Cpt3FlWomPvJqQ3dQ2yYL1uNtqOoQk5JlvFA2nB
+# 3fMwiosudHs32pWX7jBYnuUOao2yPodT9rFKTBG68sSVIkXZXTZGhCZHA7UWC2oV
+# ds7/YJhAIWUGQ70oRA+tMXurmB7dfDIJQvcr2iio3q7ZUAV6fW3OQB+Pi2nJIvaF
+# sTs3SNQoCdapc/VipU3B1tsv0Ga3S2Jv4rBmz/sRzEyOgGXKiZFq9ndrKbKdlqns
+# GgkR4Thjqku2AQlFnRHKa4hKYt9c7YNyp4GOVnP/8qvfQ6op+f3SbQzq9ap7Ep9t
+# i+jm0RRU0J4Q8JzO2broPllUWXIHOoBQ3BlHxE90HoQaWyYkr9vulrXX90oI/s5G
+# IkGhghd3MIIXcwYKKwYBBAGCNwMDATGCF2MwghdfBgkqhkiG9w0BBwKgghdQMIIX
 # TAIBAzEPMA0GCWCGSAFlAwQCAQUAMHgGCyqGSIb3DQEJEAEEoGkEZzBlAgEBBglg
-# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQgECoTw7ylU0PzNjwTJIH2cUHDr3x0
-# mASsLbM3v0hj8UYCEQCxvxyBVJDPVtXokA8OR55VGA8yMDI1MDgwNTE3Mjc0MFqg
+# hkgBhv1sBwEwMTANBglghkgBZQMEAgEFAAQg7yxe3rIvTT6GCWbJMNzjmCaoZMWP
+# vK2sDh1lmr6Kt78CEQCuqm4elJX/1FYWt+6vMmU2GA8yMDI1MTExMzIyNTY0M1qg
 # ghM6MIIG7TCCBNWgAwIBAgIQCoDvGEuN8QWC0cR2p5V0aDANBgkqhkiG9w0BAQsF
 # ADBpMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xQTA/BgNV
 # BAMTOERpZ2lDZXJ0IFRydXN0ZWQgRzQgVGltZVN0YW1waW5nIFJTQTQwOTYgU0hB
@@ -299,20 +287,20 @@ function New-EdgeKVAccessToken {
 # BgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjFBMD8GA1UEAxM4RGln
 # aUNlcnQgVHJ1c3RlZCBHNCBUaW1lU3RhbXBpbmcgUlNBNDA5NiBTSEEyNTYgMjAy
 # NSBDQTECEAqA7xhLjfEFgtHEdqeVdGgwDQYJYIZIAWUDBAIBBQCggdEwGgYJKoZI
-# hvcNAQkDMQ0GCyqGSIb3DQEJEAEEMBwGCSqGSIb3DQEJBTEPFw0yNTA4MDUxNzI3
-# NDBaMCsGCyqGSIb3DQEJEAIMMRwwGjAYMBYEFN1iMKyGCi0wa9o4sWh5UjAH+0F+
-# MC8GCSqGSIb3DQEJBDEiBCAOaEW+VxqJyZ3IZOHY3GuxvkkQqwSFckWSOYO0atEH
-# xDA3BgsqhkiG9w0BCRACLzEoMCYwJDAiBCBKoD+iLNdchMVck4+CjmdrnK7Ksz/j
-# bSaaozTxRhEKMzANBgkqhkiG9w0BAQEFAASCAgCNJg+5NzXi8u/+gqUUjsNEJKTx
-# IXMMDGKh+DO5qJC9/exWKF+gzJItELLiLdNL9882keBk9WKEn9arPr2/oLIQlg4i
-# mGf1LPaTTZrlQG88GRkgxKQ8WndAJVHO/wUGrvEikpOXTs/NmAKzzRZ9KKTyhFtS
-# mMfgA+aFaGK6gHOH63ppyqZUwC/2z35dL0gL1SSfLxLTXMDCLFRuXit0sUmHiRMz
-# QhAMvyZGF928MHlL4tRhihZHYxZbykPtApQWwEJ1owH7mX2AhgtZZ7vWUAW1EXYr
-# HeWmJpQVX116u8ZBN1VVYs+oNeLi3qfENKw1uTnD2PgZNJ8uffvSpB8+75Ysu/vr
-# ZxuJQjeuirV+aqpl6I7RNQw8H9icFNDcrCnFjOO9zaX4qo5IPux2d6I+7sxtsk8b
-# j6FC9LNzcXIBh/Eid2vsjC1cR+f3q0RO5NpacHgDiQMdoiybl0qE6YLFP6qUObJC
-# t4qyNG0/lXxDGLc5vV2Gk3J56AxNvOo9AKnyrWyXnkdzK4aqKaTcODdbqT4DdiOn
-# MNn7DK1o3u9JvoEOyqyc/S1gZo7CVpKNIxDtXTxTSJBOe7KxjNdgqj0g/e2gUGMm
-# OTFQQId90D6CfPkQYUUcnAiYDr9GBSNPF9t2JwEpWgdqXustiNgyBgYF2cslzb6w
-# a7R9sufw3Dfy8FV+wg==
+# hvcNAQkDMQ0GCyqGSIb3DQEJEAEEMBwGCSqGSIb3DQEJBTEPFw0yNTExMTMyMjU2
+# NDNaMCsGCyqGSIb3DQEJEAIMMRwwGjAYMBYEFN1iMKyGCi0wa9o4sWh5UjAH+0F+
+# MC8GCSqGSIb3DQEJBDEiBCCNoWasR9xDJVp3eJhqrIGAQbY6o2ZLgtBFFb5hQPCr
+# TjA3BgsqhkiG9w0BCRACLzEoMCYwJDAiBCBKoD+iLNdchMVck4+CjmdrnK7Ksz/j
+# bSaaozTxRhEKMzANBgkqhkiG9w0BAQEFAASCAgBjDuC30yvwHWNadpi4WRO1WqSc
+# NtvonrhNOdfEdTPmgEc9hyuO3Kfa2j/IMv642gRD+mLsItYoSi+Iy3SPmnvcVNem
+# Ue1JYq2RYGu7kAAfRh+ozYnHh8STszDJImtv3dG5p86PVTjGvfwfPjXCECre2cFG
+# NIpFHKfB6BVF5NZeg3MYpqXFJUoYHiqq35L5i/yFA5oxdZ5WLuXZOUbbGBzze4No
+# XHO4dS/hzHHWLoXWAU9RftJooBGTVnAd5nmgPly9mRaP+JFgUDpY1BtWZXHg6O4O
+# rHv7Ey+0MBZnsPgAgmXM0lL+fHuL1GceJvL+SjZeUM7KyYhSkG0dFA7XOx/qrY+n
+# U2HFbB5djas297QhFjHpsU5OjVf4PxceV7N2F8NmpgMwyaFLDhiNyVaRhTiy0aLB
+# jotVNW3tMey3+YhrnJ42s/NtEbKoIXZ1rLsbeEPJ8mQuJayqzxTgzFYBfJiKfRMP
+# Jq6SVwyHWcDxOTxknvElKQKZZM4oeUXX9B/StpcWnEMFyihjouvEpKi8HxsO9IKQ
+# QvhcWs4sYFpQxjSHjVuq3QWFZ8621Fat66Ldbbr4G46t1xQ1vpm5/1Y7PPYTkF9D
+# 0nj10K4VaeE3c2vNyi8enYOpTGtqgxHKQr+Tbgm46YAUf5JJ31R4N0kRUohRbi4F
+# E9qgmjGrv2GObUdCXQ==
 # SIG # End signature block

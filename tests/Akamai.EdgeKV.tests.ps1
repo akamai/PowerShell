@@ -6,10 +6,11 @@ BeforeDiscovery {
 }
 
 Describe 'Safe Akamai.EdgeKV Tests' {
-    
-    BeforeAll { 
+
+    BeforeAll {
         Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
         Import-Module $PSScriptRoot/../src/Akamai.EdgeKV/Akamai.EdgeKV.psd1 -Force
+        Import-Module $PSScriptRoot/../src/Akamai.EdgeWorkers/Akamai.EdgeWorkers.psd1 -Force
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
@@ -25,20 +26,36 @@ Describe 'Safe Akamai.EdgeKV Tests' {
             groupId            = $TestGroupID
         }
         $TestNamespaceBody = $TestNamespaceObj | ConvertTo-Json
-        $TestTokenName = 'akamaipowershell-testing'
-        $Tomorrow = (Get-Date).AddDays(7)
-        $TestTommorowsDate = Get-Date $Tomorrow -Format yyyy-MM-dd
-        $TestNewItemID = 'pester'
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+        $TestTokenName = "akamaipowershell-$Timestamp"
+        $TestNewItemID = "pester-$Timestamp"
         $TestNewItemContent = 'new'
         $TestNewItemObject = [PSCustomObject] @{
             'content' = 'new'
         }
+        $EdgeWorkers = Get-EdgeWorker @CommonParams
         $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.EdgeKV"
         $PD = @{}
     }
 
     AfterAll {
-        
+        $CleanupParams = @{
+            Network     = 'STAGING'
+            NamespaceID = $TestNamespace
+        }
+
+        foreach ($Group in $TestNamespaceGroup1, $TestNamespaceGroup2) {
+            try {
+                $ItemID = Get-EdgeKVItem -GroupID $Group @CleanupParams @CommonParams
+                if ($ItemID.status -eq 404) {
+                  continue
+                }
+                else {
+                  Remove-EdgeKVItem -GroupID $Group @CleanupParams @CommonParams
+                }
+            }
+            catch { }
+        }
     }
 
     #------------------------------------------------
@@ -47,7 +64,14 @@ Describe 'Safe Akamai.EdgeKV Tests' {
 
     Context 'New-EdgeKVAccessToken' {
         It 'creates a token' {
-            $PD.Token = New-EdgeKVAccessToken -Name $TestTokenName -AllowOnStaging -Expiry $TestTommorowsDate -Namespace $TestNameSpace -Permissions r @CommonParams
+            $TestParams = @{
+                'Name'                    = $TestTokenName
+                'AllowOnStaging'          = $true
+                'Namespace'               = $TestNameSpace
+                'Permissions'             = 'r'
+                'RestrictToEdgeWorkerIds' = $EdgeWorkers[0].edgeWorkerId, $EdgeWorkers[1].edgeWorkerId
+            }
+            $PD.Token = New-EdgeKVAccessToken @TestParams @CommonParams
             $PD.Token.name | Should -Be $TestTokenName
         }
     }
@@ -65,7 +89,7 @@ Describe 'Safe Akamai.EdgeKV Tests' {
             $PD.Token.name | Should -Be $TestTokenName
         }
     }
-    
+
     Context 'Update-EdgeKVAccessToken' {
         It 'refreshes a token' {
             $PD.RefreshedToken = Update-EdgeKVAccessToken -TokenName $TestTokenName @CommonParams
@@ -130,7 +154,7 @@ Describe 'Safe Akamai.EdgeKV Tests' {
             $PD.NewItemByParam | Should -Match 'Item was upserted in database'
         }
     }
-    
+
     Context 'New-EdgeKVItem by pipeline' {
         It 'creates successfully' {
             $PD.NewItemByPipeline = $TestNewItemObject | New-EdgeKVItem -ItemID $TestNewItemID -Network STAGING -NamespaceID $TestNameSpace -GroupID $TestNamespaceGroup2 @CommonParams
@@ -259,14 +283,14 @@ Describe 'Safe Akamai.EdgeKV Tests' {
             $PD.RemoveNamespace.scheduledDeleteTime | Should -BeOfType 'DateTime'
         }
     }
-    
+
     Context 'Get-EdgeKVNamespaceDelete' {
         It 'retrieves a deletion request' {
             $PD.GetNamespaceDelete = Get-EdgeKVNamespaceDelete -Network STAGING -NamespaceID $PD.Namespace.namespace @CommonParams
             $PD.GetNamespaceDelete.scheduledDeleteTime | Should -BeOfType 'DateTime'
         }
     }
-    
+
     Context 'Set-EdgeKVNamespaceDelete' {
         It 'updates a deletion request' {
             $UpdatedDeleteTime = $PD.GetNamespaceDelete.scheduledDeleteTime.AddDays(-1)
@@ -278,7 +302,7 @@ Describe 'Safe Akamai.EdgeKV Tests' {
             $PD.SetNamespaceDelete.scheduledDeleteTime.Minute | Should -Be $UpdatedDeleteTime.Minute
         }
     }
-    
+
     Context 'Restore-EdgeKVNamespace' {
         It 'removes a deletion request' {
             Restore-EdgeKVNamespace -Network STAGING -NamespaceID $PD.Namespace.namespace @CommonParams
