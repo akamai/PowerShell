@@ -1,6 +1,8 @@
 # Akamai Powershell Module
 
-The Akamai PowerShell module provides a consistent interface with which to manage Akamai's product API. 
+The Akamai PowerShell module provides a consistent interface with which to manage Akamai's product API.
+
+Our module documentation is on Akamai TechDocs at [PowerShell](https://techdocs.akamai.com/powershell/docs).
 
 ## What's new
 
