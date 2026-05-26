@@ -5,82 +5,200 @@ BeforeDiscovery {
     }
 }
 
-Describe 'Unsafe Akamai.Purge Tests' {
+Describe 'Akamai.Purge Tests' {
     
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.Purge/Akamai.Purge.psd1 -Force
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.Purge'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        $CommonParams = @{
+            EdgeRCFile = $env:PesterEdgeRCFile
+            Section    = $env:PesterEdgeRCSection
+        }
         $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Purge"
         $PD = @{}
     }
 
     AfterAll {
-        
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
-    Context 'Clear-AkamaiCache - Invalidate - Parameter Set cpcode' {
-        It 'Clear-AkamaiCache (cpcode) returns the correct data' {
+    Context 'Clear-AkamaiCache' {
+        BeforeAll {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
                 return $Response | ConvertFrom-Json
             }
-            $ClearAkamaiCache = Clear-AkamaiCache -CPCodes "123456, 456789"
-            $ClearAkamaiCache.purgeId | Should -Not -BeNullOrEmpty
+        }
+        Context 'CPCode' {
+            It 'purges using invalidate method' {
+                $TestParams = @{
+                    'CPCodes' = 123456
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'purges using delete method' {
+                $TestParams = @{
+                    'CPCodes' = 123456
+                    'Method'  = 'delete'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'purges using production network' {
+                $TestParams = @{
+                    'CPCodes' = 123456
+                    'Method'  = 'delete'
+                    'Network' = 'production'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'fails when incorrect network is used' {
+                $TestParams = @{
+                    CPCodes = 123456, 456789
+                    Method  = 'delete'
+                    Network = 'bananas'
+                }
+                { Clear-AkamaiCache @TestParams } | Should -Throw
+            }
+            It 'fails when incorrect method is used' {
+                $TestParams = @{
+                    CPCodes = 123456, 456789
+                    Method  = 'castitintothefire!'
+                }
+                { Clear-AkamaiCache @TestParams } | Should -Throw
+            }
+        }
+        Context 'URL' {
+            It 'purges using invalidate method' {
+                $TestParams = @{
+                    'URLs' = 'https://www.example.com/'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'purges using delete method' {
+                $TestParams = @{
+                    'Method' = 'delete'
+                    'URLs'   = 'https://www.example.com/'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'purges using production network' {
+                $TestParams = @{
+                    'Method'  = 'delete'
+                    'Network' = 'production'
+                    'URLs'    = 'https://www.example.com/'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'fails when incorrect network is used' {
+                $TestParams = @{
+                    URLs    = 'https://www.example.com/', 'https://www.example.com/search'
+                    Method  = 'delete'
+                    Network = 'bananas'
+                }
+                { Clear-AkamaiCache @TestParams } | Should -Throw
+            }
+            It 'fails when incorrect method is used' {
+                $TestParams = @{
+                    URLs   = 'https://www.example.com/', 'https://www.example.com/search'
+                    Method = 'castitintothefire!'
+                }
+                { Clear-AkamaiCache @TestParams } | Should -Throw
+            }
+        }
+        Context 'Tags' {
+            It 'purges using invalidate method' {
+                $TestParams = @{
+                    'Tags' = 'tag1'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'purges using delete method' {
+                $TestParams = @{
+                    'Method' = 'delete'
+                    'Tags'   = 'tag1'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'purges using production network' {
+                $TestParams = @{
+                    'Method'  = 'delete'
+                    'Network' = 'production'
+                    'Tags'    = 'tag1'
+                }
+                $Result = Clear-AkamaiCache @TestParams
+                $Result.purgeId | Should -Not -BeNullOrEmpty
+            }
+            It 'fails when incorrect network is used' {
+                $TestParams = @{
+                    Tags    = 'tag1', 'tag2'
+                    Method  = 'delete'
+                    Network = 'bananas'
+                }
+                { Clear-AkamaiCache @TestParams } | Should -Throw
+            }
+            It 'fails when incorrect method is used' {
+                $TestParams = @{
+                    Tags   = 'tag1', 'tag2'
+                    Method = 'castitintothefire!'
+                }
+                { Clear-AkamaiCache @TestParams } | Should -Throw
+            }
         }
     }
 
-    Context 'Clear-AkamaiCache - Invalidate - Parameter Set tag' {
-        It 'Clear-AkamaiCache (tag) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
-                return $Response | ConvertFrom-Json
+    Context 'Get-PurgeLimit' {
+        It 'gets purge limits for URL type' {
+            $TestParams = @{
+                'PurgeType' = 'url'
             }
-            $ClearAkamaiCache = Clear-AkamaiCache -Tags "tag1"
-            $ClearAkamaiCache.purgeId | Should -Not -BeNullOrEmpty
+            $Result = Get-PurgeLimit @TestParams @CommonParams
+            $Result | Should -Not -BeNullOrEmpty
+            $Result.Limit | Should -Not -BeNullOrEmpty
+            $Result.LimitObjects | Should -Not -BeNullOrEmpty
+            $Result.Remaining | Should -Not -BeNullOrEmpty
+            $Result.RemainingObjects | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Clear-AkamaiCache - Invalidate - Parameter Set url' {
-        It 'Clear-AkamaiCache (url) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
-                return $Response | ConvertFrom-Json
+        It 'gets purge limits for CPCode type' {
+            $TestParams = @{
+                'PurgeType' = 'cpcode'
             }
-            $ClearAkamaiCache = Clear-AkamaiCache -URLs "https://www.example.com/, https://www.example.com/search"
-            $ClearAkamaiCache.purgeId | Should -Not -BeNullOrEmpty
+            $Result = Get-PurgeLimit @TestParams @CommonParams
+            $Result | Should -Not -BeNullOrEmpty
+            $Result.Limit | Should -Not -BeNullOrEmpty
+            $Result.LimitObjects | Should -Not -BeNullOrEmpty
+            $Result.Remaining | Should -Not -BeNullOrEmpty
+            $Result.RemainingObjects | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Clear-AkamaiCache - Delete - Parameter Set cpcode' {
-        It 'Clear-AkamaiCache (cpcode) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
-                return $Response | ConvertFrom-Json
+        It 'gets purge limits for Tag type' {
+            $TestParams = @{
+                'PurgeType' = 'tag'
             }
-            $ClearAkamaiCache = Clear-AkamaiCache -CPCodes "123456, 456789" -Method delete
-            $ClearAkamaiCache.purgeId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Clear-AkamaiCache - Delete - Parameter Set tag' {
-        It 'Clear-AkamaiCache (tag) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
-                return $Response | ConvertFrom-Json
-            }
-            $ClearAkamaiCache = Clear-AkamaiCache -Tags "tag1" -Method delete
-            $ClearAkamaiCache.purgeId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Clear-AkamaiCache - Delete - Parameter Set url' {
-        It 'Clear-AkamaiCache (url) returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Purge -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Clear-AkamaiCache.json"
-                return $Response | ConvertFrom-Json
-            }
-            $ClearAkamaiCache = Clear-AkamaiCache -URLs "https://www.example.com/, https://www.example.com/search" -Method delete
-            $ClearAkamaiCache.purgeId | Should -Not -BeNullOrEmpty
+            $Result = Get-PurgeLimit @TestParams @CommonParams
+            $Result | Should -Not -BeNullOrEmpty
+            $Result.Limit | Should -Not -BeNullOrEmpty
+            $Result.LimitObjects | Should -Not -BeNullOrEmpty
+            $Result.Remaining | Should -Not -BeNullOrEmpty
+            $Result.RemainingObjects | Should -Not -BeNullOrEmpty
         }
     }
 }

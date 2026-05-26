@@ -5,28 +5,42 @@ BeforeDiscovery {
     }
 }
 
-Describe 'Safe SLA Tests' {
+Describe 'SLA Tests' {
     BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.SLA/Akamai.SLA.psd1 -Force
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.SLA'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
 
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
         $Start = "2024-03-26T10:23:24Z"
         $End = "2024-04-26T15:19:44Z"
         $APIStart = "2024-03-26T00:00Z"
-        $AvailabilityReportID = 33002
-        $PerformanceReportID = 33001
-        $AvailabilityTestJSON = @"
+        $TestAvailabilityName = "temp-availability-$Timestamp"
+        $TestPerformanceName = "temp-performance-$Timestamp"
+        $AvailabilityTest = @"
 {
-  "contractId": "$TestContract",
+  "contractId": "$TestContractID",
   "agentGroupId": 5,
-  "name": "temp-availability",
+  "name": "$TestAvailabilityName",
   "type": "AVAILABILITY",
   "testDetails": {
     "originUrl": "https://origin.example.com/",
@@ -38,11 +52,11 @@ Describe 'Safe SLA Tests' {
   "groupId": "$TestGroupID"
 }
 "@
-        $PerfTestJSON = @"
+        $PerfTest = @"
 {
-  "contractId": "$TestContract",
+  "contractId": "$TestContractID",
   "agentGroupId": 5,
-  "name": "temp-performance",
+  "name": "$TestPerformanceName",
   "type": "PERFORMANCE",
   "testDetails": {
     "originUrl": "https://origin.example.com/",
@@ -53,19 +67,32 @@ Describe 'Safe SLA Tests' {
   "availabilityFrequency": 360,
   "groupId": "$TestGroupID"
 }
-"@
-        $PerfTest = ConvertFrom-Json -InputObject $PerfTestJSON
-    
+"@ | ConvertFrom-Json    
         $PD = @{}
     }
 
     AfterAll {
-        
+        Get-SLATestConfiguration @CommonParams | Where-Object name -in $TestPerformanceName, $TestAvailabilityName | Remove-SLATestConfiguration @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #-------------------------------------------------
     #                  SLA Tests
     #-------------------------------------------------
+
+    Context 'New-SLATestConfiguration' {
+        It 'should create a new test successfully using json' {
+            $TestParams = @{
+                'Body' = $AvailabilityTest
+            }
+            $PD.NewAvailTest = New-SLATestConfiguration @TestParams @CommonParams
+            $PD.NewAvailTest.slaTestId | Should -Match '[\d]+'
+        }
+        It 'should create a new test successfully using the pipeline' {
+            $PD.NewPerfTest = $PerfTest | New-SLATestConfiguration @CommonParams
+            $PD.NewPerfTest.slaTestId | Should -Match '[\d]+'
+        }
+    }
 
     Context 'Get-SLATestConfiguration All' {
         It 'gets all test configurations' { 
@@ -74,14 +101,17 @@ Describe 'Safe SLA Tests' {
         }
     }
 
-    Context 'Get-SLATestConfiguration Single' {
+    Context 'Get-SLATestConfiguration' {
         It 'gets a test configuration by ID' {
-            $PD.GetSingleTestConfig = Get-SLATestConfiguration -SLATestID $AvailabilityReportID @CommonParams
-            $PD.GetSingleTestConfig[0].slaTestId | Should -Be $AvailabilityReportID
+            $TestParams = @{
+                'SLATestID' = $PD.NewAvailTest.slaTestId
+            }
+            $PD.GetSingleTestConfig = Get-SLATestConfiguration @TestParams @CommonParams
+            $PD.GetSingleTestConfig[0].slaTestId | Should -Be $PD.NewAvailTest.slaTestId
         }
         It 'gets a test configuration by piped ID' {
-            $GetSingleTestConfig = $AvailabilityReportID | Get-SLATestConfiguration @CommonParams
-            $GetSingleTestConfig[0].slaTestId | Should -Be $AvailabilityReportID
+            $GetSingleTestConfig = $PD.NewAvailTest.slaTestId | Get-SLATestConfiguration @CommonParams
+            $GetSingleTestConfig[0].slaTestId | Should -Be $PD.NewAvailTest.slaTestId
         }
         It 'gets a test configuration by piped object' {
             $GetSingleTestConfig = $PD.GetSingleTestConfig | Get-SLATestConfiguration @CommonParams
@@ -91,14 +121,24 @@ Describe 'Safe SLA Tests' {
 
     Context 'Get-SLAAvailabilityReport' { 
         It 'Gets an availability reporty by ID and time frame' {
-            $GetAvailReport = Get-SLAAvailabilityReport -SLATestID $AvailabilityReportID -Start $Start -End $End @CommonParams
+            $TestParams = @{
+                'End'       = $End
+                'SLATestID' = $PD.NewAvailTest.slaTestId
+                'Start'     = $Start
+            }
+            $GetAvailReport = Get-SLAAvailabilityReport @TestParams @CommonParams
             $GetAvailReport[0].reportStart | Should -Be $APIStart 
         }
     }
 
     Context 'Get-SLAPerformanceReport' {
         It 'gets a performance report by ID and time frame' {
-            $GetPerformReport = Get-SLAPerformanceReport -SLATestID $PerformanceReportID -Start $Start -End $End @CommonParams
+            $TestParams = @{
+                'End'       = $End
+                'SLATestID' = $PD.NewPerfTest.slaTestId
+                'Start'     = $Start
+            }
+            $GetPerformReport = Get-SLAPerformanceReport @TestParams @CommonParams
             $GetPerformReport[0].reportStart | Should -Be $APIStart 
         }
     }
@@ -113,18 +153,7 @@ Describe 'Safe SLA Tests' {
     Context 'Get-SLATestConfigurationQuota' {
         It 'gets a list of config quotas' {
             $GetQuotas = Get-SLATestConfigurationQuota @CommonParams
-            $GetQuotas[0].contractId | Should -Be $TestContract
-        }
-    }
-
-    Context 'New-SLATestConfiguration' {
-        It 'should create a new test successfully using json' {
-            $PD.NewAvailTest = New-SLATestConfiguration -Body $AvailabilityTestJSON @CommonParams
-            $PD.NewAvailTest.slaTestId | Should -Match '[\d]+'
-        }
-        It 'should create a new test successfully using the pipeline' {
-            $PD.NewPerfTest = $PerfTest | New-SLATestConfiguration @CommonParams
-            $PD.NewPerfTest.slaTestId | Should -Match '[\d]+'
+            $GetQuotas[0].contractId | Should -Be $TestContractID
         }
     }
 
@@ -141,10 +170,18 @@ Describe 'Safe SLA Tests' {
 
     Context 'Remove-SLATestConfiguration' {
         It 'should remove the test successfully using parameters' {
-            Remove-SLATestConfiguration -SLATestID $PD.NewAvailTest.slaTestId @CommonParams
+            $TestParams = @{
+                'SLATestID' = $PD.NewAvailTest.slaTestId
+            }
+            Remove-SLATestConfiguration @TestParams @CommonParams
         }
         It 'should remove the test successfully using the pipeline' {
             $PD.NewPerfTest | Remove-SLATestConfiguration @CommonParams
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.SLA -MockWith { return 'IAR executed' }
+            $Result = & {} | Remove-SLATestConfiguration
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 }

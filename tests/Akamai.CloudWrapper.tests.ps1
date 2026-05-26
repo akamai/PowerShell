@@ -7,21 +7,37 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.CloudWrapper Tests' {
     BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.CloudWrapper/Akamai.CloudWrapper.psm1 -Force
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.CloudWrapper'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
         $TestPropertyName = $env:PesterAMDPropertyName
-        $TestConfigName = 'akamaipowershell'
+        $TestPropertyID = $env:PesterAMDPropertyID
+        $TestConfigName = "powershell-$Timestamp"
         $TestConfig = @"
 {
   "configName": "$TestConfigName",
-  "contractId": "$TestContract",
+  "contractId": "$TestContractID",
   "propertyIds": [
     "12345"
   ],
@@ -42,8 +58,8 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
     "origins": [
       {
         "originId": "origin976",
-        "hostname": "akamaipowershell.download.akamai.com",
-        "propertyId": 1071960
+        "hostname": "pester.download.akamai.com",
+        "propertyId": $TestPropertyID
       }
     ],
     "cdns": [
@@ -74,16 +90,27 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
 }
 "@ | ConvertFrom-Json
 
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.CloudWrapper"
         # Persistent Data
         $PD = @{}
     }
 
     AfterAll {
-        $TestParams = @{
-            ConfigID = $PD.Configs[0].configId
+        $Config = Get-CloudWrapperConfiguration @CommonParams | Where-Object configName -eq $TestConfigName
+        if ($Config) {
+            $Config | Remove-CloudWrapperConfiguration @CommonParams
+            while ($true) {
+                try {
+                    Get-CloudWrapperConfiguration -ConfigID $Config.configId @CommonParams
+                }
+                catch {
+                    break
+                }
+                Write-Warning "Waiting for config removal to complete"
+                Start-Sleep -Seconds 30
+            }
         }
-        try { Get-CloudWrapperConfiguration @TestParams @CommonParams | Remove-CloudWrapperConfiguration @CommonParams }
-        catch {}
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
@@ -92,7 +119,7 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
 
     Context 'Get-CloudWrapperProvider' {
         It 'lists providers' {
-            $PD.Providers = Get-CloudWrapperProvider @TestParams @CommonParams
+            $PD.Providers = Get-CloudWrapperProvider @CommonParams
             $PD.Providers.count | Should -BeGreaterThan 0
             $PD.Providers[0].cdnCode | Should -Not -BeNullOrEmpty
             $PD.Providers[0].cdnName | Should -Not -BeNullOrEmpty
@@ -118,10 +145,13 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
 
     Context 'Get-CloudWrapperCapacity' {
         It 'returns the correct data' {
-            $PD.Capacity = Get-CloudWrapperCapacity -ContractIds $TestContract @CommonParams
+            $TestParams = @{
+                'ContractIds' = $TestContractID
+            }
+            $PD.Capacity = Get-CloudWrapperCapacity @TestParams @CommonParams
             $PD.Capacity[0].approvedCapacity | Should -Not -BeNullOrEmpty
             $PD.Capacity[0].assignedCapacity | Should -Not -BeNullOrEmpty
-            $PD.Capacity[0].contractId | Should -Be $TestContract
+            $PD.Capacity[0].contractId | Should -Be $TestContractID
         }
     }
 
@@ -157,7 +187,7 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
     #                 Configuration
     #------------------------------------------------
 
-    Context 'New-CloudWrapperConfiguration by pipeline' {
+    Context 'New-CloudWrapperConfiguration' {
         It 'creates successfully' {
             # Update with real property ID
             $TestConfig.propertyIds[0] = [string] $PD.Property.PropertyID
@@ -167,19 +197,16 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
         }
     }
 
-    Context 'Get-CloudWrapperConfiguration, all' {
+    Context 'Get-CloudWrapperConfiguration' {
         It 'returns a list of configs' {
-            $PD.Configs = Get-CloudWrapperConfiguration @CommonParams
+            $PD.Configs = @(Get-CloudWrapperConfiguration @CommonParams)
             $PD.Configs.count | Should -BeGreaterThan 0
             $PD.Configs[0].configName | Should -Not -BeNullOrEmpty
             $PD.Configs[0].configId | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-CloudWrapperConfiguration, single' {
         It 'returns the correct config' {
             $TestParams = @{
-                ConfigID = $PD.Configs[0].configId
+                'ConfigID' = $PD.Configs[0].configId
             }
             $PD.Config = Get-CloudWrapperConfiguration @TestParams @CommonParams
             $PD.Config.configName | Should -Be $PD.Configs[0].configName
@@ -188,19 +215,16 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
     }
 
     Context 'Set-CloudWrapperConfiguration by parameter' {
-        It 'returns the correct data' {
+        It 'updates successfully by params' {
             $TestParams = @{
-                Body     = $PD.NewConfig
-                ConfigID = $PD.NewConfig.configId
+                'Body'     = $PD.NewConfig
+                'ConfigID' = $PD.NewConfig.configId
             }
             $SetByParam = Set-CloudWrapperConfiguration @TestParams @CommonParams
             $SetByParam.configName | Should -Be $PD.NewConfig.configName
             $SetByParam.configId | Should -Be $PD.NewConfig.configId
         }
-    }
-
-    Context 'Set-CloudWrapperConfiguration by pipeline' {
-        It 'returns the correct data' {
+        It 'updates successfully by pipeline' {
             $SetByPipeline = $PD.NewConfig | Set-CloudWrapperConfiguration @CommonParams
             $SetByPipeline.configName | Should -Be $PD.NewConfig.configName
             $SetByPipeline.configId | Should -Be $PD.NewConfig.configId
@@ -214,12 +238,17 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
     Context 'Get-CloudWrapperConfigurationOrigins' {
         It 'returns the correct data' {
             $TestParams = @{
-                ConfigID = $PD.NewConfig.configId
+                'ConfigID' = $PD.NewConfig.configId
             }
             $PD.ConfigOrigins = Get-CloudWrapperConfigurationOrigins @TestParams @CommonParams
             $PD.ConfigOrigins[0].primary | Should -Not -BeNullOrEmpty
             $PD.ConfigOrigins[0].backup | Should -Not -BeNullOrEmpty
             $PD.ConfigOrigins[0].locationName | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudWrapper -MockWith { return 'IAR executed' }
+            $Result = & {} | Get-CloudWrapperConfigurationOrigins
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -229,40 +258,25 @@ Describe 'Safe Akamai.CloudWrapper Tests' {
 
     Context 'Remove-CloudWrapperConfiguration by pipeline' {
         It 'throws no errors' {
-            $PD.NewConfig | Remove-CloudWrapperConfiguration @CommonParams
-            Start-Sleep -Seconds 30
-            
-            $GetParams = @{
-                ConfigID = $PD.NewConfig.configId
-            }
-            while ($true) {
-                try {
-                    Get-CloudWrapperConfiguration @GetParams @CommonParams
-                }
-                catch {
-                    break
-                }
-                Write-Warning "Waiting for config removal to complete"
+            if ($null -ne $PD.NewConfig) {
+                $PD.NewConfig | Remove-CloudWrapperConfiguration @CommonParams
                 Start-Sleep -Seconds 30
+                
+                $GetParams = @{
+                    'ConfigID' = $PD.NewConfig.configId
+                }
+                while ($true) {
+                    try {
+                        Get-CloudWrapperConfiguration @GetParams @CommonParams
+                    }
+                    catch {
+                        break
+                    }
+                    Write-Warning "Waiting for config removal to complete"
+                    Start-Sleep -Seconds 30
+                }
             }
         }
-    }
-}
-
-Describe 'Unsafe Akamai.CloudWrapper Tests' {
-    
-    BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.CloudWrapper/Akamai.CloudWrapper.psm1 -Force
-        $TestContract = '1-2AB34C'
-        $TestGroup = 123456
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.CloudWrapper"
-        $PD = @{}
-        
-    }
-
-    AfterAll {
-        
     }
 
     #------------------------------------------------
@@ -276,8 +290,8 @@ Describe 'Unsafe Akamai.CloudWrapper Tests' {
                 return $Response | ConvertFrom-Json
             }
             $TestParams = @{
-                CdnCode    = 'dn004'
-                ContractID = '1-2AB34C'
+                'CdnCode'    = 'dn004'
+                'ContractID' = '1-2AB34C'
             }
             $PD.AuthKey = Get-CloudWrapperAuthKey @TestParams
             $PD.AuthKey.authKeyName | Should -Not -BeNullOrEmpty
@@ -289,21 +303,18 @@ Describe 'Unsafe Akamai.CloudWrapper Tests' {
     #                 Activation
     #------------------------------------------------
 
-    Context 'New-CloudWrapperConfigurationActivation by parameter' {
-        It 'throws no errors' {
+    Context 'New-CloudWrapperConfigurationActivation' {
+        It 'creates successfully by params' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudWrapper -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudWrapperConfigurationActivation.json"
                 return $Response | ConvertFrom-Json
             }
             $TestParams = @{
-                ConfigurationIDs = 12345
+                'ConfigurationIDs' = 12345
             }
             New-CloudWrapperConfigurationActivation @TestParams
         }
-    }
-
-    Context 'New-CloudWrapperConfigurationActivation by pipeline' {
-        It 'throws no errors' {
+        It 'creates successfully by pipeline' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CloudWrapper -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudWrapperConfigurationActivation.json"
                 return $Response | ConvertFrom-Json
@@ -311,5 +322,4 @@ Describe 'Unsafe Akamai.CloudWrapper Tests' {
             12345, 23456 | New-CloudWrapperConfigurationActivation
         }
     }
-
 }

@@ -7,23 +7,41 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.TestCenter Tests' {
     
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.TestCenter/Akamai.TestCenter.psd1 -Force
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.TestCenter'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
         $TestPropertyName = $env:PesterPropertyName
-        $TestPropertyVersion = 126
-        $TestSuiteName1 = 'Akamai PowerShell Testing 1'
-        $TestSuiteName2 = 'Akamai PowerShell Testing 2'
-        $TestSuiteName3 = 'Akamai PowerShell Testing 3'
+        $TestPropertyID = $env:PesterPropertyID
+        $TestPropertyVersion = 7
+        $SuiteNamePrefix = "akamaipowershell-$Timestamp"
+        $TestSuiteName1 = "$SuiteNamePrefix-1"
+        $TestSuiteName2 = "$SuiteNamePrefix-2"
+        $TestSuiteName3 = "$SuiteNamePrefix-3"
         $TestRequestURL1 = "http://$env:PesterHostname/"
         $TestRequestURL2 = "http://$env:PesterHostname/api"
         $TestVariableName1 = 'var1'
         $TestVariableName2 = 'var2'
+        $TestVariableName3 = 'var3'
         
         # Test suite objects
         # ---- Case
@@ -116,6 +134,7 @@ Describe 'Safe Akamai.TestCenter Tests' {
 
     AfterAll {
         Get-TestSuite @CommonParams | Where-Object testSuiteName -in $TestSuiteName1, $TestSuiteName2, $TestSuiteName3 | Remove-TestSuite @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
 
@@ -123,37 +142,27 @@ Describe 'Safe Akamai.TestCenter Tests' {
     #                 TestSuite                  
     #------------------------------------------------
 
-    Context 'New-TestSuite, basic' {
-        It 'Returns the correct data' {
-            $PD.NewTestSuiteBasic = New-TestSuite -Body $TestSuite @CommonParams
+    Context 'New-TestSuite' {
+        It 'creates a test suite with request body' {
+            $TestParams = @{
+                'Body' = $TestSuite
+            }
+            $PD.NewTestSuiteBasic = New-TestSuite @TestParams @CommonParams
             $PD.NewTestSuiteBasic.testSuiteName | Should -Be $TestSuiteName1
         }
-    }
-
-    Context 'New-TestSuite, with objects' {
-        It 'Returns the correct data' {
-            $PD.NewTestSuiteChild = ($TestSuiteWithObjects | New-TestSuite @CommonParams)
+        It 'creates a test suite with objects' {
+            $PD.NewTestSuiteChild = $TestSuiteWithObjects | New-TestSuite @CommonParams
             $PD.NewTestSuiteChild.testSuiteName | Should -Be $TestSuiteName2
             $PD.NewTestSuiteChild.testCases.count | Should -Not -Be 0
         }
-    }
-    
-    Context 'Initialize-TestSuite' {
-        It 'Returns the correct data' {
-            $PD.BuildTestSuite = $BuildTestSuiteJSON | Initialize-TestSuite @CommonParams
-            $PD.BuildTestSuite.configs.propertyManager.propertyName | Should -Be $TestPropertyName
-        }
-    }
-
-    Context 'New-TestSuite with parameters' {
-        It 'creates successfully' {
+        It 'creates a test suite with parameters' {
             $Description = 'Testing PowerShell'
             $TestParams = @{
-                TestSuiteName        = $TestSuiteName3
-                TestSuiteDescription = $Description
-                IsStateful           = $true
-                PropertyName         = $TestPropertyName
-                PropertyVersion      = $TestPropertyVersion
+                'TestSuiteName'        = $TestSuiteName3
+                'TestSuiteDescription' = $Description
+                'IsStateful'           = $true
+                'PropertyName'         = $TestPropertyName
+                'PropertyVersion'      = $TestPropertyVersion
             }
             $PD.NewTestSuiteParams = New-TestSuite @TestParams @CommonParams
             $PD.NewTestSuiteParams.testSuiteName | Should -Be $TestSuiteName3
@@ -162,64 +171,108 @@ Describe 'Safe Akamai.TestCenter Tests' {
             $PD.NewTestSuiteParams.IsLocked | Should -Be $false
         }
     }
+    
+    Context 'Initialize-TestSuite' {
+        It 'initializes successfully by param' {
+            $TestParams = @{
+                'Body' = $BuildTestSuiteJSON
+            }
+            $PD.BuildTestSuite = Initialize-TestSuite @TestParams @CommonParams
+            $PD.BuildTestSuite.configs.propertyManager.propertyName | Should -Be $TestPropertyName
+        }
+        It 'initializes successfully by pipeline' {
+            $BuildTestSuite = $BuildTestSuiteJSON | Initialize-TestSuite @CommonParams
+            $BuildTestSuite.configs.propertyManager.propertyName | Should -Be $TestPropertyName
+        }
+    }
 
-    Context 'Get-TestSuite - Parameter Set all' {
-        It 'Returns the correct data' {
+    Context 'Get-TestSuite' {
+        It 'gets a list of test suites' {
             $PD.GetTestSuiteAll = Get-TestSuite @CommonParams
             $PD.GetTestSuiteAll[0].testSuiteId | Should -Not -BeNullOrEmpty
             $PD.GetTestSuiteAll.count | Should -BeGreaterThan 0
         }
-    }
-
-  
-    Context 'Get-TestSuite - Parameter Set single' {
-        It 'Returns the correct data' {
-            $PD.GetTestSuiteSingle = Get-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+        It 'gets a specific test suite by ID' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.GetTestSuiteSingle = Get-TestSuite @TestParams @CommonParams
             $PD.GetTestSuiteSingle.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
         }
-    }
-  
-    Context 'Get-TestSuite - Parameter Set child' {
-        It 'Returns the correct data' {
-            $PD.GetTestSuiteChild = Get-TestSuite -TestSuiteID $PD.NewTestSuiteChild.testSuiteId -IncludeChildObjects @CommonParams
+        It 'gets a specific test suite with child objects' {
+            $TestParams = @{
+                'TestSuiteID'         = $PD.NewTestSuiteChild.testSuiteId
+                'IncludeChildObjects' = $true
+            }
+            $PD.GetTestSuiteChild = Get-TestSuite @TestParams @CommonParams
             $PD.GetTestSuiteChild.testSuiteId | Should -Be $PD.NewTestSuiteChild.testSuiteId
             $PD.GetTestSuiteChild.testCases.count | Should -BeGreaterThan 0
         }
     }
-
-    Context 'Set-TestSuite by parameter' {
-        It 'Returns the correct suite' {
-            $PD.SetTestSuiteByParam = Set-TestSuite -Body $PD.NewTestSuiteBasic -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+ 
+    Context 'Set-TestSuite' {
+        It 'updates a basic suite by parameter' {
+            $TestParams = @{
+                'Body'        = $PD.NewTestSuiteBasic
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestSuiteByParam = Set-TestSuite @TestParams @CommonParams
             $PD.SetTestSuiteByParam.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
         }
-    }
-
-    Context 'Set-TestSuite by pipeline' {
-        It 'Returns the correct suite' {
-            $PD.SetTestSuiteByPipeline = $PD.NewTestSuiteBasic | Set-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+        It 'updates a basic suite by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestSuiteByPipeline = $PD.NewTestSuiteBasic | Set-TestSuite @TestParams @CommonParams
             $PD.SetTestSuiteByPipeline.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
         }
-    }
-    
-    Context 'Set-TestSuite with child objects' {
-        It 'Returns the correct suite' {
-            $PD.SetTestSuiteWithChild = Set-TestSuite -TestSuiteID $PD.NewTestSuiteChild.testSuiteId -Body $PD.NewTestSuiteChild @CommonParams
+        It 'updates a suite with child objects' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteChild.testSuiteId
+                'Body'        = $PD.NewTestSuiteChild
+            }
+            $PD.SetTestSuiteWithChild = Set-TestSuite @TestParams @CommonParams
             $PD.SetTestSuiteWithChild.testSuiteId | Should -Be $PD.NewTestSuiteChild.testSuiteId
         }
     }
 
-    Context 'Remove-TestSuite' {
-        It 'Throws no errors' {
-            Remove-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
-            # Give deletion a chance to complete
-            Start-Sleep -s 5
+    Context 'Remove/Restore-TestSuite by parameter' {
+        Context 'Remove-TestSuite' {
+            It 'Throws no errors' {
+                $TestParams = @{
+                    'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                }
+                Remove-TestSuite @TestParams @CommonParams
+                # Give deletion a chance to complete
+                Start-Sleep -s 5
+            }
+        }
+    
+        Context 'Restore-TestSuite' {
+            It 'restores the correct test suite' {
+                $TestParams = @{
+                    'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                }
+                $PD.RestoreTestSuite = Restore-TestSuite @TestParams @CommonParams
+                $PD.RestoreTestSuite.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
+            }
         }
     }
 
-    Context 'Restore-TestSuite' {
-        It 'Returns the correct test suite' {
-            $PD.RestoreTestSuite = Restore-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
-            $PD.RestoreTestSuite.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
+    Context 'Remove/Restore-TestSuite by pipeline' {
+        Context 'Remove-TestSuite' {
+            It 'Throws no errors' {
+                $PD.NewTestSuiteBasic | Remove-TestSuite @CommonParams
+                # Give deletion a chance to complete
+                Start-Sleep -s 5
+            }
+        }
+    
+        Context 'Restore-TestSuite' {
+            It 'restores the correct test suite' {
+                $PD.RestoreTestSuite = $PD.NewTestSuiteBasic | Restore-TestSuite @CommonParams
+                $PD.RestoreTestSuite.testSuiteId | Should -Be $PD.NewTestSuiteBasic.testSuiteId
+            }
         }
     }
 
@@ -227,60 +280,127 @@ Describe 'Safe Akamai.TestCenter Tests' {
     #                 TestCase                  
     #------------------------------------------------
 
-    Context 'New-TestCase by parameter' {
-        It 'Returns the correct data' {
-            $PD.NewTestCaseByParam = New-TestCase -Body $TestCaseJSON -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+    Context 'New-TestCase' {
+        It 'creates a case by request body' {
+            $TestParams = @{
+                'Body'        = $TestCaseJSON
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.NewTestCaseByParam = New-TestCase @TestParams @CommonParams
             $PD.NewTestCaseByParam.testRequest.testRequestUrl | Should -Be $TestRequestURL1
         }
-    }
-
-    Context 'New-TestCase by pipeline' {
-        It 'Returns the correct data' {
-            $PD.NewTestCaseByPipeline = $TestCase | New-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+        It 'creates a case by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.NewTestCaseByPipeline = $TestCase | New-TestCase @TestParams @CommonParams
             $PD.NewTestCaseByPipeline.testRequest.testRequestUrl | Should -Be $TestRequestURL2
         }
-    }
-
-    Context 'Get-TestCase, all' {
-        It 'Returns the correct data' {
-            $PD.GetTestCaseAll = Get-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
-            $PD.GetTestCaseAll[0].testCaseId | Should -Not -BeNullOrEmpty
+        It 'creates a case by attributes' {
+            $TestParams = @{
+                'TestSuiteID'         = $PD.NewTestSuiteParams.testSuiteId
+                'RequestMethod'       = 'GET'
+                'TestRequestURL'      = $TestRequestURL1
+                'ConditionExpression' = 'Response code is one of "200"'
+                'Client'              = 'CHROME'
+                'IPVersion'           = 'IPV4'
+                'GeoLocation'         = 'US'
+                'RequestHeaders'      = @(
+                    @{
+                        'headerAction' = 'ADD'
+                        'headerName'   = 'X-Test'
+                        'headerValue'  = 'true'
+                    }
+                )
+                'Tags'                = @( 'pester', 'powershell')
+            }
+            $PD.NewTestCaseByAttributes = New-TestCase @TestParams @CommonParams
+            $PD.NewTestCaseByAttributes.testRequest.testRequestUrl | Should -Be $TestRequestURL1
         }
     }
-    
-    Context 'Get-TestCase, single' {
-        It 'Returns the correct data' {
-            $PD.GetTestCase = Get-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -TestCaseID $PD.NewTestCaseByParam.testCaseId @CommonParams
+
+    Context 'Get-TestCase' {
+        It 'gets a list of test cases' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.GetTestCaseAll = Get-TestCase @TestParams @CommonParams
+            $PD.GetTestCaseAll[0].testCaseId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a specific test case by ID' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                'TestCaseID'  = $PD.NewTestCaseByParam.testCaseId
+            }
+            $PD.GetTestCase = Get-TestCase @TestParams @CommonParams
             $PD.GetTestCase.testCaseId | Should -Be $PD.NewTestCaseByParam.testCaseId
         }
     }
 
-    Context 'Set-TestCase by parameter, include status' {
-        It 'Returns the correct data' {
-            $PD.SetTestCaseByParam = Set-TestCase -Body $PD.GetTestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -IncludeStatus @CommonParams
+    Context 'Set-TestCase' {
+        It 'updates a case by parameter, include status' {
+            $TestParams = @{
+                'Body'          = $PD.GetTestCase
+                'TestSuiteID'   = $PD.NewTestSuiteBasic.testSuiteId
+                'IncludeStatus' = $true
+            }
+            $PD.SetTestCaseByParam = Set-TestCase @TestParams @CommonParams
             $PD.SetTestCaseByParam.successes[0].testCaseId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-TestCase by pipeline' {
-        It 'Returns the correct data' {
-            $PD.SetTestCaseByPipeline = $PD.GetTestCase | Set-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+        It 'updates a case by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestCaseByPipeline = $PD.GetTestCase | Set-TestCase @TestParams @CommonParams
             $PD.SetTestCaseByPipeline[0].testCaseId | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Remove-TestCase with multiple IDs, include status' {
-        It 'Returns the correct data' {
-            $PD.RemoveTestCase = $PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId | Remove-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -IncludeStatus @CommonParams
-            $PD.RemoveTestCase.successes | Should -Be @($PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId)
+    Context 'Remove/Restore-TestCase by Param' {
+        Context 'Remove-TestCase' {
+            It 'deletes multiple cases, include status' {
+                $TestParams = @{
+                    'TestSuiteID'   = $PD.NewTestSuiteBasic.testSuiteId
+                    'IncludeStatus' = $true
+                    'TestCaseID'    = $PD.NewTestCaseByParam.testCaseId
+                }
+                $PD.RemoveTestCase = Remove-TestCase @TestParams @CommonParams
+                $PD.RemoveTestCase.successes | Should -Be $PD.NewTestCaseByParam.testCaseId
+            }
+        }
+    
+        Context 'Restore-TestCase' {
+            It 'restores multiple cases' {
+                $TestParams = @{
+                    'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                    'TestCaseID'  = $PD.NewTestCaseByParam.testCaseId
+                }
+                $PD.RestoreTestCase = Restore-TestCase @TestParams @CommonParams
+                $PD.RestoreTestCase.testCaseId | Should -Contain $PD.NewTestCaseByParam.testCaseId
+            }
         }
     }
 
-    Context 'Restore-TestCase with multiple IDs' {
-        It 'Returns the correct data' {
-            $PD.RestoreTestCase = $PD.NewTestCaseByParam.testCaseId, $PD.NewTestCaseByPipeline.testCaseId | Restore-TestCase -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
-            $PD.RestoreTestCase.testCaseId | Should -Contain $PD.NewTestCaseByParam.testCaseId
-            $PD.RestoreTestCase.testCaseId | Should -Contain $PD.NewTestCaseByPipeline.testCaseId
+    Context 'Remove/Restore-TestCase by pipeline' {
+        Context 'Remove-TestCase' {
+            It 'deletes multiple cases, include status' {
+                $TestParams = @{
+                    'TestSuiteID'   = $PD.NewTestSuiteBasic.testSuiteId
+                    'IncludeStatus' = $true
+                }
+                $RemoveTestCase = $PD.NewTestCaseByPipeline | Remove-TestCase @TestParams @CommonParams
+                $RemoveTestCase.successes | Should -Be $PD.NewTestCaseByPipeline.testCaseId
+            }
+        }
+    
+        Context 'Restore-TestCase' {
+            It 'restores multiple cases' {
+                $TestParams = @{
+                    'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                }
+                $RestoreTestCase = $PD.NewTestCaseByPipeline | Restore-TestCase @TestParams @CommonParams
+                $RestoreTestCase.testCaseId | Should -Contain $PD.NewTestCaseByPipeline.testCaseId
+            }
         }
     }
 
@@ -289,17 +409,26 @@ Describe 'Safe Akamai.TestCenter Tests' {
     #------------------------------------------------
 
     
-    Context 'Set-TestCaseOrder by parameter' {
-        It 'Returns the correct data' {
+    Context 'Set-TestCaseOrder' {
+        It 'sets order by parameter' {
             $PD.TestCaseOrder = $PD.GetTestCaseAll | Select-Object order, testCaseId
-            $PD.SetTestCaseOrderByParam = Set-TestCaseOrder -Body $PD.TestCaseOrder -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+            $TestParams = @{
+                'Body'        = $PD.TestCaseOrder
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestCaseOrderByParam = Set-TestCaseOrder @TestParams @CommonParams
+            $TestParams = @{
+                'Body'        = $PD.TestCaseOrder
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestCaseOrderByParam = Set-TestCaseOrder @TestParams @CommonParams
             $PD.SetTestCaseOrderByParam[0].testCaseId | Should -Be $PD.GetTestCaseAll[0].testCaseId
         }
-    }
-
-    Context 'Set-TestCaseOrder by pipeline' {
-        It 'Returns the correct data' {
-            $PD.SetTestCaseOrderByPipeline = $PD.TestCaseOrder | Set-TestCaseOrder -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+        It 'sets order by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestCaseOrderByPipeline = $PD.TestCaseOrder | Set-TestCaseOrder @TestParams @CommonParams
             $PD.SetTestCaseOrderByPipeline[0].testCaseId | Should -Be $PD.GetTestCaseAll[0].testCaseId
         }
     }
@@ -330,52 +459,85 @@ Describe 'Safe Akamai.TestCenter Tests' {
     #                 TestVariable                  
     #------------------------------------------------
 
-    Context 'New-TestVariable by parameter' {
-        It 'Returns the correct data' {
-            $PD.NewTestVariableByParam = New-TestVariable -Body $TestVariableJSON -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+    Context 'New-TestVariable' {
+        It 'creates a variable by parameter' {
+            $TestParams = @{
+                'Body'        = $TestVariableJSON
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.NewTestVariableByParam = New-TestVariable @TestParams @CommonParams
             $PD.NewTestVariableByParam.variableName | Should -Be $TestVariableName1
         }
-    }
-
-    Context 'New-TestVariable by pipeline' {
-        It 'Returns the correct data' {
-            $PD.NewTestVariableByPipeline = ($TestVariable2 | New-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams)
+        It 'creates a variable by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.NewTestVariableByPipeline = $TestVariable2 | New-TestVariable @TestParams @CommonParams
             $PD.NewTestVariableByPipeline.variableName | Should -Be $TestVariableName2
         }
-    }
-
-    Context 'Get-TestVariable, all' {
-        It 'Returns the correct data' {
-            $PD.GetTestVariableAll = Get-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
-            $PD.GetTestVariableAll[0].variableName | Should -Not -BeNullOrEmpty
+        It 'creates a variable by attributes' {
+            $TestParams = @{
+                'TestSuiteID'   = $PD.NewTestSuiteBasic.testSuiteId
+                'VariableName'  = $TestVariableName3
+                'VariableValue' = 'www.test.com'
+            }
+            $PD.NewTestVariableByAttributes = New-TestVariable @TestParams @CommonParams
+            $PD.NewTestVariableByAttributes.variableName | Should -Be $TestVariableName3
         }
     }
-    
-    Context 'Get-TestVariable, single' {
-        It 'Returns the correct data' {
-            $PD.GetTestVariableSingle = Get-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -VariableID $PD.NewTestVariableByParam.variableId @CommonParams
+
+    Context 'Get-TestVariable' {
+        It 'gets a list of variables' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.GetTestVariableAll = Get-TestVariable @TestParams @CommonParams
+            $PD.GetTestVariableAll[0].variableName | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a single variable by ID' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                'VariableID'  = $PD.NewTestVariableByParam.variableId
+            }
+            $PD.GetTestVariableSingle = Get-TestVariable @TestParams @CommonParams
             $PD.GetTestVariableSingle.variableName | Should -Be $TestVariableName1
         }
     }
 
-    Context 'Set-TestVariable by parameter, include status' {
-        It 'Returns the correct data' {
-            $PD.SetTestVariableByParam = Set-TestVariable -Body $PD.GetTestVariableSingle -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId -IncludeStatus @CommonParams
+    Context 'Set-TestVariable' {
+        It 'updates a variable by parameter, include status' {
+            $TestParams = @{
+                'Body'          = $PD.GetTestVariableSingle
+                'TestSuiteID'   = $PD.NewTestSuiteBasic.testSuiteId
+                'IncludeStatus' = $true
+            }
+            $PD.SetTestVariableByParam = Set-TestVariable @TestParams @CommonParams
             $PD.SetTestVariableByParam.successes[0].variableId | Should -Be $PD.GetTestVariableSingle.variableId
         }
-    }
-
-    Context 'Set-TestVariable by pipeline' {
-        It 'Returns the correct data' {
-            $PD.SetTestVariableByPipeline = $PD.GetTestVariableSingle | Set-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+        It 'updates a variable by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $PD.SetTestVariableByPipeline = $PD.GetTestVariableSingle | Set-TestVariable @TestParams @CommonParams
             $PD.SetTestVariableByPipeline[0].variableId | Should -Be $PD.GetTestVariableSingle.variableId
         }
     }
 
-    Context 'Remove-TestVariable by parameter' {
-        It 'Returns the correct data' {
-            $PD.RemoveTestVariable = $PD.GetTestVariableAll.variableId | Remove-TestVariable -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
+    Context 'Remove-TestVariable' {
+        It 'removes by param' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+                VariableID    = $PD.NewTestVariableByParam.variableId
+            }
+            $PD.RemoveTestVariable = Remove-TestVariable @TestParams @CommonParams
             $PD.RemoveTestVariable[0] | Should -Match '[\d]+'
+        }
+        It 'removes by pipeline' {
+            $TestParams = @{
+                'TestSuiteID' = $PD.NewTestSuiteBasic.testSuiteId
+            }
+            $RemoveTestVariable = $PD.NewTestVariableByPipeline, $PD.NewTestVariableByAttributes | Remove-TestVariable @TestParams @CommonParams
+            $RemoveTestVariable[0] | Should -Match '[\d]+'
         }
     }
 
@@ -394,18 +556,169 @@ Describe 'Safe Akamai.TestCenter Tests' {
     #                 TestRun                  
     #------------------------------------------------
 
-    Context 'New-TestRun by parameter' {
-        It 'Returns the correct data' {
+    Context 'Start-Test' {
+        It 'starts a test run by request body' {
             $TestRun.functional.testSuiteExecutions[0].testSuiteId = $PD.NewTestSuiteChild.testSuiteId
-            $PD.NewTestRunByParam = New-TestRun -Body $TestRun @CommonParams
+            $TestParams = @{
+                'Body' = $TestRun
+            }
+            $PD.NewTestRunByParam = Start-Test @TestParams @CommonParams
             $PD.NewTestRunByParam.testRunId | Should -Not -BeNullOrEmpty
+        }
+        It 'starts a test run by parameters' {
+            $TestParams = @{
+                'Client'              = 'CHROME'
+                'IPVersion'           = 'IPV4'
+                'GeoLocation'         = 'US'
+                'TestRequestURL'      = $TestRequestURL1
+                'RequestMethod'       = 'GET'
+                'TargetEnvironment'   = 'STAGING'
+                'ConditionExpression' = 'Response code is one of "200"'
+                'RequestHeaders'      = @(
+                    @{
+                        'headerAction' = 'ADD'
+                        'headerName'   = 'X-Test'
+                        'headerValue'  = 'true'
+                    }
+                )
+                'Note'                = 'Testing Start-Test by attributes'
+                'Tags'                = @('pester', 'powershell')
+            }
+            $PD.NewTestRunByAttributes = Start-Test @TestParams @CommonParams
+            $PD.NewTestRunByAttributes.testRunId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Start-TestSuite' {
+        It 'starts a test suite run' {
+            $TestParams = @{
+                'TestSuiteID'       = $PD.NewTestSuiteChild.testSuiteId
+                'TestCaseID'        = @($PD.NewTestSuiteChild.testCases[0].testCaseId)
+                'TargetEnvironment' = 'STAGING'
+                'Note'              = 'Testing Start-TestSuite'
+                'PurgeOnstaging'    = $true
+            }
+            $PD.NewTestSuiteRun = Start-TestSuite @TestParams @CommonParams
+            $PD.NewTestSuiteRun.testRunId | Should -Not -BeNullOrEmpty
+        }
+    }
+    Context 'Start-PropertyVersionTest' {
+        It 'starts a property version test run using property name' {
+            $TestParams = @{
+                TestSuiteID       = $PD.NewTestSuiteParams.testSuiteId
+                PropertyName      = $TestPropertyName
+                PropertyVersion   = $TestPropertyVersion
+                TargetEnvironment = 'STAGING'
+                Note              = 'Testing Start-PropertyVersionTest'
+                PurgeOnstaging    = $true
+            }
+            $PD.NewPropertyVersionTestRunByName = Start-PropertyVersionTest @TestParams @CommonParams
+            $PD.NewPropertyVersionTestRunByName.testRunId | Should -Not -BeNullOrEmpty
+        }
+        It 'starts a property version test run using property name' {
+            $TestParams = @{
+                TestSuiteID       = $PD.NewTestSuiteParams.testSuiteId
+                PropertyID        = $TestPropertyID
+                PropertyVersion   = $TestPropertyVersion
+                TargetEnvironment = 'STAGING'
+                Note              = 'Testing Start-PropertyVersionTest'
+                PurgeOnstaging    = $true
+            }
+            $PD.NewPropertyVersionTestRunByID = Start-PropertyVersionTest @TestParams @CommonParams
+            $PD.NewPropertyVersionTestRunByID.testRunId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Get-TestRun' {
-        It 'Returns the correct data' {
-            $PD.GetTestRun = Get-TestRun -TestRunID $PD.NewTestRunByParam.testRunId @CommonParams
+        It 'lists tests' {
+            $PD.TestRuns = Get-TestRun @CommonParams
+            $PD.TestRuns[0].testRunId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a specific test run by ID by param' {
+            $TestParams = @{
+                'TestRunID' = $PD.NewTestRunByParam.testRunId
+            }
+            $PD.GetTestRun = Get-TestRun @TestParams @CommonParams
             $PD.GetTestRun.testRunId | Should -Be $PD.NewTestRunByParam.testRunId
+        }
+        It 'gets a specific test run by ID by pipeline' {
+            $TestRun = $PD.NewTestRunByParam | Get-TestRun @CommonParams
+            $TestRun.testRunId | Should -Be $PD.NewTestRunByParam.testRunId
+        }
+    }
+
+    #------------------------------------------------
+    #                 TestFunction                  
+    #------------------------------------------------
+
+    Context 'Test-TestFunction' -Tag 'Test-TestFunction' {
+        BeforeAll {
+            $TestBody = @{
+                'functionExpression' = 'fn_getResponseHeaderValue(Server)'
+                'responseData'       = @{
+                    'response' = @{
+                        'statusText'  = 'OK'
+                        'httpVersion' = 'HTTP/1.1'
+                        'headers'     = @(
+                            @{
+                                'name'  = 'Server'
+                                'value' = 'Pester'
+                            }
+                        )
+                        'cookies'     = @(
+                            @{
+                                'name'  = 'cookie1'
+                                'value' = 'value1'
+                            }
+                        )
+                    }
+                }
+                'variables'          = @(
+                    @{
+                        'variableName'  = 'var1'
+                        'variableValue' = 'val1'
+                    }
+                )
+            }
+            $TestBodyString = $TestBody | ConvertTo-Json -Depth 10
+        }
+        It 'tests a function by attributes' {
+            $TestParams = @{
+                'FunctionExpression' = 'fn_getResponseHeaderValue(Server)'
+                'StatusText'         = 'OK'
+                'HTTPVersion'        = 'HTTP/1.1'
+                'Headers'            = @('server=Pester')
+                'Cookies'            = @('cookie1=value1')
+                'Variables'          = @('var1=val1')
+            }
+            $TestFunction = Test-TestFunction @TestParams @CommonParams
+            $TestFunction.functionExpression | Should -Be 'fn_getResponseHeaderValue(Server)'
+            $TestFunction.responseData.response.httpVersion | Should -Be 'HTTP/1.1'
+            $TestFunction.responseData.response.statusText | Should -Be 'OK'
+            $TestFunction.responseData.response.headers[0].name | Should -Be 'Server'
+            $TestFunction.responseData.response.headers[0].value | Should -Be 'Pester'
+            $TestFunction.responseData.response.cookies[0].name | Should -Be 'cookie1'
+            $TestFunction.responseData.response.cookies[0].value | Should -Be 'value1'
+        }
+        It 'tests a function by body as parameter' {
+            $TestFunction = Test-TestFunction -Body $TestBodyString @CommonParams
+            $TestFunction.functionExpression | Should -Be 'fn_getResponseHeaderValue(Server)'
+            $TestFunction.responseData.response.httpVersion | Should -Be 'HTTP/1.1'
+            $TestFunction.responseData.response.statusText | Should -Be 'OK'
+            $TestFunction.responseData.response.headers[0].name | Should -Be 'Server'
+            $TestFunction.responseData.response.headers[0].value | Should -Be 'Pester'
+            $TestFunction.responseData.response.cookies[0].name | Should -Be 'cookie1'
+            $TestFunction.responseData.response.cookies[0].value | Should -Be 'value1'
+        }
+        It 'tests a function by piped body' {
+            $TestFunction = $TestBody | Test-TestFunction @CommonParams
+            $TestFunction.functionExpression | Should -Be 'fn_getResponseHeaderValue(Server)'
+            $TestFunction.responseData.response.httpVersion | Should -Be 'HTTP/1.1'
+            $TestFunction.responseData.response.statusText | Should -Be 'OK'
+            $TestFunction.responseData.response.headers[0].name | Should -Be 'Server'
+            $TestFunction.responseData.response.headers[0].value | Should -Be 'Pester'
+            $TestFunction.responseData.response.cookies[0].name | Should -Be 'cookie1'
+            $TestFunction.responseData.response.cookies[0].value | Should -Be 'value1'
         }
     }
 
@@ -414,10 +727,11 @@ Describe 'Safe Akamai.TestCenter Tests' {
     #------------------------------------------------
 
     Context 'Remove-TestSuite' {
-        It 'Throws no errors' {
-            Remove-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams
-            Remove-TestSuite -TestSuiteID $PD.NewTestSuiteChild.testSuiteId @CommonParams
-            Remove-TestSuite -TestSuiteID $PD.NewTestSuiteParams.testSuiteId @CommonParams
+        It 'removes by param' {
+            Remove-TestSuite -TestSuiteID $PD.NewTestSuiteBasic.testSuiteId @CommonParams 
+        }
+        It 'removes by pipeline' {
+            $PD.NewTestSuiteChild, $PD.NewTestSuiteParams | Remove-TestSuite @CommonParams
         }
     }
 }

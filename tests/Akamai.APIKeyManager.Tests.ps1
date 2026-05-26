@@ -8,20 +8,35 @@ BeforeDiscovery {
 Describe 'Safe API Key Manager Tests' {
     
     BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.APIKeyManager/Akamai.APIKeyManager.psm1 -Force
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.APIKeyManager'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
-        $TestCollectionName = "Akamai PowerShell"
-        $TestCollectionName2 = "Akamai PowerShell 2"
+        $TestCollectionName = "Akamai PowerShell - $Timestamp"
+        $TestCollectionName2 = "Akamai PowerShell 2 - $Timestamp"
         $TestCollectionJSON = @"
 {
-    "contractId": "$TestContract",
+    "contractId": "$TestContractID",
     "groupId": $TestGroupID,
     "collectionName": "$TestCollectionName",
     "collectionDescription": "powershell testing"
@@ -32,89 +47,79 @@ Describe 'Safe API Key Manager Tests' {
         $TestKey = (New-Guid).Guid
         $TestKey2 = (New-Guid).Guid
         $TestImportKeys = '[{"value":"7131e629-41fa-4dfb-9ab9-5e556221b8d5","label":"premium","tags":["external","premium"]}]'
-        $TestCounterName = 'Akamai PowerShell counter'
+        $TestCounterName = "Akamai PowerShell counter - $Timestamp"
         $TestCounterJSON = @"
 {
     "throttlingCounterEnabled": true,
     "groupId": $TestGroupID,
     "throttlingCounterName": "$TestCounterName",
     "throttlingLimit": 50,
-    "contractId": "$TestContract",
+    "contractId": "$TestContractID",
     "throttlingLimitExceededAction": "DENY",
     "throttlingCounterDescription": "powershell testing"
 }
 "@
-        $TestJSONFile = 'keys.json'
-        $TestCSVFile = 'keys.csv'
-        $TestXMLFile = 'keys.xml'
+        $TestJSONFile = "TestDrive:/keys-$Timestamp.json"
+        $TestCSVFile = "TestDrive:/keys-$Timestamp.csv"
+        $TestXMLFile = "TestDrive:/keys-$Timestamp.xml"
         $PD = @{}
         
     }
 
     AfterAll {
-        Get-ApiKeyCollection @CommonParams | Where-Object collectionName -in $TestCollectionName, $TestCollectionName2 | ForEach-Object {
-            Remove-APIKeyCollection -CollectionID $_.collectionId @CommonParams
-        }
-        Get-APIThrottlingCounter @CommonParams | Where-Object throttlingCounterName -eq $TestCounterName | ForEach-Object {
-            Remove-APIThrottlingCounter -CounterID $_.throttlingCounterId @CommonParams
-        }
-        
-        if ((Test-Path $TestJSONFile)) {
-            Remove-Item -Path $TestJSONFile -Force
-        }
-        if ((Test-Path $TestCSVFile)) {
-            Remove-Item -Path $TestCSVFile -Force
-        }
-        if ((Test-Path $TestXMLFile)) {
-            Remove-Item -Path $TestXMLFile -Force
-        }
+        Get-ApiKeyCollection @CommonParams | Where-Object collectionName -in $TestCollectionName, $TestCollectionName2 | Remove-APIKeyCollection @CommonParams
+        Get-APIThrottlingCounter @CommonParams | Where-Object throttlingCounterName -eq $TestCounterName | Remove-APIThrottlingCounter @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
+
 
     #-------------------------------------------------
     #               Key Collections                   
     #-------------------------------------------------
     
     Context 'New-APIKeyCollection' {
-        It 'creates successfully' {
-            $PD.NewCollection = New-APIKeyCollection -Body $TestCollectionJSON @CommonParams
+        It 'creates successfully by param' {
+            $TestParams = @{
+                'CollectionName'        = $TestCollectionName
+                'CollectionDescription' = "powershell testing"
+                'ContractID'            = $TestContractID
+                'GroupID'               = $TestGroupID
+            }
+            $PD.NewCollection = New-APIKeyCollection @TestParams @CommonParams
             $PD.NewCollection.collectionName | Should -Be $TestCollectionName
         }
-    }
-    
-    Context 'New-APIKeyCollection by Pipeline' {
         It 'creates successfully' {
             $TestCollection.CollectionName = $TestCollectionName2
-            $PD.NewCollectionByPipeline = ($TestCollection | New-APIKeyCollection @CommonParams)
+            $PD.NewCollectionByPipeline = $TestCollection | New-APIKeyCollection @CommonParams
             $PD.NewCollectionByPipeline.collectionName | Should -Be $TestCollectionName2
         }
     }
     
-    Context 'Get-APIKeyCollection - all' {
+    Context 'Get-APIKeyCollection' {
         It 'returns a list' {
             $PD.KeyCollections = Get-APIKeyCollection @CommonParams
             $PD.KeyCollections[0].collectionId | Should -Not -BeNullOrEmpty
             $PD.KeyCollections[0].collectionName | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-APIKeyCollection - Single' {
         It 'returns the correct collection' {
-            $PD.Collection = Get-APIKeyCollection -CollectionID $PD.NewCollection.collectionId @CommonParams
+            $PD.Collection = $PD.NewCollection.collectionId | Get-APIKeyCollection @CommonParams
             $PD.Collection.collectionName | Should -Be $TestCollectionName
         }
     }
 
+
     Context 'Set-APIKeyCollection by pipeline' {
-        It 'updates successfully' {
-            $PD.CollectionByPipeline = ( $PD.NewCollection | Set-APIKeyCollection @CommonParams )
+        It 'updates successfully by pipeline' {
+            $PD.CollectionByPipeline = $PD.NewCollection | Set-APIKeyCollection @CommonParams
             $PD.CollectionByPipeline.collectionName | Should -Be $TestCollectionName
             $PD.CollectionByPipeline.collectionId | Should -Be $PD.NewCollection.collectionId
         }
-    }
-
-    Context 'Set-APIKeyCollection by body' {
-        It 'updates successfully' {
-            $PD.CollectionByBody = Set-APIKeyCollection -CollectionID $PD.NewCollection.collectionId -Body (ConvertTo-Json -depth 100 $PD.NewCollection) @CommonParams
+        It 'updates successfully by body' {
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+                'Body'         = (ConvertTo-Json -depth 100 $PD.NewCollection)
+            }
+            $PD.CollectionByBody = Set-APIKeyCollection @TestParams @CommonParams
             $PD.CollectionByBody.collectionName | Should -Be $TestCollectionName
             $PD.CollectionByPipeline.collectionId | Should -Be $PD.NewCollection.collectionId
         }
@@ -126,7 +131,7 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Get-APIKeyCollectionEndpoints' {
         It 'returns the correct information' {
-            $PD.Endpoints = Get-APIKeyCollectionEndpoints -CollectionID $PD.NewCollection.collectionId @CommonParams
+            $PD.Endpoints = $PD.NewCollection.collectionId | Get-APIKeyCollectionEndpoints @CommonParams
             $PD.Endpoints[0].endpointId | Should -Not -BeNullOrEmpty
             $PD.Endpoints[0].endpointName | Should -Not -BeNullOrEmpty
         }
@@ -136,29 +141,36 @@ Describe 'Safe API Key Manager Tests' {
     #                  ACLS
     #-------------------------------------------------
 
-    Context 'Set-APIKeyCollectionACL by pipeline' {
-        It 'updates successfully' {
+    Context 'Set-APIKeyCollectionACL' {
+        It 'updates successfully by pipeline' {
             $PD.NewACL = @{
                 'endpointIds' = @($PD.Endpoints.endpointId)
                 'methodIds'   = @()
                 'resourceIds' = @()
             }
-            $PD.ACLByPipeline = ($PD.NewACL | Set-APIKeyCollectionACL -CollectionID $PD.NewCollection.collectionId @CommonParams)
-            $PD.ACLByPipeline.endpointIds | Should -Be @($PD.Endpoints.endpointId)
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            $PD.ACLByPipeline = $PD.NewACL | Set-APIKeyCollectionACL @TestParams @CommonParams
+            $PD.ACLByPipeline.endpointIds | Sort-Object | Should -Be ( @($PD.Endpoints.endpointId) | Sort-Object )
         }
-    }
-
-    Context 'Set-APIKeyCollectionACL by param' {
-        It 'updates successfully' {
-            $PD.ACLByBody = Set-APIKeyCollectionACL -CollectionID $PD.NewCollection.collectionId -Body $PD.NewACL @CommonParams
-            $PD.ACLByBody.endpointIds | Should -Be @($PD.Endpoints.endpointId)
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+                'Body'         = $PD.NewACL
+            }
+            $PD.ACLByBody = Set-APIKeyCollectionACL @TestParams @CommonParams
+            $PD.ACLByBody.endpointIds | Sort-Object | Should -Be ( @($PD.Endpoints.endpointId) | Sort-Object )
         }
     }
 
     Context 'Get-APIKeyCollectionACL' {
         It 'returns the correct information' {
-            $PD.ACL = Get-APIKeyCollectionACL -CollectionID $PD.NewCollection.collectionId @CommonParams
-            $PD.ACL.endpointIds | Should -Be @($PD.Endpoints.endpointId)
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            $PD.ACL = Get-APIKeyCollectionACL @TestParams @CommonParams
+            $PD.ACL.endpointIds | Sort-Object | Should -Be ( @($PD.Endpoints.endpointId) | Sort-Object )
         }
     }
 
@@ -167,56 +179,87 @@ Describe 'Safe API Key Manager Tests' {
     #-------------------------------------------------
 
     Context 'Import-APIKey by params' {
-        It 'imports successfully' {
+        It 'imports successfully to collection' {
             $TestParams = @{
-                CollectionID   = $PD.NewCollection.collectionId
-                KeyValue       = $TestKey2
-                KeyDescription = 'testing'
-                Label          = 'powershell'
-                Tags           = 'pwsh,testing,pester'
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'KeyValue'       = $TestKey2
+                'KeyDescription' = 'testing'
+                'Label'          = 'powershell'
+                'Tags'           = @('pwsh', 'testing', 'pester')
             }
             $PD.ImportKeys = Import-APIKey @TestParams @CommonParams
             $PD.ImportKeys[0].KeyValue | Should -Be $TestKey2
         }
     }
     
-    Context 'Export-APIKey, collection, to object' {
-        It 'exports all keys successfully' {
-            $PD.ExportCollectionKeys = Export-APIKey -CollectionID $PD.NewCollection.collectionId @CommonParams
+    Context 'Export-APIKey' {
+        It 'exports all keys from a single collection to object successfully' {
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            $PD.ExportCollectionKeys = @(Export-APIKey @TestParams @CommonParams)
             $PD.ExportCollectionKeys[0].KeyValue | Should -Be $TestKey2
         }
-    }
-    
-    Context 'Export-APIKey, collection, to file' {
-        It 'creates a json file' {
-            Export-APIKey -CollectionID $PD.NewCollection.collectionId -OutputFileName $TestJSONFile @CommonParams
-            Export-APIKey -CollectionID $PD.NewCollection.collectionId -OutputFileName $TestCSVFile @CommonParams
-            Export-APIKey -CollectionID $PD.NewCollection.collectionId -OutputFileName $TestXMLFile @CommonParams
+        It 'exports all keys from all collections to object successfully' {
+            $PD.ExportKeys = @(Export-APIKey @CommonParams)
+            $PD.ExportKeys.count | Should -Be $PD.ExportCollectionKeys.count
+            $PD.ExportKeys[0].KeyValue | Should -Not -BeNullOrEmpty
+        }
+        It 'exports keys to a JSON file' {
+            $TestParams = @{
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'OutputFileName' = $TestJSONFile
+            }
+            Export-APIKey @TestParams @CommonParams
             $TestJSONFile | Should -Exist
             $TestJSONFile | Should -FileContentMatch '^(\[|\{)'
+        }
+        It 'exports keys to a CSV file' {
+            $TestParams = @{
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'OutputFileName' = $TestCSVFile
+            }
+            Export-APIKey @TestParams @CommonParams
             $TestCSVFile | Should -Exist
+        }
+        It 'exports keys to a XML file' {
+            $TestParams = @{
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'OutputFileName' = $TestXMLFile
+            }
+            Export-APIKey @TestParams @CommonParams
             $TestXMLFile | Should -Exist
             $TestXMLFile | Should -FileContentMatch '^<keys>'
         }
     }
-    
-    Context 'Export-APIKey, all' {
-        It 'returns the correct information' {
-            $PD.ExportKeys = Export-APIKey @CommonParams
-            $PD.ExportKeys.count | Should -BeGreaterThan $PD.ExportCollectionKeys.count
-            $PD.ExportKeys[0].KeyValue | Should -Not -BeNullOrEmpty
-        }
-    }
 
     Context 'Import-APIKey from files' {
+        BeforeAll {
+            # Re-export files as the test drive is cleared after the above block
+            $TestParams = @{
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'OutputFileName' = $TestJSONFile
+            }
+            Export-APIKey @TestParams @CommonParams
+            $TestParams.OutputFileName = $TestCSVFile
+            Export-APIKey @TestParams @CommonParams
+            $TestParams.OutputFileName = $TestXMLFile
+            Export-APIKey @TestParams @CommonParams
+        }
         It 'fails as expected' {
-            $JSONError = { Import-APIKey -CollectionID $PD.NewCollection.collectionId -InputFile $TestJSONFile @CommonParams } | Should -Throw -PassThru
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+                'InputFile'    = $TestJSONFile
+            }
+            $JSONError = { Import-APIKey @TestParams @CommonParams } | Should -Throw -PassThru
             $JSONErrorMessage = $JSONError.Exception.Data.errors[0].detail
             $JSONErrorMessage | Should -Match "A key with value .* already exists"
-            $XMLError = { Import-APIKey -CollectionID $PD.NewCollection.collectionId -InputFile $TestXMLFile @CommonParams } | Should -Throw -PassThru
+            $TestParams.InputFile = $TestXMLFile
+            $XMLError = { Import-APIKey @TestParams @CommonParams } | Should -Throw -PassThru
             $XMLErrorMessage = $XMLError.Exception.Data.errors[0].detail
             $XMLErrorMessage | Should -Match "A key with value .* already exists"
-            $CSVError = { Import-APIKey -CollectionID $PD.NewCollection.collectionId -InputFile $TestCSVFile @CommonParams } | Should -Throw -PassThru
+            $TestParams.InputFile = $TestCSVFile
+            $CSVError = { Import-APIKey @TestParams @CommonParams } | Should -Throw -PassThru
             $CSVErrorMessage = $CSVError.Exception.Data.errors[0].detail
             $CSVErrorMessage | Should -Match "A key with value .* already exists"
         }
@@ -228,66 +271,76 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Get-APIKeyCollectionQuota' {
         It 'gets the correct information' {
-            $PD.Quota = Get-APIKeyCollectionQuota -CollectionID $PD.NewCollection.collectionId @CommonParams
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            $PD.Quota = Get-APIKeyCollectionQuota @TestParams @CommonParams
             $PD.Quota.isEnabled | Should -Be $false
             $PD.Quota.requestLimit | Should -Not -BeNullOrEmpty
             $PD.Quota.resetInterval | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Set-APIKeyCollectionQuota by pipeline' {
-        It 'updates successfully' {
+    Context 'Set-APIKeyCollectionQuota' {
+        It 'updates successfullyby pipeline' {
             $PD.Quota.isEnabled = $true
-            $PD.QuotaByPipeline = ($PD.Quota | Set-APIKeyCollectionQuota -CollectionID $PD.NewCollection.collectionId @CommonParams)
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            $PD.QuotaByPipeline = $PD.Quota | Set-APIKeyCollectionQuota @TestParams @CommonParams
             $PD.QuotaByPipeline.isEnabled | Should -Be $true
         }
-    }
-
-    Context 'Set-APIKeyCollectionQuota by param' {
-        It 'updates successfully' {
-            $PD.QuotaByParam = Set-APIKeyCollectionQuota -CollectionID $PD.NewCollection.collectionId -Body $PD.Quota @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+                'Body'         = $PD.Quota
+            }
+            $PD.QuotaByParam = Set-APIKeyCollectionQuota @TestParams @CommonParams
             $PD.QuotaByParam.isEnabled | Should -Be $true
         }
     }
-
     #-------------------------------------------------
     #                   Counters
     #-------------------------------------------------
 
     Context 'New-APIThrottlingCounter' {
         It 'creates successfully' {
-            $PD.NewCounter = New-APIThrottlingCounter -Body $TestCounterJSON @CommonParams
+            $TestParams = @{
+                'Body' = $TestCounterJSON
+            }
+            $PD.NewCounter = New-APIThrottlingCounter @TestParams @CommonParams
             $PD.NewCounter.throttlingCounterName | Should -Be $TestCounterName
         }
     }
 
-    Context 'Get-APIThrottlingCounter - all' {
+    Context 'Get-APIThrottlingCounter' {
         It 'returns a list in the right format' {
             $PD.Counters = Get-APIThrottlingCounter @CommonParams
             $PD.Counters[0].throttlingCounterId | Should -Not -BeNullOrEmpty
             $PD.Counters[0].throttlingCounterName | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-APIThrottlingCounter - Single' {
         It 'finds the correct counter' {
-            $PD.Counter = Get-APIThrottlingCounter -CounterID $PD.NewCounter.throttlingCounterId @CommonParams
+            $TestParams = @{
+                'CounterID' = $PD.NewCounter.throttlingCounterId
+            }
+            $PD.Counter = Get-APIThrottlingCounter @TestParams @CommonParams
             $PD.Counter.throttlingCounterName | Should -Be $TestCounterName
             $PD.Counter.throttlingCounterId | Should -Be $PD.NewCounter.throttlingCounterId
         }
     }
 
-    Context 'Set-APIThrottlingCounter by pipeline' {
-        It 'updates correctly' {
-            $PD.CounterByPipeline = ($PD.NewCounter | Set-APIThrottlingCounter @CommonParams)
+    Context 'Set-APIThrottlingCounter' {
+        It 'updates correctly by pipeline' {
+            $PD.CounterByPipeline = $PD.NewCounter | Set-APIThrottlingCounter @CommonParams
             $PD.CounterByPipeline.throttlingCounterName | Should -Be $TestCounterName
             $PD.CounterByPipeline.throttlingCounterId | Should -Be $PD.NewCounter.throttlingCounterId
         }
-    }
-
-    Context 'Set-APIThrottlingCounter by param' {
-        It 'updates correctly' {
-            $PD.CounterByParam = Set-APIThrottlingCounter -CounterID $PD.NewCounter.throttlingCounterId -Body $PD.NewCounter @CommonParams
+        It 'updates correctly by param' {
+            $TestParams = @{
+                'CounterID' = $PD.NewCounter.throttlingCounterId
+                'Body'      = $PD.NewCounter
+            }
+            $PD.CounterByParam = Set-APIThrottlingCounter @TestParams @CommonParams
             $PD.CounterByParam.throttlingCounterName | Should -Be $TestCounterName
             $PD.CounterByParam.throttlingCounterId | Should -Be $PD.NewCounter.throttlingCounterId
         }
@@ -295,7 +348,10 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Get-APIThrottlingCounterEndpoints' {
         It 'returns the correct data' {
-            $PD.CounterEndpoints = Get-APIThrottlingCounterEndpoints -CounterID $PD.NewCounter.throttlingCounterId @CommonParams
+            $TestParams = @{
+                'CounterID' = $PD.NewCounter.throttlingCounterId
+            }
+            $PD.CounterEndpoints = Get-APIThrottlingCounterEndpoints @TestParams @CommonParams
             $PD.CounterEndpoints[0].endpointId | Should -Not -BeNullOrEmpty
             $PD.CounterEndpoints[0].endpointName | Should -Not -BeNullOrEmpty
         }
@@ -303,7 +359,10 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Get-APIThrottlingCounterKeys' {
         It 'returns the correct data' {
-            $PD.CounterKeys = Get-APIThrottlingCounterKeys -CounterID $PD.NewCounter.throttlingCounterId @CommonParams
+            $TestParams = @{
+                'CounterID' = $PD.NewCounter.throttlingCounterId
+            }
+            $PD.CounterKeys = Get-APIThrottlingCounterKeys @TestParams @CommonParams
             $PD.CounterKeys[0].keyId | Should -Not -BeNullOrEmpty
             $PD.CounterKeys[0].keyStatus | Should -Not -BeNullOrEmpty
         }
@@ -311,7 +370,10 @@ Describe 'Safe API Key Manager Tests' {
     
     Context 'Get-APIThrottlingCounterKeyCollections' {
         It 'returns the correct data' {
-            $PD.CounterKeyCollections = Get-APIThrottlingCounterKeyCollections -CounterID $PD.NewCounter.throttlingCounterId @CommonParams
+            $TestParams = @{
+                'CounterID' = $PD.NewCounter.throttlingCounterId
+            }
+            $PD.CounterKeyCollections = Get-APIThrottlingCounterKeyCollections @TestParams @CommonParams
             $PD.CounterKeyCollections[0].collectionId | Should -Not -BeNullOrEmpty
             $PD.CounterKeyCollections[0].collectionName | Should -Not -BeNullOrEmpty
         }
@@ -319,7 +381,10 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Remove-APIThrottlingCounter' {
         It 'removes successfully' {
-            Remove-APIThrottlingCounter -CounterID $PD.NewCounter.throttlingCounterId @CommonParams 
+            $TestParams = @{
+                'CounterID' = $PD.NewCounter.throttlingCounterId
+            }
+            Remove-APIThrottlingCounter @TestParams @CommonParams
         }
     }
 
@@ -327,80 +392,92 @@ Describe 'Safe API Key Manager Tests' {
     #                   Keys
     #-------------------------------------------------
 
-    Context 'New-APIKey - With Value' {
-        It 'creates successfully' {
+    Context 'New-APIKey' {
+        It 'creates with value successfully' {
             $TestParams = @{
-                CollectionID   = $PD.NewCollection.collectionId
-                KeyValues      = $TestKey
-                KeyDescription = 'powershell testing with value'
-                Label          = 'pwsh'
-                Tags           = 'pwsh,pester'
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'KeyValues'      = $TestKey
+                'KeyDescription' = 'powershell testing with value'
+                'Label'          = 'pwsh'
+                'Tags'           = @('pwsh', 'pester')
             }
             $PD.NewKeyWithValue = New-APIKey @TestParams @CommonParams
             $PD.NewKeyWithValue.keyValue | Should -Be $TestKey
         }
-    }
-    
-    Context 'New-APIKey - Without Value' {
-        It 'creates successfully' {
+        It 'creates without value successfully' {
             $TestParams = @{
-                CollectionID   = $PD.NewCollection.collectionId
-                Count          = 3
-                KeyDescription = 'powershell testing without value'
-                Label          = 'pwsh'
-                Tags           = 'pwsh,pester'
+                'CollectionID'   = $PD.NewCollection.collectionId
+                'Count'          = 3
+                'KeyDescription' = 'powershell testing without value'
+                'Label'          = 'pwsh'
+                'Tags'           = @('pwsh', 'pester')
             }
             $PD.NewKeyNoValue = New-APIKey @TestParams @CommonParams
             $PD.NewKeyNoValue[0].keyDescription | Should -Be 'powershell testing without value'
         }
     }
 
-    Context 'Get-APIKey - All' {
+    Context 'Get-APIKey' {
         It 'returns all keys in the collection' {
-            $PD.GetKeys = Get-APIKey -CollectionID $PD.NewCollection.collectionId @CommonParams
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            $PD.GetKeys = Get-APIKey @TestParams @CommonParams
             $PD.GetKeys.Count | Should -BeGreaterThan 0
             $PD.GetKeys[0].keyId | Should -Not -BeNullOrEmpty
             $PD.GetKeys[0].keyValue | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-APIKey - Single' {
         It 'returns a specific key' {
-            $PD.GetKey = Get-APIKey -KeyID $PD.GetKeys[0].keyId @CommonParams
+            $TestParams = @{
+                'KeyID' = $PD.GetKeys[0].keyId
+            }
+            $PD.GetKey = Get-APIKey @TestParams @CommonParams
             $PD.GetKey.keyId | Should -Be $PD.GetKeys[0].keyId
             $PD.GetKey.keyValue | Should -Be $PD.GetKeys[0].keyValue
         }
     }
+    
 
-    Context 'Set-APIKey by pipeline' {
-        It 'updates correctly' {
-            $PD.SetKeyByPipeline = ($PD.GetKey | Set-APIKey @CommonParams)
+    Context 'Set-APIKey' {
+        It 'updates correctly by pipeline' {
+            $PD.SetKeyByPipeline = $PD.GetKey | Set-APIKey @CommonParams
             $PD.SetKeyByPipeline.keyValue | Should -Be $PD.GetKey.keyValue
         }
-    }
-
-    Context 'Set-APIKey by param' {
-        It 'updates correctly' {
-            $PD.SetKeyByParam = Set-APIKey -KeyID $PD.GetKey.keyId -Body $PD.GetKey @CommonParams
+        It 'updates correctly by param' {
+            $TestParams = @{
+                'KeyID' = $PD.GetKey.keyId
+                'Body'  = $PD.GetKey
+            }
+            $PD.SetKeyByParam = Set-APIKey @TestParams @CommonParams
             $PD.SetKeyByParam.keyValue | Should -Be $PD.GetKey.keyValue
         }
     }
 
     Context 'Revoke-APIKey' {
         It 'completes successfully' {
-            Revoke-APIKey -KeyIDs $PD.GetKeys.keyId @CommonParams
+            $TestParams = @{
+                'KeyIDs' = $PD.GetKeys.keyId
+            }
+            Revoke-APIKey @TestParams @CommonParams
         }
     }
 
     Context 'Restore-APIKey' {
         It 'completes successfully' {
-            Restore-APIKey -KeyIDs $PD.GetKeys.keyId @CommonParams
+            $TestParams = @{
+                'KeyIDs' = $PD.GetKeys.keyId
+            }
+            Restore-APIKey @TestParams @CommonParams
         }
     }
     
     Context 'Add-APIKeyToCollection' {
         It 'completes successfully' {
-            $PD.Assign = Add-APIKeyToCollection -CollectionIDs $PD.NewCollectionByPipeline.CollectionID -KeyIDs $PD.GetKeys.keyId @CommonParams
+            $TestParams = @{
+                'CollectionIDs' = $PD.NewCollectionByPipeline.CollectionID
+                'KeyIDs'        = $PD.GetKeys.keyId
+            }
+            $PD.Assign = Add-APIKeyToCollection @TestParams @CommonParams
             $PD.Assign.count | Should -Be $PD.GetKeys.keyId.count
             $PD.Assign[0].keyId | Should -Not -BeNullOrEmpty
         }
@@ -408,7 +485,11 @@ Describe 'Safe API Key Manager Tests' {
     
     Context 'Remove-APIKeyFromCollection' {
         It 'completes successfully' {
-            $PD.Unassign = Remove-APIKeyFromCollection -CollectionIDs $PD.NewCollection.CollectionID -KeyIDs $PD.GetKeys.keyId @CommonParams
+            $TestParams = @{
+                'CollectionIDs' = $PD.NewCollection.CollectionID
+                'KeyIDs'        = $PD.GetKeys.keyId
+            }
+            $PD.Unassign = Remove-APIKeyFromCollection @TestParams @CommonParams
             $PD.Unassign.count | Should -Be $PD.GetKeys.keyId.count
             $PD.Unassign[0].keyId | Should -Not -BeNullOrEmpty
         }
@@ -416,7 +497,11 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Move-APIKey' {
         It 'completes successfully' {
-            $PD.MoveKeys = Move-APIKey -KeyIDs $PD.GetKeys.keyId -DestinationCollectionID $PD.NewCollection.CollectionID @CommonParams
+            $TestParams = @{
+                'KeyIDs'                  = $PD.GetKeys.keyId
+                'DestinationCollectionID' = $PD.NewCollection.CollectionID
+            }
+            $PD.MoveKeys = Move-APIKey @TestParams @CommonParams
             $PD.MoveKeys.movedKeyIds | Should -Be $PD.GetKeys.keyId
             $PD.MoveKeys.destinationCollectionId | Should -Be $PD.NewCollection.CollectionID
         }
@@ -428,7 +513,10 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Reset-APIKeyQuota' {
         It 'completes successfully' {
-            Reset-APIKeyQuota -KeyIDs $PD.GetKeys.keyId @CommonParams
+            $TestParams = @{
+                'KeyIDs' = $PD.GetKeys.keyId
+            }
+            Reset-APIKeyQuota @TestParams @CommonParams
         }
     }
 
@@ -438,7 +526,11 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Reset-APIKeyCollectionQuota' {
         It 'completes successfully' {
-            Reset-APIKeyCollectionQuota -CollectionID $PD.NewCollection.collectionId -KeyIDs $PD.GetKeys.keyId @CommonParams
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+                'KeyIDs'       = $PD.GetKeys.keyId
+            }
+            Reset-APIKeyCollectionQuota @TestParams @CommonParams
         }
     }
 
@@ -460,7 +552,10 @@ Describe 'Safe API Key Manager Tests' {
 
     Context 'Remove-APIKeyCollection' {
         It 'removes primary collection successfully' {
-            Remove-APIKeyCollection -CollectionID $PD.NewCollection.collectionId @CommonParams 
+            $TestParams = @{
+                'CollectionID' = $PD.NewCollection.collectionId
+            }
+            Remove-APIKeyCollection @TestParams @CommonParams
         }
         It 'removes pipeline collection successfully' {
             $PD.NewCollectionByPipeline | Remove-APIKeyCollection @CommonParams 

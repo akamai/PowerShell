@@ -7,139 +7,37 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.CPCodes Tests' {
     
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.CPCodes/Akamai.CPCodes.psd1 -Force
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.CPCodes'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
         $TestCPCode = $env:PesterCPCode
         $TestReportingGroup = $env:PesterReportingGroup
         $TestReportingGroupName = 'akamaipowershell-testing'
-        $PD = @{}
-    }
 
-    AfterAll {
-        
-    }
-
-    #------------------------------------------------
-    #                 CPCode                  
-    #------------------------------------------------
-
-    Context 'Get-CPCode - Parameter Set single' {
-        It 'Get-CPCode (single) returns the correct data' {
-            $PD.GetCPCodeSingle = Get-CPCode -CPCodeID $TestCPCode @CommonParams
-            $PD.GetCPCodeSingle.cpcodeId | Should -Be $TestCPCode
-        }
-    }
-
-    Context 'Get-CPCode - Parameter Set all' {
-        It 'Get-CPCode (all) returns the correct data' {
-            $PD.GetCPCodeAll = Get-CPCode @CommonParams
-            $PD.GetCPCodeAll[0].cpcodeId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-CPCode by parameter' {
-        It 'Set-CPCode by param returns the correct data' {
-            $PD.SetCPCodeByParam = Set-CPCode -Body $PD.GetCPCodeSingle -CPCodeID $TestCPCode @CommonParams
-            $PD.SetCPCodeByParam.cpcodeId | Should -Be $TestCPCode
-        }
-    }
-
-    Context 'Set-CPCode by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetCPCodeByPipeline = ($PD.GetCPCodeSingle | Set-CPCode -CPCodeID $TestCPCode @CommonParams)
-            $PD.SetCPCodeByPipeline.cpcodeId | Should -Be $TestCPCode
-        }
-    }
-
-    #------------------------------------------------
-    #                 CPCodeWatermarkLimit                  
-    #------------------------------------------------
-
-    Context 'Get-CPCodeWatermarkLimit' {
-        It 'returns the correct data' {
-            $PD.GetCPCodeWatermarkLimit = Get-CPCodeWatermarkLimit -ContractID $TestContract @CommonParams
-            $PD.GetCPCodeWatermarkLimit.limit | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 CPReportingGroup                  
-    #------------------------------------------------
-
-    Context 'Get-CPReportingGroup - Parameter Set all' {
-        It 'Get-CPReportingGroup (all) returns the correct data' {
-            $PD.GetCPReportingGroupAll = Get-CPReportingGroup @CommonParams
-            $PD.GetCPReportingGroupAll[0].ReportingGroupId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-CPReportingGroup - Parameter Set single' {
-        It 'Get-CPReportingGroup (single) returns the correct data' {
-            $PD.GetCPReportingGroupSingle = Get-CPReportingGroup -ReportingGroupID $TestReportingGroup @CommonParams
-            $PD.GetCPReportingGroupSingle.ReportingGroupId | Should -Be $TestReportingGroup
-        }
-    }
-
-    Context 'Set-CPReportingGroup by parameter' {
-        It 'Set-CPReportingGroup by param returns the correct data' {
-            $PD.SetCPReportingGroupByParam = Set-CPReportingGroup -Body $PD.GetCPReportingGroupSingle -ReportingGroupID $TestReportingGroup @CommonParams
-            $PD.SetCPReportingGroupByParam.ReportingGroupId | Should -Be $TestReportingGroup
-        }
-    }
-
-    Context 'Set-CPReportingGroup by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetCPReportingGroupByPipeline = ($PD.GetCPReportingGroupSingle | Set-CPReportingGroup -ReportingGroupID $TestReportingGroup @CommonParams)
-            $PD.SetCPReportingGroupByPipeline.ReportingGroupId | Should -Be $TestReportingGroup
-        }
-    }
-
-    
-    #------------------------------------------------
-    #                 CPReportingGroupProducts                  
-    #------------------------------------------------
-
-    Context 'Get-CPReportingGroupProducts' {
-        It 'returns the correct data' {
-            $PD.GetCPReportingGroupProducts = Get-CPReportingGroupProducts -ReportingGroupID $TestReportingGroup @CommonParams
-            $PD.GetCPReportingGroupProducts[0].productId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 CPReportingGroupWatermarkLimit                  
-    #------------------------------------------------
-
-    Context 'Get-CPReportingGroupWatermarkLimit' {
-        It 'returns the correct data' {
-            $PD.GetCPReportingGroupWatermarkLimit = Get-CPReportingGroupWatermarkLimit -ContractID $TestContract @CommonParams
-            $PD.GetCPReportingGroupWatermarkLimit.limit | Should -Not -BeNullOrEmpty
-        }
-    }
-}
-
-Describe 'Unsafe Akamai.CPCodes tests' {
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.CPCodes/Akamai.CPCodes.psd1 -Force
-        
-        $TestContract = $env:PesterContractID
-        $TestGroupID = $env:PesterGroupID
-        $TestCPCode = $env:PesterCPCode
         $TestReportingGroupBody = @"
 {
     "reportingGroupName": "akamaipowershell-testing",
     "contracts": [
         {
-        "contractId": "$TestContract",
+        "contractId": "$TestContractID",
         "cpcodes": [
             {
             "cpcodeId": $TestCPCode,
@@ -150,7 +48,7 @@ Describe 'Unsafe Akamai.CPCodes tests' {
     ],
     "accessGroup": {
         "groupId": $TestGroupID,
-        "contractId": "$TestContract"
+        "contractId": "$TestContractID"
     }
 }
 "@
@@ -158,31 +56,146 @@ Describe 'Unsafe Akamai.CPCodes tests' {
         $TestReportingGroupNamePipeline = $TestReportingGroupName + '-pipeline'
         $TestReportingGroupObject.reportingGroupName = $TestReportingGroupNamePipeline
         $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.CPCodes"
+
         $PD = @{}
+    }
+
+    AfterAll {
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
+    }
+
+    #------------------------------------------------
+    #                 CPCode                  
+    #------------------------------------------------
+
+    Context 'Get-CPCode - Parameter Set single' {
+        It 'returns a list of CP Codes' {
+            $PD.GetCPCodeAll = Get-CPCode @CommonParams
+            $PD.GetCPCodeAll[0].cpcodeId | Should -Not -BeNullOrEmpty
+        }
+        It 'returns a specific CP Code by ID' {
+            $PD.GetCPCodeSingle = Get-CPCode -CPCodeID $TestCPCode @CommonParams
+            $PD.GetCPCodeSingle.cpcodeId | Should -Be $TestCPCode
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith { return 'IAR executed' }
+            $Result = & {} | Get-CPCode
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    Context 'Set-CPCode' {
+        It 'updates successfully by parameter' {
+            $PD.SetCPCodeByParam = Set-CPCode -Body $PD.GetCPCodeSingle -CPCodeID $TestCPCode @CommonParams
+            $PD.SetCPCodeByParam.cpcodeId | Should -Be $TestCPCode
+        }
+        It 'updates successfully by pipeline' {
+            $PD.SetCPCodeByPipeline = $PD.GetCPCodeSingle | Set-CPCode @CommonParams
+            $PD.SetCPCodeByPipeline.cpcodeId | Should -Be $TestCPCode
+        }
+    }
+
+    #------------------------------------------------
+    #                 CPCodeWatermarkLimit                  
+    #------------------------------------------------
+
+    Context 'Get-CPCodeWatermarkLimit' {
+        It 'returns the correct data' {
+            $PD.GetCPCodeWatermarkLimit = $TestContractID | Get-CPCodeWatermarkLimit @CommonParams
+            $PD.GetCPCodeWatermarkLimit.limit | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith { return 'IAR executed' }
+            $Result = & {} | Get-CPCodeWatermarkLimit
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
 
     #------------------------------------------------
     #                 CPReportingGroup                  
     #------------------------------------------------
 
-    Context 'New-CPReportingGroup by parameter' {
-        It 'New-CPReportingGroup by param returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
-                return $Response | ConvertFrom-Json
-            }
-            $NewCPReportingGroupByParam = New-CPReportingGroup -Body $TestReportingGroupBody
-            $NewCPReportingGroupByParam.reportingGroupName | Should -Not -BeNullOrEmpty
+    Context 'Get-CPReportingGroup' {
+        It 'returns a list of reporting groups' {
+            $PD.GetCPReportingGroupAll = Get-CPReportingGroup @CommonParams
+            $PD.GetCPReportingGroupAll[0].ReportingGroupId | Should -Not -BeNullOrEmpty
+        }
+        It 'returns a single reporting group by ID' {
+            $PD.GetCPReportingGroupSingle = $TestReportingGroup | Get-CPReportingGroup @CommonParams
+            $PD.GetCPReportingGroupSingle.ReportingGroupId | Should -Be $TestReportingGroup
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith { return 'IAR executed' }
+            $Result = & {} | Get-CPReportingGroup
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
-    Context 'New-CPReportingGroup by pipeline' {
+    Context 'Set-CPReportingGroup' {
+        It 'updates successfully by parameter' {
+            $PD.SetCPReportingGroupByParam = Set-CPReportingGroup -Body $PD.GetCPReportingGroupSingle -ReportingGroupID $TestReportingGroup @CommonParams
+            $PD.SetCPReportingGroupByParam.ReportingGroupId | Should -Be $TestReportingGroup
+        }
+        It 'updates successfully by pipeline' {
+            $PD.SetCPReportingGroupByPipeline = $PD.GetCPReportingGroupSingle | Set-CPReportingGroup @CommonParams
+            $PD.SetCPReportingGroupByPipeline.ReportingGroupId | Should -Be $TestReportingGroup
+        }
+    }
+    
+    #------------------------------------------------
+    #                 CPReportingGroupProducts                  
+    #------------------------------------------------
+
+    Context 'Get-CPReportingGroupProducts' {
         It 'returns the correct data' {
+            $PD.GetCPReportingGroupProducts = $TestReportingGroup | Get-CPReportingGroupProducts @CommonParams
+            $PD.GetCPReportingGroupProducts[0].productId | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith { return 'IAR executed' }
+            $Result = & {} | Get-CPReportingGroupProducts
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    #------------------------------------------------
+    #                 CPReportingGroupWatermarkLimit                  
+    #------------------------------------------------
+
+    Context 'Get-CPReportingGroupWatermarkLimit' {
+        It 'returns the correct data' {
+            $PD.GetCPReportingGroupWatermarkLimit = $TestContractID | Get-CPReportingGroupWatermarkLimit @CommonParams
+            $PD.GetCPReportingGroupWatermarkLimit.limit | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith { return 'IAR executed' }
+            $Result = & {} | Get-CPReportingGroupWatermarkLimit
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    #------------------------------------------------
+    #                 CPReportingGroup                  
+    #------------------------------------------------
+
+    Context 'New-CPReportingGroup' {
+        It 'creates successfully by parameter' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewCPReportingGroupByPipeline = ($TestReportingGroupObject | New-CPReportingGroup)
+            $TestParams = @{
+                'Body' = $TestReportingGroupBody
+            }
+            $NewCPReportingGroupByParam = New-CPReportingGroup @TestParams
+            $NewCPReportingGroupByParam.reportingGroupName | Should -Not -BeNullOrEmpty
+        }
+        It 'creates successfully by pipeline' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-CPReportingGroup.json"
+                return $Response | ConvertFrom-Json
+            }
+            $NewCPReportingGroupByPipeline = $TestReportingGroupObject | New-CPReportingGroup
             $NewCPReportingGroupByPipeline.reportingGroupName | Should -Not -BeNullOrEmpty
         }
     }
@@ -194,6 +207,11 @@ Describe 'Unsafe Akamai.CPCodes tests' {
                 return $Response | ConvertFrom-Json
             }
             Remove-CPReportingGroup -ReportingGroupID 123456 
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.CPCodes -MockWith { return 'IAR executed' }
+            $Result = & {} | Remove-CPReportingGroup
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 }

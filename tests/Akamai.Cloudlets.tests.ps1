@@ -6,527 +6,657 @@ BeforeDiscovery {
 }
 
 Describe 'Safe Akamai.Cloudlets Tests' {
-    
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.Cloudlets/Akamai.Cloudlets.psd1 -Force
+
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.Cloudlets'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
-        $TestLegacyPolicyName = 'akamaipowershell_legacy'
-        $TestSharedPolicyName = 'akamaipowershell_shared'
-        $TestClonePolicyName = 'akamaipowershell_clone'
+        $TestLegacyPolicyName = "pester_$Timestamp`_legacy"
+        $TestSharedPolicyName = "pester_$Timestamp`_shared"
+        $TestClonePolicyName = "pester_$Timestamp`_clone"
         $TestPolicyDescription = 'Testing only'
         $TestCloudletType = 'Request Control'
-        $TestPolicyJson = '{"description":null,"matchRules":[{"type":"igMatchRule","id":0,"name":"AllowSampleIP","start":0,"end":0,"matchURL":null,"matches":[{"matchValue":"1.2.3.4","matchOperator":"equals","negate":false,"caseSensitive":false,"checkIPs":"CONNECTING_IP","matchType":"clientip"}],"akaRuleId":"1234567890abcdef","allowDeny":"allow"},{"type":"igMatchRule","id":0,"name":"DefaultDeny","start":0,"end":0,"matchURL":null,"akaRuleId":"abcdef1234567890","matchesAlways":true,"allowDeny":"deny"}]}'
+        $TestPolicyJson = @"
+{
+    "description": null,
+    "matchRules": [
+        {
+            "type": "igMatchRule",
+            "id": 0,
+            "name": "AllowSampleIP",
+            "start": 0,
+            "end": 0,
+            "matchURL": null,
+            "matches": [
+                {
+                    "matchValue": "1.2.3.4",
+                    "matchOperator": "equals",
+                    "negate": false,
+                    "caseSensitive": false,
+                    "checkIPs": "CONNECTING_IP",
+                    "matchType": "clientip"
+                }
+            ],
+            "akaRuleId": "1234567890abcdef",
+            "allowDeny": "allow"
+        },
+        {
+            "type": "igMatchRule",
+            "id": 0,
+            "name": "DefaultDeny",
+            "start": 0,
+            "end": 0,
+            "matchURL": null,
+            "akaRuleId": "abcdef1234567890",
+            "matchesAlways": true,
+            "allowDeny": "deny"
+        }
+    ]
+}
+"@
         $TestPolicy = ConvertFrom-Json $TestPolicyJson
-        $TestCSVFileName = 'cloudlet.csv'
+        $TestCSVFileName = "TestDrive:/cloudlet-$Timestamp.csv"
         $TestCloudletSchema = 'create-policy.json'
-        $TestPropertyName = 'akamaipowershell-testing'
-        $TestLoadBalancerID = 'akamaipowershell_testing'
+        $TestPropertyName = 'pester-ion'
+        $TestLoadBalancerID = "pester_$Timestamp"
+        $ExistingLoadBalancerVersion = Get-CloudletLoadBalancerVersion -OriginID pester -Version 1 @CommonParams
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Cloudlets"
         $PD = @{}
-        
+
     }
 
     AfterAll {
         Get-CloudletPolicy -Legacy -All @CommonParams | `
             Where-Object name -eq $TestLegacyPolicyName | `
-            ForEach-Object { 
-            Remove-CloudletPolicy -PolicyID $_.policyId -Legacy @CommonParams
-        }
+            Remove-CloudletPolicy -Legacy @CommonParams
         Get-CloudletPolicy @CommonParams | `
             Where-Object name -in $TestSharedPolicyName, $TestClonePolicyName | `
-            ForEach-Object { 
-            Remove-CloudletPolicy -PolicyID $_.id @CommonParams
-        }
-        if ((Test-Path $TestCSVFileName)) {
-            Remove-Item -Force $TestCSVFileName
-        }
+            Remove-CloudletPolicy @CommonParams
+
+        Get-CloudletLoadBalancer @CommonParams | `
+            Where-Object originId -eq $TestLoadBalancerID | `
+            Remove-CloudletLoadBalancer @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
-    #                 Cloudlet                  
+    #                 Cloudlet
     #------------------------------------------------
 
-    Context 'Get-Cloudlet - Parameter Set legacy' {
-        It 'returns the correct data' {
-            $PD.GetCloudletLegacy = Get-Cloudlet -Legacy @CommonParams
+    Context 'Get-Cloudlet' {
+        It 'returns a list using the legacy API' {
+            $TestParams = @{
+                'Legacy' = $true
+            }
+            $PD.GetCloudletLegacy = Get-Cloudlet @TestParams @CommonParams
             $PD.GetCloudletLegacy[0].cloudletCode | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-Cloudlet - Parameter Set shared' {
-        It 'returns the correct data' {
+        It 'returns a list using the shared API' {
             $PD.GetCloudletShared = Get-Cloudlet @CommonParams
             $PD.GetCloudletShared[0].cloudletType | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 CloudletGroup                  
+    #               CloudletGroup
     #------------------------------------------------
 
-    Context 'Get-CloudletGroup, All' {
-        It 'returns the correct data' {
+    Context 'Get-CloudletGroup' {
+        It 'returns a list of groups' {
             $PD.GetCloudletGroupAll = Get-CloudletGroup @CommonParams
             $PD.GetCloudletGroupAll[0].groupName | Should -Not -BeNullOrEmpty
         }
-    }
-    Context 'Get-CloudletGroup, single' {
-        It 'returns the correct data' {
-            $PD.GetCloudletGroupSingle = Get-CloudletGroup -GroupID $TestGroupID @CommonParams
+        It 'returns a single group by ID' {
+            $TestParams = @{
+                'GroupID' = $TestGroupID
+            }
+            $PD.GetCloudletGroupSingle = Get-CloudletGroup @TestParams @CommonParams
             $PD.GetCloudletGroupSingle.groupId | Should -Be $TestGroupID
         }
     }
 
     #------------------------------------------------
-    #                 CloudletPolicy                  
+    #                CloudletPolicy
     #------------------------------------------------
 
-    Context 'New-CloudletPolicy - Parameter Set legacy' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyLegacy = New-CloudletPolicy -CloudletType $TestCloudletType -GroupID $TestGroupID -Name $TestLegacyPolicyName -Legacy @CommonParams
+    Context 'New-CloudletPolicy' {
+        It 'creates a new legacy policy' {
+            $TestParams = @{
+                'CloudletType' = $TestCloudletType
+                'GroupID'      = $TestGroupID
+                'Name'         = $TestLegacyPolicyName
+                'Legacy'       = $true
+            }
+            $PD.NewCloudletPolicyLegacy = New-CloudletPolicy @TestParams @CommonParams
             $PD.NewCloudletPolicyLegacy.name | Should -Be $TestLegacyPolicyName
         }
-    }
-
-    Context 'New-CloudletPolicy - Parameter Set shared' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyShared = New-CloudletPolicy -CloudletType $TestCloudletType -GroupID $TestGroupID -Name $TestSharedPolicyName @CommonParams
+        It 'creates a new shared policy' {
+            $TestParams = @{
+                'CloudletType' = $TestCloudletType
+                'GroupID'      = $TestGroupID
+                'Name'         = $TestSharedPolicyName
+            }
+            $PD.NewCloudletPolicyShared = New-CloudletPolicy @TestParams @CommonParams
             $PD.NewCloudletPolicyShared.name | Should -Be $TestSharedPolicyName
         }
     }
 
-    Context 'Get-CloudletPolicy - Legacy - Parameter Set all' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyLegacyAll = Get-CloudletPolicy -Legacy @CommonParams
+
+    Context 'Get-CloudletPolicy' {
+        It 'return a list of legacy policies' {
+            $TestParams = @{
+                'Legacy' = $true
+            }
+            $PD.GetCloudletPolicyLegacyAll = Get-CloudletPolicy @TestParams @CommonParams
             $PD.GetCloudletPolicyLegacyAll[0].policyId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-CloudletPolicy - Legacy - Parameter Set single' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyLegacySingle = Get-CloudletPolicy -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Legacy @CommonParams
+        It 'return a single legacy policy by ID' {
+            $TestParams = @{
+                'PolicyID' = $PD.NewCloudletPolicyLegacy.policyId
+                'Legacy'   = $true
+            }
+            $PD.GetCloudletPolicyLegacySingle = Get-CloudletPolicy @TestParams @CommonParams
             $PD.GetCloudletPolicyLegacySingle.policyId | Should -Be $PD.NewCloudletPolicyLegacy.policyId
         }
-    }
-    
-    Context 'Get-CloudletPolicy - Shared - Parameter Set all' {
-        It 'returns the correct data' {
+        It 'return a list of shared policies' {
             $PD.GetCloudletPolicySharedAll = Get-CloudletPolicy @CommonParams
             $PD.GetCloudletPolicySharedAll[0].id | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-CloudletPolicy - Shared - Parameter Set single' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicySharedSingle = Get-CloudletPolicy -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams
+        It 'return a single shared policy by ID' {
+            $PD.GetCloudletPolicySharedSingle = $PD.NewCloudletPolicyShared.id | Get-CloudletPolicy @CommonParams
             $PD.GetCloudletPolicySharedSingle.id | Should -Be $PD.NewCloudletPolicyShared.id
         }
     }
 
-    Context 'Set-CloudletPolicy, legacy' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyLegacy = Set-CloudletPolicy -GroupID $TestGroupID -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Description 'New description' -Legacy @CommonParams
+    Context 'Set-CloudletPolicy' {
+        It 'updates a legacy policy' {
+            $TestParams = @{
+                'GroupID'     = $TestGroupID
+                'PolicyID'    = $PD.NewCloudletPolicyLegacy.policyId
+                'Description' = 'New description'
+                'Legacy'      = $true
+            }
+            $PD.SetCloudletPolicyLegacy = Set-CloudletPolicy @TestParams @CommonParams
             $PD.SetCloudletPolicyLegacy.policyId | Should -Be $PD.NewCloudletPolicyLegacy.policyId
         }
-    }
-
-    Context 'Set-CloudletPolicy, shared' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyShared = Set-CloudletPolicy -GroupID $TestGroupID -PolicyID $PD.NewCloudletPolicyShared.id -Description 'New description' @CommonParams
+        It 'updates a shared policy' {
+            $TestParams = @{
+                'GroupID'     = $TestGroupID
+                'PolicyID'    = $PD.NewCloudletPolicyShared.id
+                'Description' = 'New description'
+            }
+            $PD.SetCloudletPolicyShared = Set-CloudletPolicy @TestParams @CommonParams
             $PD.SetCloudletPolicyShared.id | Should -Be $PD.NewCloudletPolicyShared.id
         }
     }
 
     Context 'Copy-CloudletPolicy' {
         It 'clones correctly' {
-            $PD.CopyCloudletPolicy = Copy-CloudletPolicy -GroupID $TestGroupID -NewName $TestClonePolicyName -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams
+            $PD.CopyCloudletPolicy = $PD.NewCloudletPolicyShared | Copy-CloudletPolicy -NewName $TestClonePolicyName @CommonParams
             $PD.CopyCloudletPolicy.name | Should -Be $TestClonePolicyName
         }
     }
     #------------------------------------------------
-    #                 CloudletPolicyVersion                  
+    #           CloudletPolicyVersion
     #------------------------------------------------
-    
-    Context 'New-CloudletPolicyVersion by parameter, legacy' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyVersionByParamLegacy = New-CloudletPolicyVersion -Body $TestPolicyJson -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Legacy @CommonParams
+
+    Context 'New-CloudletPolicyVersion' {
+        It 'creates a new version of a legacy policy by param' {
+            $TestParams = @{
+                'Body'     = $TestPolicyJson
+                'PolicyID' = $PD.NewCloudletPolicyLegacy.policyId
+                'Legacy'   = $true
+            }
+            $PD.NewCloudletPolicyVersionByParamLegacy = New-CloudletPolicyVersion @TestParams @CommonParams
             $PD.NewCloudletPolicyVersionByParamLegacy.policyId | Should -Be $PD.NewCloudletPolicyLegacy.policyId
         }
-    }
-    
-    Context 'New-CloudletPolicyVersion by pipeline, legacy' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyVersionByPipelineLegacy = ($TestPolicy | New-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Legacy @CommonParams)
-            $PD.NewCloudletPolicyVersionByPipelineLegacy.policyId | Should -Be $PD.NewCloudletPolicyLegacy.policyId
-        }
-    }
-    
-    Context 'New-CloudletPolicyVersion by parameter, shared' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyVersionByParamShared = New-CloudletPolicyVersion -Body $TestPolicyJson -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams
+        It 'creates a new version of a shared policy by param' {
+            $TestParams = @{
+                'Body'     = $TestPolicyJson
+                'PolicyID' = $PD.NewCloudletPolicyShared.id
+            }
+            $PD.NewCloudletPolicyVersionByParamShared = New-CloudletPolicyVersion @TestParams @CommonParams
             $PD.NewCloudletPolicyVersionByParamShared.policyId | Should -Be $PD.NewCloudletPolicyShared.id
         }
     }
-    
-    Context 'New-CloudletPolicyVersion by pipeline, shared' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyVersionByPipelineShared = ($TestPolicy | New-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams)
+
+    Context 'Get-CloudletPolicyVersion' {
+        It 'lists all versions of a legacy policy' {
+            $PD.LegacyPolicyVersions = $PD.NewCloudletPolicyLegacy | Get-CloudletPolicyVersion -Legacy @CommonParams
+            $PD.LegacyPolicyVersions[0].Version | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a specified version of a legacy policy' {
+            $PD.LegacyPolicyVersion = $PD.NewCloudletPolicyLegacy | Get-CloudletPolicyVersion -Version 2 -Legacy @CommonParams
+            $PD.LegacyPolicyVersion.Version | Should -Be 2
+        }
+        It 'gets the latest version of a legacy policy' {
+            $TestParams = @{
+                'PolicyID' = $PD.NewCloudletPolicyLegacy.policyId
+                'Version'  = 'latest'
+                'Legacy'   = $true
+            }
+            $PD.LatestLegacyPolicyVersion = Get-CloudletPolicyVersion @TestParams @CommonParams
+            $PD.LatestLegacyPolicyVersion.Version | Should -Be 2
+        }
+        It 'gets a specified version of a shared policy' {
+            $PD.SharedPolicyVersion = $PD.NewCloudletPolicyShared | Get-CloudletPolicyVersion -Version 1 @CommonParams
+            $PD.SharedPolicyVersion.Version | Should -Be 1
+        }
+        It 'gets the latest version of a shared policy' {
+            $PD.LatestSharedPolicyVersion = $PD.NewCloudletPolicyShared | Get-CloudletPolicyVersion -Version latest @CommonParams
+            $PD.LatestSharedPolicyVersion.Version | Should -Be 1
+        }
+        It 'lists all versions of a shared policy' {
+            $PD.SharedPolicyVersions = $PD.NewCloudletPolicyShared | Get-CloudletPolicyVersion @CommonParams
+            $PD.SharedPolicyVersions[0].Version | Should -Not -BeNullOrEmpty
+        }
+        It 'handles null input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith { return 'IAR executed' }
+            $DebugOutput = & {} | Get-CloudletPolicyVersion
+            $DebugOutput | Should -Not -BeLike 'IAR executed'
+        }
+    }
+
+    Context 'New-CloudletPolicyVersion' {
+        It 'creates a new version of a legacy policy by pipeline' {
+            $PD.NewCloudletPolicyVersionByPipelineLegacy = $PD.LegacyPolicyVersion | New-CloudletPolicyVersion -Legacy @CommonParams
+            $PD.NewCloudletPolicyVersionByPipelineLegacy.policyId | Should -Be $PD.NewCloudletPolicyLegacy.policyId
+            $PD.NewCloudletPolicyVersionByPipelineLegacy.version | Should -Be 3
+        }
+        It 'creates a new version of a shared policy by pipeline' {
+            $PD.NewCloudletPolicyVersionByPipelineShared = $PD.SharedPolicyVersion | New-CloudletPolicyVersion @CommonParams
             $PD.NewCloudletPolicyVersionByPipelineShared.policyId | Should -Be $PD.NewCloudletPolicyShared.id
+            $PD.NewCloudletPolicyVersionByPipelineShared.version | Should -Be 2
         }
     }
-    
-    Context 'Get-CloudletPolicyVersion - Parameter Set all - Legacy' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionAllLegacy = Get-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Legacy @CommonParams
-            $PD.GetCloudletPolicyVersionAllLegacy[0].Version | Should -Not -BeNullOrEmpty
+
+    Context 'Set-CloudletPolicyVersion' {
+        It 'updates a legacy policy by param' {
+            $TestParams = @{
+                'Body'     = (ConvertTo-Json -Depth 10 $PD.LegacyPolicyVersion)
+                'PolicyID' = $PD.NewCloudletPolicyLegacy.policyId
+                'Version'  = $PD.LegacyPolicyVersion.version
+                'Legacy'   = $true
+            }
+            $PD.SetCloudletPolicyVersionByParamLegacy = Set-CloudletPolicyVersion @TestParams @CommonParams
+            $PD.SetCloudletPolicyVersionByParamLegacy.policyId | Should -Be $PD.LegacyPolicyVersion.policyId
         }
-    }
-    
-    Context 'Get-CloudletPolicyVersion - Parameter Set single - Legacy' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionSingleLegacy = Get-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 2 -Legacy @CommonParams
-            $PD.GetCloudletPolicyVersionSingleLegacy.Version | Should -Be 2
+        It 'updates a legacy policy by pipeline' {
+            $PD.SetCloudletPolicyVersionByPipelineLegacy = $PD.LegacyPolicyVersion | Set-CloudletPolicyVersion -Legacy @CommonParams
+            $PD.SetCloudletPolicyVersionByPipelineLegacy.policyId | Should -Be $PD.LegacyPolicyVersion.policyId
         }
-    }
-    
-    Context 'Get-CloudletPolicyVersion - Parameter Set single - Legacy' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionSingleLegacyLatest = Get-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version latest -Legacy @CommonParams
-            $PD.GetCloudletPolicyVersionSingleLegacyLatest.Version | Should -Not -BeNullOrEmpty
+        It 'updates a shared policy by param' {
+            $TestParams = @{
+                'Body'     = (ConvertTo-Json -Depth 10 $PD.SharedPolicyVersion)
+                'PolicyID' = $PD.NewCloudletPolicyShared.id
+                'Version'  = $PD.SharedPolicyVersion.version
+            }
+            $PD.SetCloudletPolicyVersionByParamShared = Set-CloudletPolicyVersion @TestParams @CommonParams
+            $PD.SetCloudletPolicyVersionByParamShared.policyId | Should -Be $PD.SharedPolicyVersion.policyId
         }
-    }
-    
-    Context 'Get-CloudletPolicyVersion - Parameter Set all - Shared' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionAllShared = Get-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams
-            $PD.GetCloudletPolicyVersionAllShared[0].Version | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Get-CloudletPolicyVersion - Parameter Set single - Shared' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionSingleShared = Get-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyShared.id -Version 1 @CommonParams
-            $PD.GetCloudletPolicyVersionSingleShared.Version | Should -Be 1
-        }
-    }
-    
-    Context 'Get-CloudletPolicyVersion - Parameter Set single - Shared' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionSingleSharedLatest = Get-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyShared.id -Version latest @CommonParams
-            $PD.GetCloudletPolicyVersionSingleShared.Version | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Set-CloudletPolicyVersion by parameter, legacy' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyVersionByParamLegacy = Set-CloudletPolicyVersion -Body (ConvertTo-Json -Depth 10 $PD.GetCloudletPolicyVersionSingleLegacy) -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version $PD.GetCloudletPolicyVersionSingleLegacy.version -Legacy @CommonParams
-            $PD.SetCloudletPolicyVersionByParamLegacy.policyId | Should -Be $PD.GetCloudletPolicyVersionSingleLegacy.policyId
-        }
-    }
-    
-    Context 'Set-CloudletPolicyVersion by pipeline, legacy' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyVersionByPipelineLegacy = ($PD.GetCloudletPolicyVersionSingleLegacy | Set-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version $PD.GetCloudletPolicyVersionSingleLegacy.version -Legacy @CommonParams)
-            $PD.SetCloudletPolicyVersionByPipelineLegacy.policyId | Should -Be $PD.GetCloudletPolicyVersionSingleLegacy.policyId
-        }
-    }
-    
-    Context 'Set-CloudletPolicyVersion by parameter, shared' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyVersionByParamShared = Set-CloudletPolicyVersion -Body (ConvertTo-Json -Depth 10 $PD.GetCloudletPolicyVersionSingleShared) -PolicyID $PD.NewCloudletPolicyShared.id -Version $PD.GetCloudletPolicyVersionSingleShared.version @CommonParams
-            $PD.SetCloudletPolicyVersionByParamShared.policyId | Should -Be $PD.GetCloudletPolicyVersionSingleShared.policyId
-        }
-    }
-    
-    Context 'Set-CloudletPolicyVersion by pipeline, shared' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyVersionByPipelineShared = ($PD.GetCloudletPolicyVersionSingleShared | Set-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyShared.id -Version $PD.GetCloudletPolicyVersionSingleShared.version @CommonParams)
-            $PD.SetCloudletPolicyVersionByPipelineShared.policyId | Should -Be $PD.GetCloudletPolicyVersionSingleShared.policyId
+        It 'updates a shared policy by pipeline' {
+            $PD.SetCloudletPolicyVersionByPipelineShared = $PD.SharedPolicyVersion | Set-CloudletPolicyVersion @CommonParams
+            $PD.SetCloudletPolicyVersionByPipelineShared.policyId | Should -Be $PD.SharedPolicyVersion.policyId
         }
     }
 
     #------------------------------------------------
-    #                 CloudletPolicyDetails                  
+    #           CloudletPolicyDetails
     #------------------------------------------------
 
-    Context 'Expand-CloudletPolicyDetails, legacy' {
-        It 'returns the correct data' {
+    Context 'Expand-CloudletPolicyDetails' {
+        BeforeAll {
+            . $PSScriptRoot/../src/Akamai.Cloudlets/Functions/Private/Expand-CloudletPolicyDetails.ps1
+        }
+        It 'expands a legacy policy' {
             $PD.ExpandCloudletPolicyDetailsLegacy = Expand-CloudletPolicyDetails -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version latest -Legacy @CommonParams
             $PD.ExpandCloudletPolicyDetailsLegacy | Should -Match '[0-9]+'
         }
-    }
-    
-    Context 'Expand-CloudletPolicyDetails, shared' {
-        It 'returns the correct data' {
+        It 'expands a shared policy' {
             $PD.ExpandCloudletPolicyDetailsShared = Expand-CloudletPolicyDetails -PolicyID $PD.NewCloudletPolicyShared.id -Version latest @CommonParams
             $PD.ExpandCloudletPolicyDetailsShared | Should -Match '[0-9]+'
         }
-    }
-    
-    #------------------------------------------------
-    #                 CloudletPolicyCSV                  
-    #------------------------------------------------
-    
-    Context 'Get-CloudletPolicyCSV' {
-        It 'returns the correct data' {
-            $PD.GetCloudletPolicyCSV = Get-CloudletPolicyCSV -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version latest -OutputFileName $TestCSVFileName  @CommonParams
-            $TestCSVFileName | Should -Exist
+        AfterAll {
+            Remove-Item -Path Function:/Expand-CloudletPolicyDetails -Force
         }
     }
 
     #------------------------------------------------
-    #                 CloudletSchema                  
+    #              CloudletSchema
     #------------------------------------------------
 
-    Context 'Get-CloudletSchema - Parameter Set all' {
-        It 'returns the correct data' {
-            $PD.GetCloudletSchemaAll = Get-CloudletSchema -CloudletType $TestCloudletType @CommonParams
-            $PD.GetCloudletSchemaAll[0].title | Should -Not -BeNullOrEmpty
+    Context 'Get-CloudletSchema' {
+        It 'lists schemas' {
+            $PD.Schemas = Get-CloudletSchema -CloudletType $TestCloudletType @CommonParams
+            $PD.Schemas[0].title | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-CloudletSchema - Parameter Set single' {
-        It 'returns the correct data' {
-            $PD.GetCloudletSchemaSingle = Get-CloudletSchema -SchemaName $TestCloudletSchema @CommonParams
-            $PD.GetCloudletSchemaSingle.title | Should -Not -BeNullOrEmpty
+        It 'returns a specific schema by name' {
+            $PD.Schema = Get-CloudletSchema -SchemaName $TestCloudletSchema @CommonParams
+            $PD.Schema.title | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 CloudletPolicyVersionRule                  
+    #         CloudletPolicyVersionRule
     #------------------------------------------------
 
-    Context 'New-CloudletPolicyVersionRule by parameter, legacy' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyVersionRuleByParam = New-CloudletPolicyVersionRule -Body $TestPolicy.matchRules[0] -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 1 @CommonParams
-            $PD.NewCloudletPolicyVersionRuleByParam.akaRuleId | Should -Not -BeNullOrEmpty
+    Context 'New-CloudletPolicyVersionRule' {
+        It 'creates a new rule by param' {
+            $TestParams = @{
+                'Body'     = $TestPolicy.matchRules[0]
+                'PolicyID' = $PD.NewCloudletPolicyLegacy.policyId
+                'Version'  = 2
+            }
+            $PD.NewRuleParam = New-CloudletPolicyVersionRule @TestParams @CommonParams
+            $PD.NewRuleParam.akaRuleId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'New-CloudletPolicyVersionRule by pipeline, legacy' {
-        It 'returns the correct data' {
-            $PD.NewCloudletPolicyVersionRuleByPipeline = ($TestPolicy.matchRules[0] | New-CloudletPolicyVersionRule -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 1 @CommonParams)
-            $PD.NewCloudletPolicyVersionRuleByPipeline.akaRuleId | Should -Not -BeNullOrEmpty
+        It 'creates a new rule by pipeline' {
+            $PD.NewRulePipeline = $TestPolicy.matchRules[0] | New-CloudletPolicyVersionRule -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 2 @CommonParams
+            $PD.NewRulePipeline.akaRuleId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Get-CloudletPolicyVersionRule' {
         It 'returns the correct data' {
-            $PD.GetCloudletPolicyVersionRule = Get-CloudletPolicyVersionRule -AkaRuleID $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0].akaruleId -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 2 @CommonParams
-            $PD.GetCloudletPolicyVersionRule.akaRuleId | Should -Be $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0].akaruleId
+            $PD.Rule = $PD.LatestLegacyPolicyVersion | Get-CloudletPolicyVersionRule -AkaRuleID $PD.LatestLegacyPolicyVersion.matchRules[0].akaruleId @CommonParams
+            $PD.Rule.akaRuleId | Should -Be $PD.LegacyPolicyVersion.matchRules[0].akaruleId
         }
     }
 
-    Context 'Set-CloudletPolicyVersionRule by parameter' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyVersionRuleByParam = Set-CloudletPolicyVersionRule -AkaRuleID $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0].akaruleId -Body $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0] -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 2 @CommonParams
-            $PD.SetCloudletPolicyVersionRuleByParam.akaRuleId | Should -Be $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0].akaruleId
+    Context 'Set-CloudletPolicyVersionRule' {
+        It 'updates a rule by param' {
+            $TestParams = @{
+                'AkaRuleID' = $PD.LegacyPolicyVersion.matchRules[0].akaruleId
+                'Body'      = $PD.LegacyPolicyVersion.matchRules[0]
+                'PolicyID'  = $PD.NewCloudletPolicyLegacy.policyId
+                'Version'   = 2
+            }
+            $PD.SetRuleParam = Set-CloudletPolicyVersionRule @TestParams @CommonParams
+            $PD.SetRuleParam.akaRuleId | Should -Be $PD.LegacyPolicyVersion.matchRules[0].akaruleId
         }
-    }
-
-    Context 'Set-CloudletPolicyVersionRule by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetCloudletPolicyVersionRuleByPipeline = ($PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0] | Set-CloudletPolicyVersionRule -AkaRuleID $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0].akaruleId -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 2 @CommonParams)
-            $PD.SetCloudletPolicyVersionRuleByPipeline.akaRuleId | Should -Be $PD.GetCloudletPolicyVersionSingleLegacy.matchRules[0].akaruleId
-        }
-    }
-    
-    #------------------------------------------------
-    #                 CloudletLoadBalancer                  
-    #------------------------------------------------
-
-    Context 'Get-CloudletLoadBalancer - Parameter Set single' {
-        It 'returns the correct data' {
-            $PD.GetCloudletLoadBalancerSingle = Get-CloudletLoadBalancer -OriginID $TestLoadBalancerID @CommonParams
-            $PD.GetCloudletLoadBalancerSingle.originId | Should -Be $TestLoadBalancerID
-        }
-    }
-
-    Context 'Get-CloudletLoadBalancer - Parameter Set all' {
-        It 'returns the correct data' {
-            $PD.GetCloudletLoadBalancerAll = Get-CloudletLoadBalancer @CommonParams
-            $PD.GetCloudletLoadBalancerAll[0].originId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-CloudletLoadBalancer by Param' {
-        It 'updates correctly' {
-            $PD.SetCloudletLoadBalancerByParam = Set-CloudletLoadBalancer -Body $PD.GetCloudletLoadBalancerSingle -OriginID $TestLoadBalancerID @CommonParams
-            $PD.SetCloudletLoadBalancerByParam.originId | Should -Be $TestLoadBalancerID
-        }
-    }
-    
-    Context 'Set-CloudletLoadBalancer by pipeline' {
-        It 'updates correctly' {
-            $PD.SetCloudletLoadBalancerByPipeline = ($PD.GetCloudletLoadBalancerSingle | Set-CloudletLoadBalancer -OriginID $TestLoadBalancerID @CommonParams)
-            $PD.SetCloudletLoadBalancerByPipeline.originId | Should -Be $TestLoadBalancerID
+        It 'updates a rule by pipeline' {
+            $PD.SetRulePipeline = $PD.LegacyPolicyVersion.matchRules[0] | Set-CloudletPolicyVersionRule -AkaRuleID $PD.LegacyPolicyVersion.matchRules[0].akaruleId -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Version 2 @CommonParams
+            $PD.SetRulePipeline.akaRuleId | Should -Be $PD.LegacyPolicyVersion.matchRules[0].akaruleId
         }
     }
 
     #------------------------------------------------
-    #                 CloudletLoadBalancerVersion                  
+    #            CloudletLoadBalancer
     #------------------------------------------------
-    
-    Context 'Get-CloudletLoadBalancerVersion' {
-        It 'returns the correct data' {
-            $PD.GetCloudletLoadBalancerVersion = Get-CloudletLoadBalancerVersion -OriginID $TestLoadBalancerID -Version latest @CommonParams
-            $PD.GetCloudletLoadBalancerVersion.originId | Should -Be $TestLoadBalancerID
+
+    Context 'Load Balancer' -Tag 'Load Balancer' {
+        Context 'New-CloudletLoadBalancer' {
+            It 'creates a load balancer' {
+                $TestParams = @{
+                    'OriginID' = $TestLoadBalancerID
+                }
+                $NewCloudletLoadBalancer = New-CloudletLoadBalancer @TestParams @CommonParams
+                $NewCloudletLoadBalancer.originId | Should -Not -BeNullOrEmpty
+            }
+        }
+
+        Context 'Get-CloudletLoadBalancer' {
+            It 'returns a list' {
+                $PD.LoadBalancers = Get-CloudletLoadBalancer @CommonParams
+                $PD.LoadBalancers[0].originId | Should -Not -BeNullOrEmpty
+            }
+            It 'returns a single load balancer by ID' {
+                $PD.LoadBalancer = Get-CloudletLoadBalancer -OriginID $TestLoadBalancerID @CommonParams
+                $PD.LoadBalancer.originId | Should -Be $TestLoadBalancerID
+            }
+        }
+
+        Context 'Set-CloudletLoadBalancer' {
+            It 'updates by param' {
+                $PD.SetLoadBalancerParam = Set-CloudletLoadBalancer -Body $PD.LoadBalancer -OriginID $TestLoadBalancerID @CommonParams
+                $PD.SetLoadBalancerParam.originId | Should -Be $TestLoadBalancerID
+            }
+            It 'updates by pipeline' {
+                $PD.SetLoadBalancerPipeline = $PD.LoadBalancer | Set-CloudletLoadBalancer @CommonParams
+                $PD.SetLoadBalancerPipeline.originId | Should -Be $TestLoadBalancerID
+            }
+        }
+
+        #------------------------------------------------
+        #          CloudletLoadBalancerVersion
+        #------------------------------------------------
+
+        Context 'New-CloudletLoadBalancerVersion' {
+            It 'creates a new version by param' {
+                $PD.NewLBVersionParam = New-CloudletLoadBalancerVersion -Body $ExistingLoadBalancerVersion -OriginID $TestLoadBalancerID @CommonParams
+                $PD.NewLBVersionParam.originId | Should -Be $TestLoadBalancerID
+            }
+            It 'creates a new version by pipeline' {
+                $PD.NewLBVersionPipeline = $PD.NewLBVersionParam | New-CloudletLoadBalancerVersion @CommonParams
+                $PD.NewLBVersionPipeline.originId | Should -Be $TestLoadBalancerID
+            }
+        }
+
+        Context 'Get-CloudletLoadBalancerVersion' {
+            It 'lists versions' {
+                $PD.LoadBalancerVersions = Get-CloudletLoadBalancerVersion -OriginID $TestLoadBalancerID @CommonParams
+                $PD.LoadBalancerVersions[0].originId | Should -Be $TestLoadBalancerID
+            }
+            It 'gets the latest version' {
+                $PD.LoadBalancerVersion = $PD.LoadBalancer | Get-CloudletLoadBalancerVersion -Version latest @CommonParams
+                $PD.LoadBalancerVersion.originId | Should -Be $TestLoadBalancerID
+            }
+        }
+
+        Context 'Set-CloudletLoadBalancerVersion' {
+            It 'updates by param' {
+                $PD.SetLBVersionParam = Set-CloudletLoadBalancerVersion -Body $PD.NewLBVersionPipeline -OriginID $TestLoadBalancerID -Version $PD.NewLBVersionPipeline.version @CommonParams
+                $PD.SetLBVersionParam.originId | Should -Be $TestLoadBalancerID
+            }
+            It 'updates by pipeline' {
+                $PD.SetLBVersionPipeline = $PD.NewLBVersionPipeline | Set-CloudletLoadBalancerVersion @CommonParams
+                $PD.SetLBVersionPipeline.originId | Should -Be $TestLoadBalancerID
+            }
+        }
+
+        #------------------------------------------------
+        #          CloudletLoadBalancerDetails
+        #------------------------------------------------
+
+        Context 'Expand-CloudletLoadBalancerDetails' {
+            BeforeAll {
+                . $PSScriptRoot/../src/Akamai.Cloudlets/Functions/Private/Expand-CloudletLoadBalancerDetails.ps1
+            }
+            It 'returns the correct data' {
+                $PD.LBDetails = Expand-CloudletLoadBalancerDetails -OriginID $TestLoadBalancerID -Version latest @CommonParams
+                $PD.LBDetails | Should -Match '[\d]+'
+            }
+            AfterAll {
+                Remove-Item -Path Function:/Expand-CloudletLoadBalancerDetails -Force
+            }
+        }
+
+        #------------------------------------------------
+        #         CloudletLoadBalancerActivation
+        #------------------------------------------------
+
+        Context 'New-CloudletLoadBalancerActivation' {
+            It 'returns the correct data' {
+                Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
+                    $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletLoadBalancerActivation.json"
+                    return $Response | ConvertFrom-Json
+                }
+                $TestParams = @{
+                    'Network'  = 'STAGING'
+                    'OriginID' = 'test_originId'
+                    'Version'  = 1
+                }
+                $NewCloudletLoadBalancerActivation = New-CloudletLoadBalancerActivation @TestParams
+                $NewCloudletLoadBalancerActivation.network | Should -Not -BeNullOrEmpty
+            }
+        }
+
+        Context 'Get-CloudletLoadBalancerActivation' {
+            It 'gets activations for a single load balancer' {
+                Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
+                    $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletLoadBalancerActivation.json"
+                    return $Response | ConvertFrom-Json
+                }
+                $TestParams = @{
+                    'OriginID' = 'test_originId'
+                }
+                $GetCloudletLoadBalancerActivationSingle = Get-CloudletLoadBalancerActivation @TestParams
+                $GetCloudletLoadBalancerActivationSingle[0].Version | Should -Not -BeNullOrEmpty
+            }
+            It 'gets activations for all load balancers' {
+                Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
+                    $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletLoadBalancerActivation.json"
+                    return $Response | ConvertFrom-Json
+                }
+                $GetCloudletLoadBalancerActivationAll = Get-CloudletLoadBalancerActivation
+                $GetCloudletLoadBalancerActivationAll.PSObject.Properties.Name.count | Should -BeGreaterThan 0
+            }
+        }
+
+        Context 'Remove-CloudletLoadBalancer' {
+            It 'deletes the load balancer' {
+                $PD.LoadBalancer | Remove-CloudletLoadBalancer @CommonParams
+            }
         }
     }
 
-    Context 'New-CloudletLoadBalancerVersion by parameter' {
-        It 'returns the correct data' {
-            $PD.NewCloudletLoadBalancerVersionByParam = New-CloudletLoadBalancerVersion -Body $PD.GetCloudletLoadBalancerVersion -OriginID $TestLoadBalancerID @CommonParams
-            $PD.NewCloudletLoadBalancerVersionByParam.originId | Should -Be $TestLoadBalancerID
-        }
-    }
-    
-    Context 'New-CloudletLoadBalancerVersion by pipeline' {
-        It 'returns the correct data' {
-            $PD.NewCloudletLoadBalancerVersionByPipeline = $PD.GetCloudletLoadBalancerVersion | New-CloudletLoadBalancerVersion -OriginID $TestLoadBalancerID @CommonParams
-            $PD.NewCloudletLoadBalancerVersionByPipeline.originId | Should -Be $TestLoadBalancerID
-        }
-    }
-    
-    Context 'Set-CloudletLoadBalancerVersion by parameter' {
-        It 'returns the correct data' {
-            $PD.SetCloudletLoadBalancerVersionByParam = Set-CloudletLoadBalancerVersion -Body $PD.NewCloudletLoadBalancerVersionByPipeline -OriginID $TestLoadBalancerID -Version $PD.NewCloudletLoadBalancerVersionByPipeline.version @CommonParams
-            $PD.SetCloudletLoadBalancerVersionByParam.originId | Should -Be $TestLoadBalancerID
-        }
-    }
-    
-    Context 'Set-CloudletLoadBalancerVersion by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetCloudletLoadBalancerVersionByPipeline = $PD.NewCloudletLoadBalancerVersionByPipeline | Set-CloudletLoadBalancerVersion -OriginID $TestLoadBalancerID -Version $PD.NewCloudletLoadBalancerVersionByPipeline.version @CommonParams
-            $PD.SetCloudletLoadBalancerVersionByPipeline.originId | Should -Be $TestLoadBalancerID
-        }
-    }
-
     #------------------------------------------------
-    #                 CloudletLoadBalancerDetails                  
+    #                 Removals
     #------------------------------------------------
 
-    Context 'Expand-CloudletLoadBalancerDetails' {
-        It 'returns the correct data' {
-            $PD.ExpandCloudletLoadBalancerDetails = Expand-CloudletLoadBalancerDetails -OriginID $TestLoadBalancerID -Version latest @CommonParams
-            $PD.ExpandCloudletLoadBalancerDetails | Should -Match '[\d]+'
-        }
-    }
 
-    #------------------------------------------------
-    #                 Removals                  
-    #------------------------------------------------
-
-    
     Context 'Remove-CloudletPolicyVersion' {
-        It 'returns the correct data' {
-            Remove-CloudletPolicyVersion -PolicyID $PD.NewCloudletPolicyShared.id -Version latest @CommonParams 
+        It 'throws no errors' {
+            $PD.NewCloudletPolicyVersionByPipelineShared | Remove-CloudletPolicyVersion @CommonParams
         }
     }
 
-    Context 'Remove-CloudletPolicy, legacy' {
-        It 'throws no errors' {
-            Remove-CloudletPolicy -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Legacy @CommonParams 
+    Context 'Remove-CloudletPolicy' {
+        It 'deletes legacy policy' {
+            Remove-CloudletPolicy -PolicyID $PD.NewCloudletPolicyLegacy.policyId -Legacy @CommonParams
         }
-    }
-    Context 'Remove-CloudletPolicy, shared' {
-        It 'throws no errors' {
-            Remove-CloudletPolicy -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams 
+        It 'deletes shared policy' {
+            Remove-CloudletPolicy -PolicyID $PD.NewCloudletPolicyShared.id @CommonParams
         }
-    }
-    Context 'Remove-CloudletPolicy, clone' {
-        It 'throws no errors' {
-            Remove-CloudletPolicy -PolicyID $PD.CopyCloudletPolicy.id @CommonParams 
+        It 'deletes copy policy' {
+            Remove-CloudletPolicy -PolicyID $PD.CopyCloudletPolicy.id @CommonParams
         }
-    }
-}
-
-Describe 'Unsafe Akamai.Cloudlets Tests' {
-
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.Cloudlets/Akamai.Cloudlets.psd1 -Force
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Cloudlets"
-        $PD = @{}
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith { return 'IAR executed' }
+            $DebugOutput = & {} | Remove-CloudletPolicy
+            $DebugOutput | Should -Not -BeLike 'IAR executed'
+        }
     }
 
     #------------------------------------------------
-    #                 CloudletActivation                  
+    #             CloudletActivation
     #------------------------------------------------
 
-    Context 'New-CloudletPolicyActivation - Parameter Set legacy' {
-        It 'returns the correct data' {
+    Context 'New-CloudletPolicyActivation' {
+        It 'activates a legacy policy' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletPolicyActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewCloudletActivationLegacy = New-CloudletPolicyActivation -Network STAGING -PolicyID 111111 -Version 1 -AdditionalPropertyNames www.example.com -Legacy
+            $TestParams = @{
+                'AdditionalPropertyNames' = 'www'
+                'Network'                 = 'STAGING'
+                'PolicyID'                = 111111
+                'Version'                 = 1
+            }
+            $NewCloudletActivationLegacy = New-CloudletPolicyActivation @TestParams
             $NewCloudletActivationLegacy.policyInfo.policyId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'New-CloudletPolicyActivation - Parameter Set shared' {
-        It 'returns the correct data' {
+        It 'activates a shared policy' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletPolicyActivation_1.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewCloudletActivationShared = New-CloudletPolicyActivation -Network STAGING -PolicyID 22222 -Version 1
+            $TestParams = @{
+                'Network'  = 'STAGING'
+                'PolicyID' = 22222
+                'Version'  = 1
+            }
+            $NewCloudletActivationShared = New-CloudletPolicyActivation @TestParams
             $NewCloudletActivationShared.policyId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 CloudletDeactivation                  
+    #             CloudletDeactivation
     #------------------------------------------------
 
     Context 'New-CloudletPolicyDeactivation' {
-        It 'returns the correct data' {
+        It 'deactivates a shared policy' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletPolicyDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewCloudletDeactivation = New-CloudletPolicyDeactivation -Network STAGING -PolicyID 22222 -Version 1
+            $TestParams = @{
+                'Network'  = 'STAGING'
+                'PolicyID' = 22222
+                'Version'  = 1
+            }
+            $NewCloudletDeactivation = New-CloudletPolicyDeactivation @TestParams
             $NewCloudletDeactivation.policyId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 CloudletPolicyProperty                  
+    #            CloudletPolicyProperty
     #------------------------------------------------
 
-    Context 'Get-CloudletPolicyProperty, legacy' {
-        It 'returns the correct data' {
+    Context 'Get-CloudletPolicyProperty' -Tag 'Get-CloudletPolicyProperty' {
+        It 'returns properties from a legacy policy' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyProperty.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetCloudletPolicyPropertyLegacy = Get-CloudletPolicyProperty -PolicyID 111111 -Legacy
-            $GetCloudletPolicyPropertyLegacy.PSObject.Properties.Name.Count | Should -BeGreaterThan 0
+            $TestParams = @{
+                'PolicyID' = 111111
+                'Legacy'   = $true
+            }
+            $PolicyPropertyLegacy = Get-CloudletPolicyProperty @TestParams
+            $PolicyPropertyLegacy.cloudletsOrigins | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-CloudletPolicyProperty, shared' {
-        It 'returns the correct data' {
+        It 'returns properties from a shared policy' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyProperty_1.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetCloudletPolicyPropertyShared = Get-CloudletPolicyProperty -PolicyID 22222
-            $GetCloudletPolicyPropertyShared[0].Name | Should -Not -BeNullOrEmpty
+            $TestParams = @{
+                'PolicyID' = 22222
+            }
+            $PolicyPropertyShared = Get-CloudletPolicyProperty @TestParams
+            $PolicyPropertyShared[0].Name | Should -Not -BeNullOrEmpty
         }
     }
-    
-    Context 'Get-CloudletPolicyProperty' {
+
+    Context 'Get-CloudletProperty' {
         It 'returns a dictionary' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyProperty.json"
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletProperty.json"
                 return $Response | ConvertFrom-Json
             }
             $GetCloudletProperty = Get-CloudletProperty
@@ -535,98 +665,45 @@ Describe 'Unsafe Akamai.Cloudlets Tests' {
     }
 
     #------------------------------------------------
-    #                 CloudletPolicyActivation                  
+    #           CloudletPolicyActivation
     #------------------------------------------------
 
-    Context 'Get-CloudletPolicyActivation - Parameter Set single' {
-        It 'returns the correct data' {
+    Context 'Get-CloudletPolicyActivation' {
+        It 'returns a single activation' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyActivation_1.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetCloudletPolicyActivationSingle = Get-CloudletPolicyActivation -PolicyID 22222 -ActivationID 1234
-            $GetCloudletPolicyActivationSingle.network | Should -Not -BeNullOrEmpty
+            $TestParams = @{
+                'ActivationID' = 1234
+                'PolicyID'     = 22222
+            }
+            $PolicyActivation = Get-CloudletPolicyActivation @TestParams
+            $PolicyActivation.network | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-CloudletPolicyActivation - Parameter Set all - Legacy' {
-        It 'returns the correct data' {
+        It 'returns a list of legacy activations' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetCloudletPolicyActivationAllLegacy = Get-CloudletPolicyActivation -PolicyID 11111 -Legacy
-            $GetCloudletPolicyActivationAllLegacy[0].policyInfo.policyId | Should -Not -BeNullOrEmpty
+            $TestParams = @{
+                'PolicyID' = 11111
+                'Legacy'   = $true
+            }
+            $PolicyActivationsLegacy = Get-CloudletPolicyActivation @TestParams
+            $PolicyActivationsLegacy[0].policyInfo.policyId | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-CloudletPolicyActivation - Parameter Set all - Shared' {
-        It 'returns the correct data' {
+        It 'returns a list of shared activations' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletPolicyActivation_2.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetCloudletPolicyActivationAllShared = Get-CloudletPolicyActivation -PolicyID 22222
-            $GetCloudletPolicyActivationAllShared[0].id | Should -Not -BeNullOrEmpty
-        }
-    }
-
-
-    #------------------------------------------------
-    #                 CloudletLoadBalancer                  
-    #------------------------------------------------
-
-    Context 'New-CloudletLoadBalancer' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletLoadBalancer.json"
-                return $Response | ConvertFrom-Json
+            $TestParams = @{
+                'PolicyID' = 22222
             }
-            $NewCloudletLoadBalancer = New-CloudletLoadBalancer -OriginID test_originId
-            $NewCloudletLoadBalancer.originId | Should -Not -BeNullOrEmpty
+            $PolicyActivationsShared = Get-CloudletPolicyActivation @TestParams
+            $PolicyActivationsShared[0].id | Should -Not -BeNullOrEmpty
         }
     }
-
-    #------------------------------------------------
-    #                 CloudletLoadBalancerActivation                  
-    #------------------------------------------------
-
-    Context 'New-CloudletLoadBalancerActivation' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-CloudletLoadBalancerActivation.json"
-                return $Response | ConvertFrom-Json
-            }
-            $NewCloudletLoadBalancerActivation = New-CloudletLoadBalancerActivation -Network STAGING -OriginID test_originId -Version 1
-            $NewCloudletLoadBalancerActivation.network | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-CloudletLoadBalancerActivation, single' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletLoadBalancerActivation.json"
-                return $Response | ConvertFrom-Json
-            }
-            $GetCloudletLoadBalancerActivationSingle = Get-CloudletLoadBalancerActivation -OriginID test_originId
-            $GetCloudletLoadBalancerActivationSingle[0].Version | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Get-CloudletLoadBalancerActivation, all' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Cloudlets -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-CloudletLoadBalancerActivation.json"
-                return $Response | ConvertFrom-Json
-            }
-            $GetCloudletLoadBalancerActivationAll = Get-CloudletLoadBalancerActivation
-            $GetCloudletLoadBalancerActivationAll.PSObject.Properties.Name.count | Should -BeGreaterThan 0
-        }
-    }
-
-    AfterAll {
-
-    }
-
 }
 
