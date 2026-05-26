@@ -7,8 +7,23 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.GTM Tests' {
     BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.GTM/Akamai.GTM.psd1 -Force
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.GTM'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
@@ -18,7 +33,7 @@ Describe 'Safe Akamai.GTM Tests' {
         $TestLoadDataRequest = @"
 {"domain":"$TestDomainName","datacenterId":1,"resource":"connections","current-load":20,"target-load":25,"max-load":30,"timestamp":"2023-06-07T17:38:53.188Z"}
 "@
-        $TestPropertyName = "property1"
+        $TestPropertyName = "property1-$Timestamp"
         $TestProperty = @"
 {
   "name": "$TestPropertyName",
@@ -54,7 +69,7 @@ Describe 'Safe Akamai.GTM Tests' {
   "backupCName": null
 }
 "@ | ConvertFrom-Json
-        $TestASMapName = 'asmap1'
+        $TestASMapName = "ASMap1-$Timestamp"
         $TestASMap = @"
 {
   "name": "$TestASMapName",
@@ -73,7 +88,7 @@ Describe 'Safe Akamai.GTM Tests' {
   }
 }
 "@ | ConvertFrom-Json
-        $TestGeoMapName = 'GeoMap1'
+        $TestGeoMapName = "GeoMap1-$Timestamp"
         $TestGeoMap = @"
 {
   "name": "$TestGeoMapName",
@@ -92,7 +107,7 @@ Describe 'Safe Akamai.GTM Tests' {
   }
 }
 "@ | ConvertFrom-Json
-        $TestCIDRMapName = 'CIDMap1'
+        $TestCIDRMapName = "CIDMap1-$Timestamp"
         $TestCIDRMap = @"
 {
   "name": "$TestCIDRMapName",
@@ -112,7 +127,7 @@ Describe 'Safe Akamai.GTM Tests' {
 }
 "@ | ConvertFrom-Json
 
-        $TestResourceName = 'resource1'
+        $TestResourceName = "resource1-$Timestamp"
         $TestResource = @"
 {
   "aggregationType": "sum",
@@ -149,64 +164,164 @@ Describe 'Safe Akamai.GTM Tests' {
   "upperBound": 0
 }
 "@ | ConvertFrom-Json
+
+        $TestLoadDataRequest = @"
+{
+        "domain": "$TestDomainName",
+        "datacenterId": 1,
+        "resource": "connections",
+        "current-load": 20,
+        "target-load": 25,
+        "max-load": 30,
+        "timestamp": "2023-06-07T17:38:53.188Z"
+}
+"@
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.GTM"
+
         $PD = @{}
     }
 
     AfterAll {
         Get-GTMProperty -DomainName $TestDomainName @CommonParams | Where-Object type -ne 'static' | Remove-GTMProperty -DomainName $TestDomainName @CommonParams
+        Get-GTMDatacenter -DomainName $TestDomainName @CommonParams | Where-Object datacenterId -notin 1, 2 | Remove-GTMDatacenter -DomainName $TestDomainName @CommonParams
         Get-GTMASMap -DomainName $TestDomainName @CommonParams | Remove-GTMASMap -DomainName $TestDomainName @CommonParams
         Get-GTMCIDRMap -DomainName $TestDomainName @CommonParams | Remove-GTMCIDRMap -DomainName $TestDomainName @CommonParams
         Get-GTMGeoMap -DomainName $TestDomainName @CommonParams | Remove-GTMGeoMap -DomainName $TestDomainName @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
+    }
+
+    #------------------ Identity ---------------------#
+
+    Context 'Get-GTMIdentity' {
+        It 'returns the correct data' {
+            $PD.GetGTMIdentity = Get-GTMIdentity @CommonParams
+            $PD.GetGTMIdentity | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------ Contract ---------------------#
+
+    Context 'Get-GTMContract' {
+        It 'returns the correct data' {
+            $PD.GetGTMContract = Get-GTMContract @CommonParams
+            $PD.GetGTMContract[0].contractId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------ Group ---------------------#
+
+    Context 'Get-GTMGroup' {
+        It 'returns the correct data' {
+            $PD.GetGTMGroup = Get-GTMGroup @CommonParams
+            $PD.GetGTMGroup[0].groupId | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------ Domains ---------------------#
 
-    Context 'Get-GTMDomain - All' {
+    Context 'Get-GTMDomain' {
         It 'returns a list' {
             $PD.Domains = Get-GTMDomain @CommonParams
             $PD.Domains[0].name | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-GTMDomain - Single' {
-        It 'returns the right config' {
-            $PD.Domain = Get-GTMDomain -DomainName $TestDomainName @CommonParams
+        It 'returns the right config by domain name' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.Domain = Get-GTMDomain @TestParams @CommonParams
             $PD.Domain.name | Should -Be $TestDomainName
         }
     }
 
-    Context 'Set-GTMDomain by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetDomainByPipeline = $PD.Domain | Set-GTMDomain -DomainName $TestDomainName @CommonParams
+    Context 'Set-GTMDomain' {
+        It 'updates successfully by pipeline' {
+            $PD.SetDomainByPipeline = $PD.Domain | Set-GTMDomain @CommonParams
             $PD.SetDomainByPipeline.Status.Message | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-GTMDomain by param' {
-        It 'returns the correct data' {
-            $PD.SetDomainByParam = Set-GTMDomain -DomainName $TestDomainName -Body $PD.Domain @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'Body'       = $PD.Domain
+            }
+            $PD.SetDomainByParam = Set-GTMDomain @TestParams @CommonParams
             $PD.SetDomainByParam.Status.Message | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-GTMDomain by json' {
-        It 'returns the correct data' {
-            $PD.SetDomainByJson = Set-GTMDomain -DomainName $TestDomainName -Body (ConvertTo-Json -Depth 10 $PD.Domain) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'Body'       = (ConvertTo-Json -Depth 10 $PD.Domain)
+            }
+            $PD.SetDomainByJson = Set-GTMDomain @TestParams @CommonParams
             $PD.SetDomainByJson.Status.Message | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Get-GTMDomainStatus' {
         It 'returns the right data' {
-            $PD.Status = Get-GTMDomainStatus -DomainName $TestDomainName @CommonParams
+            $PD.Status = $PD.Domain | Get-GTMDomainStatus @CommonParams
             $PD.Status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMDomainStatus @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
     Context 'Get-GTMDomainHistory' {
         It 'returns the right data' {
-            $PD.History = Get-GTMDomainHistory -DomainName $TestDomainName -PageSize 1 @CommonParams
+            $PD.History = $PD.Domain | Get-GTMDomainHistory -PageSize 1 @CommonParams
             $PD.History.metadata.pageSize | Should -Be 1
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMDomainHistory
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    Context 'Get-GTMDomainAuthority' {
+        It 'returns the correct data' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.GetGTMDomainAuthority = Get-GTMDomainAuthority @TestParams @CommonParams
+            $PD.GetGTMDomainAuthority.domainName | Should -Be $TestDomainName
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMDomainAuthority
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    Context 'Get-GTMDomainList' {
+        It 'returns the correct data' {
+            $PD.GetGTMDomainList = Get-GTMDomainList @CommonParams
+            $PD.GetGTMDomainList | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-GTMDomainSummary' {
+        It 'returns the correct data' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.GetGTMDomainSummary = Get-GTMDomainSummary @TestParams @CommonParams
+            $PD.GetGTMDomainSummary.name | Should -Be $TestDomainName
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMDomainSummary
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -214,52 +329,117 @@ Describe 'Safe Akamai.GTM Tests' {
 
     Context 'Get-GTMDatacenter - All' {
         It 'returns a list' {
-            $PD.Datacenters = Get-GTMDatacenter -DomainName $TestDomainName @CommonParams
+            $PD.Datacenters = $PD.Domain | Get-GTMDatacenter @CommonParams
             $PD.Datacenters[0].datacenterId | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMDatacenter
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
     Context 'Get-GTMDatacenter - Single' {
         It 'returns a list' {
-            $PD.Datacenter = Get-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.Datacenters[0].datacenterId @CommonParams
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'DatacenterID' = $PD.Datacenters[0].datacenterId
+            }
+            $PD.Datacenter = Get-GTMDatacenter @TestParams @CommonParams
             $PD.Datacenter.datacenterId | Should -Be $PD.Datacenters[0].datacenterId
             $PD.TempDatacenter = $PD.Datacenter.PSObject.Copy()
             $PD.TempDatacenter.NickName = $PD.Datacenter.NickName + '-temp'
         }
     }
 
-    Context 'Set-GTMDatacenter by pipeline' {
-        It 'updates correctly' {
+    Context 'Set-GTMDatacenter' {
+        It 'updates successfully by pipeline' {
             $PD.SetDatacenterByPipeline = $PD.Datacenter | Set-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.Datacenter.datacenterId @CommonParams
             $PD.SetDatacenterByPipeline.datacenterId | Should -Be $PD.Datacenter.datacenterId
         }
-    }
-
-    Context 'Set-GTMDatacenter by param' {
-        It 'returns the correct data' {
-            $PD.SetDatacenterByParam = Set-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.Datacenter.datacenterId -Body $PD.Datacenter @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'DatacenterID' = $PD.Datacenter.datacenterId
+                'Body'         = $PD.Datacenter
+            }
+            $PD.SetDatacenterByParam = Set-GTMDatacenter @TestParams @CommonParams
             $PD.SetDatacenterByParam.datacenterId | Should -Be $PD.Datacenter.datacenterId
         }
-    }
-
-    Context 'Set-GTMDatacenter by json' {
-        It 'updates correctly' {
-            $PD.SetDatacenterByJson = Set-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.Datacenter.datacenterId -Body (ConvertTo-Json -Depth 10 $PD.Datacenter) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'DatacenterID' = $PD.Datacenter.datacenterId
+                'Body'         = (ConvertTo-Json -Depth 10 $PD.Datacenter)
+            }
+            $PD.SetDatacenterByJson = Set-GTMDatacenter @TestParams @CommonParams
             $PD.SetDatacenterByJson.datacenterId | Should -Be $PD.Datacenter.datacenterId
         }
     }
 
     Context 'New-GTMDatacenter' {
         It 'creates correctly' {
-            $PD.NewDatacenter = New-GTMDatacenter -DomainName $TestDomainName -Body $PD.TempDatacenter @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'Body'       = $PD.TempDatacenter
+            }
+            $PD.NewDatacenter = New-GTMDatacenter @TestParams @CommonParams
             $PD.NewDatacenter.NickName | Should -Be $PD.TempDatacenter.NickName
         }
     }
 
+    Context 'New-GTMDefaultDatacenter' {
+        It 'creates correctly' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.NewDefaultDC = New-GTMDefaultDatacenter @TestParams @CommonParams
+            $PD.NewDefaultDC.NickName | Should -Be "Default Datacenter"
+            $PD.NewDefaultDC.DatacenterId | Should -Be 5400
+        }
+    }
+
+    Context 'New-GTMDefaultDatacenterForIP' {
+        It 'creates IPv4' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'IPVersion'  = 'IPv4'
+            }
+            $PD.NewDefaultDCIPv4 = New-GTMDefaultDatacenterForIP @TestParams @CommonParams
+            $PD.NewDefaultDCIPv4.NickName | Should -Be "Target for A records"
+            $PD.NewDefaultDCIPv4.DatacenterId | Should -Be 5401
+        }
+        It 'creates IPv6' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'IPVersion'  = 'IPv6'
+            }
+            $PD.NewDefaultDCIPv6 = New-GTMDefaultDatacenterForIP @TestParams @CommonParams
+            $PD.NewDefaultDCIPv6.NickName | Should -Be "Target for AAAA records"
+            $PD.NewDefaultDCIPv6.DatacenterId | Should -Be 5402
+        }
+    }
+
     Context 'Remove-GTMDatacenter' {
-        It 'deletes correctly' {
-            $PD.RemoveDatacenter = Remove-GTMDatacenter -DomainName $TestDomainName -DatacenterID $PD.NewDatacenter.datacenterId @CommonParams
+        It 'deletes correctly by pipeline' {
+            $RemoveSetDatacenter = $PD.NewDefaultDCIPv4, $PD.NewDefaultDCIPv6 | Remove-GTMDatacenter -DomainName $TestDomainName @CommonParams
+            $RemoveSetDatacenter.status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'deletes correctly by parameter' {
+            $PD.RemoveDatacenter = $PD.NewDatacenter | Remove-GTMDatacenter -DomainName $TestDomainName @CommonParams
             $PD.RemoveDatacenter.status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $Result = & {} | Remove-GTMDatacenter @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -268,58 +448,87 @@ Describe 'Safe Akamai.GTM Tests' {
     Context 'New-GTMASMap' {
         It 'creates correctly' {
             $TestParams = @{
-                DomainName = $TestDomainName
-                MapName    = $TestASMapName
-                Body       = $TestASMap
+                'DomainName' = $TestDomainName
+                'MapName'    = $TestASMapName
+                'Body'       = $TestASMap
             }
             $PD.NewASMap = New-GTMASMap @TestParams @CommonParams
             $PD.NewASMap.Name | Should -Be $TestASMapName
         }
     }
 
-    Context 'Get-GTMASMap - All' {
+    Context 'Get-GTMASMap' {
         It 'returns a list' {
-            $PD.ASMaps = Get-GTMASMap -DomainName $TestDomainName @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.ASMaps = Get-GTMASMap @TestParams @CommonParams
             $PD.ASMaps[0].Name | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-GTMASMap - Single' {
-        It 'returns the correct object' {
-            $PD.ASMap = Get-GTMASMap -DomainName $TestDomainName -MapName $TestASMapName @CommonParams
+        It 'returns the correct object by name' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $TestASMapName
+            }
+            $PD.ASMap = Get-GTMASMap @TestParams @CommonParams
             $PD.ASMap.Name | Should -Be $TestASMapName
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMASMap
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
     
-    Context 'Set-GTMASMap by pipeline' {
-        It 'updates correctly' {
+    Context 'Set-GTMASMap' {
+        It 'updates successfully by pipeline' {
             $TempASMap = $PD.ASMap.PSObject.Copy()
             $TempASMap.Name += '-temp'
             $PD.SetASMap = $TempASMap | Set-GTMASMap -DomainName $TestDomainName -MapName $TempASMap.Name @CommonParams
             $PD.SetASMap.Name | Should -Be $TempASMap.Name
         }
-    }
-
-    Context 'Set-GTMASMap by param' {
-        It 'updates correctly' {
-            $PD.SetASMapByParam = Set-GTMASMap -DomainName $TestDomainName -MapName $PD.SetASMap.Name -Body $PD.SetASMap @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetASMap.Name
+                'Body'       = $PD.SetASMap
+            }
+            $PD.SetASMapByParam = Set-GTMASMap @TestParams @CommonParams
             $PD.SetASMapByParam.Name | Should -Be $PD.SetASMap.Name
         }
-    }
-
-    Context 'Set-GTMASMap by json' {
-        It 'updates correctly' {
-            $PD.SetASMapByJson = Set-GTMASMap -DomainName $TestDomainName -MapName $PD.SetASMap.Name -Body (ConvertTo-Json -Depth 10 $PD.SetASMap) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetASMap.Name
+                'Body'       = (ConvertTo-Json -Depth 10 $PD.SetASMap)
+            }
+            $PD.SetASMapByJson = Set-GTMASMap @TestParams @CommonParams
             $PD.SetASMapByJson.Name | Should -Be $PD.SetASMap.Name
         }
     }
 
     Context 'Remove-GTMASMap' {
         It 'deletes correctly' {
-            $PD.RemoveSetASMap = Remove-GTMASMap -DomainName $TestDomainName -MapName $PD.SetASMap.Name @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetASMap.Name
+            }
+            $PD.RemoveSetASMap = Remove-GTMASMap @TestParams @CommonParams
             $PD.RemoveSetASMap.status.message | Should -Not -BeNullOrEmpty
             $PD.RemoveNewASMap = $PD.NewASMap | Remove-GTMASMap -DomainName $TestDomainName @CommonParams
             $PD.RemoveNewASMap.status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DomainName' = 'madeupdomain.com'
+            }
+            $Result = & {} | Remove-GTMASMap @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -332,49 +541,78 @@ Describe 'Safe Akamai.GTM Tests' {
         }
     }
 
-    Context 'Get-GTMCIDRMap - All' {
+    Context 'Get-GTMCIDRMap' {
         It 'returns a list' {
-            $PD.CIDRMaps = Get-GTMCIDRMap -DomainName $TestDomainName @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.CIDRMaps = Get-GTMCIDRMap @TestParams @CommonParams
             $PD.CIDRMaps[0].Name | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-GTMCIDRMap - Single' {
-        It 'returns the correct object' {
-            $PD.CIDRMap = Get-GTMCIDRMap -DomainName $TestDomainName -MapName $TestCIDRMapName @CommonParams
+        It 'returns the correct object by name' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $TestCIDRMapName
+            }
+            $PD.CIDRMap = Get-GTMCIDRMap @TestParams @CommonParams
             $PD.CIDRMap.Name | Should -Be $TestCIDRMapName
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMCIDRMap
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
-    Context 'Set-GTMCIDRMap by pipeline' {
-        It 'updates correctly' {
+    Context 'Set-GTMCIDRMap' {
+        It 'updates successfully by pipeline' {
             $TempCIDRMap = $PD.CIDRMap.PSObject.Copy()
             $TempCIDRMap.Name += '-temp'
             $PD.SetCIDRMap = $TempCIDRMap | Set-GTMCIDRMap -DomainName $TestDomainName -MapName $TempCIDRMap.Name @CommonParams
             $PD.SetCIDRMap.Name | Should -Be $TempCIDRMap.Name
         }
-    }
-
-    Context 'Set-GTMCIDRMap by param' {
-        It 'updates correctly' {
-            $PD.SetCIDRMapByParam = Set-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.SetCIDRMap.Name -Body $PD.SetCIDRMap @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetCIDRMap.Name
+                'Body'       = $PD.SetCIDRMap
+            }
+            $PD.SetCIDRMapByParam = Set-GTMCIDRMap @TestParams @CommonParams
             $PD.SetCIDRMapByParam.Name | Should -Be $PD.SetCIDRMap.Name
         }
-    }
-
-    Context 'Set-GTMCIDRMap by json' {
-        It 'updates correctly' {
-            $PD.SetCIDRMapByJson = Set-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.SetCIDRMap.Name -Body (ConvertTo-Json -Depth 10 $PD.SetCIDRMap) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetCIDRMap.Name
+                'Body'       = (ConvertTo-Json -Depth 10 $PD.SetCIDRMap)
+            }
+            $PD.SetCIDRMapByJson = Set-GTMCIDRMap @TestParams @CommonParams
             $PD.SetCIDRMapByJson.Name | Should -Be $PD.SetCIDRMap.Name
         }
     }
 
     Context 'Remove-GTMCIDRMap' {
         It 'deletes correctly' {
-            $PD.RemoveSetCIDRMap = Remove-GTMCIDRMap -DomainName $TestDomainName -MapName $PD.SetCIDRMap.Name @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetCIDRMap.Name
+            }
+            $PD.RemoveSetCIDRMap = Remove-GTMCIDRMap @TestParams @CommonParams
             $PD.RemoveSetCIDRMap.status.message | Should -Not -BeNullOrEmpty
             $PD.RemoveNewCIDRMap = $PD.NewCIDRMap | Remove-GTMCIDRMap -DomainName $TestDomainName @CommonParams
             $PD.RemoveNewCIDRMap.status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DomainName' = 'madeupdomain.com'
+            }
+            $Result = & {} | Remove-GTMCIDRMap @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
     
@@ -383,58 +621,87 @@ Describe 'Safe Akamai.GTM Tests' {
     Context 'New-GTMGeoMap' {
         It 'creates correctly' {
             $TestParams = @{
-                DomainName = $TestDomainName
-                MapName    = $TestGeoMapName
-                Body       = $TestGeoMap
+                'DomainName' = $TestDomainName
+                'MapName'    = $TestGeoMapName
+                'Body'       = $TestGeoMap
             }
             $PD.NewGeoMap = New-GTMGeoMap @TestParams @CommonParams
             $PD.NewGeoMap.Name | Should -Be $TestGeoMapName
         }
     }
 
-    Context 'Get-GTMGeoMap - All' {
+    Context 'Get-GTMGeoMap' {
         It 'returns a list' {
-            $PD.GeoMaps = Get-GTMGeoMap -DomainName $TestDomainName @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.GeoMaps = Get-GTMGeoMap @TestParams @CommonParams
             $PD.GeoMaps[0].Name | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-GTMGeoMap - Single' {
-        It 'returns the correct object' {
-            $PD.GeoMap = Get-GTMGeoMap -DomainName $TestDomainName -MapName $TestGeoMapName @CommonParams
+        It 'returns the correct object by name' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $TestGeoMapName
+            }
+            $PD.GeoMap = Get-GTMGeoMap @TestParams @CommonParams
             $PD.GeoMap.Name | Should -Be $TestGeoMapName
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMGeoMap
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
     Context 'Set-GTMGeoMap by pipeline' {
-        It 'updates correctly' {
+        It 'updates successfully by pipeline' {
             $TempGeoMap = $PD.GeoMap.PSObject.Copy()
             $TempGeoMap.Name += '-temp'
             $PD.SetGeoMap = $TempGeoMap | Set-GTMGeoMap -DomainName $TestDomainName -MapName $TempGeoMap.Name @CommonParams
             $PD.SetGeoMap.Name | Should -Be $TempGeoMap.Name
         }
-    }
-
-    Context 'Set-GTMGeoMap by param' {
-        It 'updates correctly' {
-            $PD.SetGeoMapByParam = Set-GTMGeoMap -DomainName $TestDomainName -MapName $PD.SetGeoMap.Name -Body $PD.SetGeoMap @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetGeoMap.Name
+                'Body'       = $PD.SetGeoMap
+            }
+            $PD.SetGeoMapByParam = Set-GTMGeoMap @TestParams @CommonParams
             $PD.SetGeoMapByParam.Name | Should -Be $PD.SetGeoMap.Name
         }
-    }
-
-    Context 'Set-GTMGeoMap by json' {
-        It 'updates correctly' {
-            $PD.SetGeoMapByJson = Set-GTMGeoMap -DomainName $TestDomainName -MapName $PD.SetGeoMap.Name -Body (ConvertTo-Json -Depth 10 $PD.SetGeoMap) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetGeoMap.Name
+                'Body'       = (ConvertTo-Json -Depth 10 $PD.SetGeoMap)
+            }
+            $PD.SetGeoMapByJson = Set-GTMGeoMap @TestParams @CommonParams
             $PD.SetGeoMapByJson.Name | Should -Be $PD.SetGeoMap.Name
         }
     }
 
     Context 'Remove-GTMGeoMap' {
         It 'deletes correctly' {
-            $PD.RemoveSetGeoMap = Remove-GTMGeoMap -DomainName $TestDomainName -MapName $PD.SetGeoMap.Name @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+                'MapName'    = $PD.SetGeoMap.Name
+            }
+            $PD.RemoveSetGeoMap = Remove-GTMGeoMap @TestParams @CommonParams
             $PD.RemoveSetGeoMap.status.message | Should -Not -BeNullOrEmpty
             $PD.RemoveNewGeoMap = $PD.NewGeoMap | Remove-GTMGeoMap -DomainName $TestDomainName @CommonParams
             $PD.RemoveNewGeoMap.status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DomainName' = 'madeupdomain.com'
+            }
+            $Result = & {} | Remove-GTMGeoMap @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -443,58 +710,87 @@ Describe 'Safe Akamai.GTM Tests' {
     Context 'New-GTMResource' {
         It 'creates correctly' {
             $TestParams = @{
-                DomainName   = $TestDomainName
-                ResourceName = $TestResourceName
-                Body         = $TestResource
+                'DomainName'   = $TestDomainName
+                'ResourceName' = $TestResourceName
+                'Body'         = $TestResource
             }
             $PD.NewResource = New-GTMResource @TestParams @CommonParams
             $PD.NewResource.Name | Should -Be $TestResourceName
         }
     }
 
-    Context 'Get-GTMResource - All' {
+    Context 'Get-GTMResource' {
         It 'returns a list' {
-            $PD.Resources = Get-GTMResource -DomainName $TestDomainName @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.Resources = Get-GTMResource @TestParams @CommonParams
             $PD.Resources[0].Name | Should -Not -BeNullOrEmpty
+        }
+        It 'returns the correct object by name' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'ResourceName' = $TestResourceName
+            }
+            $PD.Resource = Get-GTMResource @TestParams @CommonParams
+            $PD.Resource.Name | Should -Be $TestResourceName
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMResource
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
-    Context 'Get-GTMResource - Single' {
-        It 'returns the correct object' {
-            $PD.Resource = Get-GTMResource -DomainName $TestDomainName -ResourceName $TestResourceName @CommonParams
-            $PD.Resource.Name | Should -Be $TestResourceName
-        }
-    }
-    
     Context 'Set-GTMResource by pipeline' {
-        It 'updates correctly' {
+        It 'updates successfully by pipeline' {
             $TempResource = $PD.Resource.PSObject.Copy()
             $TempResource.Name += $PD.Resource.Name + '-temp'
             $PD.SetResource = $TempResource | Set-GTMResource -DomainName $TestDomainName -ResourceName $TempResource.Name @CommonParams
             $PD.SetResource.Name | Should -Be $TempResource.Name
         }
-    }
-
-    Context 'Set-GTMResource by param' {
-        It 'updates correctly' {
-            $PD.SetResourceByParam = Set-GTMResource -DomainName $TestDomainName -ResourceName $PD.SetResource.Name -Body $PD.SetResource @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'ResourceName' = $PD.SetResource.Name
+                'Body'         = $PD.SetResource
+            }
+            $PD.SetResourceByParam = Set-GTMResource @TestParams @CommonParams
             $PD.SetResourceByParam.Name | Should -Be $PD.SetResource.Name
         }
-    }
-
-    Context 'Set-GTMResource by json' {
-        It 'updates correctly' {
-            $PD.SetResourceByJson = Set-GTMResource -DomainName $TestDomainName -ResourceName $PD.SetResource.Name -Body (ConvertTo-Json -Depth 10 $PD.SetResource) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'ResourceName' = $PD.SetResource.Name
+                'Body'         = (ConvertTo-Json -Depth 10 $PD.SetResource)
+            }
+            $PD.SetResourceByJson = Set-GTMResource @TestParams @CommonParams
             $PD.SetResourceByJson.Name | Should -Be $PD.SetResource.Name
         }
     }
 
     Context 'Remove-GTMResource' {
         It 'deletes correctly' {
-            $PD.RemoveSetResource = Remove-GTMResource -DomainName $TestDomainName -ResourceName $PD.SetResource.Name @CommonParams
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'ResourceName' = $PD.SetResource.Name
+            }
+            $PD.RemoveSetResource = Remove-GTMResource @TestParams @CommonParams
             $PD.RemoveSetResource.status.message | Should -Not -BeNullOrEmpty
             $PD.RemoveNewResource = $PD.NewResource | Remove-GTMResource -DomainName $TestDomainName @CommonParams
             $PD.RemoveNewResource.status.message | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DomainName' = 'madeupdomain.com'
+            }
+            $Result = & {} | Remove-GTMResource @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -503,9 +799,9 @@ Describe 'Safe Akamai.GTM Tests' {
     Context 'New-GTMProperty' {
         It 'creates correctly' {
             $TestParams = @{
-                DomainName   = $TestDomainName
-                PropertyName = $TestPropertyName
-                Body         = $TestProperty
+                'DomainName'   = $TestDomainName
+                'PropertyName' = $TestPropertyName
+                'Body'         = $TestProperty
             }
             $PD.NewProperty = New-GTMProperty @TestParams @CommonParams
             $PD.NewProperty.Name | Should -Be $TestPropertyName
@@ -514,41 +810,56 @@ Describe 'Safe Akamai.GTM Tests' {
 
     Context 'Get-GTMProperty - All' {
         It 'returns a list' {
-            $PD.Properties = Get-GTMProperty -DomainName $TestDomainName @CommonParams
+            $TestParams = @{
+                'DomainName' = $TestDomainName
+            }
+            $PD.Properties = Get-GTMProperty @TestParams @CommonParams
             $PD.Properties[0].Name | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-GTMProperty - Single' {
         It 'returns the correct object' {
-            $PD.Property = Get-GTMProperty -DomainName $TestDomainName -PropertyName $TestPropertyName @CommonParams
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'PropertyName' = $TestPropertyName
+            }
+            $PD.Property = Get-GTMProperty @TestParams @CommonParams
             $PD.Property.Name | Should -Be $TestPropertyName
             $PD.Property.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
             $PD.Property.Type | Should -Be $PD.NewProperty.Type
         }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Get-GTMProperty
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
 
-    Context 'Set-GTMProperty by pipeline' {
-        It 'updates correctly' {
+    Context 'Set-GTMProperty' {
+        It 'updates successfully by pipeline' {
             $PD.SetProperty = $PD.NewProperty | Set-GTMProperty -DomainName $TestDomainName @CommonParams
             $PD.SetProperty.Name | Should -Be $TestPropertyName
             $PD.SetProperty.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
             $PD.SetProperty.Type | Should -Be $PD.NewProperty.Type
         }
-    }
-
-    Context 'Set-GTMProperty by param' {
-        It 'updates correctly' {
-            $PD.SetPropertyByParam = Set-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProperty.Name -Body $PD.NewProperty @CommonParams
+        It 'updates successfully by param' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'PropertyName' = $PD.NewProperty.Name
+                'Body'         = $PD.NewProperty
+            }
+            $PD.SetPropertyByParam = Set-GTMProperty @TestParams @CommonParams
             $PD.SetPropertyByParam.Name | Should -Be $PD.NewProperty.Name
             $PD.SetPropertyByParam.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
             $PD.SetPropertyByParam.Type | Should -Be $PD.NewProperty.Type
         }
-    }
-
-    Context 'Set-GTMProperty by json' {
-        It 'updates correctly' {
-            $PD.SetPropertyByJson = Set-GTMProperty -DomainName $TestDomainName -PropertyName $PD.NewProperty.Name -Body (ConvertTo-Json -Depth 10 $PD.NewProperty) @CommonParams
+        It 'updates successfully by json' {
+            $TestParams = @{
+                'DomainName'   = $TestDomainName
+                'PropertyName' = $PD.NewProperty.Name
+                'Body'         = (ConvertTo-Json -Depth 10 $PD.NewProperty)
+            }
+            $PD.SetPropertyByJson = Set-GTMProperty @TestParams @CommonParams
             $PD.SetPropertyByJson.Name | Should -Be $PD.NewProperty.Name
             $PD.SetPropertyByJson.DynamicTTL | Should -Be $PD.NewProperty.DynamicTTL
             $PD.SetPropertyByJson.Type | Should -Be $PD.NewProperty.Type
@@ -559,20 +870,18 @@ Describe 'Safe Akamai.GTM Tests' {
         It 'throws no errors' {
             $PD.NewProperty | Remove-GTMProperty -DomainName $TestDomainName @CommonParams
         }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DomainName' = 'madeupdomain.com'
+            }
+            $Result = & {} | Remove-GTMProperty @TestParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
-}
 
-Describe 'Unsafe Akamai.GTM Tests' {
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.GTM/Akamai.GTM.psd1 -Force
-        
-        $TestLoadDataRequest = @"
-{"domain":"$TestDomainName","datacenterId":1,"resource":"connections","current-load":20,"target-load":25,"max-load":30,"timestamp":"2023-06-07T17:38:53.188Z"}
-"@
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.GTM"
-        $PD = @{}
-    }
     Context 'Get-GTMDatacenterLatency' {
         It 'returns the correct data' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
@@ -593,6 +902,18 @@ Describe 'Unsafe Akamai.GTM Tests' {
             $Demand = Get-GTMDemand -Domain example.akadns.net -PropertyName www -Start '2021-05-23T01:56:13Z' -End '2021-05-24T01:56:13Z'
             $Demand.dataRows[0].datacenters[0].datacenterId | Should -Not -BeNullOrEmpty
         }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'PropertyName' = 'www'
+                'Start'        = '2021-05-23T01:56:13Z'
+                'End'          = '2021-05-24T01:56:13Z'
+            }
+            $Result = & {} | Get-GTMDemand @TestParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
 
     Context 'Get-GTMIPAvailability' {
@@ -603,6 +924,19 @@ Describe 'Unsafe Akamai.GTM Tests' {
             }
             $Availability = Get-GTMIPAvailability -Domain example.akadns.net -PropertyName www -Start '2021-05-23T01:56:13Z' -End '2021-05-24T01:56:13Z' -IP 1.2.3.4
             $Availability.dataRows[0].datacenters[0].IPs[0].ip | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'PropertyName' = 'www'
+                'Start'        = '2021-05-23T01:56:13Z'
+                'End'          = '2021-05-24T01:56:13Z'
+                'IP'           = '1.2.3.4'
+            }
+            $Result = & {} | Get-GTMIPAvailability @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -615,10 +949,22 @@ Describe 'Unsafe Akamai.GTM Tests' {
             $Liveness = Get-GTMLivenessPerProperty -Domain example.akadns.net -PropertyName www -Date '2021-05-23T01:56:13Z' -AgentIP 209.170.75.251
             $Liveness.dataRows[0].datacenters[0].errorCode | Should -Not -BeNullOrEmpty
         }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'PropertyName' = 'www'
+                'Date'         = '2021-05-23T01:56:13Z'
+                'AgentIP'      = '209.170.75.251'
+            }
+            $Result = & {} | Get-GTMLivenessPerProperty @TestParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
 
-    Context 'Get-GTMLivenessTestError - All' {
-        It 'returns the correct data' {
+    Context 'Get-GTMLivenessTestError' {
+        It 'returns a list of errors' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLivenessTestError.json"
                 return $Response | ConvertFrom-Json
@@ -626,10 +972,7 @@ Describe 'Unsafe Akamai.GTM Tests' {
             $LivenessErrors = Get-GTMLivenessTestError
             $LivenessErrors[0].errorCode | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-GTMLivenessTestError - Specific' {
-        It 'returns the correct data' {
+        It 'returns a specific error' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-GTMLivenessTestError.json"
                 return $Response | ConvertFrom-Json
@@ -648,6 +991,18 @@ Describe 'Unsafe Akamai.GTM Tests' {
             $LoadFeedback = Get-GTMLoadFeedbackReport -Domain example.com.akadns.net -Resource MyResource -Start '2021-05-23T01:56:13Z' -End '2021-05-24T01:56:13Z'
             $LoadFeedback.dataRows[0].datacenters[0].currentLoad | Should -Not -BeNullOrEmpty
         }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'Resource' = 'MyResource'
+                'Start'    = '2021-05-23T01:56:13Z'
+                'End'      = '2021-05-24T01:56:13Z'
+            }
+            $Result = & {} | Get-GTMLoadFeedbackReport @TestParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
 
     Context 'Get-GTMTrafficPerDatacenter' {
@@ -658,6 +1013,18 @@ Describe 'Unsafe Akamai.GTM Tests' {
             }
             $TrafficPerDatacenter = Get-GTMTrafficPerDatacenter -Domain example.com.akadns.net -DatacenterID 3200 -Start '2021-05-23T01:56:13Z' -End '2021-05-24T01:56:13Z'
             $TrafficPerDatacenter.dataRows[0].properties[0].name | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'DatacenterID' = 3200
+                'Start'        = '2021-05-23T01:56:13Z'
+                'End'          = '2021-05-24T01:56:13Z'
+            }
+            $Result = & {} | Get-GTMTrafficPerDatacenter @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
@@ -670,6 +1037,18 @@ Describe 'Unsafe Akamai.GTM Tests' {
             $TrafficPerProperty = Get-GTMTrafficPerProperty -Domain example.com.akadns.net -PropertyName www -Start '2021-05-23T01:56:13Z' -End '2021-05-24T01:56:13Z'
             $TrafficPerProperty.dataRows[0].datacenters[0].datacenterId | Should -Not -BeNullOrEmpty
         }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'PropertyName' = 'www'
+                'Start'        = '2021-05-23T01:56:13Z'
+                'End'          = '2021-05-24T01:56:13Z'
+            }
+            $Result = & {} | Get-GTMTrafficPerProperty @TestParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
     }
 
     Context 'Get-GTMLoadData' {
@@ -680,6 +1059,17 @@ Describe 'Unsafe Akamai.GTM Tests' {
             }
             $Load = Get-GTMLoadData -Domain example.com.akadns.net -Resource MyResource -DatacenterID 3200
             $Load.'current-load' | Should -Not -BeNullOrEmpty
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.GTM -MockWith {
+                return 'IAR executed'
+            }
+            $TestParams = @{
+                'Resource'     = 'MyResource'
+                'DatacenterID' = 3200
+            }
+            $Result = & {} | Get-GTMLoadData @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 

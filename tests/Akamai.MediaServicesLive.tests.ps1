@@ -6,25 +6,38 @@ BeforeDiscovery {
 }
 
 Describe 'Safe Akamai.MediaServicesLive Tests' {
-    
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.MediaServicesLive/Akamai.MediaServicesLive.psd1 -Force
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.MediaServicesLive'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
-        $TestHostname = 'akamaipowershell.akamaiorigin.net'
-        $TestHostnamePrefix = 'akamaipowershell'
-        $TestStreamName = 'pwshstream'
-        
+        $TestHostname = "pester.akamaiorigin.net"
+        $TestHostnamePrefix = "pester"
+        $TestStreamName = "pester-$Timestamp"
         $TestNewStream = @"
 {
     "name": "$TestStreamName",
-    "contractId": "$TestContract",
+    "contractId": "$TestContractID",
     "format": "HLS",
     "cpcode": 12345,
     "ingestAccelerated": false,
@@ -40,8 +53,7 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
         "mail@example.com"
     ],
     "origin": {
-        "hostName": "$TestStreamName",
-        "cpcode": 12345
+        "hostName": "$Timestamp"
     },
     "streamAuth": {
         "username": "YouShallNot",
@@ -50,11 +62,35 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
     }
 }
 "@ | ConvertFrom-Json
+        $TestNewOrigin = @"
+{
+    "contractId": "$TestContractID",
+    "hostName": "$TestHostname",
+    "cpcode": 123456,
+    "encoderZone": "US_EAST",
+    "backupEncoderZone": "EUROPE",
+    "groupId": $TestGroupID,
+    "emailIds": [
+        "mail@example.com"
+    ],
+    "sharedKeys": [
+        {
+            "type": "AKAMAI",
+            "authMethod": "MSL_MULTI_ACCOUNT",
+            "name": "pwsh",
+            "key": "7153f558f89e058ae",
+            "enabled": true
+        }
+    ]
+}
+"@ | ConvertFrom-Json
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.MediaServicesLive"
         $PD = @{}
     }
 
     AfterAll {
-        
+        Get-MSLStream @CommonParams | Where-Object name -eq $TestStreamName | Remove-MSLStream @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
@@ -64,7 +100,7 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
     Context 'Get-MSLContract' {
         It 'lists contracts' {
             $PD.Contracts = Get-MSLContract @CommonParams
-            $PD.Contracts[0].contractId | Should -Be $TestContract
+            $PD.Contracts[0].contractId | Should -Be $TestContractID
             $PD.Contracts[0].accountId | Should -Not -BeNullOrEmpty
         }
     }
@@ -75,7 +111,10 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
     
     Context 'Get-MSLCPCode' {
         It 'lists cpcodes' {
-            $PD.CpCodes = Get-MSLCPCode -Type INGEST @CommonParams
+            $TestParams = @{
+                'Type' = 'INGEST'
+            }
+            $PD.CpCodes = Get-MSLCPCode @TestParams @CommonParams
             $PD.CpCodes[0].id | Should -Match '[\d]+'
         }
     }
@@ -95,7 +134,7 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
     #                 Origins                  
     #------------------------------------------------
     
-    Context 'Get-MSLOrigin - All' {
+    Context 'Get-MSLOrigin' {
         It 'lists origin objects' {
             $PD.Origins = Get-MSLOrigin @CommonParams
             $PD.Origins[0].id | Should -Not -BeNullOrEmpty
@@ -103,11 +142,11 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
             $PD.NewOrigin = $PD.origins | Where-Object hostNameIdentifier -eq $TestHostnamePrefix
             $PD.NewOrigin | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-MSLOrigin - Single' {
-        It 'gets the correct object' {
-            $PD.Origin = Get-MSLOrigin -OriginID $PD.NewOrigin.id @CommonParams
+        It 'gets a single origin' {
+            $TestParams = @{
+                'OriginID' = $PD.NewOrigin.id
+            }
+            $PD.Origin = Get-MSLOrigin @TestParams @CommonParams
             $PD.Origin.id | Should -Be $PD.NewOrigin.id
             $PD.Origin.cpcode | Should -Be $PD.CpCodes[0].id
         }
@@ -117,19 +156,20 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
         It 'returns the expected list' {
             $PD.OriginCPCodes = Get-MSLOriginCPCode @CommonParams
             $PD.OriginCPCodes[0].id | Should -Not -BeNullOrEmpty
-            $PD.OriginCPCodes[0].contractIds[0] | Should -Be $TestContract
+            $PD.OriginCPCodes[0].contractIds[0] | Should -Be $TestContractID
         }
     }
     
-    Context 'Set-MSLOrigin by Pipeline' {
-        It 'updates successfully' {
+    Context 'Set-MSLOrigin' {
+        It 'updates by param' {
+            $TestParams = @{
+                'OriginID' = $PD.Origin.id
+                'Body'     = $PD.Origin
+            }
+            Set-MSLOrigin @TestParams @CommonParams
+        }
+        It 'updates by pipeline' {
             $PD.Origin | Set-MSLOrigin @CommonParams
-        }
-    }
-    
-    Context 'Set-MSLOrigin by Param' {
-        It 'updates successfully' {
-            Set-MSLOrigin -OriginID $PD.Origin.id -Body $PD.Origin @CommonParams
         }
     }
 
@@ -154,12 +194,11 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
     Context 'New-MSLStream' {
         It 'creates a new stream' {
             $TestNewStream.cpcode = $PD.CpCodes[0].id
-            $TestNewStream.origin.cpcode = $PD.CpCodes[0].id
-            New-MSLStream -Body $TestNewStream @CommonParams
+            $TestNewStream | New-MSLStream @CommonParams
         }
     }
 
-    Context 'Get-MSLStream - All' {
+    Context 'Get-MSLStream' {
         It 'lists stream objects' {
             $PD.Streams = Get-MSLStream @CommonParams
             $PD.Streams[0].id | Should -Not -BeNullOrEmpty
@@ -167,73 +206,42 @@ Describe 'Safe Akamai.MediaServicesLive Tests' {
             $PD.TestNewStream = $PD.Streams | Where-Object name -eq $TestStreamName
             $PD.TestNewStream | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-MSLStream - Single' {
-        It 'gets the correct object' {
-            $PD.Stream = Get-MSLStream -StreamID $PD.TestNewStream.id @CommonParams
+        It 'gets a single stream' {
+            $PD.Stream = $PD.TestNewStream | Get-MSLStream @CommonParams
             $PD.Stream.id | Should -Be $PD.TestNewStream.id
             $PD.Stream.name | Should -Be $TestStreamName
             $PD.Stream.cpcode | Should -Be $PD.CpCodes[0].id
         }
     }
+    
 
     Context 'Set-MSLStream by Pipeline' {
-        It 'updates successfully' {
+        It 'updates by param' {
+            $TestParams = @{
+                'StreamID' = $PD.Stream.id
+                'Body'     = $PD.Stream
+            }
+            Set-MSLStream @TestParams @CommonParams
+        }
+        It 'updates by pipeline' {
             $PD.Stream | Set-MSLStream @CommonParams
         }
     }
     
-    Context 'Set-MSLStream by Param' {
-        It 'updates successfully' {
-            Set-MSLStream -StreamID $PD.Stream.id -Body $PD.Stream @CommonParams
-        }
-    }
-
     Context 'Remove-MSLStream' {
         It 'deletes successfully' {
-            Remove-MSLStream -StreamID $PD.Stream.id @CommonParams
+            $TestParams = @{
+                'StreamID' = $PD.Stream.id
+            }
+            Remove-MSLStream @TestParams @CommonParams
         }
-    }
-
-}
-
-Describe 'UnSafe Akamai.MediaServicesLive Tests' {
-    
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.MediaServicesLive/Akamai.MediaServicesLive.psd1 -Force
-        
-        $TestContract = '1-2AB34C'
-        $TestGroup = 123456
-        $TestNewOrigin = @"
-{
-    "contractId": "$TestContract",
-    "hostName": "$TestHostname",
-    "cpcode": 123456,
-    "encoderZone": "US_EAST",
-    "backupEncoderZone": "EUROPE",
-    "groupId": $TestGroup,
-    "emailIds": [
-        "mail@example.com"
-    ],
-    "sharedKeys": [
-        {
-            "type": "AKAMAI",
-            "authMethod": "MSL_MULTI_ACCOUNT",
-            "name": "pwsh",
-            "key": "7153f558f89e058ae",
-            "enabled": true
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-MSLStream
+            $Result | Should -Not -Be 'IAR executed'
         }
-    ]
-}
-"@ | ConvertFrom-Json
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.MediaServicesLive"
-        $PD = @{}
-    }
-
-    AfterAll {
-        
     }
 
     #------------------------------------------------
@@ -266,7 +274,11 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-MSLCPCode.json"
                 return $Response | ConvertFrom-Json
             }
-            $PD.NewCPCode = New-MSLCPCode -Name 'Test' -ContractID $TestContract
+            $TestParams = @{
+                'Name'       = 'Test'
+                'ContractID' = $TestContractID
+            }
+            $PD.NewCPCode = New-MSLCPCode @TestParams
             $PD.NewCPCode.id | Should -Not -BeNullOrEmpty
             $PD.NewCPCode.name | Should -Not -BeNullOrEmpty
         }
@@ -282,7 +294,10 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-MSLVODOrigin.json"
                 return $Response | ConvertFrom-Json
             }
-            $PD.VODOrigins = Get-MSLVODOrigin -EncoderLocation Europe
+            $TestParams = @{
+                'EncoderLocation' = 'Europe'
+            }
+            $PD.VODOrigins = Get-MSLVODOrigin @TestParams
             $PD.VODOrigins[0].cpcode | Should -Not -BeNullOrEmpty
             $PD.VODOrigins[0].name | Should -Not -BeNullOrEmpty
             $PD.VODOrigins[0].streamCount | Should -Not -BeNullOrEmpty
@@ -299,7 +314,7 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-MSLOrigin.json"
                 return $Response | ConvertFrom-Json
             }
-            New-MSLOrigin -Body $TestNewOrigin
+            $TestNewOrigin | New-MSLOrigin
         }
     }
 
@@ -309,7 +324,63 @@ Describe 'UnSafe Akamai.MediaServicesLive Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-MSLOrigin.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-MSLOrigin -OriginID 123456
+            123456 | Remove-MSLOrigin
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-MSLOrigin
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    #------------------------------------------------
+    #                 Migration                  
+    #------------------------------------------------
+
+    Context 'Migration' -Tag 'Migration' {
+        Context 'New-MSLMigration' {
+            It 'initiates a migration' {
+                Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
+                    $Response = Get-Content -Raw "$ResponseLibrary/New-MSLMigration.json"
+                    return $Response | ConvertFrom-Json
+                }
+                $TestParams = @{
+                    'StreamIDs'   = 12345
+                    'MSL5APIKey'  = 'testkey'
+                    MigrationType = 'HARD'
+                }
+                $PD.Migration = New-MSLMigration @TestParams
+                $PD.Migration.migrationId | Should -Not -BeNullOrEmpty
+            }
+        }
+    
+        Context 'Get-MSLMigration' {
+            It 'retrieves migration status' {
+                Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
+                    $Response = Get-Content -Raw "$ResponseLibrary/Get-MSLMigration.json"
+                    return $Response | ConvertFrom-Json
+                }
+                $PD.MigrationStatus = Get-MSLMigration @TestParams
+                $PD.MigrationStatus.streams[0].streamId | Should -Not -BeNullOrEmpty
+                $PD.MigrationStatus.streams[0].migrationType | Should -Not -BeNullOrEmpty
+            }
+        }
+    
+        Context 'Undo-MSLMigration' {
+            It 'reverts a migration' {
+                Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.MediaServicesLive -MockWith {
+                    $Response = Get-Content -Raw "$ResponseLibrary/Undo-MSLMigration.json"
+                    return $Response | ConvertFrom-Json
+                }
+                $TestParams = @{
+                    'StreamIDs'  = 12345
+                    'MSL5APIKey' = 'testkey'
+                }
+                $PD.UndoMigration = Undo-MSLMigration @TestParams
+                $PD.UndoMigration.reverseMigrationId | Should -Not -BeNullOrEmpty
+            }
         }
     }
 }

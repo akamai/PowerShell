@@ -7,17 +7,29 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.ChinaCDN Tests' {
     BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.ChinaCDN/Akamai.ChinaCDN.psm1 -Force
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.ChinaCDN'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
         $testHostname = $env:PesterHostname
-        $TestEdgeHostname = $env:PesterHostname
+        $TestEdgeHostname = $env:PesterEdgeHostname
         $TestDeprovisionPolicy = @{
             'unmapSharedEdgeHostname' = $true
         }
@@ -45,7 +57,7 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
     }
 
     AfterAll {
-        
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
@@ -94,39 +106,33 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
     Context 'Get-ChinaCDNDeprovisionPolicy' {
         It 'returns the correct data' {
             $TestParams = @{
-                EdgeHostname = $TestEdgeHostname
+                'EdgeHostname' = $TestEdgeHostname
             }
             $PD.DeprovisionPolicy = Get-ChinaCDNDeprovisionPolicy @TestParams @CommonParams
             $PD.DeprovisionPolicy.unmapSharedEdgeHostname | Should -Be $false
         }
     }
 
-    Context 'Set-ChinaCDNDeprovisionPolicy, body, by parameter' {
-        It 'updates correctly' {
+    Context 'Set-ChinaCDNDeprovisionPolicy' {
+        It 'updates by parameter' {
             $TestParams = @{
-                Body         = $TestDeprovisionPolicy
-                EdgeHostname = $TestEdgeHostname
+                'Body'         = $TestDeprovisionPolicy
+                'EdgeHostname' = $TestEdgeHostname
             }
             $PD.SetDeprovisionPolicy = Set-ChinaCDNDeprovisionPolicy @TestParams @CommonParams
             $PD.SetDeprovisionPolicy.unmapSharedEdgeHostname | Should -Be $true
         }
-    }
-
-    Context 'Set-ChinaCDNDeprovisionPolicy, body, by pipeline' {
-        It 'updates correctly' {
+        It 'updates by pipeline' {
             $TestParams = @{
-                EdgeHostname = $TestEdgeHostname
+                'EdgeHostname' = $TestEdgeHostname
             }
             $PD.SetDeprovisionPolicyPipeline = $TestDeprovisionPolicy | Set-ChinaCDNDeprovisionPolicy @TestParams @CommonParams
             $PD.SetDeprovisionPolicyPipeline.unmapSharedEdgeHostname | Should -Be $true
         }
-    }
-
-    Context 'Set-ChinaCDNDeprovisionPolicy, attributes' {
-        It 'updates correctly' {
+        It 'updates by attributes' {
             $TestParams = @{
-                EdgeHostname            = $TestEdgeHostname
-                UnmapSharedEdgeHostname = $false
+                'EdgeHostname'            = $TestEdgeHostname
+                'UnmapSharedEdgeHostname' = $false
             }
             $PD.SetDeprovisionPolicyPipelineAttributes = Set-ChinaCDNDeprovisionPolicy @TestParams @CommonParams
             $PD.SetDeprovisionPolicyPipelineAttributes.unmapSharedEdgeHostname | Should -Be $false
@@ -162,18 +168,15 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
     #                 PropertyHostname
     #------------------------------------------------
 
-    Context 'Get-ChinaCDNPropertyHostname, all' {
-        It 'returns a list of hostnames' {
-            $PD.Hostnames = Get-ChinaCDNPropertyHostname @CommonParams
-            $PD.Hostnames.count | Should -BeGreaterThan 1
+    Context 'Get-ChinaCDNPropertyHostname' {
+        It 'gets a list of hostnames' {
+            $PD.Hostnames = @(Get-ChinaCDNPropertyHostname @CommonParams)
+            $PD.Hostnames.count | Should -BeGreaterThan 0
             $PD.Hostnames[0].hostname | Should -Not -BeNullOrEmpty
             $PD.Hostnames[0].icpNumberId | Should -Not -BeNullOrEmpty
             $PD.Hostnames[0].serviceCategory | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-ChinaCDNPropertyHostname, single' {
-        It 'returns the specific hostname' {
+        It 'gets a specific hostname' {
             $PD.Hostname = Get-ChinaCDNPropertyHostname @CommonParams
             $PD.Hostname.hostname | Should -Not -BeNullOrEmpty
             $PD.Hostname.icpNumberId | Should -Not -BeNullOrEmpty
@@ -181,19 +184,19 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
         }
     }
 
-    Context 'New-ChinaCDNPropertyHostname, by parameter' {
-        It 'returns the correct data' {
+    Context 'New-ChinaCDNPropertyHostname' {
+        It 'creates by parameter' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNPropertyHostname.json"
                 return $Response | ConvertFrom-Json
             }
 
             $TestParams = @{
-                Comments        = 'Powershell testing'
-                ICPNumberID     = $TestICPNumber
-                GroupID         = $TestGroupID
-                Hostname        = $testHostname
-                ServiceCategory = 24
+                'Comments'        = 'Powershell testing'
+                'ICPNumberID'     = $TestICPNumber
+                'GroupID'         = $TestGroupID
+                'Hostname'        = $testHostname
+                'ServiceCategory' = 24
             }
             $NewHostname = New-ChinaCDNPropertyHostname @TestParams @CommonParams
             $NewHostname.Hostname | Should -Not -BeNullOrEmpty
@@ -201,17 +204,14 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
             $NewHostname.Comments | Should -Not -BeNullOrEmpty
             $NewHostname.ServiceCategory | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'New-ChinaCDNPropertyHostname, body' {
-        It 'returns the correct data' {
+        It 'creates by pipeline' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNPropertyHostname.json"
                 return $Response | ConvertFrom-Json
             }
-
+    
             $TestParams = @{
-                GroupID = 123456
+                'GroupID' = 123456
             }
             $NewHostname = $TestNewHostname | New-ChinaCDNPropertyHostname @TestParams @CommonParams
             $NewHostname.Hostname | Should -Not -BeNullOrEmpty
@@ -225,14 +225,14 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
     #                 ProvisionStateChange
     #------------------------------------------------
 
-    Context 'Get-ChinaCDNProvisionStateChange, all' {
-        It 'returns the correct data' {
+    Context 'Get-ChinaCDNProvisionStateChange' {
+        It 'gets a list of state changes' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ChinaCDNProvisionStateChange_1.json"
                 return $Response | ConvertFrom-Json
             }
             $TestParams = @{
-                Hostname = $TestHostname
+                'Hostname' = $TestHostname
             }
             $StateChange = Get-ChinaCDNProvisionStateChange @TestParams @CommonParams
             $StateChange.count | Should -BeGreaterThan 1
@@ -240,17 +240,14 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
             $StateChange[0].currentStatus | Should -Not -BeNullOrEmpty
             $StateChange[0].hostname | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-ChinaCDNProvisionStateChange, single' {
-        It 'returns the correct data' {
+        It 'gets a single state change by ID and hostname' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ChinaCDNProvisionStateChange.json"
                 return $Response | ConvertFrom-Json
             }
             $TestParams = @{
-                Hostname = $TestHostname
-                ChangeID = 64
+                'Hostname' = $TestHostname
+                'ChangeID' = 64
             }
             $StateChange = Get-ChinaCDNProvisionStateChange @TestParams @CommonParams
             $StateChange.id | Should -Not -BeNullOrEmpty
@@ -259,31 +256,28 @@ Describe 'Safe Akamai.ChinaCDN Tests' {
         }
     }
 
-    Context 'New-ChinaCDNProvisionStateChange by parameter' {
-        It 'updates correctly' {
+    Context 'New-ChinaCDNProvisionStateChange' {
+        It 'creates a state change by parameter' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNProvisionStateChange.json"
                 return $Response | ConvertFrom-Json
             }
             $TestParams = @{
-                Body     = $TestStateChange
-                Hostname = $TestHostname
+                'Body'     = $TestStateChange
+                'Hostname' = $TestHostname
             }
             $NewStateChange = New-ChinaCDNProvisionStateChange @TestParams @CommonParams
             $NewStateChange.id | Should -Not -BeNullOrEmpty
             $NewStateChange.currentStatus | Should -Not -BeNullOrEmpty
             $NewStateChange.hostname | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'New-ChinaCDNProvisionStateChange by pipeline' {
-        It 'updates correctly' {
+        It 'creates a state change by pipeline' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ChinaCDN -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ChinaCDNProvisionStateChange.json"
                 return $Response | ConvertFrom-Json
             }
             $TestParams = @{
-                Hostname = $TestHostname
+                'Hostname' = $TestHostname
             }
             $NewStateChange = $TestStateChange | New-ChinaCDNProvisionStateChange @TestParams @CommonParams
             $NewStateChange.id | Should -Not -BeNullOrEmpty

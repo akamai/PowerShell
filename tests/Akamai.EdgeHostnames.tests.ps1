@@ -7,47 +7,58 @@ BeforeDiscovery {
 
 Describe 'Safe Akamai.EdgeHostnames Tests' {
     
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.EdgeHostnames/Akamai.EdgeHostnames.psd1 -Force
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.EdgeHostnames'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestEHNRecordName = $env:PesterEHNPrefix
         $TestEHNDNSZone = 'edgesuite.net'
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.EdgeHostnames"
         $PD = @{}
         
     }
 
     AfterAll {
-        
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
     #                 EdgeHostname                  
     #------------------------------------------------
 
-    Context 'Get-EdgeHostname - Parameter Set all' {
-        It 'returns the correct data' {
-            $PD.GetEdgeHostnameAll = Get-EdgeHostname @CommonParams
-            $PD.GetEdgeHostnameAll[0].edgeHostnameId | Should -Not -BeNullOrEmpty
+    Context 'Get-EdgeHostname' {
+        It 'get a list of edge hostnames' {
+            $PD.EdgeHostnames = Get-EdgeHostname @CommonParams
+            $PD.EdgeHostnames[0].edgeHostnameId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-EdgeHostname - Parameter Set single-components' {
-        It 'returns the correct data' {
-            $PD.GetEdgeHostnameSingleComponents = Get-EdgeHostname -RecordName $TestEHNRecordName -DNSZone $TestEHNDNSZone @CommonParams
-            $PD.GetEdgeHostnameSingleComponents.recordName | Should -Be $TestEHNRecordName
+        It 'gets a specific edge hostname by recordname and dns zone' {
+            $TestParams = @{
+                'RecordName' = $TestEHNRecordName
+                'DNSZone'    = $TestEHNDNSZone
+            }
+            $PD.EdgeHostname = Get-EdgeHostname @TestParams @CommonParams
+            $PD.EdgeHostname.recordName | Should -Be $TestEHNRecordName
         }
-    }
-
-    Context 'Get-EdgeHostname - Parameter Set single-id' {
-        It 'returns the correct data' {
-            $PD.GetEdgeHostnameSingleId = Get-EdgeHostname -EdgeHostnameID $PD.GetEdgeHostnameSingleComponents.EdgeHostnameID @CommonParams
-            $PD.GetEdgeHostnameSingleId.edgeHostnameId | Should -Be $PD.GetEdgeHostnameSingleComponents.EdgeHostnameID
+        It 'gets a specific edge hostname by ID' {
+            $PD.EdgeHostnameId = $PD.EdgeHostname.EdgeHostnameID | Get-EdgeHostname @CommonParams
+            $PD.EdgeHostnameId.edgeHostnameId | Should -Be $PD.EdgeHostname.EdgeHostnameID
         }
     }
 
@@ -57,7 +68,10 @@ Describe 'Safe Akamai.EdgeHostnames Tests' {
 
     Context 'Get-EdgeHostnameLocalizationData' {
         It 'returns the correct data' {
-            $PD.GetEdgeHostnameLocalizationData = Get-EdgeHostnameLocalizationData -Language en_US @CommonParams
+            $TestParams = @{
+                'Language' = 'en_US'
+            }
+            $PD.GetEdgeHostnameLocalizationData = Get-EdgeHostnameLocalizationData @TestParams @CommonParams
             $PD.GetEdgeHostnameLocalizationData.'access-denied-to-dns-zone' | Should -Not -BeNullOrEmpty
         }
     }
@@ -72,52 +86,37 @@ Describe 'Safe Akamai.EdgeHostnames Tests' {
             $PD.GetEdgeHostnameProduct[0].productId | Should -Not -BeNullOrEmpty
         }
     }
-}
-
-
-Describe 'Unsafe Akamai.EdgeHostnames Tests' {
-
-    BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.EdgeHostnames/Akamai.EdgeHostnames.psd1 -Force
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.EdgeHostnames"
-        $PD = @{}
-    }
 
     #------------------------------------------------
     #                 EdgeHostnameChangeRequest                  
     #------------------------------------------------
 
-    Context 'Get-EdgeHostnameChangeRequest - Parameter Set single-id' {
-        It 'returns the correct data' {
+    Context 'Get-EdgeHostnameChangeRequest' {
+        BeforeAll {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest_1.json"
+                return $Response | ConvertFrom-Json
+            }
+        }
+        It 'lists changes' {
+            $ChangeRequestAll = Get-EdgeHostnameChangeRequest
+            $ChangeRequestAll[0].action | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a specific change by record name and dns zone' {
+            $TestParams = @{
+                'DNSZone'    = 'edgekey'
+                'RecordName' = 'testing'
+            }
+            $ChangeRequestSingleComponents = Get-EdgeHostnameChangeRequest @TestParams
+            $ChangeRequestSingleComponents[0].action | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a specific change by ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest.json"
                 return $Response | ConvertFrom-Json
             }
-            $ChangeRequestSingleId = Get-EdgeHostnameChangeRequest -ChangeID 123456
+            $ChangeRequestSingleId = 123456 | Get-EdgeHostnameChangeRequest
             $ChangeRequestSingleId.action | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-EdgeHostnameChangeRequest - Parameter Set single-components' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest_1.json"
-                return $Response | ConvertFrom-Json
-            }
-            $ChangeRequestSingleComponents = Get-EdgeHostnameChangeRequest -DNSZone edgekey.net -RecordName testing
-            $ChangeRequestSingleComponents[0].action | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-EdgeHostnameChangeRequest - Parameter Set all' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.EdgeHostnames -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameChangeRequest_1.json"
-                return $Response | ConvertFrom-Json
-            }
-            $ChangeRequestAll = Get-EdgeHostnameChangeRequest
-            $ChangeRequestAll[0].action | Should -Not -BeNullOrEmpty
         }
     }
 
@@ -127,7 +126,11 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-EdgeHostname.json"
                 return $Response | ConvertFrom-Json
             }
-            $SetEdgeHostnamePostbody = Set-EdgeHostname -DNSZone edgekey.net -RecordName testing -Attribute ttl -Value 60
+            $TestParams = @{
+                'Attribute' = 'ttl'
+                'Value'     = 60
+            }
+            $SetEdgeHostnamePostbody = $PD.EdgeHostname | Set-EdgeHostname @TestParams
             $SetEdgeHostnamePostbody.action | Should -Be "EDIT"
         }
     }
@@ -138,7 +141,11 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-EdgeHostname.json"
                 return $Response | ConvertFrom-Json
             }
-            $RemoveEdgeHostname = Remove-EdgeHostname -DNSZone edgekey.net -RecordName testing
+            $TestParams = @{
+                'DNSZone'    = 'edgekey'
+                'RecordName' = 'testing'
+            }
+            $RemoveEdgeHostname = Remove-EdgeHostname @TestParams
             $RemoveEdgeHostname.action | Should -Be "DELETE"
         }
     }
@@ -153,14 +160,12 @@ Describe 'Unsafe Akamai.EdgeHostnames Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-EdgeHostnameCertificate.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetEdgeHostnameCertificate = Get-EdgeHostnameCertificate -DNSZone edgekey.net -RecordName testing
+            $TestParams = @{
+                'DNSZone'    = 'edgekey'
+                'RecordName' = 'testing'
+            }
+            $GetEdgeHostnameCertificate = Get-EdgeHostnameCertificate @TestParams
             $GetEdgeHostnameCertificate.slotNumber | Should -Not -BeNullOrEmpty
         }
     }
-
-    AfterAll {
-        
-    }
-
 }
-

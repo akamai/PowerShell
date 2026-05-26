@@ -1,0 +1,45 @@
+{
+  "Status": 200,
+  "Body": {
+    "configurations": [
+      {
+        "configId": 1234,
+        "configName": "My Corporate Sites WAF",
+        "policies": [
+          {
+            "policyId": "bt17_75755",
+            "policyName": "My Corporate Sites Policy",
+            "wafRules": {
+              "mode": "KRS2_AUTO",
+              "attackGroups": [
+                {
+                  "action": "alert",
+                  "groupName": "Web Platform Attack",
+                  "groupRules": [
+                    {
+                      "action": "alert",
+                      "ruleName": "Custom rule WAF protections",
+                      "ruleId": 3000938,
+                      "version": "2",
+                      "isRapid": false
+                    },
+                    {
+                      "action": "alert",
+                      "ruleName": "Custom rule AAP protections",
+                      "ruleId": 3000939,
+                      "version": "1",
+                      "isRapid": false
+                    }
+                  ]
+                }
+              ],
+              "importDate": "2023-11-28T07:15:00Z"
+            }
+          }
+        ],
+        "version": 123
+      }
+    ]
+  },
+  "Headers": {}
+}

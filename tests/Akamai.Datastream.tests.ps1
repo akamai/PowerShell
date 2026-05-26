@@ -8,10 +8,23 @@ BeforeDiscovery {
 Describe 'Safe Akamai.DataStream Tests' {
     
     BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.DataStream'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
         $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.DataStream/Akamai.DataStream.psd1 -Force
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
@@ -33,7 +46,7 @@ Describe 'Safe Akamai.DataStream Tests' {
   "datasetFields": [],
   "destination": {
     "destinationType": "HTTPS",
-    "displayName": "httpbun",
+    "displayName": "httpbin",
     "authenticationType": "NONE",
     "endpoint": "https://httpbun.com/post",
     "compressLogs": true
@@ -50,38 +63,38 @@ Describe 'Safe Akamai.DataStream Tests' {
         # ---- Configure stream objects
         ## CDN
         $TestCDNStream = $StreamTemplate | ConvertFrom-Json
-        $TestCDNStream.streamName = "powershell-cdn-$Timestamp"
+        $TestCDNStream.streamName = "pester-cdn-$Timestamp"
         999, 1005, 1019, 1033 | ForEach-Object { $TestCDNStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         $Properties = @(
             @{
-                propertyId = $TestPropertyID    
+                'propertyId' = $TestPropertyID    
             }
         )
         $TestCDNStream | Add-Member -NotePropertyName properties -NotePropertyValue $Properties
 
         ## EdgeWorker
         $TestEWStream = $StreamTemplate | ConvertFrom-Json
-        $TestEWStream.streamName = "powershell-edgeworkers-$Timestamp"
+        $TestEWStream.streamName = "pester-edgeworkers-$Timestamp"
         6000..6003 | ForEach-Object { $TestEWStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         
         ## EdgeDNS
         $TestEDNSStream = $StreamTemplate | ConvertFrom-Json
-        $TestEDNSStream.streamName = "powershell-edns-$Timestamp"
+        $TestEDNSStream.streamName = "pester-edns-$Timestamp"
         4002, 4003, 4010, 4011 | ForEach-Object { $TestEDNSStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         $Zones = @(
             @{
-                zoneName = $TestZoneName
+                'zoneName' = $TestZoneName
             }
         )
         $TestEDNSStream | Add-Member -NotePropertyName zones -NotePropertyValue $Zones
 
         ## GTM
         $TestGTMStream = $StreamTemplate | ConvertFrom-Json
-        $TestGTMStream.streamName = "powershell-gtm-$Timestamp"
+        $TestGTMStream.streamName = "pester-gtm-$Timestamp"
         5002, 5003, 5010, 5011 | ForEach-Object { $TestGTMStream.datasetFields += [PSCustomObject] @{ datasetFieldId = $_ } }
         $GTMProperties = @(
             @{
-                propertyName = "@.$TestGTMDomain"
+                'propertyName' = "@.$TestGTMDomain"
             }
         )
         $TestGTMStream | Add-Member -NotePropertyName properties -NotePropertyValue $GTMProperties
@@ -91,16 +104,20 @@ Describe 'Safe Akamai.DataStream Tests' {
     }
 
     AfterAll {
-        Get-DataStream -LogType cdn @CommonParams | Where-Object streamName -like "powershell-cdn-*" | Remove-DataStream -LogType cdn @CommonParams
-        Get-DataStream -LogType edgeworkers @CommonParams | Where-Object streamName -like "powershell-edgeworkers-*" | Remove-DataStream -LogType edgeworkers @CommonParams
-        Get-DataStream -LogType edns @CommonParams | Where-Object streamName -like "powershell-edns-*" | Remove-DataStream -LogType edns @CommonParams
-        Get-DataStream -LogType gtm @CommonParams | Where-Object streamName -like "powershell-gtm-*" | Remove-DataStream -LogType gtm @CommonParams
+        Get-DataStream -LogType cdn @CommonParams | Where-Object streamName -like "pester-cdn-*" | Remove-DataStream -LogType cdn @CommonParams
+        Get-DataStream -LogType edgeworkers @CommonParams | Where-Object streamName -like "pester-edgeworkers-*" | Remove-DataStream -LogType edgeworkers @CommonParams
+        Get-DataStream -LogType edns @CommonParams | Where-Object streamName -like "pester-edns-*" | Remove-DataStream -LogType edns @CommonParams
+        Get-DataStream -LogType gtm @CommonParams | Where-Object streamName -like "pester-gtm-*" | Remove-DataStream -LogType gtm @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     Context 'New-DataStream' -Tag 'New-DataStream' {
         Context 'CDN Stream' {
             It 'creates successfully' {
-                $PD.NewCDNStream = $TestCDNStream | New-DataStream -LogType cdn @CommonParams
+                $TestParams = @{
+                    'LogType' = 'cdn'
+                }
+                $PD.NewCDNStream = $TestCDNStream | New-DataStream @TestParams @CommonParams
                 $PD.NewCDNStream.streamId | Should -Match '^[0-9]+$'
                 $PD.NewCDNStream.streamStatus | Should -Be "INACTIVE"
                 $PD.NewCDNStream.streamName | Should -Be $TestCDNStream.streamName
@@ -110,7 +127,10 @@ Describe 'Safe Akamai.DataStream Tests' {
         
         Context 'EdgeWorkers Stream' {
             It 'creates successfully' {
-                $PD.NewEWStream = $TestEWStream | New-DataStream -LogType edgeworkers @CommonParams
+                $TestParams = @{
+                    'LogType' = 'edgeworkers'
+                }
+                $PD.NewEWStream = $TestEWStream | New-DataStream @TestParams @CommonParams
                 $PD.NewEWStream.streamId | Should -Match '^[0-9]+$'
                 $PD.NewEWStream.streamStatus | Should -Be "INACTIVE"
                 $PD.NewEWStream.streamName | Should -Be $TestEWStream.streamName
@@ -119,7 +139,10 @@ Describe 'Safe Akamai.DataStream Tests' {
 
         Context 'EDNS Stream' {
             It 'creates successfully' {
-                $PD.NewEDNSStream = $TestEDNSStream | New-DataStream -LogType edns @CommonParams
+                $TestParams = @{
+                    'LogType' = 'edns'
+                }
+                $PD.NewEDNSStream = $TestEDNSStream | New-DataStream @TestParams @CommonParams
                 $PD.NewEDNSStream.streamId | Should -Match '^[0-9]+$'
                 $PD.NewEDNSStream.streamStatus | Should -Be "INACTIVE"
                 $PD.NewEDNSStream.streamName | Should -Be $TestEDNSStream.streamName
@@ -129,7 +152,10 @@ Describe 'Safe Akamai.DataStream Tests' {
 
         Context 'GTM Stream' {
             It 'creates successfully' {
-                $PD.NewGTMStream = $TestGTMStream | New-DataStream -LogType gtm @CommonParams
+                $TestParams = @{
+                    'LogType' = 'gtm'
+                }
+                $PD.NewGTMStream = $TestGTMStream | New-DataStream @TestParams @CommonParams
                 $PD.NewGTMStream.streamId | Should -Match '^[0-9]+$'
                 $PD.NewGTMStream.streamStatus | Should -Be "INACTIVE"
                 $PD.NewGTMStream.streamName | Should -Be $TestGTMStream.streamName
@@ -151,7 +177,10 @@ Describe 'Safe Akamai.DataStream Tests' {
         
         Context 'List all EdgeWorker Streams' {
             It 'returns a list in the right format' {
-                $PD.EdgeWorkerStreams = Get-DataStream -LogType edgeworkers @CommonParams
+                $TestParams = @{
+                    'LogType' = 'edgeworkers'
+                }
+                $PD.EdgeWorkerStreams = Get-DataStream @TestParams @CommonParams
                 $PD.EdgeWorkerStreams[0].streamID | Should -Not -BeNullOrEmpty
                 $PD.EdgeWorkerStreams[0].streamName | Should -Not -BeNullOrEmpty
                 $PD.EdgeWorkerStreams[0].streamVersion | Should -Not -BeNullOrEmpty
@@ -161,7 +190,10 @@ Describe 'Safe Akamai.DataStream Tests' {
 
         Context 'List all EDNS Streams' {
             It 'returns a list in the right format' {
-                $PD.EDNSStreams = Get-DataStream -LogType edns @CommonParams
+                $TestParams = @{
+                    'LogType' = 'edns'
+                }
+                $PD.EDNSStreams = Get-DataStream @TestParams @CommonParams
                 $PD.EDNSStreams[0].streamID | Should -Not -BeNullOrEmpty
                 $PD.EDNSStreams[0].streamName | Should -Not -BeNullOrEmpty
                 $PD.EDNSStreams[0].streamVersion | Should -Not -BeNullOrEmpty
@@ -172,7 +204,10 @@ Describe 'Safe Akamai.DataStream Tests' {
         
         Context 'List all GTM Streams' {
             It 'returns a list in the right format' {
-                $PD.GTMStreams = Get-DataStream -LogType gtm @CommonParams
+                $TestParams = @{
+                    'LogType' = 'gtm'
+                }
+                $PD.GTMStreams = Get-DataStream @TestParams @CommonParams
                 $PD.GTMStreams[0].streamID | Should -Not -BeNullOrEmpty
                 $PD.GTMStreams[0].streamName | Should -Not -BeNullOrEmpty
                 $PD.GTMStreams[0].streamVersion | Should -Not -BeNullOrEmpty
@@ -182,7 +217,10 @@ Describe 'Safe Akamai.DataStream Tests' {
 
         Context 'Get single CDN stream' {
             It 'returns the correct stream' {
-                $PD.CDNStream = Get-DataStream -StreamID $PD.NewCDNStream.streamID @CommonParams
+                $TestParams = @{
+                    'StreamID' = $PD.NewCDNStream.streamID
+                }
+                $PD.CDNStream = Get-DataStream @TestParams @CommonParams
                 $PD.CDNStream.StreamID | Should -Be $PD.NewCDNStream.streamID
                 $PD.CDNStream.streamName | Should -Be $PD.NewCDNStream.streamName
                 $PD.CDNStream.properties[0].propertyId | Should -Be $TestPropertyID
@@ -195,7 +233,11 @@ Describe 'Safe Akamai.DataStream Tests' {
         
         Context 'Get single EdgeWorkers stream' {
             It 'returns the correct stream' {
-                $PD.EdgeWorkerStream = Get-DataStream -LogType edgeworkers -StreamID $PD.NewEWStream.streamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'edgeworkers'
+                    'StreamID' = $PD.NewEWStream.streamID
+                }
+                $PD.EdgeWorkerStream = Get-DataStream @TestParams @CommonParams
                 $PD.EdgeWorkerStream.StreamID | Should -Be $PD.NewEWStream.streamID
                 $PD.EdgeWorkerStream.streamName | Should -Be $PD.NewEWStream.streamName
                 $PD.EdgeWorkerStream.latestVersion | Should -Be 1
@@ -207,7 +249,11 @@ Describe 'Safe Akamai.DataStream Tests' {
         
         Context 'Get single EDNS stream' {
             It 'returns the correct stream' {
-                $PD.EDNSStream = Get-DataStream -LogType edns -StreamID $PD.NewEDNSStream.streamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'edns'
+                    'StreamID' = $PD.NewEDNSStream.streamID
+                }
+                $PD.EDNSStream = Get-DataStream @TestParams @CommonParams
                 $PD.EDNSStream.StreamID | Should -Be $PD.NewEDNSStream.streamID
                 $PD.EDNSStream.streamName | Should -Be $PD.NewEDNSStream.streamName
                 $PD.EDNSStream.latestVersion | Should -Be 1
@@ -220,7 +266,11 @@ Describe 'Safe Akamai.DataStream Tests' {
         
         Context 'Get single GTM stream' {
             It 'returns the correct stream' {
-                $PD.GTMStream = Get-DataStream -LogType gtm -StreamID $PD.NewGTMStream.streamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'gtm'
+                    'StreamID' = $PD.NewGTMStream.streamID
+                }
+                $PD.GTMStream = Get-DataStream @TestParams @CommonParams
                 $PD.GTMStream.StreamID | Should -Be $PD.NewGTMStream.streamID
                 $PD.GTMStream.streamName | Should -Be $PD.NewGTMStream.streamName
                 $PD.GTMStream.properties[0].propertyName | Should -Be "@.$TestGTMDomain"
@@ -239,17 +289,26 @@ Describe 'Safe Akamai.DataStream Tests' {
             "CP code" | Should -BeIn $PD.CDNDatasets.datasetFieldName
         }
         It 'returns a list of EdgeWorker datasets' {
-            $PD.EWDatasets = Get-DataStreamDatasets -LogType edgeworkers @CommonParams
+            $TestParams = @{
+                'LogType' = 'edgeworkers'
+            }
+            $PD.EWDatasets = Get-DataStreamDatasets @TestParams @CommonParams
             $PD.EWDatasets[0].datasetFieldName | Should -Not -BeNullOrEmpty
             "Severity" | Should -BeIn $PD.EWDatasets.datasetFieldName
         }
         It 'returns a list of EdgeDNS datasets' {
-            $PD.EDNSDatasets = Get-DataStreamDatasets -LogType edns @CommonParams
+            $TestParams = @{
+                'LogType' = 'edns'
+            }
+            $PD.EDNSDatasets = Get-DataStreamDatasets @TestParams @CommonParams
             $PD.EDNSDatasets[0].datasetFieldName | Should -Not -BeNullOrEmpty
             "Epoch timestamp" | Should -BeIn $PD.EDNSDatasets.datasetFieldName
         }
         It 'returns a list of GTM datasets' {
-            $PD.GTMDatasets = Get-DataStreamDatasets -LogType gtm @CommonParams
+            $TestParams = @{
+                'LogType' = 'gtm'
+            }
+            $PD.GTMDatasets = Get-DataStreamDatasets @TestParams @CommonParams
             $PD.GTMDatasets[0].datasetFieldName | Should -Not -BeNullOrEmpty
             5002 | Should -BeIn $PD.GTMDatasets.datasetFieldId
         }
@@ -264,28 +323,40 @@ Describe 'Safe Akamai.DataStream Tests' {
 
     Context 'Get-DataStreamHistory' {
         It 'returns the correct stream' {
-            $PD.StreamHistory = Get-DataStreamHistory -StreamID $TestStreamID @CommonParams
+            $TestParams = @{
+                'StreamID' = $TestStreamID
+            }
+            $PD.StreamHistory = Get-DataStreamHistory @TestParams @CommonParams
             $PD.StreamHistory[0].streamId | Should -Be $TestStreamID
         }
     }
 
     Context 'Get-DataStreamProperties' {
         It 'returns a list' {
-            $Properties = Get-DataStreamProperties -GroupID $TestGroupID @CommonParams
+            $TestParams = @{
+                'GroupID' = $TestGroupID
+            }
+            $Properties = Get-DataStreamProperties @TestParams @CommonParams
             $Properties[0].propertyId | Should -Not -BeNullOrEmpty
         }
     }
     
     Context 'Get-DataStreamEDNSZones' {
         It 'returns a list' {
-            $Zones = Get-DataStreamEDNSZones -ContractID $TestContractID @CommonParams
+            $TestParams = @{
+                'ContractID' = $TestContractID
+            }
+            $Zones = Get-DataStreamEDNSZones @TestParams @CommonParams
             $Zones[0].zoneName | Should -Not -BeNullOrEmpty
         }
     }
     
     Context 'Get-DataStreamGTMProperties' {
         It 'returns a list' {
-            $GTMProperties = Get-DataStreamGTMProperties -ContractID $TestContractID @CommonParams
+            $TestParams = @{
+                'ContractID' = $TestContractID
+            }
+            $GTMProperties = Get-DataStreamGTMProperties @TestParams @CommonParams
             $GTMProperties[0].propertyName | Should -Not -BeNullOrEmpty
         }
     }
@@ -295,12 +366,15 @@ Describe 'Safe Akamai.DataStream Tests' {
             BeforeAll {
                 # Add a new data set field
                 $PD.CDNStream.datasetFields += [PSCustomObject] @{
-                    datasetFieldId = 2014
+                    'datasetFieldId' = 2014
                 }
             }
             Context 'by pipeline' {
                 It 'updates successfully' {
-                    $PD.SetCDNStreamPipeline = $PD.CDNStream | Set-DataStream -LogType cdn @CommonParams
+                    $TestParams = @{
+                        'LogType' = 'cdn'
+                    }
+                    $PD.SetCDNStreamPipeline = $PD.CDNStream | Set-DataStream @TestParams @CommonParams
                     $PD.SetCDNStreamPipeline.streamStatus | Should -Be "INACTIVE"
                     $PD.SetCDNStreamPipeline.StreamID | Should -Be $PD.CDNStream.streamID
                     $PD.SetCDNStreamPipeline.streamName | Should -Be $PD.CDNStream.streamName
@@ -316,9 +390,9 @@ Describe 'Safe Akamai.DataStream Tests' {
             Context 'by body' {
                 It 'updates successfully' {
                     $TestParams = @{
-                        LogType  = 'cdn'
-                        StreamID = $PD.CDNStream.streamId
-                        Body     = ($PD.CDNStream | ConvertTo-Json -Depth 100)
+                        'LogType'  = 'cdn'
+                        'StreamID' = $PD.CDNStream.streamId
+                        'Body'     = ($PD.CDNStream | ConvertTo-Json -Depth 100)
                     }
                     $PD.SetCDNStreamBody = Set-DataStream @TestParams @CommonParams
                     $PD.SetCDNStreamBody.streamStatus | Should -Be "INACTIVE"
@@ -338,12 +412,15 @@ Describe 'Safe Akamai.DataStream Tests' {
             BeforeAll {
                 # Add a new data set field
                 $PD.EdgeWorkerStream.datasetFields += [PSCustomObject] @{
-                    datasetFieldId = 6008
+                    'datasetFieldId' = 6008
                 }
             }
             Context 'by pipeline' {
                 It 'updates successfully' {
-                    $PD.SetEWStreamPipeline = $PD.EdgeWorkerStream | Set-DataStream -LogType edgeworkers @CommonParams
+                    $TestParams = @{
+                        'LogType' = 'edgeworkers'
+                    }
+                    $PD.SetEWStreamPipeline = $PD.EdgeWorkerStream | Set-DataStream @TestParams @CommonParams
                     $PD.SetEWStreamPipeline.streamStatus | Should -Be "INACTIVE"
                     $PD.SetEWStreamPipeline.StreamID | Should -Be $PD.EdgeWorkerStream.streamID
                     $PD.SetEWStreamPipeline.streamName | Should -Be $PD.EdgeWorkerStream.streamName
@@ -358,9 +435,9 @@ Describe 'Safe Akamai.DataStream Tests' {
             Context 'by body' {
                 It 'updates successfully' {
                     $TestParams = @{
-                        LogType  = 'edgeworkers'
-                        StreamID = $PD.EdgeWorkerStream.streamId
-                        Body     = ($PD.EdgeWorkerStream | ConvertTo-Json -Depth 100)
+                        'LogType'  = 'edgeworkers'
+                        'StreamID' = $PD.EdgeWorkerStream.streamId
+                        'Body'     = ($PD.EdgeWorkerStream | ConvertTo-Json -Depth 100)
                     }
                     $PD.SetEWStreamBody = Set-DataStream @TestParams @CommonParams
                     $PD.SetEWStreamBody.streamStatus | Should -Be "INACTIVE"
@@ -379,12 +456,15 @@ Describe 'Safe Akamai.DataStream Tests' {
             BeforeAll {
                 # Add a new data set field
                 $PD.EDNSStream.datasetFields += [PSCustomObject] @{
-                    datasetFieldId = 4013
+                    'datasetFieldId' = 4013
                 }
             }
             Context 'by pipeline' {
                 It 'updates successfully' {
-                    $PD.SetEDNSStreamPipeline = $PD.EDNSStream | Set-DataStream -LogType edns @CommonParams
+                    $TestParams = @{
+                        'LogType' = 'edns'
+                    }
+                    $PD.SetEDNSStreamPipeline = $PD.EDNSStream | Set-DataStream @TestParams @CommonParams
                     $PD.SetEDNSStreamPipeline.streamStatus | Should -Be "INACTIVE"
                     $PD.SetEDNSStreamPipeline.StreamID | Should -Be $PD.EDNSStream.streamID
                     $PD.SetEDNSStreamPipeline.streamName | Should -Be $PD.EDNSStream.streamName
@@ -399,9 +479,9 @@ Describe 'Safe Akamai.DataStream Tests' {
             Context 'by body' {
                 It 'updates successfully' {
                     $TestParams = @{
-                        LogType  = 'edns'
-                        StreamID = $PD.EDNSStream.streamId
-                        Body     = ($PD.EDNSStream | ConvertTo-Json -Depth 100)
+                        'LogType'  = 'edns'
+                        'StreamID' = $PD.EDNSStream.streamId
+                        'Body'     = ($PD.EDNSStream | ConvertTo-Json -Depth 100)
                     }
                     $PD.SetEDNSStreamBody = Set-DataStream @TestParams @CommonParams
                     $PD.SetEDNSStreamBody.streamStatus | Should -Be "INACTIVE"
@@ -420,12 +500,15 @@ Describe 'Safe Akamai.DataStream Tests' {
             BeforeAll {
                 # Add a new data set field
                 $PD.GTMStream.datasetFields += [PSCustomObject] @{
-                    datasetFieldId = 5013
+                    'datasetFieldId' = 5013
                 }
             }
             Context 'by pipeline' {
                 It 'updates successfully' {
-                    $PD.SetGTMStreamPipeline = $PD.GTMStream | Set-DataStream -LogType gtm @CommonParams
+                    $TestParams = @{
+                        'LogType' = 'gtm'
+                    }
+                    $PD.SetGTMStreamPipeline = $PD.GTMStream | Set-DataStream @TestParams @CommonParams
                     $PD.SetGTMStreamPipeline.streamStatus | Should -Be "INACTIVE"
                     $PD.SetGTMStreamPipeline.StreamID | Should -Be $PD.GTMStream.streamID
                     $PD.SetGTMStreamPipeline.streamName | Should -Be $PD.GTMStream.streamName
@@ -440,9 +523,9 @@ Describe 'Safe Akamai.DataStream Tests' {
             Context 'by body' {
                 It 'updates successfully' {
                     $TestParams = @{
-                        LogType  = 'gtm'
-                        StreamID = $PD.GTMStream.streamId
-                        Body     = ($PD.GTMStream | ConvertTo-Json -Depth 100)
+                        'LogType'  = 'gtm'
+                        'StreamID' = $PD.GTMStream.streamId
+                        'Body'     = ($PD.GTMStream | ConvertTo-Json -Depth 100)
                     }
                     $PD.SetGTMStreamBody = Set-DataStream @TestParams @CommonParams
                     $PD.SetGTMStreamBody.streamStatus | Should -Be "INACTIVE"
@@ -463,12 +546,16 @@ Describe 'Safe Akamai.DataStream Tests' {
             It 'updates successfully' {
                 $Update = @(
                     @{
-                        path  = '/streamName'
-                        op    = "REPLACE"
-                        value = "$($PD.CDNStream.StreamName)-Updated"
+                        'path'  = '/streamName'
+                        'op'    = "REPLACE"
+                        'value' = "$($PD.CDNStream.StreamName)-Updated"
                     }
                 )
-                $UpdateResult = $Update | Update-DataStream -LogType cdn -StreamID $PD.CDNStream.StreamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'cdn'
+                    'StreamID' = $PD.CDNStream.StreamID
+                }
+                $UpdateResult = $Update | Update-DataStream @TestParams @CommonParams
                 $UpdateResult.streamName | Should -Be "$($PD.CDNStream.StreamName)-Updated"
             }
         }
@@ -477,12 +564,16 @@ Describe 'Safe Akamai.DataStream Tests' {
             It 'updates successfully' {
                 $Update = @(
                     @{
-                        path  = '/streamName'
-                        op    = "REPLACE"
-                        value = "$($PD.EdgeWorkerStream.StreamName)-Updated"
+                        'path'  = '/streamName'
+                        'op'    = "REPLACE"
+                        'value' = "$($PD.EdgeWorkerStream.StreamName)-Updated"
                     }
                 )
-                $UpdateResult = $Update | Update-DataStream -LogType edgeworkers -StreamID $PD.EdgeWorkerStream.StreamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'edgeworkers'
+                    'StreamID' = $PD.EdgeWorkerStream.StreamID
+                }
+                $UpdateResult = $Update | Update-DataStream @TestParams @CommonParams
                 $UpdateResult.streamName | Should -Be "$($PD.EdgeWorkerStream.StreamName)-Updated"
             }
         }
@@ -491,12 +582,16 @@ Describe 'Safe Akamai.DataStream Tests' {
             It 'updates successfully' {
                 $Update = @(
                     @{
-                        path  = '/streamName'
-                        op    = "REPLACE"
-                        value = "$($PD.EDNSStream.StreamName)-Updated"
+                        'path'  = '/streamName'
+                        'op'    = "REPLACE"
+                        'value' = "$($PD.EDNSStream.StreamName)-Updated"
                     }
                 )
-                $UpdateResult = $Update | Update-DataStream -LogType edns -StreamID $PD.EDNSStream.StreamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'edns'
+                    'StreamID' = $PD.EDNSStream.StreamID
+                }
+                $UpdateResult = $Update | Update-DataStream @TestParams @CommonParams
                 $UpdateResult.streamName | Should -Be "$($PD.EDNSStream.StreamName)-Updated"
             }
         }
@@ -505,12 +600,16 @@ Describe 'Safe Akamai.DataStream Tests' {
             It 'updates successfully' {
                 $Update = @(
                     @{
-                        path  = '/streamName'
-                        op    = "REPLACE"
-                        value = "$($PD.GTMStream.StreamName)-Updated"
+                        'path'  = '/streamName'
+                        'op'    = "REPLACE"
+                        'value' = "$($PD.GTMStream.StreamName)-Updated"
                     }
                 )
-                $UpdateResult = $Update | Update-DataStream -LogType gtm -StreamID $PD.GTMStream.StreamID @CommonParams
+                $TestParams = @{
+                    'LogType'  = 'gtm'
+                    'StreamID' = $PD.GTMStream.StreamID
+                }
+                $UpdateResult = $Update | Update-DataStream @TestParams @CommonParams
                 $UpdateResult.streamName | Should -Be "$($PD.GTMStream.StreamName)-Updated"
             }
         }
@@ -519,25 +618,37 @@ Describe 'Safe Akamai.DataStream Tests' {
     Context 'Remove-DataStream' {
         Context 'Remove CDN Stream' {
             It 'deletes successfully' {
-                $PD.NewCDNStream | Remove-DataStream -LogType cdn @CommonParams
+                $TestParams = @{
+                    'LogType' = 'cdn'
+                }
+                $PD.NewCDNStream | Remove-DataStream @TestParams @CommonParams
             }
         }
         
         Context 'Remove EdgeWorkers Stream' {
             It 'deletes successfully' {
-                $PD.NewEWStream | Remove-DataStream -LogType edgeworkers @CommonParams
+                $TestParams = @{
+                    'LogType' = 'edgeworkers'
+                }
+                $PD.NewEWStream | Remove-DataStream @TestParams @CommonParams
             }
         }
         
         Context 'Remove EDNS Stream' {
             It 'deletes successfully' {
-                $PD.NewEDNSStream | Remove-DataStream -LogType edns @CommonParams
+                $TestParams = @{
+                    'LogType' = 'edns'
+                }
+                $PD.NewEDNSStream | Remove-DataStream @TestParams @CommonParams
             }
         }
         
         Context 'Remove GTM Stream' {
             It 'deletes successfully' {
-                $PD.NewGTMStream | Remove-DataStream -LogType gtm @CommonParams
+                $TestParams = @{
+                    'LogType' = 'gtm'
+                }
+                $PD.NewGTMStream | Remove-DataStream @TestParams @CommonParams
             }
         }
     }
@@ -549,7 +660,10 @@ Describe 'Safe Akamai.DataStream Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-DataStreamActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $Activate = New-DataStreamActivation -StreamID 123456
+            $TestParams = @{
+                'StreamID' = 123456
+            }
+            $Activate = New-DataStreamActivation @TestParams
             $Activate.streamStatus | Should -Be "ACTIVATING"
         }
     }
@@ -560,7 +674,10 @@ Describe 'Safe Akamai.DataStream Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-DataStreamDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $Deactivate = New-DataStreamDeactivation -StreamID 123456
+            $TestParams = @{
+                'StreamID' = 123456
+            }
+            $Deactivate = New-DataStreamDeactivation @TestParams
             $Deactivate.streamStatus | Should -Be "ACTIVATING"
         }
     }
@@ -571,7 +688,11 @@ Describe 'Safe Akamai.DataStream Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-DataStreamMetrics.json"
                 return $Response | ConvertFrom-Json
             }
-            $Metrics = Get-DataStreamMetrics -Start "2024-01-01T09:00:00" -End "01/01/2022 09:00:00"
+            $TestParams = @{
+                'End'   = "01/01/2022 09:00:00"
+                'Start' = "2024-01-01T09:00:00"
+            }
+            $Metrics = Get-DataStreamMetrics @TestParams
             $Metrics.fileUploadMetrics[0].streamId | Should -Not -BeNullOrEmpty
         }
     }
@@ -582,7 +703,10 @@ Describe 'Safe Akamai.DataStream Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-DataStreamActivationHistory.json"
                 return $Response | ConvertFrom-Json
             }
-            $ActivationHistory = Get-DataStreamActivationHistory -StreamID 123456
+            $TestParams = @{
+                'StreamID' = 123456
+            }
+            $ActivationHistory = Get-DataStreamActivationHistory @TestParams
             $ActivationHistory[0].streamId | Should -Match '^[0-9]+$'
         }
     }

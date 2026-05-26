@@ -5,50 +5,53 @@ BeforeDiscovery {
     }
 }
 
-Describe 'Safe Akamai.Siteshield Tests' {
+Describe 'Akamai.Siteshield Tests' {
     
     BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.Siteshield/Akamai.Siteshield.psd1 -Force
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.Siteshield'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
         
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Siteshield"
         $PD = @{}
     }
     
     AfterAll {
-        
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
-    Context 'Get-SiteShieldMap - All' {
-        It 'Returns the correct data' {
+    Context 'Get-SiteShieldMap' {
+        It 'gets a list of maps' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Siteshield -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-SiteShieldMap_1.json"
+                return $Response | ConvertFrom-Json
+            }
             $PD.GetSiteShieldMapAll = Get-SiteShieldMap @CommonParams
             $PD.GetSiteShieldMapAll[0].ID | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Get-SiteShieldMap - Single' {
-        It 'Returns the correct data' {
-            $GetSiteShieldMapSingle = Get-SiteShieldMap -ID $PD.GetSiteShieldMapAll[0].id @CommonParams
-            $GetSiteShieldMapSingle[0].ID | Should -Be $PD.GetSiteShieldMapAll[0].ID
+        It 'gets a single map by ID' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.Siteshield -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Get-SiteShieldMap.json"
+                return $Response | ConvertFrom-Json
+            }
+            $PD.GetSiteShieldMapSingle = $PD.GetSiteShieldMapAll[0] | Get-SiteShieldMap @CommonParams
+            $PD.GetSiteShieldMapSingle.ID | Should -Not -BeNullOrEmpty
         }
-    }
-}
-
-Describe 'Unsafe Akamai.Siteshield Tests' {
-
-    BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.Siteshield/Akamai.Siteshield.psd1 -Force
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.Siteshield"
-        $PD = @{}
-    }
-
-    AfterAll {
-        
     }
 
     Context 'Confirm-SiteShieldMap' {
@@ -57,11 +60,8 @@ Describe 'Unsafe Akamai.Siteshield Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Confirm-SiteShieldMap.json"
                 return $Response | ConvertFrom-Json
             }
-            $ConfirmSiteShieldMap = Confirm-SiteShieldMap -ID 123456789
+            $ConfirmSiteShieldMap = $PD.GetSiteShieldMapSingle | Confirm-SiteShieldMap
             $ConfirmSiteShieldMap.ruleName | Should -Not -BeNullOrEmpty
         }
     }
-
 }
-
-

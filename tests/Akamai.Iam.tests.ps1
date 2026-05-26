@@ -6,20 +6,35 @@ BeforeDiscovery {
 }
 
 Describe 'Safe Akamai.IAM Tests' {
-    
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.IAM/Akamai.IAM.psd1 -Force
+
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+        
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.IAM'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+        
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContract
+        $TestContractID = $env:PesterContract
         $TestGroupID = $env:PesterGroupID
         $TestUIIdentityID = $env:PesterIAMUIID
-        $TestNewGroupName = 'powershell-temp'
-        $TestNewRoleName = 'akamaipowershell-testing'
+        $TestNewGroupName = "powershell-temp-$Timestamp"
+        $TestNewRoleName = "pester-testing-$Timestamp"
         $TestNewRoleBody = @{
             "grantedRoles"    = @()
             "roleDescription" = "Test role for PowerShell pester testing."
@@ -37,10 +52,7 @@ Describe 'Safe Akamai.IAM Tests' {
             "options": {
               "newUserNotification": true,
               "passwordExpiry": true,
-              "proactive": [
-                "EdgeScape",
-                "EdgeSuite (HTTP Content Delivery)"
-              ],
+              "proactive": [],
               "upgrade": [
                 "NetStorage"
               ]
@@ -48,9 +60,10 @@ Describe 'Safe Akamai.IAM Tests' {
             "enableEmailNotifications": true
         }'
         $TestUserNotificationsObj = ConvertFrom-Json $TestUserNotificationsJSON
+        $TestAPIClientName = "pester_testclient_$Timestamp"
         $TestAPIClientJSON = @"
 {
-    "clientName": "akamaipowershell_testclient",
+    "clientName": "$TestAPIClientName",
     "clientDescription": "Temporary account for testing. Will be deleted shortly",
     "clientType": "CLIENT",
     "authorizedUsers": ["$env:PesterIAMAuthorizedUsers"],
@@ -67,635 +80,6 @@ Describe 'Safe Akamai.IAM Tests' {
 }
 "@
         $TestAPIClientObj = ConvertFrom-Json $TestAPIClientJSON
-        $TestAPIClientName = 'akamaipowershell_testclient'
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.IAM"
-        $PD = @{}
-    }
-
-    #------------------------------------------------
-    #                 IAMGrantableRole                  
-    #------------------------------------------------
-
-    Context 'Get-IAMGrantableRole' {
-        It 'returns the correct data' {
-            $PD.GetIAMGrantableRole = Get-IAMGrantableRole @CommonParams
-            $PD.GetIAMGrantableRole[0].grantedRoleId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUser                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUser - Parameter Set all' {
-        It 'Get-IAMUser (all) returns the correct data' {
-            $PD.GetIAMUserAll = Get-IAMUser @CommonParams
-            $PD.GetIAMUserAll[0].uiIdentityId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-IAMUser - Parameter Set single' {
-        It 'Get-IAMUser (single) returns the correct data' {
-            $PD.GetIAMUser = Get-IAMUser -UIIdentityID $TestUIIdentityID -Actions -AuthGrants @CommonParams
-            $PD.GetIAMUser.uiIdentityId | Should -Be $TestUIIdentityID
-        }
-    }
-
-    Context 'Set-IAMUser by parameter' {
-        It 'Set-IAMUser (single) by param returns the correct data' {
-            $PD.SetIAMUserByParam = Set-IAMUser -Body $PD.GetIAMUser -UIIdentityID $TestUIIdentityID @CommonParams
-            $PD.SetIAMUserByParam.uiIdentityId | Should -Be $TestUIIdentityID
-        }
-    }
-
-    Context 'Set-IAMUser by pipeline' {
-        It 'Set-IAMUser (single) by pipeline returns the correct data' {
-            $PD.SetIAMUserByPipeline = $PD.GetIAMUser | Set-IAMUser -UIIdentityID $TestUIIdentityID @CommonParams
-            $PD.SetIAMUserByPipeline.uiIdentityId | Should -Be $TestUIIdentityID
-        }
-    }
-
-    Context 'Lock-IAMUser' {
-        It 'throws no errors' {
-            Lock-IAMUser -UIIdentityID $TestUIIdentityID @CommonParams 
-        }
-    }
-
-    Context 'Unlock-IAMUser' {
-        It 'throws no errors' {
-            Unlock-IAMUser -UIIdentityID $TestUIIdentityID @CommonParams 
-        }
-    }
-
-    Context 'Set-IAMUserGroupAndRole by parameter' {
-        It 'Set-IAMUserGroupAndRole (others) by param returns the correct data' {
-            $PD.SetIAMUserGroupAndRoleByParam = Set-IAMUserGroupAndRole -Body $PD.GetIAMUser.authGrants -UiIdentityID $TestUIIdentityID @CommonParams
-            $PD.SetIAMUserGroupAndRoleByParam[0].groupId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-IAMUserGroupAndRole by pipeline' {
-        It 'Set-IAMUserGroupAndRole (others) by pipeline returns the correct data' {
-            $PD.SetIAMUserGroupAndRoleByPipeline = $PD.GetIAMUser.authGrants | Set-IAMUserGroupAndRole -UiIdentityID $TestUIIdentityID @CommonParams
-            $PD.SetIAMUserGroupAndRoleByPipeline[0].groupId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMGroup                  
-    #------------------------------------------------
-
-    Context 'New-IAMGroup' {
-        It 'returns the correct data' {
-            $PD.NewIAMGroup = New-IAMGroup -GroupName $TestNewGroupName -ParentGroupID $TestGroupID @CommonParams
-            $PD.NewIAMGroup.groupName | Should -Be $TestNewGroupName
-        }
-    }
-
-    Context 'Get-IAMGroup - All' {
-        It 'returns the correct data' {
-            $PD.GetIAMGroupAll = Get-IAMGroup @CommonParams
-            $PD.GetIAMGroupAll[0].groupId | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Get-IAMGroup - Flatten' {
-        It 'returns a flat list' {
-            $PD.GetIAMGroupFlatten = Get-IAMGroup -Flatten @CommonParams
-            $PD.GetIAMGroupFlatten[0].groupId | Should -Not -BeNullOrEmpty
-            $PD.GetIAMGroupFlatten.count | Should -BeGreaterThan $PD.GetIAMGroupAll.count
-        }
-    }
-    
-    Context 'Get-IAMGroup - Single' {
-        It 'returns the correct data' {
-            $PD.GetIAMGroupSingle = Get-IAMGroup -GroupID $PD.NewIAMGroup.groupId @CommonParams
-            $PD.GetIAMGroupSingle.groupId | Should -Be $PD.NewIAMGroup.groupId
-        }
-    }
-
-    Context 'Set-IAMGroup' {
-        It 'returns the correct data' {
-            $PD.SetIAMGroup = Set-IAMGroup -GroupID $PD.NewIAMGroup.groupId -GroupName $TestNewGroupName @CommonParams
-            $PD.SetIAMGroup.groupName | Should -Be $TestNewGroupName
-        }
-    }
-
-    Context 'Move-IAMGroup' {
-        It 'throws no errors' {
-            Move-IAMGroup -DestinationGroupID $TestGroupID -SourceGroupID $PD.NewIAMGroup.groupId @CommonParams 
-        }
-    }
-    
-    Context 'Remove-IAMGroup' {
-        It 'throws no errors' {
-            Remove-IAMGroup -GroupID $PD.NewIAMGroup.groupId @CommonParams 
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMRole                  
-    #------------------------------------------------
-
-    Context 'New-IAMRole by parameter' {
-        It 'returns the correct data' {
-            $TestNewRoleBody.grantedRoles += $PD.GetIAMGrantableRole[0] | Select-Object grantedRoleId
-            $PD.NewIAMRoleByParam = New-IAMRole -Body $TestNewRoleBody @CommonParams
-            $PD.NewIAMRoleByParam.roleName | Should -Be $TestNewRoleName
-        }
-    }
-
-    Context 'New-IAMRole by pipeline' {
-        It 'returns the correct data' {
-            $TestNewRoleBody.roleName += '-Pipeline'
-            $PD.NewIAMRoleByPipeline = $TestNewRoleBody | New-IAMRole @CommonParams
-            $PD.NewIAMRoleByPipeline.roleName | Should -Be "$TestNewRoleName-Pipeline"
-        }
-    }
-
-    Context 'Get-IAMRole - Parameter Set single' {
-        It 'returns the correct data' {
-            $PD.GetIAMRole = Get-IAMRole -RoleID $PD.NewIAMRoleByParam.roleId @CommonParams
-            $PD.GetIAMRole.roleName | Should -Be $TestNewRoleName
-        }
-    }
-
-    Context 'Get-IAMRole - Parameter Set all' {
-        It 'returns the correct data' {
-            $PD.GetIAMRoleAll = Get-IAMRole @CommonParams
-            $PD.GetIAMRoleAll[0].roleName | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-IAMRole by parameter' {
-        It 'by param returns the correct data' {
-            $PD.SetIAMRoleByParam = Set-IAMRole -Body $PD.NewIAMRoleByParam -RoleID $PD.NewIAMRoleByParam.roleId @CommonParams
-            $PD.SetIAMRoleByParam.roleName | Should -Be $TestNewRoleName
-        }
-    }
-
-    Context 'Set-IAMRole by pipeline' {
-        It 'by pipeline returns the correct data' {
-            $PD.SetIAMRoleByPipeline = $PD.NewIAMRoleByParam | Set-IAMRole -RoleID $PD.NewIAMRoleByParam.roleId @CommonParams
-            $PD.SetIAMRoleByPipeline.roleName | Should -Be $TestNewRoleName
-        }
-    }
-
-    Context 'Remove-IAMRole' {
-        It 'returns the correct data' {
-            Remove-IAMRole -RoleID $PD.NewIAMRoleByParam.roleId @CommonParams 
-            Remove-IAMRole -RoleID $PD.NewIAMRoleByPipeline.roleId @CommonParams 
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMProperty                  
-    #------------------------------------------------
-
-    Context 'Get-IAMProperty - All' {
-        It 'returns the correct data' {
-            $PD.GetIAMPropertyAll = Get-IAMProperty @CommonParams
-            $PD.GetIAMPropertyAll[0].propertyId | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Get-IAMProperty - Single' {
-        It 'returns the correct data' {
-            $PD.GetIAMPropertySingle = Get-IAMProperty -GroupID $TestGroupID -AssetID $TestAssetID @CommonParams
-            $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
-        }
-
-        It 'returns the correct data with alias' {
-          $PD.GetIAMPropertySingle = Get-IAMProperty -GroupID $TestGroupID -PropertyID $TestAssetID @CommonParams
-          $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMPropertyResources                  
-    #------------------------------------------------
-
-    Context 'Get-IAMPropertyResources' {
-        It 'returns the correct data' {
-            $PD.GetIAMPropertyResources = Get-IAMPropertyResources -GroupID $TestGroupID -AssetID $TestAssetID @CommonParams
-            $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
-        }
-
-        It 'returns the correct data with alias' {
-          $PD.GetIAMPropertyResources = Get-IAMPropertyResources -GroupID $TestGroupID -PropertyID $TestAssetID @CommonParams
-          $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMPropertyUsers                  
-    #------------------------------------------------
-
-    Context 'Get-IAMPropertyUsers' {
-        It 'returns the correct data' {
-            $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers -AssetID $TestAssetID @CommonParams
-            $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
-        }
-
-        It 'returns the correct data with alias' {
-          $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers -PropertyID $TestAssetID @CommonParams
-          $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAPIClient                  
-    #------------------------------------------------
-
-    Context 'New-IAMAPIClient by parameter' {
-        It 'returns the correct data' {
-            $PD.NewIAMAPIClientByParam = New-IAMAPIClient -Body $TestAPIClientJSON @CommonParams
-            $PD.NewIAMAPIClientByParam.clientName | Should -Be $TestAPIClientName
-        }
-    }
-
-    Context 'New-IAMAPIClient by pipeline' {
-        It 'returns the correct data' {
-            $TestAPIClientObj.clientName += "-pipeline"
-            $PD.NewIAMAPIClientByPipeline = ($TestAPIClientObj | New-IAMAPIClient @CommonParams)
-            $PD.NewIAMAPIClientByPipeline.clientName | Should -Be "$TestAPIClientName-pipeline"
-        }
-    }
-
-    Context 'Get-IAMAPIClient, all' {
-        It 'returns the correct data' {
-            $PD.GetIAMAPIClientAll = Get-IAMAPIClient @CommonParams
-            $PD.GetIAMAPIClientAll[0].clientId | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Get-IAMAPIClient, single' {
-        It 'returns the correct data' {
-            $PD.GetIAMAPIClientSingle = Get-IAMAPIClient -ClientID $PD.NewIAMAPIClientByParam.clientId @CommonParams
-            $PD.GetIAMAPIClientSingle.clientId | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Get-IAMAPIClient, self' {
-        It 'returns the correct data' {
-            $PD.GetIAMAPIClientSelf = Get-IAMAPIClient -ClientID self -GroupAccess -APIAccess @CommonParams
-            $PD.GetIAMAPIClientSelf.clientId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-IAMAPIClient - Parameter Set single, by parameter' {
-        It 'returns the correct data' {
-            $PD.SetIAMAPIClientSingleByParam = Set-IAMAPIClient -Body $PD.NewIAMAPIClientByParam -ClientID $PD.NewIAMAPIClientByParam.clientId @CommonParams
-            $PD.SetIAMAPIClientSingleByParam.clientId | Should -Be $PD.NewIAMAPIClientByParam.clientId
-        }
-    }
-
-    Context 'Set-IAMAPIClient - Parameter Set single, by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetIAMAPIClientSingleByPipeline = ($PD.NewIAMAPIClientByParam | Set-IAMAPIClient -ClientID $PD.NewIAMAPIClientByParam.clientId @CommonParams)
-            $PD.SetIAMAPIClientSingleByPipeline.clientId | Should -Be $PD.NewIAMAPIClientByParam.clientId
-        }
-    }
-
-    Context 'Set-IAMAPIClient - Parameter Set self, by parameter' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPIClient.json"
-                return $Response | ConvertFrom-Json
-            }
-            $SetIAMAPIClientSelfByParam = Set-IAMAPIClient -Body $PD.GetIAMAPIClientSelf @CommonParams
-            $SetIAMAPIClientSelfByParam.clientId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-IAMAPIClient - Parameter Set self, by pipeline' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPIClient.json"
-                return $Response | ConvertFrom-Json
-            }
-            $SetIAMAPIClientSelfByPipeline = $PD.GetIAMAPIClientSelf | Set-IAMAPIClient @CommonParams
-            $SetIAMAPIClientSelfByPipeline.clientId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Lock-IAMAPIClient - Parameter Set single' {
-        It 'returns the correct data' {
-            $PD.LockIAMAPIClient = Lock-IAMAPIClient -ClientID $PD.NewIAMAPIClientByParam.clientId @CommonParams
-            $PD.LockIAMAPIClient.isLocked | Should -Be $true
-        }
-    }
-
-    Context 'Unlock-IAMAPIClient' {
-        It 'returns the correct data' {
-            $PD.UnlockIAMAPIClient = Unlock-IAMAPIClient -ClientID $PD.NewIAMAPIClientByParam.clientId @CommonParams
-            $PD.UnlockIAMAPIClient.isLocked | Should -Be $false
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAPICredential                  
-    #------------------------------------------------
-
-    Context 'New-IAMAPICredential - Parameter Set self' {
-        It 'returns the correct data' {
-            $PD.NewIAMAPICredentialSelf = New-IAMAPICredential @CommonParams
-            $PD.NewIAMAPICredentialSelf.credentialId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-IAMAPICredential - Parameter Set self by an ID' {
-        It 'returns the correct data' {
-            $PD.GetIAMAPICredentialSelfSingle = Get-IAMAPICredential -CredentialID $PD.NewIAMAPICredentialSelf.credentialId @CommonParams
-            $PD.GetIAMAPICredentialSelfSingle.credentialId | Should -Be $PD.NewIAMAPICredentialSelf.credentialId
-        }
-    }
-
-    Context 'Get-IAMAPICredential - Parameter Set self gets all' {
-        It 'returns the correct data' {
-            $PD.GetIAMAPICredentialSelf = Get-IAMAPICredential @CommonParams
-            $PD.GetIAMAPICredentialSelf[0].credentialId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-IAMAPICredential - Parameter Set self, by param' {
-        It 'returns the correct data' {
-            $PD.SetIAMAPICredentialSelfByParam = Set-IAMAPICredential -CredentialID $PD.NewIAMAPICredentialSelf.credentialId -Status ACTIVE -ExpiresOn $TestExpirationDate @CommonParams
-            $PD.SetIAMAPICredentialSelfByParam.expiresOn | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    Context 'Set-IAMAPICredential - Parameter Set self, by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetIAMAPICredentialSelfByPipeline = ($TestCredentialBody | Set-IAMAPICredential -CredentialID $PD.NewIAMAPICredentialSelf.credentialId @CommonParams)
-            $PD.SetIAMAPICredentialSelfByPipeline.expiresOn | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Disable-IAMAPICredential - Parameter Set self' {
-        It 'does not throw any errors' {
-            Disable-IAMAPICredential -CredentialID $PD.NewIAMAPICredentialSelf.credentialId @CommonParams 
-        }
-    }
-    
-    Context 'Remove-IAMAPICredential - Parameter Set self' {
-        It 'throws no errors' {
-            Remove-IAMAPICredential -CredentialID $PD.NewIAMAPICredentialSelf.credentialId @CommonParams 
-        }
-    }
-    
-
-    #------------------------------------------------
-    #                 IAMAccessibleGroups                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAccessibleGroups' {
-        It 'returns the correct data' {
-            $PD.GetIAMAccessibleGroups = Get-IAMAccessibleGroups -Username $TestUsername @CommonParams
-            $PD.GetIAMAccessibleGroups[0].groupId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminContactTypes                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminContactTypes' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminContactTypes = Get-IAMAdminContactTypes @CommonParams
-            $PD.GetIAMAdminContactTypes.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserContactTypes                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserContactTypes' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserContactTypes = Get-IAMUserContactTypes @CommonParams
-            $PD.GetIAMUserContactTypes.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminCountries                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminCountries' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminCountries = Get-IAMAdminCountries @CommonParams
-            $PD.GetIAMAdminCountries.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserCountries                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserCountries' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserCountries = Get-IAMUserCountries @CommonParams
-            $PD.GetIAMUserCountries.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminLanguages                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminLanguages' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminLanguages = Get-IAMAdminLanguages @CommonParams
-            $PD.GetIAMAdminLanguages.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserLanguages                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserLanguages' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserLanguages = Get-IAMUserLanguages @CommonParams
-            $PD.GetIAMUserLanguages.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminPasswordPolicy                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminPasswordPolicy' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminPasswordPolicy = Get-IAMAdminPasswordPolicy @CommonParams
-            $PD.GetIAMAdminPasswordPolicy.minLength | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserPasswordPolicy                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserPasswordPolicy' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserPasswordPolicy = Get-IAMUserPasswordPolicy @CommonParams
-            $PD.GetIAMUserPasswordPolicy.minLength | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminProducts                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminProducts' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminProducts = Get-IAMAdminProducts @CommonParams
-            $PD.GetIAMAdminProducts.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserProducts                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserProducts' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserProducts = Get-IAMUserProducts @CommonParams
-            $PD.GetIAMUserProducts.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminStates                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminStates' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminStates = Get-IAMAdminStates -Country USA @CommonParams
-            $PD.GetIAMAdminStates.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserStates                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserStates' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserStates = Get-IAMUserStates -Country USA @CommonParams
-            $PD.GetIAMUserStates.count | Should -BeGreaterThan 0
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAdminTimeoutPolicy                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAdminTimeoutPolicy' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminTimeoutPolicy = Get-IAMAdminTimeoutPolicy @CommonParams
-            $PD.GetIAMAdminTimeoutPolicy[0].value | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserTimeoutPolicy                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserTimeoutPolicy' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserTimeoutPolicy = Get-IAMUserTimeoutPolicy @CommonParams
-            $PD.GetIAMUserTimeoutPolicy[0].value | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    #------------------------------------------------
-    #                 IAMAdminTimeZones                  
-    #------------------------------------------------
-    
-    Context 'Get-IAMAdminTimeZones' {
-        It 'returns the correct data' {
-            $PD.GetIAMAdminTimeZones = Get-IAMAdminTimeZones @CommonParams
-            $PD.GetIAMAdminTimeZones[0].timezone | Should -Not -BeNullOrEmpty
-        }
-    }
-    
-    #------------------------------------------------
-    #                 IAMUserTimeZones                  
-    #------------------------------------------------
-
-    Context 'Get-IAMUserTimeZones' {
-        It 'returns the correct data' {
-            $PD.GetIAMUserTimeZones = Get-IAMUserTimeZones @CommonParams
-            $PD.GetIAMUserTimeZones[0].timezone | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAllowedAPIs                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAllowedAPIs' {
-        It 'returns the correct data' {
-            $PD.GetIAMAllowedAPIs = Get-IAMAllowedAPIs -Username $TestUsername @CommonParams
-            $PD.GetIAMAllowedAPIs[0].apiId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMAuthorizedUsers                  
-    #------------------------------------------------
-
-    Context 'Get-IAMAuthorizedUsers' {
-        It 'returns the correct data' {
-            $PD.GetIAMAuthorizedUsers = Get-IAMAuthorizedUsers @CommonParams
-            $PD.GetIAMAuthorizedUsers[0].userName | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 IAMUserNotifications                  
-    #------------------------------------------------
-
-    Context 'Set-IAMUserNotifications, single by parameter' {
-        It 'returns the correct data' {
-            $PD.SetIAMUserNotificationsSingleByParam = Set-IAMUserNotifications -Body $TestUserNotificationsJSON -UIIdentityID $TestUIIdentityID @CommonParams
-            $PD.SetIAMUserNotificationsSingleByParam.enableEmailNotifications | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Set-IAMUserNotifications by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetIAMUserNotificationsSingleByPipeline = $TestUserNotificationsObj | Set-IAMUserNotifications -UIIdentityID $TestUIIdentityID @CommonParams
-            $PD.SetIAMUserNotificationsSingleByPipeline.enableEmailNotifications | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 Removals
-    #------------------------------------------------
-
-    Context 'Remove-IAMAPIClient - Parameter Set single' {
-        It 'throws no errors' {
-            Remove-IAMAPIClient -ClientID $PD.NewIAMAPIClientByParam.clientId @CommonParams
-            Remove-IAMAPIClient -ClientID $PD.NewIAMAPIClientByPipeline.clientId @CommonParams
-        }
-    }
-
-
-    AfterAll {
-        
-    }
-
-}
-
-Describe 'UnSafe Akamai.IAM Tests' {
-
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.IAM/Akamai.IAM.psd1 -Force
-        
         $TestNewUserBody = '{
             "firstName": "Test",
             "lastName": "User",
@@ -728,99 +112,827 @@ Describe 'UnSafe Akamai.IAM Tests' {
         $PD = @{}
     }
 
+    AfterAll {
+        Get-IAMRole @CommonParams | Where-Object roleName -like "$TestNewRoleName*" | ForEach-Object { Remove-IAMRole -RoleID $_.roleId @CommonParams }
+        Get-IAMGroup @CommonParams | Where-Object groupName -eq $TestNewGroupName | ForEach-Object { Remove-IAMGroup -GroupID $_.groupId @CommonParams }
+        Get-IAMAPIClient @CommonParams | Where-Object clientName -like "$TestAPIClientName*" | ForEach-Object { Remove-IAMAPIClient -ClientID $_.clientId @CommonParams }
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
+    }
+
     #------------------------------------------------
-    #                 AccountSwitchKey                  
+    #                 IAMGrantableRole
     #------------------------------------------------
 
-    Context 'Get-AccountSwitchKey' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-AccountSwitchKey.json"
-                return $Response | ConvertFrom-Json
-            }
-            $GetAccountSwitchKey = Get-AccountSwitchKey -Search 'Akamai'
-            $GetAccountSwitchKey.accountSwitchKey | Should -Not -BeNullOrEmpty
+    Context 'Get-IAMGrantableRole' {
+        It 'gets all IAM grantable roles' {
+            $PD.GetIAMGrantableRole = Get-IAMGrantableRole @CommonParams
+            $PD.GetIAMGrantableRole[0].grantedRoleId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 IAMUser                  
+    #                 IAMUser
     #------------------------------------------------
 
-    Context 'New-IAMUser by parameter' {
-        It 'returns the correct data' {
+    Context 'Get-IAMUser' {
+        It 'gets a list of users' {
+            $PD.GetIAMUserAll = Get-IAMUser @CommonParams
+            $PD.GetIAMUserAll[0].uiIdentityId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a single user by ID' {
+            $TestParams = @{
+                'UIIdentityID' = $TestUIIdentityID
+                'Actions'      = $true
+                'AuthGrants'   = $true
+            }
+            $PD.GetIAMUser = Get-IAMUser @TestParams @CommonParams
+            $PD.GetIAMUser.uiIdentityId | Should -Be $TestUIIdentityID
+        }
+    }
+
+
+    Context 'Set-IAMUser' {
+        It 'updates IAM user by parameter' {
+            $TestParams = @{
+                'Body'         = $PD.GetIAMUser
+                'UIIdentityID' = $TestUIIdentityID
+            }
+            $PD.SetIAMUserByParam = Set-IAMUser @TestParams @CommonParams
+            $PD.SetIAMUserByParam.uiIdentityId | Should -Be $TestUIIdentityID
+        }
+        It 'updates IAM user by pipeline' {
+            $PD.SetIAMUserByPipeline = $PD.GetIAMUser | Set-IAMUser @CommonParams
+            $PD.SetIAMUserByPipeline.uiIdentityId | Should -Be $TestUIIdentityID
+        }
+    }
+
+
+    Context 'Lock-IAMUser' {
+        It 'locks an IAM user account' {
+            $TestUIIdentityID | Lock-IAMUser @CommonParams
+        }
+    }
+
+    Context 'Unlock-IAMUser' {
+        It 'unlocks an IAM user account' {
+            $TestUIIdentityID | Unlock-IAMUser @CommonParams
+        }
+    }
+
+    Context 'Set-IAMUserGroupAndRole' {
+        It 'updates IAM user group and role assignments by parameter' {
+            $TestParams = @{
+                'Body'         = $PD.GetIAMUser.authGrants
+                'UiIdentityID' = $TestUIIdentityID
+            }
+            $PD.SetIAMUserGroupAndRoleByParam = Set-IAMUserGroupAndRole @TestParams @CommonParams
+            $PD.SetIAMUserGroupAndRoleByParam[0].groupId | Should -Not -BeNullOrEmpty
+        }
+        It 'updates IAM user group and role assignments by pipeline' {
+            $TestParams = @{
+                'UiIdentityID' = $TestUIIdentityID
+            }
+            $PD.SetIAMUserGroupAndRoleByPipeline = $PD.GetIAMUser.authGrants | Set-IAMUserGroupAndRole @TestParams @CommonParams
+            $PD.SetIAMUserGroupAndRoleByPipeline[0].groupId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMGroup
+    #------------------------------------------------
+
+    Context 'New-IAMGroup' {
+        It 'creates a new IAM group' {
+            $TestParams = @{
+                'GroupName'     = $TestNewGroupName
+                'ParentGroupID' = $TestGroupID
+            }
+            $PD.NewIAMGroup = New-IAMGroup @TestParams @CommonParams
+            $PD.NewIAMGroup.groupName | Should -Be $TestNewGroupName
+        }
+    }
+
+    Context 'Get-IAMGroup' {
+        It 'gets all IAM groups' {
+            $PD.GetIAMGroupAll = Get-IAMGroup @CommonParams
+            $PD.GetIAMGroupAll[0].groupId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets all IAM groups in a flattened structure' {
+            $TestParams = @{
+                'Flatten' = $true
+            }
+            $PD.GetIAMGroupFlatten = Get-IAMGroup @TestParams @CommonParams
+            $PD.GetIAMGroupFlatten[0].groupId | Should -Not -BeNullOrEmpty
+            $PD.GetIAMGroupFlatten.count | Should -BeGreaterThan $PD.GetIAMGroupAll.count
+        }
+        It 'gets a single IAM group by ID' {
+            $TestParams = @{
+                'GroupID' = $PD.NewIAMGroup.groupId
+            }
+            $PD.GetIAMGroupSingle = Get-IAMGroup @TestParams @CommonParams
+            $PD.GetIAMGroupSingle.groupId | Should -Be $PD.NewIAMGroup.groupId
+        }
+    }
+
+    Context 'Set-IAMGroup' {
+        It 'updates IAM group settings' {
+            $TestParams = @{
+                'GroupName' = $TestNewGroupName
+            }
+            $PD.SetIAMGroup = $PD.NewIAMGroup | Set-IAMGroup @TestParams @CommonParams
+            $PD.SetIAMGroup.groupName | Should -Be $TestNewGroupName
+        }
+    }
+
+    Context 'Move-IAMGroup' {
+        It 'moves an IAM group to a different parent group' {
+            $TestParams = @{
+                'DestinationGroupID' = $TestGroupID
+                'SourceGroupID'      = $PD.NewIAMGroup.groupId
+            }
+            Move-IAMGroup @TestParams @CommonParams
+        }
+    }
+
+    Context 'Remove-IAMGroup' {
+        It 'removes an IAM group' {
+            $PD.NewIAMGroup | Remove-IAMGroup @CommonParams
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-IAMGroup @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMRole
+    #------------------------------------------------
+
+    Context 'New-IAMRole' {
+        It 'creates a new IAM role by parameter' {
+            $TestNewRoleBody.grantedRoles += $PD.GetIAMGrantableRole[0] | Select-Object grantedRoleId
+            $TestParams = @{
+                'Body' = $TestNewRoleBody
+            }
+            $PD.NewIAMRoleByParam = New-IAMRole @TestParams @CommonParams
+            $PD.NewIAMRoleByParam.roleName | Should -Be $TestNewRoleName
+        }
+        It 'creates a new IAM role by pipeline' {
+            $TestNewRoleBody.roleName += '-Pipeline'
+            $PD.NewIAMRoleByPipeline = $TestNewRoleBody | New-IAMRole @CommonParams
+            $PD.NewIAMRoleByPipeline.roleName | Should -Be "$TestNewRoleName-Pipeline"
+        }
+    }
+
+    Context 'Get-IAMRole' {
+        It 'gets a list of roles' {
+            $PD.GetIAMRoleAll = Get-IAMRole @CommonParams
+            $PD.GetIAMRoleAll[0].roleName | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a single role by ID' {
+            $PD.GetIAMRole = $PD.NewIAMRoleByParam | Get-IAMRole @CommonParams
+            $PD.GetIAMRole.roleName | Should -Be $TestNewRoleName
+        }
+    }
+
+    Context 'Set-IAMRole' {
+        It 'updates IAM role by parameter' {
+            $TestParams = @{
+                'Body'   = $PD.NewIAMRoleByParam
+                'RoleID' = $PD.NewIAMRoleByParam.roleId
+            }
+            $PD.SetIAMRoleByParam = Set-IAMRole @TestParams @CommonParams
+            $PD.SetIAMRoleByParam.roleName | Should -Be $TestNewRoleName
+        }
+        It 'updates IAM role by pipeline' {
+            $PD.SetIAMRoleByPipeline = $PD.NewIAMRoleByParam | Set-IAMRole @CommonParams
+            $PD.SetIAMRoleByPipeline.roleName | Should -Be $TestNewRoleName
+        }
+    }
+
+
+    Context 'Remove-IAMRole' {
+        It 'removes an IAM role' {
+            $TestParams = @{
+                'RoleID' = $PD.NewIAMRoleByParam.roleId
+            }
+            Remove-IAMRole @TestParams @CommonParams
+            $PD.NewIAMRoleByPipeline | Remove-IAMRole @CommonParams
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-IAMRole @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMProperty
+    #------------------------------------------------
+
+    Context 'Get-IAMProperty' {
+        It 'gets a list of properties' {
+            $PD.GetIAMPropertyAll = Get-IAMProperty @CommonParams
+            $PD.GetIAMPropertyAll[0].propertyId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a single property by Asset ID and group' {
+            $TestParams = @{
+                'GroupID' = $TestGroupID
+                'AssetID' = $TestAssetID
+            }
+            $PD.GetIAMPropertySingle = Get-IAMProperty @TestParams @CommonParams
+            $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
+        }
+
+        It 'gets a single property by Property ID and group' {
+            $TestParams = @{
+                'GroupID'    = $TestGroupID
+                'PropertyID' = $TestAssetID
+            }
+            $PD.GetIAMPropertySingle = Get-IAMProperty @TestParams @CommonParams
+            $PD.GetIAMPropertySingle.arlConfigFile | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMPropertyResources
+    #------------------------------------------------
+
+    Context 'Get-IAMPropertyResources' {
+        It 'gets property resources by Asset ID' {
+            $TestParams = @{
+                'GroupID' = $TestGroupID
+            }
+            $PD.GetIAMPropertyResources = $TestAssetID | Get-IAMPropertyResources @TestParams @CommonParams
+            $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
+        }
+
+        It 'gets property resources by Property ID' {
+            $TestParams = @{
+                'GroupID'    = $TestGroupID
+                'PropertyID' = $TestAssetID
+            }
+            $PD.GetIAMPropertyResources = Get-IAMPropertyResources @TestParams @CommonParams
+            $PD.GetIAMPropertyResources[0].resourceId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMPropertyUsers
+    #------------------------------------------------
+
+    Context 'Get-IAMPropertyUsers' {
+        It 'gets property users by Asset ID' {
+            $TestParams = @{
+                'AssetID' = $TestAssetID
+            }
+            $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers @TestParams @CommonParams
+            $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
+        }
+
+        It 'gets property users by Property ID' {
+            $TestParams = @{
+                'PropertyID' = $TestAssetID
+            }
+            $PD.GetIAMPropertyUsers = Get-IAMPropertyUsers @TestParams @CommonParams
+            $PD.GetIAMPropertyUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAPIClient
+    #------------------------------------------------
+
+    Context 'New-IAMAPIClient' {
+        It 'creates a new API client by parameter' {
+            $TestParams = @{
+                'Body' = $TestAPIClientJSON
+            }
+            $PD.NewIAMAPIClientByParam = New-IAMAPIClient @TestParams @CommonParams
+            $PD.NewIAMAPIClientByParam.clientName | Should -Be $TestAPIClientName
+        }
+        It 'creates a new API client by pipeline' {
+            $TestAPIClientObj.clientName += "-pipeline"
+            $PD.NewIAMAPIClientByPipeline = $TestAPIClientObj | New-IAMAPIClient @CommonParams
+            $PD.NewIAMAPIClientByPipeline.clientName | Should -Be "$TestAPIClientName-pipeline"
+        }
+    }
+
+    Context 'Get-IAMAPIClient' {
+        It 'gets a list of clients' {
+            $PD.GetIAMAPIClientAll = Get-IAMAPIClient @CommonParams
+            $PD.GetIAMAPIClientAll[0].clientId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a single client by ID' {
+            $PD.GetIAMAPIClientSingle = $PD.NewIAMAPIClientByParam | Get-IAMAPIClient @CommonParams
+            $PD.GetIAMAPIClientSingle.clientId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets own API client with access details' {
+            $TestParams = @{
+                'ClientID'    = 'self'
+                'GroupAccess' = $true
+                'APIAccess'   = $true
+            }
+            $PD.GetIAMAPIClientSelf = Get-IAMAPIClient @TestParams @CommonParams
+            $PD.GetIAMAPIClientSelf.clientId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+
+    Context 'Set-IAMAPIClient' {
+        It 'updates API client by parameter' {
+            $TestParams = @{
+                'Body'     = $PD.NewIAMAPIClientByParam
+                'ClientID' = $PD.NewIAMAPIClientByParam.clientId
+            }
+            $PD.SetIAMAPIClientSingleByParam = Set-IAMAPIClient @TestParams @CommonParams
+            $PD.SetIAMAPIClientSingleByParam.clientId | Should -Be $PD.NewIAMAPIClientByParam.clientId
+        }
+        It 'updates API client by pipeline' {
+            $PD.SetIAMAPIClientSingleByPipeline = $PD.NewIAMAPIClientByParam | Set-IAMAPIClient @CommonParams
+            $PD.SetIAMAPIClientSingleByPipeline.clientId | Should -Be $PD.NewIAMAPIClientByParam.clientId
+        }
+        It 'updates own API client by parameter' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPIClient.json"
+                return $Response | ConvertFrom-Json
+            }
+            $TestParams = @{
+                'Body' = $PD.GetIAMAPIClientSelf
+            }
+            $SetIAMAPIClientSelfByParam = Set-IAMAPIClient @TestParams @CommonParams
+            $SetIAMAPIClientSelfByParam.clientId | Should -Not -BeNullOrEmpty
+        }
+        It 'updates own API client by pipeline' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPIClient.json"
+                return $Response | ConvertFrom-Json
+            }
+            $SetIAMAPIClientSelfByPipeline = $PD.GetIAMAPIClientSelf | Set-IAMAPIClient @CommonParams
+            $SetIAMAPIClientSelfByPipeline.clientId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Lock-IAMAPIClient' {
+        It 'locks an API client' {
+            $PD.LockIAMAPIClient = $PD.NewIAMAPIClientByParam | Lock-IAMAPIClient @CommonParams
+            $PD.LockIAMAPIClient.isLocked | Should -Be $true
+        }
+    }
+
+    Context 'Unlock-IAMAPIClient' {
+        It 'unlocks an API client' {
+            $PD.UnlockIAMAPIClient = $PD.NewIAMAPIClientByParam | Unlock-IAMAPIClient @CommonParams
+            $PD.UnlockIAMAPIClient.isLocked | Should -Be $false
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAPICredential
+    #------------------------------------------------
+
+    Context 'New-IAMAPICredential' {
+        It 'creates API credential for self with client secret and token' {
+            $PD.NewIAMAPICredentialSelf = New-IAMAPICredential @CommonParams
+            $PD.NewIAMAPICredentialSelf.credentialId | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.accessToken | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.ClientSecret | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.ClientToken | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.Host | Should -Not -BeNullOrEmpty
+        }
+        It 'creates API credential for self with API response only' {
+            $TestParams = @{
+                'APIResponseOnly' = $true
+            }
+            $PD.NewIAMAPICredentialSelf = New-IAMAPICredential @TestParams @CommonParams
+            $PD.NewIAMAPICredentialSelf.credentialId | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.ClientToken | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.ClientSecret | Should -Not -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.accessToken | Should -BeNullOrEmpty
+            $PD.NewIAMAPICredentialSelf.Host | Should -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-IAMAPICredential' {
+        It 'gets all API credentials for self' {
+            $PD.GetIAMAPICredentialSelf = Get-IAMAPICredential @CommonParams
+            $PD.GetIAMAPICredentialSelf[0].credentialId | Should -Not -BeNullOrEmpty
+        }
+        It 'gets a credential by ID' {
+            $TestParams = @{
+                'CredentialID' = $PD.NewIAMAPICredentialSelf.credentialId
+            }
+            $PD.GetIAMAPICredentialSelfSingle = Get-IAMAPICredential @TestParams @CommonParams
+            $PD.GetIAMAPICredentialSelfSingle.credentialId | Should -Be $PD.NewIAMAPICredentialSelf.credentialId
+        }
+    }
+
+    Context 'Set-IAMAPICredential' {
+        It 'updates API credential by parameter' {
+            $TestParams = @{
+                'CredentialID' = $PD.NewIAMAPICredentialSelf.credentialId
+                'Status'       = 'ACTIVE'
+                'ExpiresOn'    = $TestExpirationDate
+            }
+            $PD.SetIAMAPICredentialSelfByParam = Set-IAMAPICredential @TestParams @CommonParams
+            $PD.SetIAMAPICredentialSelfByParam.expiresOn | Should -Not -BeNullOrEmpty
+        }
+        It 'updates API credential by pipeline' {
+            $PD.GetIAMAPICredentialSelfSingle.expiresOn = $TestExpirationDate
+            $PD.SetIAMAPICredentialSelfByPipeline = $PD.GetIAMAPICredentialSelfSingle | Set-IAMAPICredential @CommonParams
+            $PD.SetIAMAPICredentialSelfByPipeline.expiresOn | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    Context 'Disable-IAMAPICredential' {
+        It 'disables API credential for self' {
+            $PD.GetIAMAPICredentialSelfSingle | Disable-IAMAPICredential @CommonParams
+        }
+    }
+
+    Context 'Remove-IAMAPICredential' {
+        It 'removes API credential for self' {
+            $PD.GetIAMAPICredentialSelfSingle | Remove-IAMAPICredential @CommonParams
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-IAMAPICredential @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
+        }
+    }
+
+
+    #------------------------------------------------
+    #                 IAMAccessibleGroups
+    #------------------------------------------------
+
+    Context 'Get-IAMAccessibleGroups' {
+        It 'gets accessible groups for a user' {
+            $TestParams = @{
+                'Username' = $TestUsername
+            }
+            $PD.GetIAMAccessibleGroups = Get-IAMAccessibleGroups @TestParams @CommonParams
+            $PD.GetIAMAccessibleGroups[0].groupId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminContactTypes
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminContactTypes' {
+        It 'gets all admin contact types' {
+            $PD.GetIAMAdminContactTypes = Get-IAMAdminContactTypes @CommonParams
+            $PD.GetIAMAdminContactTypes.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserContactTypes
+    #------------------------------------------------
+
+    Context 'Get-IAMUserContactTypes' {
+        It 'gets all user contact types' {
+            $PD.GetIAMUserContactTypes = Get-IAMUserContactTypes @CommonParams
+            $PD.GetIAMUserContactTypes.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminCountries
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminCountries' {
+        It 'gets all admin countries' {
+            $PD.GetIAMAdminCountries = Get-IAMAdminCountries @CommonParams
+            $PD.GetIAMAdminCountries.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserCountries
+    #------------------------------------------------
+
+    Context 'Get-IAMUserCountries' {
+        It 'gets all user countries' {
+            $PD.GetIAMUserCountries = Get-IAMUserCountries @CommonParams
+            $PD.GetIAMUserCountries.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminLanguages
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminLanguages' {
+        It 'gets all admin languages' {
+            $PD.GetIAMAdminLanguages = Get-IAMAdminLanguages @CommonParams
+            $PD.GetIAMAdminLanguages.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserLanguages
+    #------------------------------------------------
+
+    Context 'Get-IAMUserLanguages' {
+        It 'gets all user languages' {
+            $PD.GetIAMUserLanguages = Get-IAMUserLanguages @CommonParams
+            $PD.GetIAMUserLanguages.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminPasswordPolicy
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminPasswordPolicy' {
+        It 'gets admin password policy' {
+            $PD.GetIAMAdminPasswordPolicy = Get-IAMAdminPasswordPolicy @CommonParams
+            $PD.GetIAMAdminPasswordPolicy.minLength | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserPasswordPolicy
+    #------------------------------------------------
+
+    Context 'Get-IAMUserPasswordPolicy' {
+        It 'gets user password policy' {
+            $PD.GetIAMUserPasswordPolicy = Get-IAMUserPasswordPolicy @CommonParams
+            $PD.GetIAMUserPasswordPolicy.minLength | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminProducts
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminProducts' {
+        It 'gets all admin products' {
+            $PD.GetIAMAdminProducts = Get-IAMAdminProducts @CommonParams
+            $PD.GetIAMAdminProducts.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserProducts
+    #------------------------------------------------
+
+    Context 'Get-IAMUserProducts' {
+        It 'gets all user products' {
+            $PD.GetIAMUserProducts = Get-IAMUserProducts @CommonParams
+            $PD.GetIAMUserProducts.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminStates
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminStates' {
+        It 'gets all admin states for a country' {
+            $TestParams = @{
+                'Country' = 'USA'
+            }
+            $PD.GetIAMAdminStates = Get-IAMAdminStates @TestParams @CommonParams
+            $PD.GetIAMAdminStates.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserStates
+    #------------------------------------------------
+
+    Context 'Get-IAMUserStates' {
+        It 'gets all user states for a country' {
+            $TestParams = @{
+                'Country' = 'USA'
+            }
+            $PD.GetIAMUserStates = Get-IAMUserStates @TestParams @CommonParams
+            $PD.GetIAMUserStates.count | Should -BeGreaterThan 0
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminTimeoutPolicy
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminTimeoutPolicy' {
+        It 'gets admin timeout policy' {
+            $PD.GetIAMAdminTimeoutPolicy = Get-IAMAdminTimeoutPolicy @CommonParams
+            $PD.GetIAMAdminTimeoutPolicy[0].value | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserTimeoutPolicy
+    #------------------------------------------------
+
+    Context 'Get-IAMUserTimeoutPolicy' {
+        It 'gets user timeout policy' {
+            $PD.GetIAMUserTimeoutPolicy = Get-IAMUserTimeoutPolicy @CommonParams
+            $PD.GetIAMUserTimeoutPolicy[0].value | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAdminTimeZones
+    #------------------------------------------------
+
+    Context 'Get-IAMAdminTimeZones' {
+        It 'gets all admin time zones' {
+            $PD.GetIAMAdminTimeZones = Get-IAMAdminTimeZones @CommonParams
+            $PD.GetIAMAdminTimeZones[0].timezone | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserTimeZones
+    #------------------------------------------------
+
+    Context 'Get-IAMUserTimeZones' {
+        It 'gets all user time zones' {
+            $PD.GetIAMUserTimeZones = Get-IAMUserTimeZones @CommonParams
+            $PD.GetIAMUserTimeZones[0].timezone | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAllowedAPIs
+    #------------------------------------------------
+
+    Context 'Get-IAMAllowedAPIs' {
+        It 'gets allowed APIs for a user' {
+            $TestParams = @{
+                'Username' = $TestUsername
+            }
+            $PD.GetIAMAllowedAPIs = Get-IAMAllowedAPIs @TestParams @CommonParams
+            $PD.GetIAMAllowedAPIs[0].apiId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMAuthorizedUsers
+    #------------------------------------------------
+
+    Context 'Get-IAMAuthorizedUsers' {
+        It 'gets all authorized users' {
+            $PD.GetIAMAuthorizedUsers = Get-IAMAuthorizedUsers @CommonParams
+            $PD.GetIAMAuthorizedUsers[0].userName | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 IAMUserNotifications
+    #------------------------------------------------
+
+    Context 'Set-IAMUserNotifications' {
+        It 'updates user notification settings by parameter' {
+            $TestParams = @{
+                'Body'         = $TestUserNotificationsJSON
+                'UIIdentityID' = $TestUIIdentityID
+            }
+            $PD.SetIAMUserNotificationsSingleByParam = Set-IAMUserNotifications @TestParams @CommonParams
+            $PD.SetIAMUserNotificationsSingleByParam.enableEmailNotifications | Should -Not -BeNullOrEmpty
+        }
+        It 'updates user notification settings by pipeline' {
+            $TestParams = @{
+                'UIIdentityID' = $TestUIIdentityID
+            }
+            $PD.SetIAMUserNotificationsSingleByPipeline = $TestUserNotificationsObj | Set-IAMUserNotifications @TestParams @CommonParams
+            $PD.SetIAMUserNotificationsSingleByPipeline.enableEmailNotifications | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                 Removals
+    #------------------------------------------------
+
+    Context 'Remove-IAMAPIClient' {
+        It 'removes an API client' {
+            $TestParams = @{
+                'ClientID' = $PD.NewIAMAPIClientByParam.clientId
+            }
+            Remove-IAMAPIClient @TestParams @CommonParams
+            $PD.NewIAMAPIClientByPipeline | Remove-IAMAPIClient @CommonParams
+        }
+    }
+
+    #------------------------------------------------
+    #                 AccountSwitchKey
+    #------------------------------------------------
+
+    # Commented out to fix GH Issue 30.
+    # Test should not be mocked.
+    # Context 'Get-AccountSwitchKey' {
+    #     It 'gets account switch key by search term' {
+    #         Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+    #             $Response = Get-Content -Raw "$ResponseLibrary/Get-AccountSwitchKey.json"
+    #             return $Response | ConvertFrom-Json
+    #         }
+    #         $TestParams = @{
+    #             'Search' = 'Akamai'
+    #         }
+    #         $GetAccountSwitchKey = Get-AccountSwitchKey @TestParams
+    #         $GetAccountSwitchKey.accountSwitchKey | Should -Not -BeNullOrEmpty
+    #     }
+    # }
+
+    #------------------------------------------------
+    #                 IAMUser
+    #------------------------------------------------
+
+    Context 'New-IAMUser' {
+        BeforeAll {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMUser.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewIAMUserByParam = New-IAMUser -Body $TestNewUserBody
+        }
+        It 'creates a new IAM user by parameter' {
+            $TestParams = @{
+                'Body' = $TestNewUserBody
+            }
+            $NewIAMUserByParam = New-IAMUser @TestParams
             $NewIAMUserByParam.uiIdentityId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'New-IAMUser by pipeline' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-IAMUser.json"
-                return $Response | ConvertFrom-Json
-            }
+        It 'creates a new IAM user by pipeline' {
             $NewIAMUserByPipeline = $TestNewUserObj | New-IAMUser
             $NewIAMUserByPipeline.uiIdentityId | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Remove-IAMUser' {
-        It 'does not throw' {
+        It 'removes an IAM user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMUser.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-IAMUser -UIIdentityID A-1-23CDEF 
+            'A-1-23CDEF' | Remove-IAMUser
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-IAMUser @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
 
     Context 'Get-IAMGroupMoveAffectedUsers' {
-        It 'returns the correct data' {
+        It 'gets users affected by group move' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMGroupMoveAffectedUsers.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetIAMGroupMoveAffectedUsers = Get-IAMGroupMoveAffectedUsers -DestinationGroupID 22222 -SourceGroupID 11111
+            $TestParams = @{
+                'DestinationGroupID' = 22222
+                'SourceGroupID'      = 11111
+            }
+            $GetIAMGroupMoveAffectedUsers = Get-IAMGroupMoveAffectedUsers @TestParams
             $GetIAMGroupMoveAffectedUsers[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 IAMIPAllowList                  
+    #                 IAMIPAllowList
     #------------------------------------------------
 
     Context 'Disable-IAMIPAllowList' {
-        It 'throws no errors' {
+        It 'disables IP allow list' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Disable-IAMIPAllowList.json"
                 return $Response | ConvertFrom-Json
             }
-            Disable-IAMIPAllowList 
+            Disable-IAMIPAllowList
         }
     }
 
     Context 'Enable-IAMIPAllowList' {
-        It 'throws no errors' {
+        It 'enables IP allow list' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Enable-IAMIPAllowList.json"
                 return $Response | ConvertFrom-Json
             }
-            Enable-IAMIPAllowList 
+            Enable-IAMIPAllowList
         }
     }
 
     #------------------------------------------------
-    #                 IAMIPAllowListStatus                  
+    #                 IAMIPAllowListStatus
     #------------------------------------------------
 
     Context 'Get-IAMIPAllowListStatus' {
-        It 'returns the correct data' {
+        It 'gets IP allow list status' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMIPAllowListStatus.json"
                 return $Response | ConvertFrom-Json
@@ -831,11 +943,11 @@ Describe 'UnSafe Akamai.IAM Tests' {
     }
 
     #------------------------------------------------
-    #                 IAMUserProfile                  
+    #                 IAMUserProfile
     #------------------------------------------------
 
     Context 'Get-IAMUserProfile' {
-        It 'returns the correct data' {
+        It 'gets current user profile' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMUserProfile.json"
                 return $Response | ConvertFrom-Json
@@ -845,19 +957,19 @@ Describe 'UnSafe Akamai.IAM Tests' {
         }
     }
 
-    Context 'Set-IAMUserProfile by parameter' {
-        It 'returns the correct data' {
+    Context 'Set-IAMUserProfile' {
+        It 'updates user profile by parameter' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserProfile.json"
                 return $Response | ConvertFrom-Json
             }
-            $SetIAMUserProfileByParam = Set-IAMUserProfile -Body $PD.GetIAMUserProfile
+            $TestParams = @{
+                'Body' = $PD.GetIAMUserProfile
+            }
+            $SetIAMUserProfileByParam = Set-IAMUserProfile @TestParams
             $SetIAMUserProfileByParam.uiIdentityId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-IAMUserProfile by pipeline' {
-        It 'returns the correct data' {
+        It 'updates user profile by pipeline' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserProfile.json"
                 return $Response | ConvertFrom-Json
@@ -868,203 +980,247 @@ Describe 'UnSafe Akamai.IAM Tests' {
     }
 
     #------------------------------------------------
-    #                 IAMUserPassword                  
+    #                 IAMUserPassword
     #------------------------------------------------
 
-    Context 'Set-IAMUserPassword - Parameter Set my' {
-        It 'throws no errors' {
+    Context 'Set-IAMUserPassword' {
+        It 'updates own password with current password verification' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserPassword.json"
                 return $Response | ConvertFrom-Json
             }
-            Set-IAMUserPassword -CurrentPassword $CurrentPassword -NewPassword $NewPassword 
+            $TestParams = @{
+                'CurrentPassword' = $CurrentPassword
+                'NewPassword'     = $NewPassword
+            }
+            Set-IAMUserPassword @TestParams
         }
-    }
-
-    Context 'Set-IAMUserPassword - Parameter Set others' {
-        It 'throws no errors' {
+        It 'updates another user password' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserPassword.json"
                 return $Response | ConvertFrom-Json
             }
-            Set-IAMUserPassword -NewPassword $NewPassword -UIIdentityID 'A-1-23CDEF'
+            $TestParams = @{
+                'NewPassword' = $NewPassword
+            }
+            'A-1-23CDEF' | Set-IAMUserPassword @TestParams
         }
     }
 
     Context 'Reset-IAMUserPassword' {
-        It 'throws no errors' {
+        It 'resets user password' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Reset-IAMUserPassword.json"
                 return $Response | ConvertFrom-Json
             }
-            Reset-IAMUserPassword -UIIdentityID A-1-23CDEF
+            'A-1-23CDEF' | Reset-IAMUserPassword
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-IAMUser @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
     #------------------------------------------------
-    #                 IAMPropertyUsers                  
+    #               IAMPropertyUsers
     #------------------------------------------------
 
-    Context 'Block-IAMPropertyUsers by parameter' {
-        It 'returns the correct data' {
+    Context 'Block-IAMPropertyUsers' {
+        It 'blocks property users by Asset ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
                 return $Response | ConvertFrom-Json
             }
-            $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers -AssetID 123456789 -UIIdentityID 'A-1-23CDEF'
+            $TestParams = @{
+                'AssetID'      = 123456789
+                'UIIdentityID' = 'A-1-23CDEF'
+            }
+            $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers @TestParams
             $BlockIAMPropertyUsersByParam[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
 
-        It 'returns the correct data with alias' {
-          Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-              $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
-              return $Response | ConvertFrom-Json
-          }
-          $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers -PropertyID 123456789 -UIIdentityID 'A-1-23CDEF'
-          $BlockIAMPropertyUsersByParam[0].uiIdentityId | Should -Not -BeNullOrEmpty
-      }
-    }
-
-    Context 'Block-IAMPropertyUsers by pipeline' {
-        It 'returns the correct data' {
+        It 'blocks property users by Property ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
                 return $Response | ConvertFrom-Json
             }
-            $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers -AssetID 123456789
+            $TestParams = @{
+                'PropertyID'   = 123456789
+                'UIIdentityID' = 'A-1-23CDEF'
+            }
+            $BlockIAMPropertyUsersByParam = Block-IAMPropertyUsers @TestParams
+            $BlockIAMPropertyUsersByParam[0].uiIdentityId | Should -Not -BeNullOrEmpty
+        }
+        It 'blocks property users by Asset ID via pipeline' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
+                return $Response | ConvertFrom-Json
+            }
+            $TestParams = @{
+                'AssetID' = 123456789
+            }
+            $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers @TestParams
             $BlockIAMPropertyUsersByPipeline[0].uiIdentityId | Should -Not -BeNullOrEmpty
         }
 
-        It 'returns the correct data with alias' {
-          Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-              $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
-              return $Response | ConvertFrom-Json
-          }
-          $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers -PropertyID 123456789
-          $BlockIAMPropertyUsersByPipeline[0].uiIdentityId | Should -Not -BeNullOrEmpty
-      }
+        It 'blocks property users by Property ID via pipeline' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Block-IAMPropertyUsers.json"
+                return $Response | ConvertFrom-Json
+            }
+            $TestParams = @{
+                'PropertyID' = 123456789
+            }
+            $BlockIAMPropertyUsersByPipeline = 'A-1-23CDEF' | Block-IAMPropertyUsers @TestParams
+            $BlockIAMPropertyUsersByPipeline[0].uiIdentityId | Should -Not -BeNullOrEmpty
+        }
     }
 
     #------------------------------------------------
-    #                 IAMUserBlockedProperties                  
+    #           IAMUserBlockedProperties
     #------------------------------------------------
 
     Context 'Get-IAMUserBlockedProperties' {
-        It 'returns the correct data' {
+        It 'gets blocked properties for a user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMUserBlockedProperties.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetIAMUserBlockedProperties = Get-IAMUserBlockedProperties -GroupID 123456 -UIIdentityID 'A-1-23CDEF'
+            $TestParams = @{
+                'GroupID'      = 123456
+                'UIIdentityID' = 'A-1-23CDEF'
+            }
+            $GetIAMUserBlockedProperties = Get-IAMUserBlockedProperties @TestParams
             $GetIAMUserBlockedProperties[0] | Should -Match '^[\d]+$'
         }
     }
 
     Context 'Set-IAMUserBlockedProperties' {
-        It 'returns the correct data' {
+        It 'updates blocked properties for a user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserBlockedProperties.json"
                 return $Response | ConvertFrom-Json
             }
-            $SetIAMUserBlockedProperties = Set-IAMUserBlockedProperties -Body @(123456, 234567) -GroupID 123456 -UIIdentityID 'A-1-23CDEF'
+            $TestParams = @{
+                'GroupID'      = 123456
+                'UIIdentityID' = 'A-1-23CDEF'
+            }
+            $SetIAMUserBlockedProperties = 123456, 234567 | Set-IAMUserBlockedProperties @TestParams
             $SetIAMUserBlockedProperties[0] | Should -Match '^[\d]+$'
         }
     }
 
     #------------------------------------------------
-    #                 IAMUser                  
+    #                 IAMUser
     #------------------------------------------------
 
-    Context 'Set-IAMUserMFA - My' {
-        It 'throws no errors' {
+    Context 'Set-IAMUserMFA' {
+        It 'enables MFA for current user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
-            Set-IAMUserMFA -Value MFA 
+            $TestParams = @{
+                'Value' = 'MFA'
+            }
+            Set-IAMUserMFA @TestParams
         }
-    }
-    
-    Context 'Set-IAMUserMFA - Other' {
-        It 'throws no errors' {
+        It 'enables MFA for another user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
-            Set-IAMUserMFA -Value MFA 
+            $TestParams = @{
+                'Value'        = 'MFA'
+                'UIIdentityID' = 'A-1-23CDEF'
+            }
+            Set-IAMUserMFA @TestParams
         }
     }
 
-    Context 'Reset-IAMUserMFA - My' {
-        It 'throws no errors' {
+    Context 'Reset-IAMUserMFA' {
+        It 'resets MFA for current user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Reset-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
-            Reset-IAMUserMFA 
+            Reset-IAMUserMFA
         }
-    }
-    
-    Context 'Reset-IAMUserMFA - Other' {
-        It 'throws no errors' {
+        It 'resets MFA for another user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Reset-IAMUserMFA.json"
                 return $Response | ConvertFrom-Json
             }
-            Reset-IAMUserMFA -UIIdentityID 'A-1-23CDEF' 
+            $TestParams = @{
+                'UIIdentityID' = 'A-1-23CDEF'
+            }
+            Reset-IAMUserMFA @TestParams
         }
     }
 
     #------------------------------------------------
-    #                 IAMProperty                  
+    #                 IAMProperty
     #------------------------------------------------
 
     Context 'Move-IAMProperty' {
-        It 'throws no errors' {
+        It 'moves property by Asset ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Move-IAMProperty.json"
                 return $Response | ConvertFrom-Json
             }
-            Move-IAMProperty -DestinationGroupID 11111 -AssetID 12345678 -SourceGroupID 22222 
+            $TestParams = @{
+                'DestinationGroupID' = 11111
+                'AssetID'            = 12345678
+                'SourceGroupID'      = 22222
+            }
+            Move-IAMProperty @TestParams
         }
 
-        It 'throws no errors when alias is used' {
-          Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-              $Response = Get-Content -Raw "$ResponseLibrary/Move-IAMProperty.json"
-              return $Response | ConvertFrom-Json
-          }
-          Move-IAMProperty -DestinationGroupID 11111 -PropertyID 12345678 -SourceGroupID 22222 
-      }
+        It 'moves property by Property ID' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/Move-IAMProperty.json"
+                return $Response | ConvertFrom-Json
+            }
+            $TestParams = @{
+                'DestinationGroupID' = 11111
+                'PropertyID'         = 12345678
+                'SourceGroupID'      = 22222
+            }
+            Move-IAMProperty @TestParams
+        }
     }
 
     #------------------------------------------------
-    #                 IAMCIDRBlock                  
+    #                 IAMCIDRBlock
     #------------------------------------------------
 
     Context 'New-IAMCIDRBlock' {
-        It 'returns the correct data' {
+        It 'creates a new CIDR block' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewIAMCIDRBlock = New-IAMCIDRBlock -CIDRBlock 1.0.0.0/24
+            $TestParams = @{
+                'CIDRBlock' = '1.0.0.0/24'
+            }
+            $NewIAMCIDRBlock = New-IAMCIDRBlock @TestParams
             $NewIAMCIDRBlock.cidrBlock | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Get-IAMCIDRBlock, single' {
-        It 'returns the correct data' {
+    Context 'Get-IAMCIDRBlock' {
+        It 'gets a single CIDR block by ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetIAMCIDRBlockSingle = Get-IAMCIDRBlock -CIDRBlockID 1234
-            $GetIAMCIDRBlockSingle.cidrBlock | Should -Not -BeNullOrEmpty
+            $PD.GetIAMCIDRBlockSingle = 1234 | Get-IAMCIDRBlock
+            $PD.GetIAMCIDRBlockSingle.cidrBlock | Should -Not -BeNullOrEmpty
         }
-    }
-    
-    Context 'Get-IAMCIDRBlock, all' {
-        It 'returns the correct data' {
+        It 'gets all CIDR blocks' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
@@ -1075,67 +1231,82 @@ Describe 'UnSafe Akamai.IAM Tests' {
     }
 
     Context 'Set-IAMCIDRBlock' {
-        It 'returns the correct data' {
+        It 'updates CIDR block settings' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
-            $SetIAMCIDRBlock = Set-IAMCIDRBlock -CIDRBlockID 1234 -CIDRBlock 1.0.0.0/24 -Comments 'Testing'
+            $TestParams = @{
+                'CIDRBlock' = '1.0.0.0/24'
+                'Comments'  = 'Testing'
+            }
+            $SetIAMCIDRBlock = $PD.GetIAMCIDRBlockSingle | Set-IAMCIDRBlock @TestParams
             $SetIAMCIDRBlock.cidrBlock | Should -Not -BeNullOrEmpty
         }
     }
 
     Context 'Test-IAMCIDRBlock' {
-        It 'throws no errors' {
+        It 'validates CIDR block format' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Test-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
-            Test-IAMCIDRBlock -CIDRBlock 1.0.0.0/24
+            '1.0.0.0/24' | Test-IAMCIDRBlock
         }
     }
 
     Context 'Remove-IAMCIDRBlock' {
-        It 'throws no errors' {
+        It 'removes a CIDR block' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMCIDRBlock.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-IAMCIDRBlock -CIDRBlockID 1234
+            1234 | Remove-IAMCIDRBlock
         }
     }
 
     #------------------------------------------------
-    #                 IAMAllowedCPCodes                  
+    #                 IAMAllowedCPCodes
     #------------------------------------------------
 
     Context 'Get-IAMAllowedCPCodes' {
-        It 'returns the correct data' {
+        It 'gets allowed CP codes for a user' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMAllowedCPCodes.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetIAMAllowedCPCodes = Get-IAMAllowedCPCodes -Body $TestAvailableCPCodesJSON -Username dvader
+            $TestParams = @{
+                'Body'     = $TestAvailableCPCodesJSON
+                'Username' = 'dvader'
+            }
+            $GetIAMAllowedCPCodes = Get-IAMAllowedCPCodes @TestParams
             $GetIAMAllowedCPCodes[0].name | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 IAMAPIClient                  
+    #                 IAMAPIClient
     #------------------------------------------------
 
-    Context 'Remove-IAMAPICredential - Parameter Set self' {
+    Context 'Remove-IAMAPICredential' {
         It 'throws no errors' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-IAMAPICredential -CredentialID 12345 
+            12345 | Remove-IAMAPICredential
+        }
+        It 'handles empty input correctly' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
+                return 'IAR executed'
+            }
+            $Result = & {} | Remove-IAMAPICredential @CommonParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
-    Context 'Lock-IAMAPIClient - Parameter Set self' {
-        It 'returns the correct data' {
+    Context 'Lock-IAMAPIClient' {
+        It 'locks own API client' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Lock-IAMAPIClient.json"
                 return $Response | ConvertFrom-Json
@@ -1145,81 +1316,101 @@ Describe 'UnSafe Akamai.IAM Tests' {
         }
     }
 
-    Context 'Remove-IAMAPIClient - Parameter Set self' {
-        It 'throws no errors' {
+    Context 'Remove-IAMAPIClient' {
+        It 'removes an API client by ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMAPIClient.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-IAMAPIClient 
+            $TestParams = @{
+                'ClientID' = 12345
+            }
+            Remove-IAMAPIClient @TestParams
         }
     }
 
     #------------------------------------------------
-    #                 IAMAPICredential                  
+    #                 IAMAPICredential
     #------------------------------------------------
 
-    Context 'New-IAMAPICredential - Parameter Set single' {
-        It 'returns the correct data' {
+    Context 'New-IAMAPICredential' -Tag 'New-IAMAPICredential' {
+        It 'creates API credential for a client' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewIAMAPICredentialSingle = New-IAMAPICredential -ClientID xfz2n5d43mogkdim
+            $TestParams = @{
+                'ClientID'        = 'xfz2n5d43mogkdim'
+                'APIResponseOnly' = $true
+            }
+            $NewIAMAPICredentialSingle = New-IAMAPICredential @TestParams
             $NewIAMAPICredentialSingle.credentialId | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Get-IAMAPICredential - Parameter Set single' {
-        It 'returns the correct data' {
+    Context 'Get-IAMAPICredential' {
+        It 'gets API credential by client and credential ID' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
-            $PD.GetIAMAPICredentialSingle = Get-IAMAPICredential -ClientID xfz2n5d43mogkdim -CredentialID 14111
+            $TestParams = @{
+                'ClientID'     = 'xfz2n5d43mogkdim'
+                'CredentialID' = 14111
+            }
+            $PD.GetIAMAPICredentialSingle = Get-IAMAPICredential @TestParams
             $PD.GetIAMAPICredentialSingle.credentialId | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Set-IAMAPICredential - Parameter Set single, by parameter' {
-        It 'returns the correct data' {
+    Context 'Set-IAMAPICredential' {
+        BeforeAll {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
-            $SetIAMAPICredentialSingleByParam = Set-IAMAPICredential -Body $PD.GetIAMAPICredentialSingle -ClientID xfz2n5d43mogkdim -CredentialID 14111
+        }
+        It 'updates API credential by parameter' {
+            $TestParams = @{
+                'Body'         = $PD.GetIAMAPICredentialSingle
+                'ClientID'     = 'xfz2n5d43mogkdim'
+                'CredentialID' = 14111
+            }
+            $SetIAMAPICredentialSingleByParam = Set-IAMAPICredential @TestParams
             $SetIAMAPICredentialSingleByParam.expiresOn | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-IAMAPICredential - Parameter Set single, by pipeline' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Set-IAMAPICredential.json"
-                return $Response | ConvertFrom-Json
+        It 'updates API credential by pipeline' {
+            $TestParams = @{
+                'ClientID' = 'xfz2n5d43mogkdim'
             }
-            $SetIAMAPICredentialSingleByPipeline = ($PD.GetIAMAPICredentialSingle | Set-IAMAPICredential -ClientID xfz2n5d43mogkdim -CredentialID 14111)
+            $SetIAMAPICredentialSingleByPipeline = $PD.GetIAMAPICredentialSingle | Set-IAMAPICredential @TestParams
             $SetIAMAPICredentialSingleByPipeline.expiresOn | Should -Not -BeNullOrEmpty
         }
     }
 
-    Context 'Disable-IAMAPICredential - Parameter Set single' {
-        It 'throws no errors' {
+    Context 'Disable-IAMAPICredential' {
+        It 'disables API credential for a client' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Disable-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
-            Disable-IAMAPICredential -ClientID xfz2n5d43mogkdim -CredentialID 14111 
+            $TestParams = @{
+                'ClientID' = 'xfz2n5d43mogkdim'
+            }
+            $PD.GetIAMAPICredentialSingle | Disable-IAMAPICredential @TestParams
         }
     }
 
-    Context 'Remove-IAMAPICredential - Parameter Set single' {
+    Context 'Remove-IAMAPICredential' {
         It 'throws no errors' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.IAM -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Remove-IAMAPICredential.json"
                 return $Response | ConvertFrom-Json
             }
-            Remove-IAMAPICredential -ClientID xfz2n5d43mogkdim -CredentialID 14111 
+            $TestParams = @{
+                'ClientID' = 'xfz2n5d43mogkdim'
+            }
+            $PD.GetIAMAPICredentialSingle | Remove-IAMAPICredential @TestParams
         }
     }
 }

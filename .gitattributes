@@ -1,4 +1,10 @@
-*       text=auto
+# Default behavior, performs as if core.autocrlf is set
+* text=auto
+
+# Files to be normalized and converted to native line endings on checkout
+*.md  text
+
+# Files that will always have CRLF line endings on checkout
 *.ps1   text    eol=crlf
 *.psm1  text    eol=crlf
 *.psd1  text    eol=crlf
