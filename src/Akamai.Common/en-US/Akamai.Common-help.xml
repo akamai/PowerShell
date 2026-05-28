@@ -1820,7 +1820,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EnvironmentPrefix</maml:name>
         <maml:description>
-          <maml:para>String to prepend environment variables, e.g. with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
+          <maml:para>String to prepend environment variables, for example, with a value of `MyCreds` the function will create environment variables `AKAMAI_MYCREDS_HOST` and so on.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1898,7 +1898,7 @@
     </command:details>
     <maml:description>
       <maml:para>Takes in either a set of Netstorage credentials or a .nsrc file and section and sets the appropriate environment variables for subsequent request. This allows you to set the credentials your requests will use for a given session in your shell, and avoid having to provide these for every command. To clear your credentials use Clear-NetstorageCredentials.</maml:para>
-      <maml:para>Alongside your credentials you can also specify an EnvironmentPrefix. This will be added as a prefix to your environment variables, e.g. `-EnvironmentPrefix MyCreds` will result in NETSTORAGE_MYCREDS_CPCODE, and so on. These credentials will be loaded by any command which specifies -Section of MyCreds.</maml:para>
+      <maml:para>Alongside your credentials you can also specify an EnvironmentPrefix. This will be added as a prefix to your environment variables, for example, `-EnvironmentPrefix MyCreds` will result in NETSTORAGE_MYCREDS_CPCODE, and so on. These credentials will be loaded by any command which specifies -Section of MyCreds.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1918,7 +1918,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EnvironmentPrefix</maml:name>
           <maml:description>
-            <maml:para>String to prepend environment variables, e.g. with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
+            <maml:para>String to prepend environment variables, for example, with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1981,7 +1981,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EnvironmentPrefix</maml:name>
           <maml:description>
-            <maml:para>String to prepend environment variables, e.g. with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
+            <maml:para>String to prepend environment variables, for example, with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2032,7 +2032,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EnvironmentPrefix</maml:name>
         <maml:description>
-          <maml:para>String to prepend environment variables, e.g. with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
+          <maml:para>String to prepend environment variables, for example, with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -4697,7 +4697,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EnableRateLimitWarnings</maml:name>
           <maml:description>
-            <maml:para>Enables outputting a warning when you have reached a set percentage of your rate limit, e.g. if the limit is 500 requests, your warning percentage is 80 and you have expended 400 requests, any further requests before the rate limit repleneshes will result in a warning being printed to the shell.</maml:para>
+            <maml:para>Enables outputting a warning when you have reached a set percentage of your rate limit, for example, if the limit is 500 requests, your warning percentage is 80 and you have expended 400 requests, any further requests before the rate limit repleneshes will result in a warning being printed to the shell.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
           <dev:type>
