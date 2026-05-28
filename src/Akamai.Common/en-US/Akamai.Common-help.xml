@@ -614,7 +614,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function will remove any environment variables relating to your EdgeGrid credentials. Specifically, if you do not specify a -Section parameter the following variables will be removed: AKAMAI_HOST, AKAMAI_CLIENT_TOKEN, AKAMAI_ACCESS_TOKEN, AKAMAI_CLIENT_SECRET &amp; AKAMAI_ACCOUNT_KEY (if it exists). If you do specify a -Section, that value will be used as a prefix between AKAMAI and the remainder of the variable name, e.g. -Section MyCreds will clear AKAMAI_MYCREDS_HOST and so on.</maml:para>
+      <maml:para>Removes any environment variables relating to your EdgeGrid credentials. Specifically, if you do not specify a `-Section` parameters the following variables are removed: `AKAMAI_HOST`, `AKAMAI_CLIENT_TOKEN`, `AKAMAI_ACCESS_TOKEN`, `AKAMAI_CLIENT_SECRET`, and `AKAMAI_ACCOUNT_KEY` (if it exists). If you specify a `-Section`, that value is used as a prefix between `AKAMAI` and the remainder of the variable name, for example, `-Section MyCreds` clears `AKAMAI_MYCREDS_HOST` and so on.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -665,7 +665,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function will remove any environment variables relating to your Netstorage credentials. Specifically, if you do not specify a -Section parameter the following variables will be removed: NETSTORAGE_KEY, NETSTORAGE_GROUP, NETSTORAGE_HOST, NETSTORAGE_ID &amp; NETSTORAGE_CPCODE. If you do specify a -Section, that value will be used as a prefix between NETSTORAGE and the remainder of the variable name, e.g. -Section MyCreds will clear NETSTORAGE_MYCREDS_KEY and so on.</maml:para>
+      <maml:para>Removes any environment variables relating to your Netstorage credentials. Specifically, if you do not specify a `-Section` parameter the following variables are removed: `NETSTORAGE_KEY`, `NETSTORAGE_GROUP`, `NETSTORAGE_HOST`, `NETSTORAGE_ID`, and `NETSTORAGE_CPCODE`. If you specify a `-Section`, that value is used as a prefix between `NETSTORAGE` and the remainder of the variable name, for example, `-Section MyCreds` clears `NETSTORAGE_MYCREDS_KEY` and so on.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -716,7 +716,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function will take a given set of EdgeGrid credentials and write them to a .edgerc file, either in the [default] section or a custom section if provided.</maml:para>
+      <maml:para>Takes a given set of EdgeGrid credentials and writes them to an `.edgerc` file, either in the `[default]` section or a custom section if provided.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -959,7 +959,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function will take a given set of Netstorage credentials and write them to a .nsrc file, either in the [default] section or a custom section if provided.</maml:para>
+      <maml:para>Takes a given set of Netstorage credentials and writes them to an `.nsrc` file, either in the `[default]` section or a custom section if provided.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1400,8 +1400,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function will load EdgeGrid credentials by checking for environment variables (AKAMAI_HOST, AKAMAI_CLIENT_TOKEN etc.) or your .edgerc file. These can then be used to sign requests, or be saved to a file with `Export-EdgeGridCredentials`. If you specify a .edgerc file, that will be tried directly. If not, we check Environment Variables first, then the default .edgerc file location (~/.edgerc), finally throwing an error if no credentials can be found.</maml:para>
-      <maml:para>If you specify a -Section parameter, we will check for environment variables with that value as a prefix, e.g. `-Section MyCreds` will instruct the function to look for AKAMAI_MYCREDS_HOST and so on.</maml:para>
+      <maml:para>Loads EdgeGrid credentials by checking for environment variables (`AKAMAI_HOST`, `AKAMAI_CLIENT_TOKEN`, and other) or your `.edgerc` file. These can then be used to sign requests, or be saved to a file with `Export-EdgeGridCredentials`. If you specify an `.edgerc` file, that will be tried directly. If not, it checks environment variables first, then the default `.edgerc` file location (`~/.edgerc`), finally throwing an error if no credentials can be found.</maml:para>
+      <maml:para>If you specify a `-Section` parameter, this checks for environment variables with that value as a prefix, for example, `-Section MyCreds` instructs the function to look for `AKAMAI_MYCREDS_HOST` and so on.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1625,8 +1625,8 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function takes in either a set of EdgeGrid credentials or a .edgerc file and section and sets the appropriate environment variables for subsequent requests. This allows you to set the credentials your requests will use for a given sessionin your shell, and avoid having to provide these for every command. To clear your credentials use Clear-EdgeGridCredentials.</maml:para>
-      <maml:para>Alongside your credentials you can also specify an EnvironmentPrefix. This will be added as a prefix to your environment variables, e.g. `-EnvironmentPrefix MyCreds` will result in AKAMAI_MYCREDS_HOST, and so on. These credentials will be loaded by any command which specifies -Section of MyCreds.</maml:para>
+      <maml:para>Takes in either a set of EdgeGrid credentials or an `.edgerc` file and section and sets the appropriate environment variables for subsequent requests. This allows you to set the credentials your requests will use for a given session in your shell, and avoid having to provide these for every command. To clear your credentials use `Clear-EdgeGridCredentials`.</maml:para>
+      <maml:para>Alongside your credentials you can also specify an `EnvironmentPrefix`. This will be added as a prefix to your environment variables, for example, `-EnvironmentPrefix MyCreds` results in `AKAMAI_MYCREDS_HOST`, and so on. These credentials are loaded by any command which specifies `-Section` of `MyCreds`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1682,7 +1682,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EnvironmentPrefix</maml:name>
           <maml:description>
-            <maml:para>String to prepend environment variables, e.g. with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
+            <maml:para>String to prepend environment variables, for example, with a value of `MyCreds` the function creates environment variables `AKAMAI_MYCREDS_HOST`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1709,7 +1709,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="AccountKey, account_key">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use `Get-AccountSwitchKey` (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1733,7 +1733,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EnvironmentPrefix</maml:name>
           <maml:description>
-            <maml:para>String to prepend environment variables, e.g. with a value of MyCreds the function will create environment variables AKAMAI_MYCREDS_HOST and so on.</maml:para>
+            <maml:para>String to prepend environment variables, for example, with a value of `MyCreds` the function creates environment variables `AKAMAI_MYCREDS_HOST` and so on.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1897,7 +1897,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function takes in either a set of Netstorage credentials or a .nsrc file and section and sets the appropriate environment variables for subsequent request. This allows you to set the credentials your requests will use for a given session in your shell, and avoid having to provide these for every command. To clear your credentials use Clear-NetstorageCredentials.</maml:para>
+      <maml:para>Takes in either a set of Netstorage credentials or a .nsrc file and section and sets the appropriate environment variables for subsequent request. This allows you to set the credentials your requests will use for a given session in your shell, and avoid having to provide these for every command. To clear your credentials use Clear-NetstorageCredentials.</maml:para>
       <maml:para>Alongside your credentials you can also specify an EnvironmentPrefix. This will be added as a prefix to your environment variables, e.g. `-EnvironmentPrefix MyCreds` will result in NETSTORAGE_MYCREDS_CPCODE, and so on. These credentials will be loaded by any command which specifies -Section of MyCreds.</maml:para>
     </maml:description>
     <command:syntax>
@@ -2157,7 +2157,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Provides an authorization wrapper around `Invoke-RestMethod` for use with the NetStorage API. Note: this function has been superceded by Invoke-NetstorageRequest, and will not receive further updates.</maml:para>
+      <maml:para>Provides an authorization wrapper around `Invoke-RestMethod` for use with the NetStorage API. &gt; Note: This function has been superceded by `Invoke-NetstorageRequest`, and will not receive further updates.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2810,7 +2810,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Constructs a call to `Invoke-RestMethod` from the given `-Path`, `-Method`, and other additional parameters and adds necessary authorization details retrieved from `Get-AkamaiCredentials`. The response is formatted into a `PSCustomObject` of the response body. Note: this function has been superceded by Invoke-AkamaiRequest and will not receive further updates.</maml:para>
+      <maml:para>Constructs a call to `Invoke-RestMethod` from the given `-Path`, `-Method`, and other additional parameters and adds necessary authorization details retrieved from `Get-AkamaiCredentials`. The response is formatted into a `PSCustomObject` of the response body. &gt; Note: This function has been superceded by `Invoke-AkamaiRequest` and will not receive further updates.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -3157,7 +3157,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function is an upgrade of the older Invoke-NSAPIRequest, which interfaces between Netstorage sub-module functions and the Netstorage usage API. Credentials are loaded from environment variables or a provided .nsrc file and requests are signed. This function uses Invoke-RestMethod at its core.</maml:para>
+      <maml:para>This function is an upgrade of the older `Invoke-NSAPIRequest`, which interfaces between Netstorage sub-module functions and the Netstorage usage API. Credentials are loaded from environment variables or a provided `.nsrc` file and requests are signed. This function uses `Invoke-RestMethod` at its core.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4641,7 +4641,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates any of the supported Akamai options, either as booleans to enable or disable certain features, for example, `-EnableErrorRetried $true`, or as integers to set various thresholds and limits, for example, `-MaxErrorRetries 2`. You can also reset all options to their defaults with `-RestoreDefaults`.  &gt; Note: You can't set any options and restore the others to default in a single command. You need to restore the defaults first, then set whatever options you wish.</maml:para>
+      <maml:para>Updates any of the supported Akamai options, either as booleans to enable or disable certain features, for example, `-EnableErrorRetries $true`, or as integers to set various thresholds and limits, for example, `-MaxErrorRetries 2`. You can also reset all options to their defaults with `-RestoreDefaults`.  &gt; Note: You can't set any options and restore the others to default in a single command. You need to restore the defaults first, then set whatever options you wish.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4822,7 +4822,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EnableRateLimitWarnings</maml:name>
         <maml:description>
-          <maml:para>Enables outputting a warning when you have reached a set percentage of your rate limit, e.g. if the limit is 500 requests, your warning percentage is 80 and you have expended 400 requests, any further requests before the rate limit repleneshes will result in a warning being printed to the shell.</maml:para>
+          <maml:para>Enables outputting a warning when you have reached a set percentage of your rate limit, for example, if the limit is 500 requests, your warning percentage is 80 and you have expended 400 requests, any further requests before the rate limit repleneshes will result in a warning being printed to the shell.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Boolean</command:parameterValue>
         <dev:type>
@@ -4935,7 +4935,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>This function validates your EdgeGrid credentials match the expected format by regular expression. No API requests are made to perform the validation, so your credentials may still not function properly.</maml:para>
+      <maml:para>Validates your EdgeGrid credentials match the expected format by regular expression. No API requests are made to perform the validation, so your credentials may still not function properly.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>

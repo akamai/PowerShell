@@ -1521,7 +1521,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Generates a default test suite with test cases and variables for a specific property version and a URL. Based on property settings and its behaviors and the URL, Test Center generates a default test suite object with test cases and variables. You can modify the generated test suite and add it to Test Center using New-TestSuite.</maml:para>
+      <maml:para>Generates a default test suite with test cases and variables for a specific property version and a URL. Based on property settings and its behaviors and the URL, Test Center generates a default test suite object with test cases and variables. You can modify the generated test suite and add it to Test Center using `New-TestSuite`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1965,7 +1965,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Client</maml:name>
           <maml:description>
-            <maml:para>Client type you want to use for the test run, either CHROME or CURL.</maml:para>
+            <maml:para>Client type you want to use for the test run, either `CHROME` or `CURL`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">CHROME</command:parameterValue>
@@ -2005,7 +2005,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EncodeRequestBody</maml:name>
           <maml:description>
-            <maml:para>Encodes requestBody. It applies only if clientType is set to CURL and requestMethod to POST, true by default.</maml:para>
+            <maml:para>Encodes requestBody. It applies only if `clientType` is set to `CURL` and `requestMethod` to `POST`. Defaults to `true`.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -2031,7 +2031,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPVersion</maml:name>
           <maml:description>
-            <maml:para>IP version to use in the test run, either IPV4 or IPV6.</maml:para>
+            <maml:para>IP version to use in the test run, either `IPV4` or `IPV6`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">IPV4</command:parameterValue>
@@ -2058,7 +2058,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>RequestBody</maml:name>
           <maml:description>
-            <maml:para>Request body for the testRequestUrl. Provide it only if clientType is set to CURL and requestMethod is POST.</maml:para>
+            <maml:para>Request body for the `testRequestUrl`. Provide it only if `clientType` is set to `CURL` and `requestMethod` is `POST`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -2070,7 +2070,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>RequestHeaders</maml:name>
           <maml:description>
-            <maml:para>One or more hashtables with the following members: headerAction - should always be 'ADD', headerName - the name of the header to add, headerValue - the value of the header to add. For example `@{ headerAction = 'ADD'; headerName = 'user-agent'; headerValue = 'powershell' }`.</maml:para>
+            <maml:para>One or more hashtables with the following members: `headerAction` - should always be 'ADD', `headerName` - the name of the header to add, `headerValue` - the value of the header to add. For example `@{ headerAction = 'ADD'; headerName = 'user-agent'; headerValue = 'powershell' }`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable[]</command:parameterValue>
           <dev:type>
@@ -2186,7 +2186,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Client</maml:name>
         <maml:description>
-          <maml:para>Client type you want to use for the test run, either CHROME or CURL.</maml:para>
+          <maml:para>Client type you want to use for the test run, either `CHROME` or `CURL`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2222,7 +2222,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EncodeRequestBody</maml:name>
         <maml:description>
-          <maml:para>Encodes requestBody. It applies only if clientType is set to CURL and requestMethod to POST, true by default.</maml:para>
+          <maml:para>Encodes `requestBody`. It applies only if `clientType` is set to `CURL` and `requestMethod` to `POST`. Defaults to `true`.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -2246,7 +2246,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>IPVersion</maml:name>
         <maml:description>
-          <maml:para>IP version to use in the test run, either IPV4 or IPV6.</maml:para>
+          <maml:para>IP version to use in the test run, either `IPV4` or `IPV6`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -2270,7 +2270,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>RequestBody</maml:name>
         <maml:description>
-          <maml:para>Request body for the testRequestUrl. Provide it only if clientType is set to CURL and requestMethod is POST.</maml:para>
+          <maml:para>Request body for the `testRequestUrl`. Provide it only if `clientType` is set to `CURL` and `requestMethod` is `POST`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3006,7 +3006,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>VariableGroupValue</maml:name>
           <maml:description>
-            <maml:para>Specifies a variable group referenced in testRequestUrl, headerName, headerValue, requestBody, or conditionExpression of a test case. Variable groups appear with {{variableName.columnHeader}} syntax.</maml:para>
+            <maml:para>Specifies a variable group referenced in `testRequestUrl`, `headerName`, `headerValue`, `requestBody`, or `conditionExpression` of a test case. Variable groups appear with `{{variableName.columnHeader}}` syntax.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Hashtable[]</command:parameterValue>
           <dev:type>
@@ -3191,7 +3191,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>VariableGroupValue</maml:name>
         <maml:description>
-          <maml:para>Specifies a variable group referenced in testRequestUrl, headerName, headerValue, requestBody, or conditionExpression of a test case. Variable groups appear with {{variableName.columnHeader}} syntax.</maml:para>
+          <maml:para>Specifies a variable group referenced in `testRequestUrl`, `headerName`, `headerValue`, `requestBody`, or `conditionExpression` of a test case. Variable groups appear with `{{variableName.columnHeader}}` syntax.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">Hashtable[]</command:parameterValue>
         <dev:type>
@@ -5025,7 +5025,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>TargetEnvironment</maml:name>
           <maml:description>
-            <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+            <maml:para>Environment against which the test run executes the request, either `PRODUCTION` or `STAGING`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
@@ -5162,7 +5162,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>TargetEnvironment</maml:name>
           <maml:description>
-            <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+            <maml:para>Environment against which the test run executes the request, either `PRODUCTION`or `STAGING`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
@@ -5313,7 +5313,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>TargetEnvironment</maml:name>
         <maml:description>
-          <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+          <maml:para>Environment against which the test run executes the request, either `PRODUCTION` or `STAGING`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5465,7 +5465,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Client</maml:name>
           <maml:description>
-            <maml:para>Client type you want to use for the test run, either CHROME or CURL.</maml:para>
+            <maml:para>Client type you want to use for the test run, either `CHROME` or `CURL`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">CHROME</command:parameterValue>
@@ -5505,7 +5505,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EncodeRequestBody</maml:name>
           <maml:description>
-            <maml:para>Encodes requestBody. It applies only if clientType is set to CURL and requestMethod to POST, true by default.</maml:para>
+            <maml:para>Encodes `requestBody`. It applies only if `clientType` is set to `CURL` and `requestMethod` to `POST`. Defaults to `true`.</maml:para>
           </maml:description>
           <dev:type>
             <maml:name>SwitchParameter</maml:name>
@@ -5531,7 +5531,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>IPVersion</maml:name>
           <maml:description>
-            <maml:para>IP version to use in the test run, either IPV4 or IPV6.</maml:para>
+            <maml:para>IP version to use in the test run, either `IPV4` or `IPV6`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">IPV4</command:parameterValue>
@@ -5570,7 +5570,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>RequestBody</maml:name>
           <maml:description>
-            <maml:para>Request body for the testRequestUrl. Provide it only if clientType is set to CURL and requestMethod is POST.</maml:para>
+            <maml:para>Request body for the `testRequestUrl`. Provide it only if `clientType` is set to `CURL` and `requestMethod` is `POST`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -5641,7 +5641,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>TargetEnvironment</maml:name>
           <maml:description>
-            <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+            <maml:para>Environment against which the test run executes the request, either `PRODUCTION` or `STAGING`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
@@ -5696,7 +5696,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Client</maml:name>
         <maml:description>
-          <maml:para>Client type you want to use for the test run, either CHROME or CURL.</maml:para>
+          <maml:para>Client type you want to use for the test run, either `CHROME` or `CURL`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5732,7 +5732,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EncodeRequestBody</maml:name>
         <maml:description>
-          <maml:para>Encodes requestBody. It applies only if clientType is set to CURL and requestMethod to POST, true by default.</maml:para>
+          <maml:para>Encodes `requestBody`. It applies only if `clientType` is set to `CURL` and `requestMethod` to `POST`. Defaults to `true`.</maml:para>
         </maml:description>
         <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
         <dev:type>
@@ -5756,7 +5756,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>IPVersion</maml:name>
         <maml:description>
-          <maml:para>IP version to use in the test run, either IPV4 or IPV6.</maml:para>
+          <maml:para>IP version to use in the test run, either `IPV4` or `IPV6`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5792,7 +5792,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>RequestBody</maml:name>
         <maml:description>
-          <maml:para>Request body for the testRequestUrl. Provide it only if clientType is set to CURL and requestMethod is POST.</maml:para>
+          <maml:para>Request body for the `testRequestUrl`. Provide it only if `clientType` is set to `CURL` and `requestMethod` is `POST`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5864,7 +5864,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>TargetEnvironment</maml:name>
         <maml:description>
-          <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+          <maml:para>Environment against which the test run executes the request, either `PRODUCTION` or `STAGING`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -5965,7 +5965,7 @@
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
           <maml:name>TargetEnvironment</maml:name>
           <maml:description>
-            <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+            <maml:para>Environment against which the test run executes the request, either `PRODUCTION` or `STAGING`.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
@@ -6126,7 +6126,7 @@
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
         <maml:name>TargetEnvironment</maml:name>
         <maml:description>
-          <maml:para>Environment against which the test run executes the request, either PRODUCTION or STAGING.</maml:para>
+          <maml:para>Environment against which the test run executes the request, either `PRODUCTION` or `STAGING`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
