@@ -15,7 +15,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMASMap</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -90,7 +90,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -142,7 +142,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -171,10 +171,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmasmap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/get-as-map</maml:uri>
       </maml:navigationLink>
@@ -195,7 +191,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMCIDRMap</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -246,7 +242,7 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -261,7 +257,7 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
-          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -270,7 +266,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -322,6 +318,134 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-cidr-map</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-GTMContract</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>GTMContract</command:noun>
+      <maml:description>
+        <maml:para>List contracts.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get a list contracts for an API client. &gt; Note: When a client has access to more than one contract, downstream calls require you to designate a contract.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-GTMContract</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
           <maml:name>None</maml:name>
         </dev:type>
         <maml:description>
@@ -351,12 +475,8 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmcidrmap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-cidr-map</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-identity-contracts</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -375,7 +495,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMDatacenter</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -387,7 +507,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
           <maml:name>DatacenterID</maml:name>
           <maml:description>
             <maml:para>A numeric D of the data center.</maml:para>
@@ -450,7 +570,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>DatacenterID</maml:name>
         <maml:description>
           <maml:para>A numeric D of the data center.</maml:para>
@@ -462,7 +582,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -502,7 +622,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>System.Int32</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -531,10 +651,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmdatacenter</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/get-datacenter</maml:uri>
       </maml:navigationLink>
@@ -555,7 +671,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMDatacenterLatency</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -690,7 +806,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -778,7 +894,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -807,10 +923,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmdatacenterlatency</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-latency-datacenter</maml:uri>
       </maml:navigationLink>
@@ -831,7 +943,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMDemand</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -930,7 +1042,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -1006,7 +1118,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1035,10 +1147,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmdemand</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-demand-property</maml:uri>
       </maml:navigationLink>
@@ -1059,7 +1167,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMDomain</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -1122,7 +1230,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -1162,7 +1270,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1191,12 +1299,160 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmdomain</maml:uri>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-domain</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-GTMDomainAuthority</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>GTMDomainAuthority</command:noun>
+      <maml:description>
+        <maml:para>List domain authorities.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get domain authorities for a custom GTM domain.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-GTMDomainAuthority</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
+          <maml:name>DomainName</maml:name>
+          <maml:description>
+            <maml:para>The full GTM domain name.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
+        <maml:name>DomainName</maml:name>
+        <maml:description>
+          <maml:para>The full GTM domain name.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-domain</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-domain-authorities</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1215,7 +1471,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMDomainHistory</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -1232,9 +1488,9 @@
           <maml:description>
             <maml:para>The page number to return. The first is page `1`.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1244,9 +1500,9 @@
           <maml:description>
             <maml:para>The number of elements to return per page. The default is 25.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1302,7 +1558,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -1331,9 +1587,9 @@
         <maml:description>
           <maml:para>The page number to return. The first is page `1`.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -1343,6 +1599,18 @@
         <maml:description>
           <maml:para>The number of elements to return per page. The default is 25.</maml:para>
         </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
           <maml:name>String</maml:name>
@@ -1350,7 +1618,123 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-domain-history</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-GTMDomainList</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>GTMDomainList</command:noun>
+      <maml:description>
+        <maml:para>List domains.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get a list of and high level details for your GTM domains.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-GTMDomainList</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -1395,12 +1779,8 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmdomainhistory</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-domain-history</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-domain-list</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1419,7 +1799,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMDomainStatus</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -1482,7 +1862,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -1522,7 +1902,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1551,12 +1931,160 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmdomainstatus</maml:uri>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-status-current</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-GTMDomainSummary</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>GTMDomainSummary</command:noun>
+      <maml:description>
+        <maml:para>Get domain details.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get details for a GTM domain.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-GTMDomainSummary</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="name">
+          <maml:name>DomainName</maml:name>
+          <maml:description>
+            <maml:para>The full GTM domain name.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="name">
+        <maml:name>DomainName</maml:name>
+        <maml:description>
+          <maml:para>The full GTM domain name.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-status-current</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-domain-list-domain</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1575,7 +2103,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMGeoMap</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -1650,7 +2178,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -1702,6 +2230,134 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-geographic-map</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-GTMGroup</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>GTMGroup</command:noun>
+      <maml:description>
+        <maml:para>List groups.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get a list of groups for an API client. Note: When a client has access to more than one group, downstream calls require you to designate a group.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-GTMGroup</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
           <maml:name>None</maml:name>
         </dev:type>
         <maml:description>
@@ -1731,12 +2387,136 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmgeomap</maml:uri>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-identity-groups</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Get-GTMIdentity</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>GTMIdentity</command:noun>
+      <maml:description>
+        <maml:para>Get identity.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>Get information about an API client's user and permissions.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-GTMIdentity</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>None</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Overview</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-geographic-map</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/get-identity</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -1750,15 +2530,15 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>GTM combines scores (based on liveness tests) from all web agents to calculate server scores and makes liveness decisions. </maml:para>
-      <maml:para>The cutoff value is computed for each property from the median scores for all the servers in the property. Any property server with a score over the cutoff value is considered dead and it won't be handed out. </maml:para>
-      <maml:para>In the request, you should provide values either for the `-Start` and `-End` time or the `-MostRecent` parameter, and not both. </maml:para>
+      <maml:para>GTM combines scores (based on liveness tests) from all web agents to calculate server scores and makes liveness decisions.</maml:para>
+      <maml:para>The cutoff value is computed for each property from the median scores for all the servers in the property. Any property server with a score over the cutoff value is considered dead and it won't be handed out.</maml:para>
+      <maml:para>In the request, you should provide values either for the `-Start` and `-End` time or the `-MostRecent` parameter, and not both.</maml:para>
       <maml:para>In the response, the `handedOut` parameter in JSON or the `handOut` parameter in CSV indicates whether the server was handed out. The `alive` parameter indicates whether GTM considered the server as alive or not.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMIPAvailability</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -1904,7 +2684,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -2004,7 +2784,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2033,10 +2813,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmipavailability</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-ip-availability-property</maml:uri>
       </maml:navigationLink>
@@ -2052,13 +2828,13 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Retrieves a collection of reports containing logs of individual liveness tests that have failed. Liveness tests are run periodically by web agents installed in customer data centers. Liveness scores are used by GTM to decide whether a data center is alive or not. </maml:para>
+      <maml:para>Retrieves a collection of reports containing logs of individual liveness tests that have failed. Liveness tests are run periodically by web agents installed in customer data centers. Liveness scores are used by GTM to decide whether a data center is alive or not.</maml:para>
       <maml:para>Liveness tests that fail in succession (tests that run from the same testing agent to the same origin server, which fail with the same error code) are grouped together and represented with a duration. This duration value is in seconds and can sustain for up to 86400 seconds (one day). If it crosses that boundary, GTM logs it as a new failure at the beginning of the next day (00:00 UTC), with the duration reset to that point.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMLivenessPerProperty</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -2193,7 +2969,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -2257,7 +3033,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2284,10 +3060,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmlivenessperproperty</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -2442,10 +3214,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmlivenesstesterror</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-liveness-tests-error-code</maml:uri>
       </maml:navigationLink>
@@ -2466,7 +3234,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMLoadData</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -2565,7 +3333,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -2617,7 +3385,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2644,10 +3412,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmloaddata</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -2670,7 +3434,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMLoadFeedbackReport</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -2769,7 +3533,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -2845,7 +3609,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2874,10 +3638,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmloadfeedbackreport</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-load-feedback</maml:uri>
       </maml:navigationLink>
@@ -2898,7 +3658,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMProperty</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -2973,7 +3733,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -3025,7 +3785,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3054,10 +3814,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmproperty</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/get-property</maml:uri>
       </maml:navigationLink>
@@ -3078,7 +3834,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMResource</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -3153,7 +3909,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -3205,7 +3961,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3234,10 +3990,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmresource</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/get-resource</maml:uri>
       </maml:navigationLink>
@@ -3258,7 +4010,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMTrafficPerDatacenter</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -3369,7 +4121,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -3433,7 +4185,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3462,10 +4214,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmtrafficperdatacenter</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm-reporting/reference/get-traffic-datacenter</maml:uri>
       </maml:navigationLink>
@@ -3486,7 +4234,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-GTMTrafficPerProperty</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
           <maml:name>DomainName</maml:name>
           <maml:description>
             <maml:para>The full GTM domain name.</maml:para>
@@ -3585,7 +4333,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="name">
         <maml:name>DomainName</maml:name>
         <maml:description>
           <maml:para>The full GTM domain name.</maml:para>
@@ -3661,7 +4409,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3688,10 +4436,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-gtmtrafficperproperty</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -3902,10 +4646,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmasmap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-as-map</maml:uri>
       </maml:navigationLink>
@@ -4114,10 +4854,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmcidrmap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-cidr-map</maml:uri>
       </maml:navigationLink>
@@ -4294,10 +5030,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmdatacenter</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/post-datacenter</maml:uri>
       </maml:navigationLink>
@@ -4448,10 +5180,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmdefaultdatacenter</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -4632,10 +5360,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmdefaultdatacenterforip</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -4838,8 +5562,8 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmdomain</maml:uri>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/gtm/reference/post-domain</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5044,10 +5768,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmgeomap</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -5258,10 +5978,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmproperty</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-property</maml:uri>
       </maml:navigationLink>
@@ -5462,10 +6178,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-gtmresource</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-resource</maml:uri>
       </maml:navigationLink>
@@ -5640,10 +6352,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-gtmasmap</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -5822,10 +6530,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-gtmcidrmap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/delete-cidr-maps</maml:uri>
       </maml:navigationLink>
@@ -6000,10 +6704,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-gtmdatacenter</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -6182,10 +6882,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-gtmgeomap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/delete-geographic-map</maml:uri>
       </maml:navigationLink>
@@ -6360,10 +7056,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-gtmproperty</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -6542,10 +7234,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-gtmresource</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/delete-resource</maml:uri>
       </maml:navigationLink>
@@ -6561,8 +7249,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates or updates an AS map. This function is identical to the `New-GTMASMap` operation. If the specified map doesn't already exist, it'll be created.</maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing map, edit it locally, and pipe the object to this function.</maml:para>
+      <maml:para>Creates or updates an AS map. This function is identical to the `New-GTMASMap` operation. If the specified map doesn't already exist, it'll be created. &gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing map, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6579,7 +7266,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="name">
           <maml:name>MapName</maml:name>
           <maml:description>
             <maml:para>A unique name for a geographic map.</maml:para>
@@ -6690,7 +7377,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="name">
         <maml:name>MapName</maml:name>
         <maml:description>
           <maml:para>A unique name for a geographic map.</maml:para>
@@ -6716,6 +7403,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -6745,10 +7440,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmasmap</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -6766,8 +7457,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates or updates a CIDR map. This function is identical to the `New-GTMCIDRMap` operation. If the specified map doesn't already exist, it'll be created.</maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing map, edit it locally, and pipe the object to this function.</maml:para>
+      <maml:para>Creates or updates a CIDR map. This function is identical to the `New-GTMCIDRMap` operation. If the specified map doesn't already exist, it'll be created. &gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing map, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6784,7 +7474,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="name">
           <maml:name>MapName</maml:name>
           <maml:description>
             <maml:para>A unique name for a geographic map.</maml:para>
@@ -6895,7 +7585,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="name">
         <maml:name>MapName</maml:name>
         <maml:description>
           <maml:para>A unique name for a geographic map.</maml:para>
@@ -6921,6 +7611,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -6952,10 +7650,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmcidrmap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-cidr-map</maml:uri>
       </maml:navigationLink>
@@ -6971,8 +7665,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates a data center. </maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing datacenter, edit it locally, and pipe the object to this function.</maml:para>
+      <maml:para>Updates a data center.  &gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing datacenter, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6989,14 +7682,14 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>DatacenterID</maml:name>
           <maml:description>
             <maml:para>A numeric D of the data center.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7076,14 +7769,14 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>DatacenterID</maml:name>
         <maml:description>
           <maml:para>A numeric D of the data center.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -7128,6 +7821,14 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
           <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
@@ -7155,10 +7856,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmdatacenter</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -7368,10 +8065,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmdomain</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-domain</maml:uri>
       </maml:navigationLink>
@@ -7387,8 +8080,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates or updates a geographic map. This function is identical to the `New-GTMGeoMap` operation. If the specified map doesn't already exist, it'll be created.</maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing map, edit it locally, and pipe the object to this function.</maml:para>
+      <maml:para>Creates or updates a geographic map. This function is identical to the `New-GTMGeoMap` operation. If the specified map doesn't already exist, it'll be created. &gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing map, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7405,7 +8097,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="name">
           <maml:name>MapName</maml:name>
           <maml:description>
             <maml:para>A unique name for a geographic map.</maml:para>
@@ -7516,7 +8208,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="name">
         <maml:name>MapName</maml:name>
         <maml:description>
           <maml:para>A unique name for a geographic map.</maml:para>
@@ -7542,6 +8234,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -7573,10 +8273,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmgeomap</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-geographic-map</maml:uri>
       </maml:navigationLink>
@@ -7592,8 +8288,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates or updates a GTM property. This function is identical to the `New-GTMProperty` operation. If the specified property doesn't already exist, it'll be created.</maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing property, edit it locally, and pipe the object to this function.</maml:para>
+      <maml:para>Creates or updates a GTM property. This function is identical to the `New-GTMProperty` operation. If the specified property doesn't already exist, it'll be created. &gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing property, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7786,10 +8481,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmproperty</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-property</maml:uri>
       </maml:navigationLink>
@@ -7805,8 +8496,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates or updates a resource. This function is identical to the `New-GTMResource` operation. If the specified resource doesn't already exist, it'll be created.</maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing resource, edit it locally, and pipe the object to this function.</maml:para>
+      <maml:para>Creates or updates a resource. This function is identical to the `New-GTMResource` operation. If the specified resource doesn't already exist, it'll be created. &gt; Note: Due to the complexity of the request body, it's recommended that you pull down the existing resource, edit it locally, and pipe the object to this function.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7823,7 +8513,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>ResourceName</maml:name>
           <maml:description>
             <maml:para>The name of the resource.</maml:para>
@@ -7934,7 +8624,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>ResourceName</maml:name>
         <maml:description>
           <maml:para>The name of the resource.</maml:para>
@@ -7960,6 +8650,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -7991,10 +8689,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-gtmresource</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/gtm/reference/put-resource</maml:uri>
       </maml:navigationLink>
@@ -8010,7 +8704,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Submits load data in either XML or JSON format. The timestamp string should be in XSD format. The URL specifies the domain, resource, and datacenter ID of the instance to which the load data pertains. </maml:para>
+      <maml:para>Submits load data in either XML or JSON format. The timestamp string should be in XSD format. The URL specifies the domain, resource, and datacenter ID of the instance to which the load data pertains.</maml:para>
       <maml:para>To support legacy clients, you can use a region as an alias for a datacenter ID.</maml:para>
     </maml:description>
     <command:syntax>
@@ -8218,10 +8912,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Overview</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/overview</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/submit-gtmloaddata</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>

@@ -51,7 +51,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -63,7 +63,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -138,7 +138,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -201,7 +201,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -225,7 +225,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>RevisionID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -253,7 +253,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -280,10 +288,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/compare-edgeworkerrevision</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -330,7 +334,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -374,6 +378,7 @@
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">100</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">200</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">400</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -465,6 +470,7 @@
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">100</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">200</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">400</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -512,7 +518,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -588,7 +594,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -615,282 +621,10 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/copy-edgeworker</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/post-id-clone</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Expand-EdgeWorkerDetails</command:name>
-      <command:verb>Expand</command:verb>
-      <command:noun>EdgeWorkerDetails</command:noun>
-      <maml:description>
-        <maml:para>Expand edgeworker details.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>This is an internal function used to retrieve EdgeWorkers and their versions more easily in other commands.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Expand-EdgeWorkerDetails</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>EdgeWorkerName</maml:name>
-          <maml:description>
-            <maml:para>Your Edge Worker's name.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>EdgeWorkerID</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeWorker's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>Version</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>ActivationID</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeWorker activation's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>DeactivationID</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeWorker deactivation's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
-          <maml:name>UnusedArgs</maml:name>
-          <maml:description>
-            <maml:para>Additional parameters.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="7" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
-        <maml:description>
-          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>ActivationID</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeWorker activation's ID.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>DeactivationID</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeWorker deactivation's ID.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>EdgeWorkerID</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeWorker's ID.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>EdgeWorkerName</maml:name>
-        <maml:description>
-          <maml:para>Your Edge Worker's name.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="6" aliases="none">
-        <maml:name>Section</maml:name>
-        <maml:description>
-          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="8" aliases="none">
-        <maml:name>UnusedArgs</maml:name>
-        <maml:description>
-          <maml:para>Additional parameters.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>Version</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples />
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -933,7 +667,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1086,7 +820,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1138,7 +872,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1165,10 +899,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworker</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -1238,7 +968,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1278,7 +1008,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1380,7 +1110,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1443,7 +1173,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1491,7 +1221,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1507,7 +1237,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1536,10 +1274,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkeractivation</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-activation</maml:uri>
       </maml:navigationLink>
@@ -1555,8 +1289,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Downloads the bundle containing the code the EdgeWorker executes. If you specify the `-OutputFile` (which is the default), the code bundle will be written to a .tgz file. Alternatively, you can specify the `-OutputDirectory`, upon which the .tgz bundle will be extracted to the given directory. </maml:para>
-      <maml:para>&gt; Note: You need to have the `tar` command available on your system to run this operation.</maml:para>
+      <maml:para>Downloads the bundle containing the code the EdgeWorker executes. If you specify the `-OutputFile` (which is the default), the code bundle will be written to a .tgz file. Alternatively, you can specify the `-OutputDirectory`, upon which the .tgz bundle will be extracted to the given directory.  &gt; Note: You need to have the `tar` command available on your system to run this operation.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -1585,7 +1318,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1621,7 +1354,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1660,7 +1393,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1696,7 +1429,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1771,7 +1504,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1846,7 +1579,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1885,7 +1618,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -1945,7 +1678,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -1961,7 +1694,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1988,10 +1729,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkercodebundle</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -2122,10 +1859,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkercontract</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-contracts</maml:uri>
       </maml:navigationLink>
@@ -2158,7 +1891,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>DeactivationID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker deactivation's ID.</maml:para>
@@ -2182,7 +1915,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -2206,7 +1939,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -2233,7 +1966,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>DeactivationID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker deactivation's ID.</maml:para>
@@ -2281,7 +2014,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -2308,7 +2041,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>DeactivationID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker deactivation's ID.</maml:para>
@@ -2332,7 +2065,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -2368,7 +2101,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -2384,7 +2117,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2413,10 +2154,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerdeactivation</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-deactivation</maml:uri>
       </maml:navigationLink>
@@ -2437,7 +2174,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-EdgeWorkerGroup</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
             <maml:para>Your group's ID.</maml:para>
@@ -2512,7 +2249,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
           <maml:para>Your group's ID.</maml:para>
@@ -2540,7 +2277,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2567,10 +2304,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkergroup</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -2701,10 +2434,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerlimit</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-limits</maml:uri>
       </maml:navigationLink>
@@ -2716,11 +2445,11 @@
       <command:verb>Get</command:verb>
       <command:noun>EdgeWorkerLoggingOverride</command:noun>
       <maml:description>
-        <maml:para>Get logging override status</maml:para>
+        <maml:para>Get logging override status.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Get status information about a specific logging override. For more information, go to the Use DataStream 2 to deliver JavaScript logs (doc:ds2-javascript-logging)tutorial.</maml:para>
+      <maml:para>Get status information about a specific logging override. For more information, go to the [Use DataStream 2 to deliver JavaScript logs](https://techdocs.akamai.com/edgeworkers/docs/ds2-javascript-logging) tutorial.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -2749,7 +2478,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -2875,7 +2604,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -2927,7 +2656,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2954,10 +2683,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerloggingoverride</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -3015,7 +2740,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -3140,7 +2865,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -3180,7 +2905,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3209,10 +2934,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerproperties</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-properties</maml:uri>
       </maml:navigationLink>
@@ -3228,8 +2949,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Gets all EdgeWorker reports or returns an individual report by its ID. </maml:para>
-      <maml:para>&gt; Note: If you want to get a specific report, you need to provide other mandatory details, including the start and end date of the report, EdgeWorker ID, and EdgeWorker status.</maml:para>
+      <maml:para>Gets all EdgeWorker reports or returns an individual report by its ID.  &gt; Note: If you want to get a specific report, you need to provide other mandatory details, including the start and end date of the report, EdgeWorker ID, and EdgeWorker status.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -3259,9 +2979,137 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>EdgeWorker</maml:name>
+          <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
-            <maml:para>Filters by EdgeWorker ID such as `42` or a more specific version such as `42-1.0`.</maml:para>
+            <maml:para>Your EdgeWorker's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>End</maml:name>
+          <maml:description>
+            <maml:para>ISO 8601 timestamp indicating the end time of the EdgeWorker report. If not specified, the end time defaults to the current time.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EventHandler</maml:name>
+          <maml:description>
+            <maml:para>Filters EdgeWorkers by the event that triggers them, either `onClientRequest`, `onOriginRequest`, `onOriginResponse`, `onClientResponse`, or `responseProvider`.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">onClientRequest</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">onOriginRequest</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">onOriginResponse</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">onClientResponse</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">responseProvider</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>ReportID</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeWorker report's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Start</maml:name>
+          <maml:description>
+            <maml:para>The ISO 8601 timestamp indicating the start time of the EdgeWorker report.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Status</maml:name>
+          <maml:description>
+            <maml:para>Filters by the EdgeWorker status, either `success`, `genericError`, `unknownEdgeWorkerId`, `unimplementedEventHandler`, `runtimeError`, `executionError`, `timeoutError`, `resourceLimitHit`, `cpuTimeoutError`, `wallTimeoutError`, `initCpuTimeoutError`, or `initWallTimeoutError`.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">success</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">genericError</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">unknownEdgeWorkerId</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">unimplementedEventHandler</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">runtimeError</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">executionError</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">timeoutError</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">resourceLimitHit</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-EdgeWorkerReport</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EdgeWorkerName</maml:name>
+          <maml:description>
+            <maml:para>Your Edge Worker's name.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3387,9 +3235,21 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>EdgeWorker</maml:name>
+        <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
-          <maml:para>Filters by EdgeWorker ID such as `42` or a more specific version such as `42-1.0`.</maml:para>
+          <maml:para>Your EdgeWorker's ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>EdgeWorkerName</maml:name>
+        <maml:description>
+          <maml:para>Your Edge Worker's name.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -3503,10 +3363,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerreport</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-report</maml:uri>
       </maml:navigationLink>
@@ -3602,7 +3458,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -3716,7 +3572,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -3756,7 +3612,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3783,10 +3639,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerresourcetier</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -3856,7 +3708,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -3891,7 +3743,7 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -4012,7 +3864,7 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -4099,7 +3951,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -4147,7 +3999,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>RevisionID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -4187,7 +4039,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4214,10 +4074,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerrevision</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -4252,7 +4108,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ActivationID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker activation's ID.</maml:para>
@@ -4276,7 +4132,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -4312,7 +4168,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -4339,7 +4195,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ActivationID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker activation's ID.</maml:para>
@@ -4399,7 +4255,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -4426,7 +4282,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ActivationID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker activation's ID.</maml:para>
@@ -4450,7 +4306,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -4498,7 +4354,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -4514,7 +4370,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4541,10 +4405,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerrevisionactivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -4591,7 +4451,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -4636,7 +4496,7 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -4732,7 +4592,7 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -4783,7 +4643,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -4843,7 +4703,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>RevisionID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -4871,7 +4731,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4900,10 +4768,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerrevisionbom</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-revision-bom</maml:uri>
       </maml:navigationLink>
@@ -4919,8 +4783,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Downloads the combined code bundle that contains the code and dependencies that the EdgeWorker executes. You can save the bundle as a .tgz file (by default) and optionally specify the filename with the `-OutputFile` parameter. Alternatively, you can extract the files into the `-OutputDirectory`. You can specify an EdgeWorker by its name or ID.</maml:para>
-      <maml:para>&gt; Note: This operation requires that your OS have the `tar` command configured (Unix, Windows 10 1803, and later).</maml:para>
+      <maml:para>Downloads the combined code bundle that contains the code and dependencies that the EdgeWorker executes. You can save the bundle as a .tgz file (by default) and optionally specify the filename with the `-OutputFile` parameter. Alternatively, you can extract the files into the `-OutputDirectory`. You can specify an EdgeWorker by its name or ID. &gt; Note: This operation requires that your OS have the `tar` command configured (Unix, Windows 10 1803, and later).</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -4949,7 +4812,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -4973,7 +4836,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -5024,7 +4887,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -5048,7 +4911,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -5123,7 +4986,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -5198,7 +5061,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -5249,7 +5112,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -5297,7 +5160,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>RevisionID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -5325,7 +5188,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5352,10 +5223,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerrevisioncodebundle</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -5402,7 +5269,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -5426,7 +5293,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -5489,7 +5356,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -5528,7 +5395,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -5564,7 +5431,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -5580,7 +5447,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5609,10 +5484,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-edgeworkerversion</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/get-version</maml:uri>
       </maml:navigationLink>
@@ -5633,7 +5504,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-EdgeWorker</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>EdgeWorkerName</maml:name>
           <maml:description>
             <maml:para>Your Edge Worker's name.</maml:para>
@@ -5665,6 +5536,7 @@
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">100</command:parameterValue>
             <command:parameterValue required="false" command:variableLength="false">200</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">400</command:parameterValue>
           </command:parameterValueGroup>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -5736,7 +5608,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>EdgeWorkerName</maml:name>
         <maml:description>
           <maml:para>Your Edge Worker's name.</maml:para>
@@ -5788,7 +5660,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5815,10 +5687,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworker</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -5865,7 +5733,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -5905,7 +5773,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -5984,7 +5852,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -6023,7 +5891,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -6071,7 +5939,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -6087,7 +5955,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6114,10 +5990,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworkeractivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -6296,10 +6168,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworkerauthtoken</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/post-secure-token</maml:uri>
       </maml:navigationLink>
@@ -6344,7 +6212,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -6384,7 +6252,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -6463,7 +6331,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -6502,7 +6370,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -6550,7 +6418,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -6566,7 +6434,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -6595,10 +6471,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworkerdeactivation</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/post-deactivations</maml:uri>
       </maml:navigationLink>
@@ -6610,11 +6482,11 @@
       <command:verb>New</command:verb>
       <command:noun>EdgeWorkerLoggingOverride</command:noun>
       <maml:description>
-        <maml:para>Create a new logging override</maml:para>
+        <maml:para>Create a new logging override.</maml:para>
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Override the default JavaScript logging level for a specific EdgeWorker ID. By default, the log level for JavaScript logs is `ERROR`. For more information, go to the Use DataStream 2 to deliver JavaScript logs (doc:ds2-javascript-logging)tutorial.</maml:para>
+      <maml:para>Override the default JavaScript logging level for an EdgeWorker specified by its `EdgeWorkerName` or `EdgeWorkerID`.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -6655,7 +6527,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -6899,7 +6771,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -6987,7 +6859,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7016,10 +6888,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworkerloggingoverride</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/post-override</maml:uri>
       </maml:navigationLink>
@@ -7035,7 +6903,7 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Reactivates a previously active revision on Akamai's staging or production network. You can specify an EdgeWorker by either its name or ID</maml:para>
+      <maml:para>Reactivates a previously active revision on Akamai's staging or production network. You can specify an EdgeWorker by either its name or ID.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
@@ -7064,7 +6932,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7088,7 +6956,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -7163,7 +7031,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -7214,7 +7082,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7250,7 +7118,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>RevisionID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -7278,7 +7146,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7305,10 +7181,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworkerrevisionactivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -7430,7 +7302,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7473,6 +7345,18 @@
           <maml:name>CodeDirectory</maml:name>
           <maml:description>
             <maml:para>A local directory containing your Edge Worker code. &gt; Note: Requires that your operating system contains the `tar` command.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Description</maml:name>
+          <maml:description>
+            <maml:para>Update the description in your bundle.json.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -7506,6 +7390,51 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Major</maml:name>
+          <maml:description>
+            <maml:para>Auto-increment the major version of your EdgeWorker bundle, for example, 1.0.0 becomes 2.0.0.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Minor</maml:name>
+          <maml:description>
+            <maml:para>Auto-increment the minor version of your EdgeWorker bundle, for example, 1.0.0 becomes 1.1.0.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Patch</maml:name>
+          <maml:description>
+            <maml:para>Auto-increment the patch version of your EdgeWorker bundle, for example, 1.0.0 becomes 1.0.1.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>SaveBundleTo</maml:name>
+          <maml:description>
+            <maml:para>Save the created .tgz bundle to this path. Otherwise a temporary file will be created, which your system will auto-delete.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -7513,6 +7442,18 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Version</command:parameterValue>
+          <dev:type>
+            <maml:name>Version</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7545,6 +7486,18 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Description</maml:name>
+          <maml:description>
+            <maml:para>Update the description in your bundle.json.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -7556,7 +7509,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7569,6 +7522,51 @@
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Major</maml:name>
+          <maml:description>
+            <maml:para>Auto-increment the major version of your EdgeWorker bundle, for example, 1.0.0 becomes 2.0.0.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Minor</maml:name>
+          <maml:description>
+            <maml:para>Auto-increment the minor version of your EdgeWorker bundle, for example, 1.0.0 becomes 1.1.0.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Patch</maml:name>
+          <maml:description>
+            <maml:para>Auto-increment the patch version of your EdgeWorker bundle, for example, 1.0.0 becomes 1.0.1.</maml:para>
+          </maml:description>
+          <dev:type>
+            <maml:name>SwitchParameter</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>False</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>SaveBundleTo</maml:name>
+          <maml:description>
+            <maml:para>Save the created .tgz bundle to this path. Otherwise a temporary file will be created, which your system will auto-delete.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -7576,6 +7574,18 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Version</command:parameterValue>
+          <dev:type>
+            <maml:name>Version</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -7620,6 +7630,18 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Description</maml:name>
+        <maml:description>
+          <maml:para>Update the description in your bundle.json.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -7631,7 +7653,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7656,6 +7678,54 @@
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Major</maml:name>
+        <maml:description>
+          <maml:para>Auto-increment the major version of your EdgeWorker bundle, for example, 1.0.0 becomes 2.0.0.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Minor</maml:name>
+        <maml:description>
+          <maml:para>Auto-increment the minor version of your EdgeWorker bundle, for example, 1.0.0 becomes 1.1.0.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Patch</maml:name>
+        <maml:description>
+          <maml:para>Auto-increment the patch version of your EdgeWorker bundle, for example, 1.0.0 becomes 1.0.1.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        <dev:type>
+          <maml:name>SwitchParameter</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>False</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>SaveBundleTo</maml:name>
+        <maml:description>
+          <maml:para>Save the created .tgz bundle to this path. Otherwise a temporary file will be created, which your system will auto-delete.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -7667,11 +7737,23 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Version</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Version</command:parameterValue>
+        <dev:type>
+          <maml:name>Version</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7698,10 +7780,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-edgeworkerversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -7748,7 +7826,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7850,7 +7928,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -7890,7 +7968,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -7917,10 +7995,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-edgeworker</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -7955,7 +8029,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ActivationID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker activation's ID.</maml:para>
@@ -7979,7 +8053,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8018,7 +8092,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>ActivationID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker activation's ID.</maml:para>
@@ -8081,7 +8155,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>ActivationID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker activation's ID.</maml:para>
@@ -8105,7 +8179,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8145,7 +8219,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -8172,10 +8254,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-edgeworkeractivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -8222,7 +8300,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8246,7 +8324,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -8309,7 +8387,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -8348,7 +8426,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8384,7 +8462,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's version, either an integer or the word `latest`.</maml:para>
@@ -8400,7 +8478,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -8427,10 +8513,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-edgeworkerversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -8477,7 +8559,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8489,7 +8571,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
             <maml:para>Your group's ID.</maml:para>
@@ -8564,7 +8646,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
             <maml:para>Your group's ID.</maml:para>
@@ -8627,7 +8709,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8651,7 +8733,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
           <maml:para>Your group's ID.</maml:para>
@@ -8691,7 +8773,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -8718,10 +8800,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-edgeworker</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -8768,7 +8846,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8808,7 +8886,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -8899,7 +8977,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>RevisionID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -8950,7 +9028,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -8998,7 +9076,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>RevisionID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorkers revision's ID.</maml:para>
@@ -9026,7 +9104,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -9053,10 +9139,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-edgeworkerrevision</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -9274,10 +9356,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/test-edgeworkercodebundle</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/edgeworkers/reference/post-validations</maml:uri>
       </maml:navigationLink>
@@ -9322,7 +9400,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
           <maml:name>EdgeWorkerID</maml:name>
           <maml:description>
             <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -9480,7 +9558,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="none">
         <maml:name>EdgeWorkerID</maml:name>
         <maml:description>
           <maml:para>Your EdgeWorker's ID.</maml:para>
@@ -9544,7 +9622,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -9571,10 +9649,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: EdgeWorkers</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/edgeworkers</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/undo-edgeworkeractivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
