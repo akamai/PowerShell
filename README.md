@@ -16,8 +16,6 @@ We've completely refactored our PowerShell module to expand service availability
 
 ## Install
 
-> **Note:** Because v2 is a completely different module, there is no upgrade path. The two modules are incompatible and clash where command names are the same. To use v2, uninstall v1 and then install this module.
-
 Install the full module or customize your install with specific submodules.
 
 * Install the full module.
