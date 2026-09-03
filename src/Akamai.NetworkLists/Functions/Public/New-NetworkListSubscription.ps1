@@ -53,6 +53,6 @@ function New-NetworkListSubscription {
     }
 
     end {}
-    
+
 }
 

@@ -31,7 +31,7 @@ function Get-ProductsPerContract {
         if (($From -or $To) -and ($From -notmatch $DateMatch -or $To -notmatch $DateMatch)) {
             throw "ERROR: From & To must be in the format 'YYYY-MM-DD'"
         }
-    
+
         $Path = "/contract-api/v1/contracts/$ContractID/products/summaries"
         $QueryParameters = @{
             'from' = $From

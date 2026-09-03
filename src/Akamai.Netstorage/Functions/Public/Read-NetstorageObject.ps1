@@ -21,12 +21,12 @@ function Read-NetstorageObject {
 
     process {
         $Action = "download"
-    
+
         if (!$LocalPath) {
             $FileName = $RemotePath.Substring($RemotePath.LastIndexOf("/") + 1)
             $LocalPath = ".\$FileName"
         }
-    
+
         # Track path creation
         $NewItemCreated = $false
         # Create local path with parents

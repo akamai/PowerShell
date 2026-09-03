@@ -1,12 +1,12 @@
 function Get-AkamaiOptions {
     [CmdletBinding()]
     Param()
-    
+
     $OptionsPath = $Env:AkamaiOptionsPath
     if (-Not $OptionsPath) {
         $OptionsPath = $HOME + "/.akamai-pwsh/options.json"
     }
-    
+
     if ((Test-Path $OptionsPath)) {
         Write-Debug "Get-AkamaiOptions: Retrieving options from $OptionsPath"
         $OptionsContent = Get-Content -Raw $OptionsPath

@@ -1,11 +1,12 @@
 function Remove-DataStream {
     [CmdletBinding()]
-    Param(
-        [Parameter()]
-        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm')]
+    param(
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('LogType')]
+        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm', 'appsec', 'answerx')]
         [string]
-        $LogType = 'cdn', # Defaulting to CDN for backward compatibility
-        
+        $StreamType = 'cdn', # Defaulting to CDN for backward compatibility
+
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $StreamID,
@@ -23,9 +24,27 @@ function Remove-DataStream {
         $AccountSwitchKey
     )
 
-    begin {}
     process {
-        $Path = "/datastream-config-api/v3/log/$logType/streams/$StreamID"
+        switch ($StreamType) {
+            'cdn' {
+                $Path = "/datastream-config-api/v3/log/cdn/streams/$StreamID"
+            }
+            'edgeworkers' {
+                $Path = "/datastream-config-api/v3/log/edgeworkers/streams/$StreamID"
+            }
+            'edns' {
+                $Path = "/datastream-config-api/v3/log/edns/streams/$StreamID"
+            }
+            'gtm' {
+                $Path = "/datastream-config-api/v3/log/gtm/streams/$StreamID"
+            }
+            'appsec' {
+                $Path = "/datastream-config-api/v3/log/appsec/streams/$StreamID"
+            }
+            'answerx' {
+                $Path = "/datastream-config-api/v3/log/answerx/streams/$StreamID"
+            }
+        }
         $RequestParams = @{
             'Path'             = $Path
             'Method'           = 'DELETE'
@@ -38,5 +57,4 @@ function Remove-DataStream {
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
     }
-    end {}
 }

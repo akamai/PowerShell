@@ -31,5 +31,5 @@ function New-MSLOrigin {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }   
+    }
 }

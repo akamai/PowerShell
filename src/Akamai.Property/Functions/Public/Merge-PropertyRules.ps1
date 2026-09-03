@@ -25,10 +25,10 @@ function Merge-PropertyRules {
         else {
             $Source = Get-Item $SourceDirectory
         }
-    
+
         $DefaultRulePath = "$($Source.FullName)/$DefaultRuleFilename"
         $Rules = Get-Content -Raw $DefaultRulePath | ConvertFrom-Json
-    
+
         ## Get Variables
         if ($null -ne $Rules.variables) {
             $VariablesFileName = $Rules.variables.Replace("#include:", "")
@@ -36,17 +36,17 @@ function Merge-PropertyRules {
             $Variables = Get-Content -Raw "$($Source.FullName)/$VariablesFileName" | ConvertFrom-Json
             $Rules.variables += $Variables
         }
-        
-    
+
+
         for ($i = 0; $i -lt $Rules.children.count; $i++) {
             if ($Rules.children[$i].GetType().Name -eq 'String' -and $Rules.children[$i].StartsWith('#include:')) {
                 $Rules.children[$i] = Expand-ChildRuleSnippet -Include $Rules.children[$i] -Path $Source.FullName -DefaultRuleDirectory $Source.FullName
             }
         }
-    
+
         $Output = New-Object -TypeName PSCustomObject
         $Output | Add-Member -MemberType NoteProperty -Name rules -Value $Rules
-    
+
         if ($OutputToFile) {
             if ($OutputFileName -eq '') {
                 $OutputFileName = $Source.Name + '.json'

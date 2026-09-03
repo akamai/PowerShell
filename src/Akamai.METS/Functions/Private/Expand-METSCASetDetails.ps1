@@ -4,7 +4,7 @@ function Expand-METSCASetDetails {
         [Parameter()]
         [string]
         $CASetName,
-        
+
         [Parameter()]
         $CASetID,
 
@@ -48,7 +48,7 @@ function Expand-METSCASetDetails {
                 # If you still have more than 1, throw an error as we can't know which one the user wants
                 if ($CASet.count -gt 1) {
                     throw "Multiple CA Sets with name '$CASetName' found. Please use -CASetID instead"
-                } 
+                }
             }
             $CASetID = $CASet.caSetId
         }

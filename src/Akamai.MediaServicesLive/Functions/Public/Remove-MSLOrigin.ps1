@@ -33,5 +33,5 @@ function Remove-MSLOrigin {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }     
+    }
 }

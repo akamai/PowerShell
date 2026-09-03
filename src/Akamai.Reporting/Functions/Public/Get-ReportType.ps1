@@ -8,7 +8,7 @@ function Get-ReportType {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]
         $ReportingArea,
-        
+
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]
         $Report,

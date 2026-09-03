@@ -8,16 +8,16 @@ function Remove-EDNSChangeList {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'DELETE'
         $Path = "/config-dns/v2/changelists/$Zone"

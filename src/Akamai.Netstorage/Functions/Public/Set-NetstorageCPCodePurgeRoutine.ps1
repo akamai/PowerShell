@@ -4,14 +4,14 @@ function Set-NetstorageCPCodePurgeRoutine {
         [Parameter(Mandatory)]
         [int]
         $CPCodeID,
-        
+
         [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
-        
+
         [Parameter()]
         [string]
         $AgeDeletionDirectoryPrefix,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

@@ -24,7 +24,7 @@ function New-CloudWrapperConfiguration {
 
     process {
         $Path = "/cloud-wrapper/v1/configurations"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'activate' = $PSBoundParameters.Activate.IsPresent
         }
         $RequestParams = @{

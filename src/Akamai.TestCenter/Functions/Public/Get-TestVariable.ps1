@@ -21,7 +21,7 @@ function Get-TestVariable {
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         if ($VariableID) {
             $Path = "/test-management/v3/functional/test-suites/$TestSuiteID/variables/$VariableID"

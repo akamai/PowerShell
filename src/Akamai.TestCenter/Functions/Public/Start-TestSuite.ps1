@@ -4,7 +4,7 @@ function Start-TestSuite {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $TestSuiteID,
-        
+
         [Parameter()]
         [int[]]
         $TestCaseID,
@@ -21,7 +21,7 @@ function Start-TestSuite {
         [Parameter()]
         [switch]
         $PurgeOnstaging,
-        
+
         [Parameter()]
         [switch]
         $SendEmailOnCompletion,

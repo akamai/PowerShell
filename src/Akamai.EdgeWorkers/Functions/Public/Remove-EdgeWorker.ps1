@@ -1,6 +1,6 @@
 function Remove-EdgeWorker {
     [CmdletBinding(DefaultParameterSetName = 'Name')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Name', Mandatory)]
         [string]
         $EdgeWorkerName,
@@ -23,6 +23,7 @@ function Remove-EdgeWorker {
     )
 
     process {
+        $EdgeWorkerID, $null = Expand-EdgeWorkerDetails @PSBoundParameters
         $Path = "/edgeworkers/v1/ids/$EdgeWorkerID"
         $RequestParams = @{
             'Path'             = $Path

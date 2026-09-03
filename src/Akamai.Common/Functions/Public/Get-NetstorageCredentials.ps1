@@ -41,7 +41,7 @@ function Get-NetstorageCredentials {
     #----------------------------------------------------------------------------------------------
     #                              2. Check for environment variables
     #----------------------------------------------------------------------------------------------
-    
+
     ## 'default' section is implicit. Otherwise env variable starts with section prefix
     if ($Section.ToLower() -eq 'default') {
         $EnvPrefix = 'NETSTORAGE_'
@@ -96,11 +96,11 @@ function Get-NetstorageCredentials {
             return $Credentials
         }
     }
-    
+
     #----------------------------------------------------------------------------------------------
     #                                     4. Panic!
     #----------------------------------------------------------------------------------------------
 
-    ## Under normal circumstances you should not get this far...    
+    ## Under normal circumstances you should not get this far...
     throw "Error: Credentials could not be loaded from either; session, environment variables or auth file '$NSRCFile'"
 }

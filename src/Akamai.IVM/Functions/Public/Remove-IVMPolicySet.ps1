@@ -2,31 +2,31 @@ function Remove-IVMPolicySet {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
-        [Alias('id')]  
-        [string] 
+        [Alias('id')]
+        [string]
         $PolicySetID,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $ContractID,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $EdgeRCFile,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $Section,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $AccountSwitchKey
     )
 
     Process {
         $Path = "/imaging/v2/policysets/$PolicySetID"
         $AdditionalHeaders = @{}
-    
+
         if ($ContractID -ne '') {
             $AdditionalHeaders['Contract'] = $ContractID
         }

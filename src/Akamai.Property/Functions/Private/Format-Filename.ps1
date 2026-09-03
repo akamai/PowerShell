@@ -5,7 +5,7 @@ function Format-FileName {
         [string]
         $Filename
     )
-    
+
     $BadCharacters = @(
         '\',
         '/',
@@ -28,7 +28,7 @@ function Format-FileName {
 
     # Trim whitespace
     $SanitizedFilename = $SanitizedFilename.Trim()
-    
+
     return $SanitizedFilename
 }
 

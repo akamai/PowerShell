@@ -8,7 +8,7 @@ function Expand-ChildRuleSnippet {
         [Parameter(Mandatory)]
         [string]
         $Path,
-        
+
         [Parameter(Mandatory)]
         [string]
         $DefaultRuleDirectory
@@ -29,13 +29,13 @@ function Expand-ChildRuleSnippet {
         else {
             throw "Could not find include path in the following locations: $IncludePath, $IncludePathFromMain."
         }
-    
+
         for ($i = 0; $i -lt $Child.children.count; $i++) {
             if ($Child.children[$i].GetType().Name -eq 'String' -and $Child.children[$i].StartsWith('#include:')) {
                 $Child.children[$i] = Expand-ChildRuleSnippet -Include $Child.children[$i] -Path $IncludeDir -DefaultRuleDirectory $DefaultRuleDirectory
             }
         }
-    
+
         return $Child
     }
 }

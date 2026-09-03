@@ -20,7 +20,7 @@ function Write-NetstorageObject {
         [Parameter()]
         [switch]
         $CheckHash,
-        
+
         [Parameter()]
         [switch]
         $IndexZip,
@@ -42,12 +42,12 @@ function Write-NetstorageObject {
             $File = Get-Item $LocalPath
             $RemotePath += $($File.Name)
         }
-    
+
         $AdditionalOptions = @{
             'mtime' = $MTime
             'size'  = $Size
         }
-    
+
         if ($CheckHash) {
             $Hash = (Get-FileHash -Path $LocalPath -Algorithm SHA256).Hash
             $AdditionalOptions['sha256'] = $Hash
@@ -56,7 +56,7 @@ function Write-NetstorageObject {
         if ($IndexZip) {
             $AdditionalOptions['index-zip'] = 1
         }
-    
+
         $RequestParams = @{
             'Path'              = $RemotePath
             'Action'            = $Action

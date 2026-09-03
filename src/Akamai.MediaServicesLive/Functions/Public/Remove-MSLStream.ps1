@@ -41,5 +41,5 @@ function Remove-MSLStream {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }     
+    }
 }

@@ -20,7 +20,7 @@ function Set-IAMUserNotifications {
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         if ($UIIdentityID) {
             $Path = "/identity-management/v3/user-admin/ui-identities/$UIIdentityID/notifications"

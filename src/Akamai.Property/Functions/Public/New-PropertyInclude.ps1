@@ -103,7 +103,7 @@ function New-PropertyInclude {
             if ($Response.Body.includeLink -Match '\/includes\/([^\?]+)') {
                 $IncludeID = $Matches[1]
                 $Response.Body | Add-Member -NotePropertyName 'includeId' -NotePropertyValue $IncludeID
-    
+
                 # Add to data cache
                 if ($AkamaiOptions.EnableDataCache) {
                     Set-AkamaiDataCache -IncludeName $Name -IncludeID $IncludeID

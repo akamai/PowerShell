@@ -48,7 +48,7 @@ function New-BulkActivation {
         $BulkActivationID = $Response.Body.bulkActivationLink -split '\?' | Select-Object -First 1
         $BulkActivationID = $BulkActivationID -split '/' | Select-Object -Last 1
         $Response.Body | Add-Member -NotePropertyName BulkActivationID -NotePropertyValue $BulkActivationID -Force
-        
+
         return $Response.Body
     }
 }

@@ -8,16 +8,16 @@ function Get-EDNSZoneBulkDeleteResult {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'GET'
         $Path = "/config-dns/v2/zones/delete-requests/$RequestID/result"

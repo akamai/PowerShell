@@ -5,7 +5,7 @@ function Convert-EDNSZoneToPrimary {
         [Parameter(Mandatory, ValueFromPipeline)]
         [string[]]
         $Zone,
-        
+
         [Parameter()]
         [string]
         $Comment,

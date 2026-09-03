@@ -33,7 +33,7 @@ function Find-DOMDomain {
 
     process {
         $Path = "/domain-validation/v1/domains/search"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'includeAll' = $PSBoundParameters.IncludeAll.IsPresent
         }
         if ($PSCmdlet.ParameterSetName -eq 'attributes') {
@@ -53,7 +53,7 @@ function Find-DOMDomain {
             'Path'             = $Path
             'Method'           = 'POST'
             'Body'             = $Body
-            'QueryParameters'  = $QueryParameters 
+            'QueryParameters'  = $QueryParameters
             'EdgeRCFile'       = $EdgeRCFile
             'Section'          = $Section
             'AccountSwitchKey' = $AccountSwitchKey

@@ -30,7 +30,7 @@ function Set-GTMGeoMap {
 
     process {
         $Path = "/config-gtm/v1/domains/$DomainName/geographic-maps/$MapName"
-        $AdditionalHeaders = @{ 
+        $AdditionalHeaders = @{
             'Accept'       = 'application/vnd.config-gtm.v1.8+json'
             'Content-Type' = 'application/vnd.config-gtm.v1.8+json'
         }
@@ -46,9 +46,9 @@ function Set-GTMGeoMap {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body.resource 
+        return $Response.Body.resource
     }
 
-    end {} 
+    end {}
 }
 

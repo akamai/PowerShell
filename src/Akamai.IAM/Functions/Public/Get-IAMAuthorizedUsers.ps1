@@ -13,7 +13,7 @@ function Get-IAMAuthorizedUsers {
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Path = "/identity-management/v3/users"
         $RequestParams = @{

@@ -5,7 +5,7 @@ function Complete-DOMDomain {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string[]]
         $DomainName,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [ValidateSet('HOST', 'WILDCARD', 'DOMAIN')]
         [string[]]
@@ -47,7 +47,7 @@ function Complete-DOMDomain {
             'Path'             = $Path
             'Method'           = 'POST'
             'Body'             = $Body
-            'QueryParameters'  = $QueryParameters 
+            'QueryParameters'  = $QueryParameters
             'EdgeRCFile'       = $EdgeRCFile
             'Section'          = $Section
             'AccountSwitchKey' = $AccountSwitchKey

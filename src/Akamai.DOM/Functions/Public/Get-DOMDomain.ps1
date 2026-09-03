@@ -43,14 +43,14 @@ function Get-DOMDomain {
     process {
         if ($DomainName) {
             $Path = "/domain-validation/v1/domains/$DomainName"
-            $QueryParameters = @{ 
+            $QueryParameters = @{
                 'validationScope'            = $ValidationScope
                 'includeDomainStatusHistory' = $PSBoundParameters.IncludeDomainStatusHistory.IsPresent
             }
         }
         else {
             $Path = "/domain-validation/v1/domains"
-            $QueryParameters = @{ 
+            $QueryParameters = @{
                 'paginate' = $PSBoundParameters.Paginate.IsPresent
                 'page'     = $PSBoundParameters.Page
                 'pageSize' = $PageSize
@@ -60,7 +60,7 @@ function Get-DOMDomain {
         $RequestParameters = @{
             'Path'             = $Path
             'Method'           = 'GET'
-            'QueryParameters'  = $QueryParameters 
+            'QueryParameters'  = $QueryParameters
             'EdgeRCFile'       = $EdgeRCFile
             'Section'          = $Section
             'AccountSwitchKey' = $AccountSwitchKey

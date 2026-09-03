@@ -4,11 +4,11 @@ function Remove-CloudletPolicyVersion {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [nullable[int]]
         $PolicyID,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [AllowNull()]
         $Version,
-        
+
         [Parameter()]
         [switch]
         $Legacy,

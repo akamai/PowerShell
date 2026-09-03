@@ -37,18 +37,18 @@ function Remove-EDNSProxyZoneManualFilterName {
             $CollatedNames.Add($_)
         }
     }
-    
+
     end {
         $Path = "/config-dns/v2/proxies/$ProxyID/zones/$Name/manual-filter-names/manage"
         $Body = @{
             'delete' = $CollatedNames
         }
-    
+
         $RequestParameters = @{
             Path             = $Path
             Method           = 'POST'
             Body             = $Body
-            QueryParameters  = $QueryParameters 
+            QueryParameters  = $QueryParameters
             EdgeRCFile       = $EdgeRCFile
             Section          = $Section
             AccountSwitchKey = $AccountSwitchKey

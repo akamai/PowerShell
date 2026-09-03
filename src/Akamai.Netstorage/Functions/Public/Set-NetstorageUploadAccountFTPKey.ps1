@@ -4,7 +4,7 @@ function Set-NetstorageUploadAccountFTPKey {
         [Parameter(Mandatory)]
         [string]
         $UploadAccountID,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $Identity,
@@ -12,11 +12,11 @@ function Set-NetstorageUploadAccountFTPKey {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $Key,
-        
+
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]
         $Comments,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

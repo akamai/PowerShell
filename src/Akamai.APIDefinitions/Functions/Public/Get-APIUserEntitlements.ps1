@@ -4,11 +4,11 @@ function Get-APIUserEntitlements {
         [Parameter(Mandatory)]
         [int]
         $GroupID,
-        
+
         [Parameter(Mandatory)]
         [string]
         $ContractID,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

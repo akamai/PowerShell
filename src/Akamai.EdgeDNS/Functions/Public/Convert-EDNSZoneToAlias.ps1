@@ -5,11 +5,11 @@ function Convert-EDNSZoneToAlias {
         [Parameter(Mandatory, ValueFromPipeline)]
         [string[]]
         $Zone,
-        
+
         [Parameter(Mandatory)]
         [string]
         $TargetZoneName,
-        
+
         [Parameter()]
         [string]
         $Comment,

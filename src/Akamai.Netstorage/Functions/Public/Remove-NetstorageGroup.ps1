@@ -25,13 +25,13 @@ function Remove-NetstorageGroup {
 
     process {
         $Path = "/storage/v1/storage-groups/$StorageGroupID"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'forceDelete' = $PSBoundParameters.ForceDelete.IsPresent
         }
         $RequestParams = @{
             Path             = $Path
             Method           = 'DELETE'
-            QueryParameters  = $QueryParameters 
+            QueryParameters  = $QueryParameters
             EdgeRCFile       = $EdgeRCFile
             Section          = $Section
             AccountSwitchKey = $AccountSwitchKey

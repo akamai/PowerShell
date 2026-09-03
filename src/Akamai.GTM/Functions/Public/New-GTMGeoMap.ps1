@@ -30,7 +30,7 @@ function New-GTMGeoMap {
 
     process {
         $Path = "/config-gtm/v1/domains/$DomainName/geographic-maps/$MapName"
-        $AdditionalHeaders = @{ 
+        $AdditionalHeaders = @{
             'Accept'       = 'application/vnd.config-gtm.v1.8+json'
             'Content-Type' = 'application/vnd.config-gtm.v1.8+json'
         }
@@ -49,6 +49,6 @@ function New-GTMGeoMap {
         return $Response.Body.resource
     }
 
-    end {} 
+    end {}
 }
 

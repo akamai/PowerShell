@@ -58,6 +58,13 @@ function Set-EDNSRecordSet {
         $Method = 'PUT'
 
         if ($PSCmdlet.ParameterSetName -eq 'Attributes') {
+            if ($Name -ne $Zone -and $Name -notmatch "\.$Zone\.?$") {
+                $Name = "$Name.$Zone"
+            }
+            # Remove trailing dot if present
+            if ($Name.EndsWith('.')) {
+                $Name = $Name.TrimEnd('.')
+            }
             $Path = "/config-dns/v2/zones/$Zone/names/$Name/types/$Type"
             if ($Type.ToLower() -eq 'txt') {
                 for ($i = 0; $i -lt $RData.count; $i++) {
@@ -97,6 +104,10 @@ function Set-EDNSRecordSet {
             if ($Body.recordsets.count -eq 1) {
                 $Body = $Body.recordsets[0]
                 $Name = $Body.name
+                # Remove trailing dot if present
+                if ($Name.EndsWith('.')) {
+                    $Name = $Name.TrimEnd('.')
+                }
                 $Type = $Body.type
                 $Path = "/config-dns/v2/zones/$Zone/names/$Name/types/$Type"
             }
@@ -105,7 +116,7 @@ function Set-EDNSRecordSet {
         if ($AutoIncrementSOA) {
             # Convert to object first, if not already
             $Body = Get-BodyObject -Source $Body
-            $SOA = $Body.recordsets | Where-Object type -eq 'SOA'
+            $SOA = $Body.recordsets | Where-Object type -EQ 'SOA'
             if ($SOA) {
                 # Should be only one, but you never know
                 $SOA | ForEach-Object {

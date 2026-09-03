@@ -7,25 +7,25 @@ function Set-EDNSZone {
 
         [Parameter()]
         [switch]
-        $SkipSignAndServeSafetyCheck, 
-        
+        $SkipSignAndServeSafetyCheck,
+
         [Parameter(ValueFromPipeline)]
-        $Body,     
+        $Body,
 
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
 
-    process { 
+    process {
         $Method = 'PUT'
         $Path = "/config-dns/v2/zones/$Zone"
 

@@ -69,7 +69,7 @@ function New-TestVariable {
         elseif ($CollatedVariables.count -gt 0) {
             $Body = $CollatedVariables
         }
-        
+
         # Add array wrapper if missing
         $Body = Get-BodyObject -Source $Body
         if ($Body -isnot 'Array') {

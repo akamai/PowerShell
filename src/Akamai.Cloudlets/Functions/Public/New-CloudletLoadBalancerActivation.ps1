@@ -18,7 +18,7 @@ function New-CloudletLoadBalancerActivation {
         [Parameter()]
         [switch]
         $Async,
-        
+
         [Parameter()]
         [switch]
         $DryRun,

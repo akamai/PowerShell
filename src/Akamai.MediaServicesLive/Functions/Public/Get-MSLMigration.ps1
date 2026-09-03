@@ -4,7 +4,7 @@ function Get-MSLMigration {
         [Parameter()]
         [int]
         $Page,
-        
+
         [Parameter()]
         [int]
         $PageSize = 100,
@@ -52,5 +52,5 @@ function Get-MSLMigration {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }   
+    }
 }

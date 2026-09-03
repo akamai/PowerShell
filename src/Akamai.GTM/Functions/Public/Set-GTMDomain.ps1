@@ -13,7 +13,7 @@ function Set-GTMDomain {
         [Parameter()]
         [switch]
         $IncludeStatus,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
@@ -29,7 +29,7 @@ function Set-GTMDomain {
 
     process {
         $Path = "/config-gtm/v1/domains/$DomainName"
-        $AdditionalHeaders = @{ 
+        $AdditionalHeaders = @{
             'Accept'       = 'application/vnd.config-gtm.v1.8+json'
             'Content-Type' = 'application/vnd.config-gtm.v1.8+json'
         }

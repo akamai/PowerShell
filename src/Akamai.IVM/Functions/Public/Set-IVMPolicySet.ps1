@@ -2,33 +2,33 @@ function Set-IVMPolicySet {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
-        [Alias('id')]  
-        [string] 
+        [Alias('id')]
+        [string]
         $PolicySetID,
-        
-        [Parameter()] 
-        [string] 
+
+        [Parameter()]
+        [string]
         $Name,
 
-        [Parameter()] 
-        [ValidateSet('US', 'EMEA', 'ASIA', 'AUSTRALIA', 'JAPAN', 'CHINA')] 
-        [string] 
+        [Parameter()]
+        [ValidateSet('US', 'EMEA', 'ASIA', 'AUSTRALIA', 'JAPAN', 'CHINA')]
+        [string]
         $Region,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $ContractID,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $EdgeRCFile,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $Section,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $AccountSwitchKey
     )
 
@@ -37,7 +37,7 @@ function Set-IVMPolicySet {
         if ($ContractID -ne '') {
             $AdditionalHeaders = @{ 'Contract' = $ContractID }
         }
-    
+
         $Body = @{}
         if ($Name) { $Body.name = $Name }
         if ($Region) { $Body.region = $Region }

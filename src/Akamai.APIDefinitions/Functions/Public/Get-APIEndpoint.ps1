@@ -114,7 +114,7 @@ function Get-APIEndpoint {
                     Set-AkamaiDataCache -APIEndpointName $Endpoint.apiEndpointName -APIEndpointID $Endpoint.apiEndpointId
                 }
             }
-    
+
             if ($PSCmdlet.ParameterSetName -eq 'Name') {
                 return $Response.Body.apiEndpoints | Where-Object apiEndpointName -eq $APIEndpointName
             }

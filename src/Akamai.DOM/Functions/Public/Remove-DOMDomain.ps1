@@ -1,12 +1,13 @@
 
 function Remove-DOMDomain {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string[]]
         $DomainName,
 
-        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+        [ValidateSet('HOST', 'WILDCARD', 'DOMAIN')]
         [string[]]
         $ValidationScope,
 
@@ -40,7 +41,7 @@ function Remove-DOMDomain {
             'Path'             = $Path
             'Method'           = 'DELETE'
             'Body'             = $Body
-            'QueryParameters'  = $QueryParameters 
+            'QueryParameters'  = $QueryParameters
             'EdgeRCFile'       = $EdgeRCFile
             'Section'          = $Section
             'AccountSwitchKey' = $AccountSwitchKey

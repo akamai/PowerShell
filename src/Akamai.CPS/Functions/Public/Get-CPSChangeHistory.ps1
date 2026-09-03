@@ -35,6 +35,6 @@ function Get-CPSChangeHistory {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body.changes  
+        return $Response.Body.changes
     }
 }

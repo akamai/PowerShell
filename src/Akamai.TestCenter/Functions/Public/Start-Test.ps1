@@ -5,7 +5,7 @@ function Start-Test {
         [ValidateSet('CHROME', 'CURL')]
         [string]
         $Client,
-        
+
         [Parameter(ParameterSetName = 'Specify test attributes')]
         [ValidateSet('IPV4', 'IPV6')]
         [string]
@@ -23,11 +23,11 @@ function Start-Test {
         [Parameter(ParameterSetName = 'Specify test attributes')]
         [string]
         $TestRequestURL,
-        
+
         [Parameter(ParameterSetName = 'Specify test attributes')]
         [string]
         $RequestMethod,
-        
+
         [Parameter(ParameterSetName = 'Specify test attributes')]
         [hashtable[]]
         $RequestHeaders,
@@ -56,7 +56,7 @@ function Start-Test {
         [Parameter(ParameterSetName = 'Specify test attributes')]
         [switch]
         $PurgeOnstaging,
-        
+
         [Parameter(ParameterSetName = 'Specify test attributes')]
         [switch]
         $SendEmailOnCompletion,

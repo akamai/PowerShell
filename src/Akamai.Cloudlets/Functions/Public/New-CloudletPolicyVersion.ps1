@@ -5,7 +5,7 @@ function New-CloudletPolicyVersion {
         [Alias('id')]
         [int]
         $PolicyID,
-        
+
         [Parameter()]
         [switch]
         $Legacy,

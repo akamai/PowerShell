@@ -27,11 +27,11 @@ function New-APIEndpointFromFile {
         [Parameter(ParameterSetName = 'Attributes with URL')]
         [string]
         $Root,
-        
+
         [Parameter(ParameterSetName = 'Attributes with file content', Mandatory)]
         [string]
         $ImportFileContent,
-        
+
         [Parameter(ParameterSetName = 'Attributes with filename', Mandatory)]
         [string]
         $ImportFilename,
@@ -61,10 +61,10 @@ function New-APIEndpointFromFile {
                 'contractId'       = $ContractID
                 'groupId'          = $GroupID
             }
-            
+
             if ($ImportURL) {
                 $Body['importFileSource'] = 'URL'
-                $Body['importUrl'] = $ImportURL 
+                $Body['importUrl'] = $ImportURL
                 if ($Root) { $Body['root'] = $Root }
             }
             elseif ($ImportFileContent) {

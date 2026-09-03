@@ -13,7 +13,7 @@ function Get-CloudletPolicyProperty {
         [Parameter(ParameterSetName = 'Shared policy')]
         [int]
         $Page,
-        
+
         [Parameter(ParameterSetName = 'Shared policy')]
         [int]
         $PageSize,

@@ -29,7 +29,7 @@ function Get-TestRun {
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         if ($TestRunID) {
             $Path = "/test-management/v3/test-runs/$TestRunID"
@@ -37,7 +37,7 @@ function Get-TestRun {
         else {
             $Path = "/test-management/v3/test-runs"
         }
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'includeContext'            = $PSBoundParameters.IncludeContext.IsPresent
             'includeSkipped'            = $PSBoundParameters.IncludeSkipped.IsPresent
             'includeAuditInfoInContext' = $PSBoundParameters.IncludeAuditInfoInContext.IsPresent

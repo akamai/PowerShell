@@ -1,15 +1,15 @@
 function New-CloudAccessKey {
     [CmdletBinding(DefaultParameterSetName = 'attributes')]
-    Param(
+    param(
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [string]
         $AccessKeyName,
 
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
-        [ValidateSet('AWS4_HMAC_SHA256', 'GOOG4_HMAC_SHA256')]
+        [ValidateSet('AWS4_HMAC_SHA256', 'GOOG4_HMAC_SHA256', 'AOS4_HMAC_SHA256', 'G2O', 'AVM_CLOUDINARY', 'VP_QUEUE_IT')]
         [string]
         $AuthenticationMethod,
-        
+
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [string]
         $CloudAccessKeyId,
@@ -21,16 +21,16 @@ function New-CloudAccessKey {
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [string]
         $ContractId,
-        
+
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [int]
         $GroupID,
-        
+
         [Parameter(Mandatory, ParameterSetName = 'attributes')]
         [ValidateSet('ENHANCED_TLS', 'STANDARD_TLS')]
         [string]
         $SecurityNetwork,
-        
+
         [Parameter(ParameterSetName = 'attributes')]
         [string]
         $AdditionalCDN,

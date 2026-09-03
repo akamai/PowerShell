@@ -1,6 +1,6 @@
 function Export-APIKey {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int64]
         $CollectionID,
@@ -42,7 +42,7 @@ function Export-APIKey {
                 }
             }
         }
-    
+
         if ($CollectionID) {
             $Path = "/apikey-manager-api/v2/collections/$CollectionID/keys/export"
         }
@@ -87,7 +87,7 @@ function Export-APIKey {
                 if ($PSVersionTable.PSVersion -ge '7.0.0') {
                     $ExportParams.UseQuotes = 'AsNeeded'
                 }
-                $Response.Body | Export-CSV @ExportParams
+                $Response.Body | Export-Csv @ExportParams
             }
         }
         if (-not $OutputFileName -or $PassThru) {

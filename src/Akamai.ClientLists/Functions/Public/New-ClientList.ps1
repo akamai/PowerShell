@@ -1,12 +1,12 @@
 function New-ClientList {
     [CmdletBinding(DefaultParameterSetName = 'Attributes')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Attributes', Mandatory)]
         [string]
         $Name,
 
         [Parameter(ParameterSetName = 'Attributes', Mandatory)]
-        [ValidateSet('IP', 'GEO', 'ASN', 'TLS_FINGERPRINT', 'FILE_HASH', 'USER_ID')]
+        [ValidateSet('IP', 'GEO', 'ASN', 'TLS_FINGERPRINT', 'FILE_HASH', 'USER_ID', 'DOMAIN', 'REQUEST_HEADER_NAME_VALUE')]
         [string]
         $Type,
 
@@ -82,12 +82,12 @@ function New-ClientList {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 Set-AkamaiDataCache -ClientListName $Response.Body.name -ClientListID $Response.Body.listId
             }
-    
+
             return $Response.Body
         }
         catch {

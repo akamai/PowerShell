@@ -31,7 +31,7 @@ function Submit-GTMLoadData {
 
     Process {
         $Path = "/gtm-load-data/v1/$DomainName/$ResourceName/$DatacenterID"
-        $AdditionalHeaders = @{ 
+        $AdditionalHeaders = @{
             'Accept' = 'application/problem+json'
         }
         $RequestParams = @{

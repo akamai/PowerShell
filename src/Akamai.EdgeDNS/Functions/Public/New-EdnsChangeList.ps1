@@ -13,16 +13,16 @@ function New-EDNSChangeList {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'POST'
         $Path = "/config-dns/v2/changelists"

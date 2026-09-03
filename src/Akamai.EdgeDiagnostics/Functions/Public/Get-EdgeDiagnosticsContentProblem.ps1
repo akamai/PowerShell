@@ -4,15 +4,15 @@ function Get-EdgeDiagnosticsContentProblem {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $RequestID,
-        
+
         [Parameter()]
         [switch]
         $IncludeContentResponseBody,
-        
+
         [Parameter()]
         [switch]
         $AsHashTable,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
@@ -53,7 +53,7 @@ function Get-EdgeDiagnosticsContentProblem {
             $Response.Body = $Response.BodyHash | ConvertTo-Json -depth 100 | ConvertFrom-Json
         }
     }
-        
+
     return $Response.Body
 }
 

@@ -1,12 +1,13 @@
 function Get-DataStream {
     [CmdletBinding(DefaultParameterSetName = 'Get all')]
-    Param(
-        [Parameter()]
-        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm')]
+    param(
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('LogType')]
+        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm', 'appsec', 'answerx')]
         [string]
-        $LogType = 'cdn', # Defaulting to CDN for backward compatibility
+        $StreamType = 'cdn', # Defaulting to CDN for backward compatibility
 
-        [Parameter(ParameterSetName = 'Get one')]
+        [Parameter(ParameterSetName = 'Get one', ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $StreamID,
 
@@ -31,27 +32,76 @@ function Get-DataStream {
         $AccountSwitchKey
     )
 
-    if ($StreamID) {
-        $Path = "/datastream-config-api/v3/log/$LogType/streams/$StreamID"
-    }
-    else {
-        $Path = "/datastream-config-api/v3/log/$LogType/streams"
-    }
-    $QueryParameters = @{
-        'groupId'    = $PSBoundParameters.GroupID
-        'objectName' = $ObjectName
-    }
+    process {
+        if ($StreamID) {
+            switch ($StreamType) {
+                'cdn' {
+                    $Path = "/datastream-config-api/v3/log/cdn/streams/$StreamID"
+                }
+                'edgeworkers' {
+                    $Path = "/datastream-config-api/v3/log/edgeworkers/streams/$StreamID"
+                }
+                'edns' {
+                    $Path = "/datastream-config-api/v3/log/edns/streams/$StreamID"
+                }
+                'gtm' {
+                    $Path = "/datastream-config-api/v3/log/gtm/streams/$StreamID"
+                }
+                'appsec' {
+                    $Path = "/datastream-config-api/v3/log/appsec/streams/$StreamID"
+                }
+                'answerx' {
+                    $Path = "/datastream-config-api/v3/log/answerx/streams/$StreamID"
+                }
+            }
+        }
+        else {
+            switch ($StreamType) {
+                'cdn' {
+                    $Path = '/datastream-config-api/v3/log/cdn/streams'
+                }
+                'edgeworkers' {
+                    $Path = '/datastream-config-api/v3/log/edgeworkers/streams'
+                }
+                'edns' {
+                    $Path = '/datastream-config-api/v3/log/edns/streams'
+                }
+                'gtm' {
+                    $Path = '/datastream-config-api/v3/log/gtm/streams'
+                }
+                'appsec' {
+                    $Path = '/datastream-config-api/v3/log/appsec/streams'
+                }
+                'answerx' {
+                    $Path = '/datastream-config-api/v3/log/answerx/streams'
+                }
+            }
+        }
+        $QueryParameters = @{
+            'groupId'    = $PSBoundParameters.GroupID
+            'objectName' = $ObjectName
+        }
 
-    $RequestParams = @{
-        'Path'             = $Path
-        'Method'           = 'GET'
-        'QueryParameters'  = $QueryParameters
-        'EdgeRCFile'       = $EdgeRCFile
-        'Section'          = $Section
-        'AccountSwitchKey' = $AccountSwitchKey
-        'Debug'            = ($PSBoundParameters.Debug -eq $true)
+        $RequestParams = @{
+            'Path'             = $Path
+            'Method'           = 'GET'
+            'QueryParameters'  = $QueryParameters
+            'EdgeRCFile'       = $EdgeRCFile
+            'Section'          = $Section
+            'AccountSwitchKey' = $AccountSwitchKey
+            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+        }
+        # Make Request
+        try {
+            $Response = Invoke-AkamaiRequest @RequestParams
+            # Add stream type to response
+            foreach ($Stream in $Response.Body) {
+                $Stream | Add-Member -MemberType NoteProperty -Name 'streamType' -Value $StreamType
+            }
+            return $Response.Body
+        }
+        catch {
+            throw $_
+        }
     }
-    # Make Request
-    $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body
 }

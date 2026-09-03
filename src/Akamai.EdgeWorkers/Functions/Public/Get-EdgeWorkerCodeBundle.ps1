@@ -1,6 +1,6 @@
 function Get-EdgeWorkerCodeBundle {
     [CmdletBinding(DefaultParameterSetName = 'Name & file')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Name & file', Mandatory)]
         [Parameter(ParameterSetName = 'Name & directory', Mandatory)]
         [string]

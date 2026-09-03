@@ -1,10 +1,10 @@
 function Remove-APIKeyFromCollection {
     [CmdletBinding(DefaultParameterSetName = 'Attributes')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Attributes', Mandatory)]
         [int64[]]
         $CollectionIDs,
-        
+
         [Parameter(ParameterSetName = 'Attributes', Mandatory)]
         [int64[]]
         $KeyIDs,

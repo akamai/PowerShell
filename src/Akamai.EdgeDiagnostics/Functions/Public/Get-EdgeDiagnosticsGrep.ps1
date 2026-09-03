@@ -4,7 +4,7 @@ function Get-EdgeDiagnosticsGrep {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $RequestID,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

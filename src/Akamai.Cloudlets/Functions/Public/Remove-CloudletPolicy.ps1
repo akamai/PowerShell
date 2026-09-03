@@ -5,7 +5,7 @@ function Remove-CloudletPolicy {
         [Alias('id')]
         [int]
         $PolicyID,
-        
+
         [Parameter()]
         [switch]
         $Legacy,

@@ -1,27 +1,33 @@
 function Get-EdgeWorkerActivation {
-    [CmdletBinding(DefaultParameterSetName = 'Get by name')]
-    Param(
-        [Parameter(ParameterSetName = 'Get by name', Mandatory)]
+    [CmdletBinding(DefaultParameterSetName = 'Get all by name')]
+    param(
+        [Parameter(ParameterSetName = 'Get one by name', Mandatory)]
+        [Parameter(ParameterSetName = 'Get all by name', Mandatory)]
         [string]
         $EdgeWorkerName,
 
-        [Parameter(ParameterSetName = 'Get by ID', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get one by ID', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get all by ID', Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $EdgeWorkerID,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Get one by name', Mandatory)]
+        [Parameter(ParameterSetName = 'Get one by ID', Mandatory)]
         [string]
         $ActivationID,
 
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get all by name', ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Get all by ID', ValueFromPipelineByPropertyName)]
         [string]
         $Version,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Get all by name')]
+        [Parameter(ParameterSetName = 'Get all by ID')]
         [switch]
         $ActiveOnNetwork,
 
-        [Parameter()]
+        [Parameter(ParameterSetName = 'Get all by name')]
+        [Parameter(ParameterSetName = 'Get all by ID')]
         [ValidateSet('STAGING', 'PRODUCTION')]
         [string]
         $Network,
@@ -49,7 +55,7 @@ function Get-EdgeWorkerActivation {
         }
         $QueryParameters = @{
             'version'         = $Version
-            'activeOnNetwork' = $PSBoundParamters.ActiveOnNetwork.IsPresent
+            'activeOnNetwork' = $PSBoundParameters.ActiveOnNetwork.IsPresent
             'network'         = $Network
         }
         $RequestParams = @{

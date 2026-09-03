@@ -27,7 +27,7 @@ function Get-IAMAllowedAPIs {
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Path = "/identity-management/v3/users/$Username/allowed-apis"
         $QueryParameters = @{

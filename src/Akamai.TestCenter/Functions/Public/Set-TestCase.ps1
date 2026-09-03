@@ -7,7 +7,7 @@ function Set-TestCase {
 
         [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
-        
+
         [Parameter()]
         [switch]
         $IncludeStatus,

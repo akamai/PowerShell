@@ -4,7 +4,7 @@ function Initialize-EdgeKV {
         [Parameter()]
         [switch]
         $AllowNamespacePolicyOverride,
-        
+
         [Parameter()]
         [switch]
         $RestrictDataAccess,

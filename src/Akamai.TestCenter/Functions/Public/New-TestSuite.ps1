@@ -5,22 +5,22 @@ function New-TestSuite {
         [Parameter(Mandatory, ParameterSetName = 'parameters-id')]
         [string]
         $TestSuiteName,
-        
+
         [Parameter(ParameterSetName = 'parameters-name')]
         [Parameter(ParameterSetName = 'parameters-id')]
         [string]
         $TestSuiteDescription,
-        
+
         [Parameter(ParameterSetName = 'parameters-name')]
         [Parameter(ParameterSetName = 'parameters-id')]
         [switch]
         $IsStateful,
-        
+
         [Parameter(ParameterSetName = 'parameters-name')]
         [Parameter(ParameterSetName = 'parameters-id')]
         [switch]
         $IsLocked,
-        
+
         [Parameter(Mandatory, ParameterSetName = 'parameters-name')]
         [string]
         $PropertyName,
@@ -28,7 +28,7 @@ function New-TestSuite {
         [Parameter(Mandatory, ParameterSetName = 'parameters-id')]
         [int]
         $PropertyID,
-        
+
         [Parameter(Mandatory, ParameterSetName = 'parameters-name')]
         [Parameter(Mandatory, ParameterSetName = 'parameters-id')]
         [int]

@@ -30,5 +30,5 @@ function New-NetstorageRuleSet {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body.items
-    }   
+    }
 }

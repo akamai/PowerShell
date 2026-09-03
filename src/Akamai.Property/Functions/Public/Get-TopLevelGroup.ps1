@@ -16,7 +16,7 @@ function Get-TopLevelGroup {
 
     try {
         $Groups = Get-Group -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey | Where-Object { $null -eq $_.parentGroupId }
-        return $Groups 
+        return $Groups
     }
     catch {
         throw $_

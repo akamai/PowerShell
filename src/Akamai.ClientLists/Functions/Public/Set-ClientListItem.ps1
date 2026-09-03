@@ -1,6 +1,6 @@
 function Set-ClientListItem {
     [CmdletBinding(DefaultParameterSetName = 'Name & items')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Name & items', Position = 0, Mandatory)]
         [Parameter(ParameterSetName = 'Name & body', Mandatory)]
         [string]
@@ -16,11 +16,11 @@ function Set-ClientListItem {
         [Object[]]
         $Items,
 
-        [Parameter(ParameterSetName = 'Name & items', Mandatory)]
-        [Parameter(ParameterSetName = 'ID & items', Mandatory)]
+        [Parameter(ParameterSetName = 'Name & items')]
+        [Parameter(ParameterSetName = 'ID & items')]
         [ValidateSet('update', 'append', 'delete')]
         [String]
-        $Operation,
+        $Operation = 'update',
 
         [Parameter(ParameterSetName = 'Name & body', Mandatory)]
         [Parameter(ParameterSetName = 'ID & body', Mandatory)]

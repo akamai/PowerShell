@@ -145,9 +145,9 @@ function New-EdgeWorkerVersion {
         elseif ($PSCmdlet.ParameterSetName.Contains('bundle')) {
             if (-not (Test-Path $CodeBundle)) {
                 throw "Code Bundle $CodeBundle could not be found."
-            }        
-        } 
-    
+            }
+        }
+
         $Path = "/edgeworkers/v1/ids/$EdgeWorkerID/versions"
         $AdditionalHeaders = @{
             'Content-Type' = 'application/gzip'

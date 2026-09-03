@@ -4,11 +4,11 @@ function Get-SLATestAgentGroup {
         [Parameter()]
         [string]
         $EdgeRCFile,
-  
+
         [Parameter()]
         [string]
         $Section,
-  
+
         [Parameter()]
         [string]
         $AccountSwitchKey
@@ -26,6 +26,6 @@ function Get-SLATestAgentGroup {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body  
+        return $Response.Body
     }
 }

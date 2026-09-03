@@ -8,7 +8,7 @@ function New-AkamaiOptions {
     if (-Not $OptionsPath) {
         $OptionsPath = $HOME + "/.akamai-pwsh/options.json"
     }
-    
+
     if (-not (Test-Path $OptionsPath)) {
         New-Item -ItemType File -Path $OptionsPath -Force | Out-Null
     }

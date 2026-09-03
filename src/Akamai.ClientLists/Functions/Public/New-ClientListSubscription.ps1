@@ -1,14 +1,14 @@
 function New-ClientListSubscription {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Position = 0, Mandatory)]
         [string[]]
         $Recipients,
-        
+
         [Parameter(Position = 1, Mandatory)]
         [string[]]
         $UniqueIDs,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

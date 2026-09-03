@@ -49,7 +49,7 @@ function Get-EdgeWorker {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 if ($EdgeWorkerID) {
@@ -61,7 +61,7 @@ function Get-EdgeWorker {
                     }
                 }
             }
-    
+
             if ($PSCmdlet.ParameterSetName -eq 'Get all') {
                 return $Response.Body.edgeWorkerIds
             }

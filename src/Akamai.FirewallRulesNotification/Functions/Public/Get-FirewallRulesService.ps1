@@ -17,7 +17,7 @@ function Get-FirewallRulesService {
         [string]
         $AccountSwitchKey
     )
-    
+
     Process {
         if ($ServiceID) {
             $Path = "/firewall-rules-manager/v1/services/$ServiceID"

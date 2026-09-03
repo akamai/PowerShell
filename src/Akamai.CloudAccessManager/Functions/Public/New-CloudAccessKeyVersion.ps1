@@ -1,6 +1,6 @@
 function New-CloudAccessKeyVersion {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [int]
         $AccessKeyUID,
@@ -28,7 +28,7 @@ function New-CloudAccessKeyVersion {
 
     process {
         $Path = "/cam/v1/access-keys/$AccessKeyUID/versions"
-    
+
         $Body = @{
             'cloudAccessKeyId'     = $CloudAccessKeyID
             'cloudSecretAccessKey' = $CloudSecretAccessKey

@@ -4,7 +4,7 @@ function Expand-AkamaiError {
         [Parameter(Mandatory)]
         [System.Management.Automation.ErrorRecord]
         $ErrorRecord,
-        
+
         [Parameter()]
         [PSCustomObject]
         $Options
@@ -23,7 +23,7 @@ function Expand-AkamaiError {
         }
     }
     Write-Debug "ResponseContentType = $ResponseContentType"
-    
+
     # If json, convert to object to extract useful info
     $ErrorData = $null
     if ($ResponseContentType -and $ResponseContentType.Contains('json')) {
@@ -36,7 +36,7 @@ function Expand-AkamaiError {
                 Write-Debug "Failed to convert error response body from JSON."
                 Write-Debug $_
             }
-    
+
             if ($ErrorData) {
                 try {
                     # Remove closing full stops for printing
@@ -100,7 +100,7 @@ function Expand-AkamaiError {
     'Response', 'HttpRequestError', 'StatusCode' | ForEach-Object {
         $ExpandedError.Exception | Add-Member -MemberType NoteProperty -Name $_ -Value $ErrorRecord.Exception.$_
     }
-        
+
     # Evaluate known errors and add recommended actions if found
     if ($null -ne $ErrorMessage) {
         $ExpandedError.ErrorDetails = $ErrorMessage
@@ -112,7 +112,7 @@ function Expand-AkamaiError {
             }
         }
     }
-    
+
     # Rerun loop to copy data to target exception
     if ($null -ne $ErrorData) {
         $ErrorData.PSObject.Properties.Name | foreach-object {

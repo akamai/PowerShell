@@ -39,5 +39,5 @@ function New-MSLStream {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }  
+    }
 }

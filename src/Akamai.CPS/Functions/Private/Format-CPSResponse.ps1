@@ -41,7 +41,7 @@ function Format-CPSResponse {
             if ($ChangeIDs.count -gt 0) {
                 $ResponseBody | Add-Member -NotePropertyName changeIds -NotePropertyValue $ChangeIDs
             }
-        
+
         }
 
         return $ResponseBody

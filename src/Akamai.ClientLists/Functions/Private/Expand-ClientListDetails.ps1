@@ -4,10 +4,10 @@ function Expand-ClientListDetails {
         [Parameter()]
         [string]
         $Name,
-        
+
         [Parameter()]
         $ListID,
-        
+
         [Parameter()]
         [string]
         $Version,

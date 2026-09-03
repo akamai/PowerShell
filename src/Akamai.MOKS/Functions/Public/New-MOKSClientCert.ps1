@@ -15,7 +15,7 @@ function New-MOKSClientCert {
         $GroupID,
 
         [Parameter(ParameterSetName = 'Attributes')]
-        [ValidateSet('CORE', 'RUSSIAN_AND_CORE', 'CHINA_AND_CORE')]
+        [ValidateSet('CORE', 'RUSSIA_AND_CORE', 'CHINA_AND_CORE')]
         [string]
         $Geography = 'CORE',
 
@@ -41,6 +41,10 @@ function New-MOKSClientCert {
         [ValidateSet('RSA', 'ECDSA')]
         [string]
         $KeyAlgorithm,
+
+        [Parameter(ParameterSetName = 'Attributes')]
+        [string]
+        $Subject,
 
         [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = 'Body')]
         $Body,

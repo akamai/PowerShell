@@ -1,6 +1,6 @@
 function New-EdgeWorker {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory, ValueFromPipeline)]
         [string]
         $EdgeWorkerName,
@@ -16,6 +16,10 @@ function New-EdgeWorker {
 
         [Parameter()]
         [string]
+        $Description,
+
+        [Parameter()]
+        [string]
         $EdgeRCFile,
 
         [Parameter()]
@@ -28,13 +32,18 @@ function New-EdgeWorker {
     )
 
     process {
-        $Path = "/edgeworkers/v1/ids"
-    
+        $Path = '/edgeworkers/v1/ids'
+
         $Body = @{
             name           = $EdgeWorkerName
             groupId        = $GroupID
             resourceTierId = $ResourceTierID
         }
+
+        if ($Description) {
+            $Body.description = $Description
+        }
+
         $RequestParams = @{
             'Path'             = $Path
             'Method'           = 'POST'
@@ -48,12 +57,12 @@ function New-EdgeWorker {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-        
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 Set-AkamaiDataCache -EdgeWorkerName $Response.Body.name -EdgeWorkerID $Response.Body.edgeWorkerId
             }
-        
+
             return $Response.Body
         }
         catch {

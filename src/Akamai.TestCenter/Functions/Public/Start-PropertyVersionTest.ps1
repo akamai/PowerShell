@@ -33,7 +33,7 @@ function Start-PropertyVersionTest {
         [Parameter()]
         [switch]
         $PurgeOnstaging,
-        
+
         [Parameter()]
         [switch]
         $SendEmailOnCompletion,

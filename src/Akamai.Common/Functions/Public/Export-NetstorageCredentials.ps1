@@ -12,7 +12,7 @@ function Export-NetstorageCredentials {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $Key,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $ID,
@@ -25,7 +25,7 @@ function Export-NetstorageCredentials {
         [Alias('host')]
         [string]
         $Hostname,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $CPCode,
@@ -44,7 +44,7 @@ function Export-NetstorageCredentials {
             "id = $ID"
             "key = $Key"
         ) -Join "`n"
-    
+
         # Check for existing file
         if (Test-Path -Path $NSRCFile) {
             # Get file contents
@@ -60,7 +60,7 @@ function Export-NetstorageCredentials {
                 Write-Debug "Export-NetstorageCredentials: No existing credentials found in $NSRCFile for section $Section"
                 $AppendNewEntry = $true
             }
-    
+
             if ($ExistingCredentials) {
                 if (-not $Force) {
                     throw "Credentials for section '$Section' already exist in '$NSRCFile'. Use -Force to overwrite."
@@ -78,7 +78,7 @@ function Export-NetstorageCredentials {
                     $UpdatedSection = $UpdatedSection -replace "(\r?\n)group[ ]*=[ ]*$($ExistingCredentials.group)", "`$1group = $Group"
                     $UpdatedSection = $UpdatedSection -replace "(\r?\n)host[ ]*=[ ]*$($ExistingCredentials.Host)", "`$1host = $HostName"
                     $UpdatedSection = $UpdatedSection -replace "(\r?\n)cpcode[ ]*=[ ]*$($ExistingCredentials.cpcode)", "`$1cpcode = $CPCode"
-                    
+
                     # Update file
                     Write-Debug "Export-NetstorageCredentials: Replacing existing entry:`n$ExistingSection`nwith updated entry:`n$UpdatedSection"
                     $UpdatedFileContents = $AuthFileContents.Replace($ExistingSection, $UpdatedSection)
@@ -102,7 +102,7 @@ function Export-NetstorageCredentials {
                     Write-Debug "Export-NetstorageCredentials: Detected Windows line endings in existing file"
                     $LineBreak = "`r`n"
                 }
-                
+
                 if (!$AuthFileContents.EndsWith($LineBreak)) {
                     Write-Debug "Export-NetstorageCredentials: Adding line break before new entry"
                     Add-Content -Path $NSRCFile -Value $LineBreak -NoNewline

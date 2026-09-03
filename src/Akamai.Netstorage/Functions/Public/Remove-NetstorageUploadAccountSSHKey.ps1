@@ -4,12 +4,12 @@ function Remove-NetstorageUploadAccountSSHKey {
         [Parameter(Mandatory)]
         [string]
         $UploadAccountID,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [Alias('id')]
         [string]
         $Identity,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

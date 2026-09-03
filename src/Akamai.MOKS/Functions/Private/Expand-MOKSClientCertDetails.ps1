@@ -4,7 +4,7 @@ function Expand-MOKSClientCertDetails {
         [Parameter()]
         [string]
         $CertificateName,
-        
+
         [Parameter()]
         $CertificateID,
 

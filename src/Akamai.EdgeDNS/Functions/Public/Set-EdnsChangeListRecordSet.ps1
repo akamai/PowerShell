@@ -47,6 +47,9 @@ function Set-EDNSChangeListRecordSet {
         $Path = "/config-dns/v2/changelists/$Zone/recordsets/add-change"
 
         if ($PSCmdlet.ParameterSetName -eq 'Attributes') {
+            if ($Name -ne $Zone -and $Name -notmatch "\.$Zone\.?$") {
+                $Name = "$Name.$Zone"
+            }
             $Body = @{
                 'name'  = $Name
                 'type'  = $Type

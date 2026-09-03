@@ -3,7 +3,7 @@ function Set-FirewallRulesSubscription {
     Param(
         [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
@@ -29,10 +29,10 @@ function Set-FirewallRulesSubscription {
         if ($AccountSwitchKey) {
             throw "This endpoint can only be run for your own user. As such Account Switching does not apply"
         }
-        
+
         $Path = "/firewall-rules-manager/v1/subscriptions"
 
-        # Construct body 
+        # Construct body
         if ($CollatedSubscriptions.Count -gt 0) {
             $Body = @{
                 'subscriptions' = $CollatedSubscriptions

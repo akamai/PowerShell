@@ -33,7 +33,7 @@ function New-GTMDomain {
             'contractId' = $ContractID
             'gid'        = $GroupID
         }
-        $AdditionalHeaders = @{ 
+        $AdditionalHeaders = @{
             'Accept'       = 'application/vnd.config-gtm.v1.8+json'
             'Content-Type' = 'application/vnd.config-gtm.v1.8+json'
         }
@@ -50,7 +50,7 @@ function New-GTMDomain {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body.resource  
+        return $Response.Body.resource
     }
 
     end {}

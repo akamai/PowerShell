@@ -4,7 +4,7 @@ function Get-ProductUseCases {
         [Parameter(Position = 0, Mandatory)]
         [string]
         $ContractID,
-        
+
         [Parameter(Position = 1, Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string]
         $ProductID,

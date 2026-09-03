@@ -51,7 +51,7 @@ function New-AppSecConfiguration {
             groupId     = $GroupID
             hostnames   = $Hostnames
         }
-    
+
         if ($CloneConfigID -and $CloneConfigVersion) {
             $Body['createFrom'] = @{
                 configId = $CloneConfigID
@@ -71,12 +71,12 @@ function New-AppSecConfiguration {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-        
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 Set-AkamaiDataCache -AppSecConfigName $Response.Body.name -AppSecConfigID $Response.Body.configId
             }
-        
+
             return $Response.Body
         }
         catch {

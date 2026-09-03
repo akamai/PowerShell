@@ -9,7 +9,7 @@ function Get-NetworkListSnapshot {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
         [int]
         $SyncPoint,
-        
+
         [Parameter()]
         [switch]
         $Extended,

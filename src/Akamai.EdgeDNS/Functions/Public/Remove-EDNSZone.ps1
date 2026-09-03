@@ -6,22 +6,22 @@ function Remove-EDNSZone {
         $Zone,
 
         [Parameter()]
-        [switch] 
+        [switch]
         $BypassSafetyChecks,
 
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     begin {
         $CollatedZones = New-Object -TypeName System.Collections.Generic.List[string]
     }
@@ -36,7 +36,7 @@ function Remove-EDNSZone {
         if ($CollatedZones.count -eq 0) {
             return
         }
-        
+
         $Method = 'POST'
         $Path = "/config-dns/v2/zones/delete-requests"
 

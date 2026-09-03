@@ -28,7 +28,7 @@ function New-CloudWrapperConfigurationActivation {
             $CollatedIDs.Add($ConfigurationID)
         }
     }
-    
+
     end {
         $Path = "/cloud-wrapper/v1/configurations/activate"
         $Body = @{

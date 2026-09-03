@@ -1,6 +1,6 @@
 function Get-LegacyReport {
     [CmdletBinding(DefaultParameterSetName = 'Get by IDs')]
-    Param(
+    param(
 
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [String]
@@ -36,6 +36,10 @@ function Get-LegacyReport {
         $Filters,
 
         [Parameter()]
+        [int]
+        $Limit,
+
+        [Parameter()]
         [String[]]
         $Metrics,
 
@@ -68,6 +72,7 @@ function Get-LegacyReport {
             'filters'      = $Filters
             'metrics'      = ($Metrics -join ',')
             'objectIds'    = ($ObjectIds -join ',')
+            'limit'        = $PSBoundParameters.Limit
         }
         $RequestParams = @{
             'Path'             = $Path

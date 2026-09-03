@@ -16,17 +16,17 @@ function Get-ChildRuleSnippet {
         [Parameter(Mandatory)]
         [int]
         $MaxDepth,
-        
+
         [Parameter()]
         [switch]
         $PathFromMainJson
     )
-    
+
     process {
         $SafeName = Format-Filename -FileName $Rules.Name
         $ChildPath = "$Path/$SafeName"
         $NewDepth = $CurrentDepth + 1
-    
+
         if ($NewDepth -lt $MaxDepth) {
             if ($Rules.children.count -gt 0) {
                 if (!(Test-Path $ChildPath)) {
@@ -53,7 +53,7 @@ function Get-ChildRuleSnippet {
                 }
             }
         }
-    
+
         $Rules | ConvertTo-Json -Depth 100 | Set-Content "$Path/$SafeName.json"
     }
 }

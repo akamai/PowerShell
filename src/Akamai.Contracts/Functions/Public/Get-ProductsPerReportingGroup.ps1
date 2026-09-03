@@ -31,7 +31,7 @@ function Get-ProductsPerReportingGroup {
         if (($From -or $To) -and ($From -notmatch $DateMatch -or $To -notmatch $DateMatch)) {
             throw "ERROR: From & To must be in the format 'YYYY-MM-DD'"
         }
-    
+
         $Path = "/contract-api/v1/reportingGroups/$ReportingGroupID/products/summaries"
         $QueryParameters = @{
             'from' = $From
@@ -48,7 +48,7 @@ function Get-ProductsPerReportingGroup {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body.products.'marketing-products'  
+        return $Response.Body.products.'marketing-products'
     }
 }
 

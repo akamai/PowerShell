@@ -1,3 +1,80 @@
+## 3.1.0 (Sept 2, 2026)
+
+### Bug Fixes
+
+This release fixes the following issues.
+
+#### All submodules
+
+An issue within compiled submodule `.psm1` files invalidated module signing. All submodules now have a valid Authenticode signature.
+
+#### Common
+
+* Cleared a request signing issue that existed in the legacy `Invoke-AkamaiRestMethod` function.
+
+  > **Note:** This function is deprecated with an end-of-life of version 4.0.
+
+* Added a module loading check to prevent errors when importing `Akamai.Common` in concurrent threads if `EnableRecommendedActions` option is set to `true`.
+
+#### EdgeWorkers
+
+* `Get-EdgeWorkerActivation`. Cleared a typo found in `PSBoundParameters` that caused the `-ActiveOnNetwork` parameter value to always be `null`. Resolves [Issue 36](https://github.com/akamai/PowerShell/issues/36).
+* Added a missing '--disable-copyfile' flag. Its absence invalidated EdgeWorker bundles containing subfolders for Unix and MacOS users during background tar file creation. Resolves [Issue 33](https://github.com/akamai/PowerShell/issues/33).
+
+#### mTLS Origin Keystore
+
+`New-MOKSClientCert`. Corrected a typo in the ValidateSet options of the `-Geography` parameter.
+
+#### Reporting
+
+`Get-LegacyReport`. Put back the `-Limit` parameter that was removed in v3.0. Resolves [Issue 37](https://github.com/akamai/PowerShell/issues/37).
+
+### Updates
+
+#### Client Lists
+
+* `Get-ClientList`, `New-ClientList`. Added `DOMAIN` and `REQUEST_HEADER_NAME_VALUE` options to the `-Type` parameter.
+* `Set-ClientListItem`. Set a default value of `update` for the `-Operation` parameter.
+
+#### Cloud Access Manager
+
+`New-CloudAccessKey`. Added `AOS4_HMAC_SHA256`, `G2O`, `AVM_CLOUDINARY`, and `VP_QUEUE_IT` options to the `-AuthenticationMethod` parameter.
+
+#### Datastream
+
+* `Get-DataStreamHistory`. Added `-StartVersion` and `-EndVersion` parameters.
+* Renamed `-LogType` to `-StreamType` to better match naming conventions. `-LogType` is still supported as an alias but will be removed in v4.0.
+* Added support for new Security (`appsec`) and Recursive DNS (`answerx`) streams wherever `-StreamType` is present.
+* Added a `streamType` property to all stream objects so you can pipe the object to other function.
+
+#### Domain Ownership Manager (DOM)
+
+`Disable-DOMDomain` and `Remove-DOMDomain`. Added a `ValidateSet` for parameter `-ValidationScope` that allows tabbing through allowed values.
+
+#### Edge DNS
+
+All functions that combine `-Zone` and `-Name` no longer require a name parameter to include the zone. Previously, for example, to update the record at `www.example.com`, you had to provide `-Zone example.com -Name www.example.com` which duplicated the zone. With this update, send `-Zone example.com -Name www` and the zone is automatically inferred.
+
+#### EdgeWorkers
+
+* `Copy-EdgeWorker`. Updated to support cloning EdgeWorkers to the same resource tier, and the ability to duplicate an existing EdgeWorker's versions on clone.
+* `Get-EdgeWorkerActivation`. Implemented more precise parameter sets to  prevent illegal combinations of `Get one` and `Get all` parameters.
+
+### New functions
+
+#### Property
+
+`Get-PropertyDebugKey`. Generates an Enhanced Debug key based on a property or hostname.
+
+#### Datastream
+
+`Get-DataStreamAnswerXSSIDs`. Returns the AnswerX Recursive DNS Service IDs (SSIDs) on your contract. The SSIDs are required when you create a new data stream of type `answerx`
+
+### Removed
+
+* We retired the `Akamai.ChinaCDN` submodule retired as the associated API hit end-of-life.
+* `Add-ClientListItem` and `Remove-ClientListItem`. Removed the optional `-Operation` parameter as it's no longer supported in the API and was being ignored.
+
 ## 3.0.0 (May 26, 2026)
 
 ### Breaking changes

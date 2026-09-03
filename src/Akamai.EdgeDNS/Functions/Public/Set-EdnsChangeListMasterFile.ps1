@@ -8,27 +8,27 @@ function Set-EDNSChangeListMasterFile {
         [Parameter(Mandatory, ValueFromPipeline)]
         [string]
         $Body,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     begin {
         $MasterFile = ""
     }
 
     process {
         foreach ($Line in $Body) {
-            $MasterFile += $Line 
+            $MasterFile += $Line
         }
     }
 

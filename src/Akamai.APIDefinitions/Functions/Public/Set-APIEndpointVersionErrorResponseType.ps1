@@ -11,7 +11,7 @@ function Set-APIEndpointVersionErrorResponseType {
 
         [Parameter(Mandatory)]
         [string]
-        $VersionNumber, 
+        $VersionNumber,
 
         [Parameter(Mandatory)]
         [ValidateSet('API_KEY_INVALID', 'API_KEY_FORBIDDEN', 'QUOTA_EXCEEDED', 'JWT_SIGNATURE_INVALID', 'JWT_CLAIM_VALUE_INVALID')]

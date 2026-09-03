@@ -4,11 +4,11 @@ function Expand-CloudletPolicyDetails {
         [Parameter()]
         [int]
         $PolicyID,
-        
+
         [Parameter()]
         [string]
         $Version,
-        
+
         [Parameter()]
         [switch]
         $Legacy,

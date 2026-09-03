@@ -17,7 +17,7 @@ function Get-CloudletPolicyActivation {
         [Parameter(ParameterSetName = 'Get all')]
         [int]
         $Page,
-        
+
         [Parameter(ParameterSetName = 'Get all')]
         [int]
         $PageSize,

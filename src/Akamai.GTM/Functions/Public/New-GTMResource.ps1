@@ -29,7 +29,7 @@ function New-GTMResource {
 
     process {
         $Path = "/config-gtm/v1/domains/$DomainName/resources/$ResourceName"
-        $AdditionalHeaders = @{ 
+        $AdditionalHeaders = @{
             'Accept'       = 'application/vnd.config-gtm.v1.8+json'
             'Content-Type' = 'application/vnd.config-gtm.v1.8+json'
         }

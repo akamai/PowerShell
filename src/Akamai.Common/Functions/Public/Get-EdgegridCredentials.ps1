@@ -24,7 +24,7 @@ function Get-EdgegridCredentials {
     }
     if ($Section -eq '') {
         $Section = 'default'
-    }   
+    }
 
 
     #----------------------------------------------------------------------------------------------
@@ -43,7 +43,7 @@ function Get-EdgegridCredentials {
     #----------------------------------------------------------------------------------------------
     #                              2. Check for environment variables
     #----------------------------------------------------------------------------------------------
-    
+
     ## 'default' section is implicit. Otherwise env variable starts with section prefix
     if ($Mode -ne 'edgerc') {
         if ($Section.ToLower() -eq 'default') {
@@ -52,7 +52,7 @@ function Get-EdgegridCredentials {
         else {
             $EnvPrefix = "AKAMAI_$Section".ToUpper()
         }
-    
+
         if (Test-Path "env:\$EnvPrefix`_HOST") {
             $Credentials.Host = (Get-Item -Path "env:\$EnvPrefix`_HOST").Value
         }
@@ -141,12 +141,12 @@ function Get-EdgegridCredentials {
             return $Credentials
         }
     }
-    
+
     #----------------------------------------------------------------------------------------------
     #                                     4. Panic!
     #----------------------------------------------------------------------------------------------
 
-    ## Under normal circumstances you should not get this far...    
+    ## Under normal circumstances you should not get this far...
     throw "Error: Credentials could not be loaded from either; session, environment variables or edgerc file '$EdgeRCFile'"
 
 }

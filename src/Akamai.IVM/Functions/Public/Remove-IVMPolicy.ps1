@@ -1,34 +1,34 @@
 function Remove-IVMPolicy {
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory)]  
-        [string] 
+        [Parameter(Mandatory)]
+        [string]
         $PolicySetID,
 
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
-        [Alias('id')]  
-        [string] 
+        [Alias('id')]
+        [string]
         $PolicyID,
 
-        [Parameter(Mandatory)]  
-        [ValidateSet('Staging', 'Production')] 
-        [string] 
+        [Parameter(Mandatory)]
+        [ValidateSet('Staging', 'Production')]
+        [string]
         $Network,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $ContractID,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $EdgeRCFile,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $Section,
 
-        [Parameter()] 
-        [string] 
+        [Parameter()]
+        [string]
         $AccountSwitchKey
     )
 
@@ -36,7 +36,7 @@ function Remove-IVMPolicy {
         $Network = $Network.ToLower()
         $Path = "/imaging/v2/network/$Network/policies/$PolicyID"
         $AdditionalHeaders = @{ 'Policy-Set' = $PolicySetID }
-    
+
         if ($ContractID -ne '') {
             $AdditionalHeaders['Contract'] = $ContractID
         }

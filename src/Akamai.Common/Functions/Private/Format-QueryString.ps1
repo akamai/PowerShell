@@ -6,12 +6,12 @@ function Format-QueryString {
         [string]
         $QueryString
     )
-    
+
     $ValidParameters = New-Object -TypeName System.Collections.ArrayList
 
     # Remove invalid characters
     $QueryString = $QueryString.Replace(" ", "%20")
-    
+
     # Parse Elements
     if ($QueryString.Contains("&")) {
         $Parameters = $QueryString.Split("&")
