@@ -26,7 +26,7 @@ function New-NetstorageSymlink {
         $AdditionalOptions = @{
             'target' = $EncodedTargetPath
         }
-    
+
         $RequestParams = @{
             'Path'              = $Path
             'Action'            = $Action

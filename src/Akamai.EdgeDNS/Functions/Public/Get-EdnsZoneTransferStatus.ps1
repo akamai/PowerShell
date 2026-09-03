@@ -8,16 +8,16 @@ function Get-EDNSZoneTransferStatus {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     begin {
         $CollatedZones = New-Object System.Collections.Generic.List[string]
     }

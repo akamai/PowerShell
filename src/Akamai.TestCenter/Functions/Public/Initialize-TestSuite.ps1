@@ -8,7 +8,7 @@ function Initialize-TestSuite {
         [Parameter(Mandatory, ParameterSetName = 'Property ID')]
         [int]
         $PropertyID,
-        
+
         [Parameter(Mandatory, ParameterSetName = 'Property Name')]
         [Parameter(Mandatory, ParameterSetName = 'Property ID')]
         [int]

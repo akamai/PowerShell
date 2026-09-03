@@ -48,7 +48,7 @@ function Remove-EDNSProxyZone {
 
     end {
         $Path = "/config-dns/v2/proxies/$ProxyID/zones/delete-requests"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'bypassSafetyChecks' = $PSBoundParameters.BypassSafetyChecks.IsPresent
         }
         $Body = @{
@@ -62,7 +62,7 @@ function Remove-EDNSProxyZone {
             Path             = $Path
             Method           = 'POST'
             Body             = $Body
-            QueryParameters  = $QueryParameters 
+            QueryParameters  = $QueryParameters
             EdgeRCFile       = $EdgeRCFile
             Section          = $Section
             AccountSwitchKey = $AccountSwitchKey

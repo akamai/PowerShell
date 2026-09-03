@@ -19,9 +19,14 @@ FROM --platform=linux/arm64 mcr.microsoft.com/powershell:7.5-mariner-2.0-arm64 A
 FROM build-$TARGETARCH
 
 ARG TARGETARCH
+ARG VERSION
 RUN if [ "$TARGETARCH" = "arm64" ] ; then \
     tdnf install tar -y; \
     fi
 
 # Install Akamai module
-RUN ["pwsh", "-command", "Install-Module -Scope AllUsers Akamai -Force"] 
+RUN if [ -z "$VERSION" ]; then \
+    pwsh -command "Install-PSResource -Repository PSGallery -Scope AllUsers -Name Akamai -TrustRepository"; \
+    else \
+    pwsh -command "Install-PSResource -Repository PSGallery -Scope AllUsers -Name Akamai -Version $VERSION -TrustRepository"; \
+    fi

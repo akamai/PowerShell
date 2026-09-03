@@ -4,11 +4,11 @@ function New-NetstorageCPCode {
         [Parameter(Mandatory)]
         [string]
         $CPCodeName,
-        
+
         [Parameter(Mandatory)]
         [string]
         $ContractID,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

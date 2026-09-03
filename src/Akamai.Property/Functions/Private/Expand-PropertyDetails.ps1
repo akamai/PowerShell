@@ -55,7 +55,7 @@ function Expand-PropertyDetails {
                 $ContractID = $Global:AkamaiDataCache.Property.Properties.$PropertyName.ContractID
                 $GroupID = $Global:AkamaiDataCache.Property.Properties.$PropertyName.GroupID
             }
-            
+
             if (-not $PropertyID) {
                 Write-Debug "Expand-PropertyDetails: Finding property with name '$PropertyName'."
                 try {
@@ -71,16 +71,16 @@ function Expand-PropertyDetails {
                     throw $_
                 }
             }
-    
+
             # Add to data cache
             if ($Global:AkamaiOptions.EnableDataCache) {
-                $Global:AkamaiDataCache.Property.Properties.$PropertyName = [ordered] @{ 
+                $Global:AkamaiDataCache.Property.Properties.$PropertyName = [ordered] @{
                     'PropertyID' = $PropertyID
                     'ContractID' = $ContractID
                     'GroupID'    = $GroupID
                 }
             }
-    
+
             Write-Debug "Expand-PropertyDetails: PropertyID = $PropertyID."
         }
         if ($PropertyVersion -and $PropertyVersion -notmatch "^[0-9]+$") {
@@ -120,7 +120,7 @@ function Expand-PropertyDetails {
                         $ContractID = $Property.contractId
                         $GroupID = $Property.groupId
                     }
-    
+
                     if ($PropertyVersion -eq 'latest') {
                         $PropertyVersion = $Property.latestVersion
                     }
@@ -147,7 +147,7 @@ function Expand-PropertyDetails {
             }
             Write-Debug "Expand-PropertyDetails: PropertyVersion = $PropertyVersion."
         }
-    
+
         return $PropertyID, $PropertyVersion, $GroupID, $ContractID
     }
 }

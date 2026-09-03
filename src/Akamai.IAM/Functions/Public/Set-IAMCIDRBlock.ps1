@@ -32,8 +32,8 @@ function Set-IAMCIDRBlock {
 
     process {
         $Path = "/identity-management/v3/user-admin/ip-acl/allowlist/$CIDRBlockID"
-        $Body = @{ 
-            'cidrBlock' = $CIDRBlock 
+        $Body = @{
+            'cidrBlock' = $CIDRBlock
             'comments'  = $Comments
             'enabled'   = $Enabled.IsPresent
         }

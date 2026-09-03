@@ -25,5 +25,5 @@ function Get-PropertyContract {
     }
     # Make Request
     $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body.contracts.items  
+    return $Response.Body.contracts.items
 }

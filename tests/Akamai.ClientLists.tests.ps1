@@ -1,223 +1,371 @@
 BeforeDiscovery {
     # Check environment variables have been imported
     if ($null -eq $env:PesterGroupID) {
-        throw "Required environment variables are missing"
+        throw 'Required environment variables are missing'
     }
 }
 
-Describe 'Safe Akamai.ClientLists Tests' {
-    
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.ClientLists/Akamai.ClientLists.psm1 -Force
+Describe 'Akamai.ClientLists Tests' {
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.ClientLists'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
-        $TestClientListName1 = 'akamaipowershell-testing1'
-        $TestClientListName2 = 'akamaipowershell-testing2'
+        $TestClientListName1 = "pester-1-$Timestamp"
+        $TestClientListName2 = "pester-2-$Timestamp"
         $TestListType = 'IP'
         $TestClientListJSON = @"
 {
     "type": "$TestListType",
-    "contractId": "$TestContract",
+    "contractId": "$TestContractID",
     "groupId": $TestGroupID,
     "name": "$TestClientListName1",
-    "notes": "PowerShell pester testing"
+    "notes": "PowerShell pester testing",
+    "tags": [
+        "pester",
+        "body"
+    ]
 }
 "@
-        $TestFileName = 'cl.csv'
-        $TestCSVContent = @"
-value,description,tags,expirationDate
-1.1.1.1,testing,powershell,
-2.2.2.2,testing,powershell,
-"@
+        $TestFileName = "TestDrive:/cl-$Timestamp.csv"
+        $TestCSVContent = "value,description,tags,expirationDate`n1.1.1.1,testing,powershell,`n2.2.2.2,testing,powershell,"
         $TestCSVContent | Set-Content -Path $TestFileName
-        $TestItems = '3.3.3.3,4.4.4.4'
+        $TestItems = '3.3.3.3', '4.4.4.4'
         $TestItemsAll = '1.1.1.1', '2.2.2.2', '3.3.3.3', '4.4.4.4'
-        
+
+        $TestActivationJSON = '{
+            "action": "ACTIVATE",
+            "network": "STAGING",
+            "comments": "Activation of GEO allowlist",
+            "notificationRecipients": [
+                "mail@example.com"
+            ]
+        }'
+        $TestDeactivation = ConvertFrom-Json $TestActivationJSON
+        $TestDeactivation.action = 'DEACTIVATE'
+        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.ClientLists"
+
         $PD = @{}
     }
 
     AfterAll {
-        Remove-Item $TestFileName
-        Get-ClientList @CommonParams | Where-Object name -in $TestClientListName1, $TestClientListName2 | Remove-ClientList @CommonParams
+        Get-ClientList @CommonParams | Where-Object name -In $TestClientListName1, $TestClientListName2 | Remove-ClientList @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
-    #                 ClientList                  
+    #                 ClientList
     #------------------------------------------------
 
-    Context 'New-ClientList - Parameter Set body, by parameter' {
-        it 'returns the correct data' {
-            $PD.NewClientListByBody = New-ClientList -Body $TestClientListJSON @CommonParams
+    Context 'New-ClientList' {
+        It 'creates successfully by pipeline' {
+            $PD.NewClientListByBody = $TestClientListJSON | New-ClientList @CommonParams
             $PD.NewClientListByBody.name | Should -Be $TestClientListName1
         }
-    }
-
-    Context 'New-ClientList - Parameter Set attributes' {
-        it 'returns the correct data' {
-            $PD.NewClientList = New-ClientList -ContractID $TestContract -GroupID $TestGroupID -Name $TestClientListName2 -Type IP @CommonParams
+        It 'creates successfully by attributes' {
+            $TestParams = @{
+                'ContractID' = $TestContractID
+                'GroupID'    = $TestGroupID
+                'Name'       = $TestClientListName2
+                'Type'       = 'IP'
+                'Items'      = @('1.1.1.1', '2.2.2.2')
+                'Tags'       = @('pester', 'attributes')
+            }
+            $PD.NewClientList = New-ClientList @TestParams @CommonParams
             $PD.NewClientList.name | Should -Be $TestClientListName2
         }
     }
 
-    Context 'Get-ClientList - Parameter Set all' {
-        it 'returns the correct data' {
-            $PD.GetClientListAll = Get-ClientList @CommonParams
-            $PD.GetClientListAll[0].listId | Should -Not -BeNullOrEmpty
+    Context 'Get-ClientList' {
+        It 'returns a list' {
+            $PD.ClientLists = Get-ClientList @CommonParams
+            $PD.ClientLists[0].listId | Should -Not -BeNullOrEmpty
+        }
+        It 'returns the correct list by ID' {
+            $PD.ClientListByID = $PD.NewClientListByBody.listId | Get-ClientList @CommonParams
+            $PD.ClientListByID.listId | Should -Be $PD.NewClientListByBody.listId
+        }
+        It 'returns the correct list by Name' {
+            $TestParams = @{
+                'Name' = $PD.NewClientList.name
+            }
+            $PD.ClientListByName = Get-ClientList @TestParams @CommonParams
+            $PD.ClientListByName.listId | Should -Be $PD.NewClientList.listId
         }
     }
 
-    Context 'Get-ClientList - Parameter Set single, by parameter' {
-        it 'returns the correct data' {
-            $PD.GetClientList = Get-ClientList -ListID $PD.NewClientListByBody.listId @CommonParams
-            $PD.GetClientList.listId | Should -Be $PD.NewClientListByBody.listId
-        }
-    }
-
-    Context 'Get-ClientList - Parameter Set single, by pipeline' {
-        it 'returns the correct data' {
-            $PD.GetClientListByName = Get-ClientList -Name $PD.NewClientList.name @CommonParams
-            $PD.GetClientListByName.listId | Should -Be $PD.NewClientList.listId
-        }
-    }
-
-    Context 'Set-ClientList by parameter' {
-        it 'returns the correct data' {
-            $PD.SetClientListByParam = Set-ClientList -ListID $PD.NewClientListByBody.listId -NewName $TestClientListName1 @CommonParams
+    Context 'Set-ClientList' {
+        It 'updates successfully by ID' {
+            $TestParams = @{
+                'NewName' = $TestClientListName1
+                'Name'    = $PD.NewClientListByBody.Name
+            }
+            $PD.SetClientListByParam = Set-ClientList @TestParams @CommonParams
             $PD.SetClientListByParam.listId | Should -Be $PD.NewClientListByBody.listId
         }
-    }
-
-    Context 'Set-ClientList - Parameter Set id-body, name-body, by pipeline' {
-        it 'returns the correct data' {
-            $PD.SetClientListByPipeline = ($PD.NewClientList | Set-ClientList -ListID $PD.NewClientList.listId @CommonParams)
+        It 'updates successfully by pipeline' {
+            $TestParams = @{
+                'NewName' = $TestClientListName2
+            }
+            $PD.SetClientListByPipeline = $PD.NewClientList | Set-ClientList @TestParams @CommonParams
             $PD.SetClientListByPipeline.listId | Should -Be $PD.NewClientList.listId
         }
     }
 
     #------------------------------------------------
-    #                 ClientListDetails                  
+    #                 ClientListDetails
     #------------------------------------------------
 
     Context 'Expand-ClientListDetails' {
         BeforeAll {
+            . $PSScriptRoot/../src/Akamai.ClientLists/Functions/Private/Expand-ClientListDetails.ps1
+
             $PreviousOptionsPath = $env:AkamaiOptionsPath
-            $env:AkamaiOptionsPath = "TestDrive:/options.json"
+            $env:AkamaiOptionsPath = 'TestDrive:/options.json'
             # Creat options
             New-AkamaiOptions
             # Enable data cache
             Set-AkamaiOptions -EnableDataCache $true | Out-Null
             Clear-AkamaiDataCache
+
+            $ProductionActiveList = $PD.ClientLists | Where-Object productionActiveVersion | Select-Object -First 1
+            $StagingActiveList = $PD.ClientLists | Where-Object stagingActiveVersion | Select-Object -First 1
         }
         It 'finds the right client list' {
             $TestParams = @{
-                Name    = $TestClientListName1
-                Version = 'latest'
+                'Name' = $TestClientListName1
             }
-            $PD.ExpandedListID, $PD.ExpandedVersion = Expand-ClientListDetails @TestParams @CommonParams
+            $PD.ExpandedListID, $null = Expand-ClientListDetails @TestParams @CommonParams
             $PD.ExpandedListID | Should -Be $PD.NewClientListByBody.listId
-            $PD.ExpandedVersion | Should -Be 1
             $AkamaiDataCache.ClientLists.Lists.$TestClientListName1.ListID | Should -Be $PD.ExpandedListID
         }
+        It 'throws when the client list does not exist' {
+            $TestParams = @{
+                'Name' = 'some-client-list-which-doesnt-exist'
+            }
+            { Expand-ClientListDetails @TestParams @CommonParams } | Should -Throw 'Client List * not found.'
+        }
+        It 'finds the latest version' {
+            $TestParams = @{
+                'Name'    = $TestClientListName1
+                'Version' = 'latest'
+            }
+            $ExpandedListID, $PD.ExpandedVersion = Expand-ClientListDetails @TestParams @CommonParams
+            $ExpandedListID | Should -Be $PD.NewClientListByBody.listId
+            $PD.ExpandedVersion | Should -Be 1
+            $AkamaiDataCache.ClientLists.Lists.$TestClientListName1.ListID | Should -Be $ExpandedListID
+        }
+        It 'finds the production version' {
+            $TestParams = @{
+                'ListID'  = $ProductionActiveList.listId
+                'Version' = 'production'
+            }
+            $ProductionListID, $ProductionVersion = Expand-ClientListDetails @TestParams @CommonParams
+            $ProductionListID | Should -Be $ProductionActiveList.listId
+            $ProductionVersion | Should -Be $ProductionActiveList.productionActiveVersion
+        }
+        It 'finds the staging version' {
+            $TestParams = @{
+                'ListID'  = $StagingActiveList.listId
+                'Version' = 'staging'
+            }
+            $StagingListID, $StagingVersion = Expand-ClientListDetails @TestParams @CommonParams
+            $StagingListID | Should -Be $StagingActiveList.listId
+            $StagingVersion | Should -Be $StagingActiveList.stagingActiveVersion
+        }
+        It 'throws when there is no production-active version' {
+            $TestParams = @{
+                'Name'    = $TestClientListName1
+                'Version' = 'production'
+            }
+            { Expand-ClientListDetails @TestParams @CommonParams } | Should -Throw 'No production-active version of client list*'
+        }
+        It 'throws when there is no staging-active version' {
+            $TestParams = @{
+                'Name'    = $TestClientListName1
+                'Version' = 'staging'
+            }
+            { Expand-ClientListDetails @TestParams @CommonParams } | Should -Throw 'No staging-active version of client list*'
+        }
         AfterAll {
-            Remove-Item -Path $env:AkamaiOptionsPath -Force
             $env:AkamaiOptionsPath = $PreviousOptionsPath
             Clear-AkamaiDataCache
+
+            Remove-Item -Path Function:/Expand-ClientListDetails -Force
         }
     }
 
     #------------------------------------------------
-    #                 ClientListContractsGroups                  
+    #                 ClientListContractsGroups
     #------------------------------------------------
 
     Context 'Get-ClientListContractsGroups' {
         It 'returns the correct data' {
             $PD.GetClientListContractsGroups = Get-ClientListContractsGroups @CommonParams
-            $PD.GetClientListContractsGroups[0].contractId | Should -Be $TestContract
+            $PD.GetClientListContractsGroups[0].contractId | Should -Be $TestContractID
         }
     }
 
     #------------------------------------------------
-    #                 ClientListItem                  
+    #                 ClientListItem
     #------------------------------------------------
 
-    Context 'Add-ClientListItem from file' {
-        It 'returns the correct data' {
-            $PD.AddClientListItemFromFile = Add-ClientListItem -Name $TestClientListName1 -Action MERGE -File $TestFileName -ListType $TestListType -Version latest @CommonParams
-            $PD.AddClientListItemFromFile.value | Should -Not -BeNullOrEmpty
+    Context 'Add-ClientListItem' {
+        It 'adds correctly by items' {
+            $TestParams = @{
+                'ListID' = $PD.NewClientListByBody.listId
+            }
+            $PD.AddClientListItemByItems = $TestItems | Add-ClientListItem @TestParams @CommonParams
+            $PD.AddClientListItemByItems.appended.value | Sort-Object | Should -Be $TestItems
         }
     }
 
-    Context 'Add-ClientListItem by items' {
-        It 'returns the correct data' {
-            $PD.AddClientListItemByItems = Add-ClientListItem -ListID $PD.NewClientListByBody.listId -Action MERGE -Items $TestItems -Version latest @CommonParams
-            $PD.AddClientListItemByItems.value | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    Context 'Get-ClientListItem - Parameter Set id' {
-        it 'returns the correct data' {
-            $PD.GetClientListItemID = Get-ClientListItem -ListID $PD.NewClientListByBody.listId @CommonParams
-            $PD.GetClientListItemID.count | Should -Be 4
+    Context 'Get-ClientListItem' {
+        It 'returns the correct data by id' {
+            $PD.GetClientListItemID = $PD.NewClientListByBody.listId | Get-ClientListItem @CommonParams
+            $PD.GetClientListItemID.count | Should -Be 2
             $PD.GetClientListItemID[0].type | Should -Be $TestListType
         }
-    }
-
-    Context 'Get-ClientListItem - Parameter Set name' {
-        it 'returns the correct data' {
-            $PD.GetClientListItemName = Get-ClientListItem -Name $PD.NewClientListByBody.name @CommonParams
-            $PD.GetClientListItemID.count | Should -Be 4
+        It 'returns the correct data by name' {
+            $TestParams = @{
+                'Name' = $PD.NewClientListByBody.name
+            }
+            $PD.GetClientListItemName = Get-ClientListItem @TestParams @CommonParams
+            $PD.GetClientListItemID.count | Should -Be 2
             $PD.GetClientListItemID[0].type | Should -Be $TestListType
+        }
+        It 'handles empty input' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith { return 'IAR executed' }
+            $TestParams = @{
+                'Debug' = $true
+            }
+            $Result = & {} | Get-ClientListItem @TestParams
+            $Result | Should -Not -Be 'IAR executed'
         }
     }
 
-    Context 'Set-ClientListItem by body' {
-        It 'returns the correct data' {
-            $PD.SetClientListItemByBody = Set-ClientListItem -ListID $PD.NewClientListByBody.listId -Body @{ update = $PD.GetClientListItemID } @CommonParams
-            $PD.SetClientListItemByBody.updated.count | Should -Be 4
+    Context 'Set-ClientListItem' {
+        It 'sets items by body' {
+            $TestParams = @{
+                'ListID' = $PD.NewClientListByBody.listId
+                'Body'   = @{ 'update' = $PD.GetClientListItemID }
+            }
+            $PD.SetClientListItemByBody = Set-ClientListItem @TestParams @CommonParams
+            $PD.SetClientListItemByBody.updated.count | Should -Be 2
             $PD.SetClientListItemByBody.updated[0].value | Should -BeIn $TestItemsAll
         }
-    }
-
-    Context 'Set-ClientListItem by items' {
-        it 'returns the correct data' {
-            $PD.SetClientListItemByItems = Set-ClientListItem -ListID $PD.NewClientListByBody.listId -Items $PD.GetClientListItemID -Operation update @CommonParams
-            $PD.SetClientListItemByItems.updated.count | Should -Be 4
+        It 'sets items by param without an operation' {
+            $TestParams = @{
+                'ListID' = $PD.NewClientListByBody.listId
+                'Items'  = $PD.GetClientListItemID
+            }
+            $PD.SetClientListItemByItems = Set-ClientListItem @TestParams @CommonParams
+            $PD.SetClientListItemByItems.updated.count | Should -Be 2
+            $PD.SetClientListItemByItems.updated[0].value | Should -BeIn $TestItemsAll
+        }
+        It 'sets items by param with a specified operation' {
+            $TestParams = @{
+                'ListID'    = $PD.NewClientListByBody.listId
+                'Items'     = $PD.GetClientListItemID
+                'operation' = 'update'
+            }
+            $PD.SetClientListItemByItems = Set-ClientListItem @TestParams @CommonParams
+            $PD.SetClientListItemByItems.updated.count | Should -Be 2
             $PD.SetClientListItemByItems.updated[0].value | Should -BeIn $TestItemsAll
         }
     }
-    
+
     Context 'Remove-ClientListItem' {
         It 'returns the correct data' {
-            $PD.RemoveClientListItem = Remove-ClientListItem -ListID $PD.NewClientListByBody.listId -Items $PD.GetClientListItemID[0] -Operation delete @CommonParams
+            $TestParams = @{
+                'ListID' = $PD.NewClientListByBody.listId
+            }
+            $PD.RemoveClientListItem = $PD.GetClientListItemID[0] | Remove-ClientListItem @TestParams @CommonParams
             $PD.RemoveClientListItem.deleted[0].value | Should -Be $PD.GetClientListItemID[0].value
         }
     }
 
-    #------------------------------------------------
-    #                 ClientListItems                  
-    #------------------------------------------------
-
-    Context 'Test-ClientListItems - Parameter Set file' {
-        it 'returns the correct data' {
-            $TestClientListItemsByFile = Test-ClientListItems -File $TestFileName -ListType $TestListType @CommonParams
-            $TestClientListItemsByFile.importedCount | Should -Be 2
+    Context 'Import-ClientListItem' {
+        It 'imports correctly from file' {
+            $TestParams = @{
+                'Name'    = $TestClientListName1
+                'Version' = 'latest'
+                'File'    = $TestFileName
+                'Action'  = 'MERGE'
+            }
+            $PD.ImportClientListItemByFile = Import-ClientListItem @TestParams @CommonParams
+            $PD.ImportClientListItemByFile.count | Should -Be 2
+        }
+        It 'imports correctly from file and returns status' {
+            $TestParams = @{
+                'Name'          = $TestClientListName1
+                'Version'       = 'latest'
+                'File'          = $TestFileName
+                'Action'        = 'REPLACE'
+                'IncludeStatus' = $true
+            }
+            $PD.ImportClientListItemByFile = Import-ClientListItem @TestParams @CommonParams
+            $PD.ImportClientListItemByFile.result.count | Should -Be 2
+            $PD.ImportClientListItemByFile.itemsImported | Should -Be $true
+            $PD.ImportClientListItemByFile.listVersion | Should -Match '^[\d]+$'
+        }
+        It 'imports correctly by items' {
+            $TestParams = @{
+                'ListID'  = $PD.NewClientListByBody.listId
+                'Version' = 'latest'
+                'Items'   = $TestItems
+                'Action'  = 'REPLACE'
+            }
+            $PD.ImportClientListItemByItems = Import-ClientListItem @TestParams @CommonParams
+            $PD.ImportClientListItemByItems.count | Should -Be 2
         }
     }
 
-    Context 'Test-ClientListItems - Parameter Set items' {
-        it 'returns the correct data' {
-            $TestClientListItemsByItems = Test-ClientListItems -Items $TestItems -ListType $TestListType @CommonParams
+    #------------------------------------------------
+    #                 ClientListItems
+    #------------------------------------------------
+
+    Context 'Test-ClientListItem' {
+        It 'completes successfuly by file' {
+            $TestParams = @{
+                'File'     = $TestFileName
+                'ListType' = $TestListType
+            }
+            $TestClientListItemsByFile = Test-ClientListItem @TestParams @CommonParams
+            $TestClientListItemsByFile.importedCount | Should -Be 2
+        }
+        It 'completes successfully by items' {
+            $TestParams = @{
+                'Items'    = $TestItems
+                'ListType' = $TestListType
+            }
+            $TestClientListItemsByItems = Test-ClientListItem @TestParams @CommonParams
             $TestClientListItemsByItems.importedCount | Should -Be 2
         }
     }
 
     #------------------------------------------------
-    #                 ClientListTag                  
+    #                 ClientListTag
     #------------------------------------------------
 
     Context 'Get-ClientListTag' {
@@ -226,95 +374,105 @@ value,description,tags,expirationDate
             $PD.GetClientListTag.count | Should -BeGreaterThan 0
         }
     }
-    
+
     #------------------------------------------------
-    #                 Removals                  
+    #                 Subscriptions
     #------------------------------------------------
 
-    Context 'Remove-ClientList - Parameter Set id, by parameter' {
-        it 'throws no errors' {
-            Remove-ClientList -ListID $PD.NewClientListByBody.listId @CommonParams 
+    Context 'New-ClientListSubscription' {
+        It 'subscribes successfully' {
+            $TestParams = @{
+                'Recipients' = 'mail2@example.com', 'mail2@example.com'
+                'UniqueIDs'  = $PD.NewClientListByBody.listId, $PD.NewClientList.listId
+            }
+            New-ClientListSubscription @TestParams @CommonParams
         }
     }
 
-    Context 'Remove-ClientList - Parameter Set name' {
-        it 'throws no errors' {
-            Remove-ClientList -Name $TestClientListName2 @CommonParams 
+    Context 'Remove-ClientListSubscription' {
+        It 'unsubscribes successfully' {
+            $TestParams = @{
+                'Recipients' = 'mail2@example.com', 'mail2@example.com'
+                'UniqueIDs'  = $PD.NewClientListByBody.listId, $PD.NewClientList.listId
+            }
+            Remove-ClientListSubscription @TestParams @CommonParams
         }
     }
-}
-
-Describe 'Unsafe Akamai.ClientLists Tests' {
-
-    BeforeAll {
-        Import-Module $PSScriptRoot/../src/Akamai.ClientLists/Akamai.ClientLists.psm1 -Force
-        $TestActivationJSON = @"
-{
-    "action": "ACTIVATE",
-    "network": "STAGING",
-    "comments": "Activation of GEO allowlist",
-    "notificationRecipients": [
-        "mail@example.com"
-    ]
-}
-"@
-        $TestDeactivation = ConvertFrom-Json $TestActivationJSON
-        $TestDeactivation.action = 'DEACTIVATE'
-        $ResponseLibrary = "$PSScriptRoot/ResponseLibrary/Akamai.ClientLists"
-        $PD = @{}
-        
-    }
-
-    AfterAll {
-        
-    }
-
 
     #------------------------------------------------
-    #                 ClientListActivation                  
+    #                 Removals
     #------------------------------------------------
 
-    Context 'New-ClientListActivation by attributes' {
-        It 'returns the correct data' {
+    Context 'Remove-ClientList' {
+        It 'throws no errors by pipeline' {
+            $PD.NewClientListByBody | Remove-ClientList @CommonParams
+        }
+        It 'throws no errors by name' {
+            $TestParams = @{
+                'Name' = $TestClientListName2
+            }
+            Remove-ClientList @TestParams @CommonParams
+        }
+    }
+
+    #------------------------------------------------
+    #                 ClientListActivation
+    #------------------------------------------------
+
+    Context 'New-ClientListActivation' {
+        It 'creates successfully by attributes' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewClientListActivationByAttributes = New-ClientListActivation -ListID 123456_TESTING -Network PRODUCTION -Comments 'testing' -NotificationRecipients 'mail@example.com'
+            $TestParams = @{
+                'ListID'                 = '123456_TESTING'
+                'Network'                = 'PRODUCTION'
+                'Comments'               = 'testing'
+                'NotificationRecipients' = 'mail@example.com'
+            }
+            $NewClientListActivationByAttributes = New-ClientListActivation @TestParams
             $NewClientListActivationByAttributes.action | Should -Be 'ACTIVATE'
         }
-    }
-
-    Context 'New-ClientListActivation by body' {
-        It 'returns the correct data' {
+        It 'creates successfully by body' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewClientListActivationByBody = New-ClientListActivation -ListID 123456_TESTING -Body $TestActivationJSON
+            $TestParams = @{
+                'ListID' = '123456_TESTING'
+                'Body'   = $TestActivationJSON
+            }
+            $NewClientListActivationByBody = New-ClientListActivation @TestParams
             $NewClientListActivationByBody.action | Should -Be 'ACTIVATE'
         }
     }
-    
-    Context 'New-ClientListDeactivation by attributes' {
-        It 'returns the correct data' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListDeactivation.json"
-                return $Response | ConvertFrom-Json
-            }
-            $NewClientListDeactivationByAttributes = New-ClientListDeactivation -ListID 123456_TESTING -Network PRODUCTION -Comments 'testing' -NotificationRecipients 'mail@example.com'
-            $NewClientListDeactivationByAttributes.action | Should -Be 'ACTIVATE'
-        }
-    }
 
-    Context 'New-ClientListDeactivation by body' {
-        It 'returns the correct data' {
+    Context 'New-ClientListDeactivation' {
+        It 'creates successfully by attributes' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListDeactivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $NewClientListDeactivationByBody = New-ClientListDeactivation -ListID 123456_TESTING -Body $TestDeactivation
-            $NewClientListDeactivationByBody.action | Should -Be 'ACTIVATE' # Stubbed endpoint doesnt consider POST body, so this will still be ACTIVATE
+            $TestParams = @{
+                'ListID'                 = '123456_TESTING'
+                'Comments'               = 'testing'
+                'NotificationRecipients' = 'mail@example.com'
+            }
+            $NewClientListDeactivationByAttributes = New-ClientListDeactivation @TestParams
+            $NewClientListDeactivationByAttributes.action | Should -Be 'ACTIVATE' # Stubbed endpoint doesnt consider POST body, so this will still be ACTIVATE
+        }
+        It 'creates successfully by body' {
+            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
+                $Response = Get-Content -Raw "$ResponseLibrary/New-ClientListDeactivation.json"
+                return $Response | ConvertFrom-Json
+            }
+            $TestParams = @{
+                'ListID' = '123456_TESTING'
+                'Body'   = $TestDeactivation
+            }
+            $NewClientListDeactivationByBody = New-ClientListDeactivation @TestParams
+            $NewClientListDeactivationByBody.action | Should -Be 'ACTIVATE' # See above for why this is OK.
         }
     }
 
@@ -324,13 +482,16 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListActivation.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetClientListActivation = Get-ClientListActivation -ActivationID 123
+            $TestParams = @{
+                'ActivationID' = 123
+            }
+            $GetClientListActivation = Get-ClientListActivation @TestParams
             $GetClientListActivation.activationId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 ClientListActivationStatus                  
+    #                 ClientListActivationStatus
     #------------------------------------------------
 
     Context 'Get-ClientListActivationStatus' {
@@ -339,47 +500,49 @@ Describe 'Unsafe Akamai.ClientLists Tests' {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListActivationStatus.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetClientListActivationStatusID = Get-ClientListActivationStatus -Environment STAGING -ListID 123456_TESTING
+            $TestParams = @{
+                'Environment' = 'STAGING'
+                'ListID'      = '123456_TESTING'
+            }
+            $GetClientListActivationStatusID = Get-ClientListActivationStatus @TestParams
             $GetClientListActivationStatusID.activationId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 ClientListUsage                  
+    #                 ClientListUsage
     #------------------------------------------------
 
-    Context 'Get-ClientListUsage - Parameter Set id' {
-        it 'returns the correct data' {
+    Context 'Get-ClientListUsage' {
+        It 'returns the correct data' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListUsage.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetClientListUsageID = Get-ClientListUsage -ListID 123456_TESTING
+            $TestParams = @{
+                'ListID' = '123456_TESTING'
+            }
+            $GetClientListUsageID = Get-ClientListUsage @TestParams
             $GetClientListUsageID.usage[0].configId | Should -Not -BeNullOrEmpty
         }
     }
 
     #------------------------------------------------
-    #                 ClientListSnapshot                  
+    #                 ClientListSnapshot
     #------------------------------------------------
 
     Context 'Get-ClientListSnapshot' {
-        it 'returns the correct data' {
+        It 'returns the correct data' {
             Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
                 $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListSnapshot.json"
                 return $Response | ConvertFrom-Json
             }
-            $GetClientListSnapshotID = Get-ClientListSnapshot -ListID 123456_TESTING -Version 1
-            $GetClientListSnapshotID[0].type | Should -Not -BeNullOrEmpty
-        }
-
-        it 'returns content' {
-            Mock -CommandName Invoke-AkamaiRequest -ModuleName Akamai.ClientLists -MockWith {
-                $Response = Get-Content -Raw "$ResponseLibrary/Get-ClientListSnapshot.json"
-                return $Response | ConvertFrom-Json
+            $TestParams = @{
+                'ListID'  = '123456_TESTING'
+                'Version' = 1
             }
-            $GetClientListSnapshotName = Get-ClientListSnapshot -ListID 123456_TESTING -Version 1 -IncludeMetadata
-            $GetClientListSnapshotName.content | Should -Not -BeNullOrEmpty
+            $Snapshot = Get-ClientListSnapshot @TestParams
+            $Snapshot[0].type | Should -Not -BeNullOrEmpty
         }
     }
 }

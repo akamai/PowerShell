@@ -3,30 +3,30 @@ function Get-IVMPolicyHistory {
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
         [Alias('id')]
-        [string] 
+        [string]
         $PolicySetID,
-        
+
         [Parameter(Mandatory)]
         [string]
         $PolicyID,
 
         [Parameter()]
-        [ValidateSet('Staging', 'Production')] 
-        [string] 
+        [ValidateSet('Staging', 'Production')]
+        [string]
         $Network = 'Production',
-        
+
         [Parameter()]
         [string]
         $ContractID,
 
         [Parameter()]
-        [string] 
+        [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
@@ -36,7 +36,7 @@ function Get-IVMPolicyHistory {
         $Network = $Network.ToLower()
         $Path = "/imaging/v2/network/$Network/policies/history/$PolicyID"
         $AdditionalHeaders = @{ 'Policy-Set' = $PolicySetID }
-    
+
         if ($ContractID -ne '') {
             $AdditionalHeaders['Contract'] = $ContractID
         }

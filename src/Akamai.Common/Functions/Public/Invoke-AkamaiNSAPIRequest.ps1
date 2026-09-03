@@ -51,7 +51,7 @@ function Invoke-AkamaiNSAPIRequest {
     # Handle spaces in filenames
     $Path = $Path.Replace(' ', '%20')
     # Do the same for any additional options that might be missing the CP Code prefix
-    $PathFixAttributes = @( 
+    $PathFixAttributes = @(
         'destination'
         'target'
     )
@@ -84,7 +84,7 @@ function Invoke-AkamaiNSAPIRequest {
     }
 
     $Headers = @{}
-    
+
     # Action Header
     $Options = @{
         'version' = '1'
@@ -170,11 +170,11 @@ function Invoke-AkamaiNSAPIRequest {
 
     # Include credentials
     if ($null -ne $ENV:proxy_use_default_credentials) {
-        $Params.ProxyUseDefaultCredentials = $true 
+        $Params.ProxyUseDefaultCredentials = $true
     }
 
     ## Do It.
     $Response = Invoke-RestMethod @Params
-    
+
     return $Response
 }

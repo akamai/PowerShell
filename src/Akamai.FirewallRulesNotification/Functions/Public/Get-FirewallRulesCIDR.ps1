@@ -22,7 +22,7 @@ function Get-FirewallRulesCIDR {
         [string]
         $AccountSwitchKey
     )
-    
+
     Process {
         $Path = "/firewall-rules-manager/v1/cidr-blocks"
         $QueryParameters = @{

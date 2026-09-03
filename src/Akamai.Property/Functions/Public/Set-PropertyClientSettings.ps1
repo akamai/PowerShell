@@ -8,7 +8,7 @@ function Set-PropertyClientSettings {
         [Parameter(Mandatory)]
         [bool]
         $UsePrefixes,
-        
+
         [Parameter()]
         [bool]
         $UpgradeRules,
@@ -30,9 +30,9 @@ function Set-PropertyClientSettings {
     if ($RuleFormat -notin $AcceptedRuleFormats) {
         throw "$RuleFormat is not an accepted rule format. Run Get-RuleFormat for a full list."
     }
-    
+
     $Path = "/papi/v1/client-settings"
-    $Body = @{ 
+    $Body = @{
         'ruleFormat'  = $RuleFormat
         'usePrefixes' = $UsePrefixes
     }

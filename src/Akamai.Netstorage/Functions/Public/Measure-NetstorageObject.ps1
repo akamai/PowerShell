@@ -26,22 +26,22 @@ function Measure-NetstorageObject {
         [string]
         $Section
     )
-    
+
     process {
         $Action = 'stat'
-    
+
         $AdditionalOptions = @{
             'format'   = 'sql'
             'encoding' = $Encoding
         }
-    
+
         if ($Implicit) {
             $AdditionalOptions['implicit'] = 'yes'
         }
         if ($SlashBoth) {
             $AdditionalOptions['slash'] = 'both'
         }
-    
+
         $RequestParams = @{
             'Path'              = $Path
             'Action'            = $Action

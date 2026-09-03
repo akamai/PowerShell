@@ -37,7 +37,7 @@ function Get-GTMTrafficPerProperty {
         if ($Start -notmatch $DateTimeMatch -or $End -notmatch $DateTimeMatch) {
             throw "ERROR: Start & End must be in the format 'YYYY-MM-DDThh:mm:ssZ'"
         }
-    
+
         $Path = "/gtm-api/v1/reports/traffic/domains/$DomainName/properties/$PropertyName"
         $QueryParameters = @{
             'start' = $Start

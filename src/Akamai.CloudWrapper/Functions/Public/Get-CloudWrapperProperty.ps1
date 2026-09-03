@@ -25,7 +25,7 @@ function Get-CloudWrapperProperty {
 
     process {
         $Path = "/cloud-wrapper/v1/properties"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'unused'      = $PSBoundParameters.Unused.IsPresent
             'contractIds' = $ContractIds
         }

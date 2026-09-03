@@ -36,6 +36,6 @@ function Set-CloudletLoadBalancer {
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
     }
-    
+
 }
 

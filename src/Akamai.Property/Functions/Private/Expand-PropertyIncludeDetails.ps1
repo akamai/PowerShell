@@ -48,7 +48,7 @@ function Expand-PropertyIncludeDetails {
             'AccountSwitchKey' = $AccountSwitchKey
             'Debug'            = ($PSBoundParameters.Debug -eq $true)
         }
-    
+
         if ($IncludeName -ne '') {
             # Check cache if enabled
             if ($Global:AkamaiOptions.EnableDataCache) {
@@ -56,7 +56,7 @@ function Expand-PropertyIncludeDetails {
                 $ContractID = $Global:AkamaiDataCache.Property.Includes.$IncludeName.ContractID
                 $GroupID = $Global:AkamaiDataCache.Property.Includes.$IncludeName.GroupID
             }
-    
+
             if (-not $IncludeID) {
                 Write-Debug "Expand-PropertyIncludeDetails: Finding include with name '$IncludeName'."
                 try {
@@ -72,16 +72,16 @@ function Expand-PropertyIncludeDetails {
                     throw $_
                 }
             }
-    
+
             # Add to data cache
             if ($Global:AkamaiOptions.EnableDataCache) {
-                $Global:AkamaiDataCache.Property.Includes.$IncludeName = [ordered] @{ 
+                $Global:AkamaiDataCache.Property.Includes.$IncludeName = [ordered] @{
                     'IncludeID'  = $IncludeID
                     'ContractID' = $ContractID
                     'GroupID'    = $GroupID
                 }
             }
-    
+
             Write-Debug "Expand-PropertyIncludeDetails: IncludeID = $IncludeID."
         }
         if ($IncludeVersion -and $IncludeVersion -notmatch "^[0-9]+$") {
@@ -121,7 +121,7 @@ function Expand-PropertyIncludeDetails {
                         $ContractID = $Include.contractId
                         $GroupID = $Include.groupId
                     }
-    
+
                     if ($IncludeVersion -eq 'latest') {
                         $IncludeVersion = $Include.latestVersion
                     }
@@ -148,7 +148,7 @@ function Expand-PropertyIncludeDetails {
             }
             Write-Debug "Expand-IncludeDetails: IncludeVersion = $IncludeVersion."
         }
-    
+
         return $IncludeID, $IncludeVersion, $GroupID, $ContractID
     }
 }

@@ -1,6 +1,6 @@
 function Remove-ClientListItem {
     [CmdletBinding(DefaultParameterSetName = 'Name & items')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Name & items', Position = 0, Mandatory)]
         [Parameter(ParameterSetName = 'Name & body', Mandatory)]
         [string]
@@ -15,11 +15,6 @@ function Remove-ClientListItem {
         [Parameter(ParameterSetName = 'ID & items', ValueFromPipeline, Mandatory)]
         [Object[]]
         $Items,
-
-        [Parameter(ParameterSetName = 'Name & items')]
-        [Parameter(ParameterSetName = 'ID & items')]
-        [String]
-        $Operation,
 
         [Parameter(ParameterSetName = 'Name & body', Mandatory)]
         [Parameter(ParameterSetName = 'ID & body', Mandatory)]

@@ -41,7 +41,7 @@ function Get-GTMLivenessPerProperty {
         if ($Date -and $Date -notmatch $DateMatch) {
             throw "ERROR: Date must be in the format 'YYYY-MM-DD'"
         }
-    
+
         $Path = "/gtm-api/v1/reports/liveness-tests/domains/$DomainName/properties/$PropertyName"
         $QueryParameters = @{
             'date'     = $Date

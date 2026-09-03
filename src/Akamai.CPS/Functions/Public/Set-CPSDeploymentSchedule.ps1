@@ -36,7 +36,7 @@ function Set-CPSDeploymentSchedule {
             'accept'       = 'application/vnd.akamai.cps.change-id.v1+json'
             'content-type' = 'application/vnd.akamai.cps.deployment-schedule.v1+json'
         }
-    
+
         $Body = @{}
         if ($NotAfter) {
             $Body['notAfter'] = $NotAfter

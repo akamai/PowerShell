@@ -21,7 +21,7 @@ function Get-CloudletPolicyVersion {
         [Parameter(ParameterSetName = 'Get all')]
         [int]
         $Page,
-        
+
         [Parameter(ParameterSetName = 'Get all')]
         [int]
         $PageSize,

@@ -17,7 +17,7 @@ function Remove-CPReportingGroup {
         [string]
         $AccountSwitchKey
     )
-    
+
     Process {
         $Path = "/cprg/v1/reporting-groups/$ReportingGroupID"
         $RequestParams = @{

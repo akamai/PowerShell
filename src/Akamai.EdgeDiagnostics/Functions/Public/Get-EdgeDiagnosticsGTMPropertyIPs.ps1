@@ -4,11 +4,11 @@ function Get-EdgeDiagnosticsGTMPropertyIPs {
         [Parameter(Mandatory)]
         [string]
         $Domain,
-        
+
         [Parameter(Mandatory)]
         [string]
         $Property,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

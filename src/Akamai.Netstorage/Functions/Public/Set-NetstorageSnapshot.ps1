@@ -4,7 +4,7 @@ function Set-NetstorageSnapshot {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [int]
         $SnapShotID,
-        
+
         [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
 

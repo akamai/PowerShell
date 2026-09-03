@@ -31,6 +31,6 @@ function Lock-IAMUser {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    
+
     }
 }

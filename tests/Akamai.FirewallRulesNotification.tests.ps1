@@ -1,44 +1,48 @@
 BeforeDiscovery {
     # Check environment variables have been imported
     if ($null -eq $env:PesterGroupID) {
-        throw "Required environment variables are missing"
+        throw 'Required environment variables are missing'
     }
 }
 
-Describe 'Safe Akamai.FirewallRulesNotification Tests' {
-    
-    BeforeAll { 
-        Import-Module $PSScriptRoot/../src/Akamai.Common/Akamai.Common.psd1 -Force
-        Import-Module $PSScriptRoot/../src/Akamai.FirewallRulesNotification/Akamai.FirewallRulesNotification.psd1 -Force
+Describe 'Akamai.FirewallRulesNotification Tests' {
+    BeforeAll {
+        # Disable module auto-loading
+        $OldModuleAutoloadingPreference = $PSModuleAutoloadingPreference
+        $PSModuleAutoloadingPreference = 'None'
+
+        # Load modules
+        $TestModules = 'Akamai.Common', 'Akamai.FirewallRulesNotification'
+        $LoadedModules = Get-Module
+        foreach ($Module in $TestModules) {
+            if ($LoadedModules.Name -contains $Module) {
+                Remove-Module $Module -Force
+            }
+            Import-Module "$PSScriptRoot/../dist/$Module/$Module.psd1" -Force
+        }
+
+        # Set timestamp for unique asset creation
+        $Timestamp = [math]::round((Get-Date).TimeOfDay.TotalMilliseconds)
+
         # Setup shared variables
         $CommonParams = @{
             EdgeRCFile = $env:PesterEdgeRCFile
             Section    = $env:PesterEdgeRCSection
         }
-        $TestContract = $env:PesterContractID
+        $TestContractID = $env:PesterContractID
         $TestGroupID = $env:PesterGroupID
-        $TestEmailAddress = 'noreply@example.com'
-        $TestServiceID = 1
+        $TestEmailAddress = "noreply-$Timestamp@example.com"
+        $TestServiceIDs = 1, 7
         $PD = @{}
     }
 
     AfterAll {
-        
+        Get-FirewallRulesSubscription @CommonParams | Remove-FirewallRulesSubscription @CommonParams
+        $PSModuleAutoloadingPreference = $OldModuleAutoloadingPreference
     }
 
     #------------------------------------------------
-    #                 FirewallRulesCIDR                  
-    #------------------------------------------------
-
-    Context 'Get-FirewallRulesCIDR' {
-        It 'returns the correct data' {
-            $PD.GetFirewallRulesCIDR = Get-FirewallRulesCIDR @CommonParams
-            $PD.GetFirewallRulesCIDR[0].cidrId | Should -Not -BeNullOrEmpty
-        }
-    }
-
-    #------------------------------------------------
-    #                 FirewallRulesService                  
+    #                 FirewallRulesService
     #------------------------------------------------
 
     Context 'Get-FirewallRulesService' {
@@ -49,13 +53,17 @@ Describe 'Safe Akamai.FirewallRulesNotification Tests' {
     }
 
     #------------------------------------------------
-    #                 FirewallRulesSubscription                  
+    #                 FirewallRulesSubscription
     #------------------------------------------------
 
     Context 'New-FirewallRulesSubscription' {
         It 'returns the correct data' {
-            $PD.NewFirewallRulesSubscription = New-FirewallRulesSubscription -Email $TestEmailAddress -ServiceID $TestServiceID @CommonParams
-            $PD.NewFirewallRulesSubscription[0].subscriptionId | Should -Not -BeNullOrEmpty
+            $TestParams = @{
+                'Email' = $TestEmailAddress
+            }
+            $PD.NewFirewallRulesSubscription = $TestServiceIDs | New-FirewallRulesSubscription @TestParams @CommonParams
+            $PD.NewFirewallRulesSubscription[0].serviceId | Should -BeIn $TestServiceIDs
+            $PD.NewFirewallRulesSubscription[1].serviceId | Should -BeIn $TestServiceIDs
         }
     }
 
@@ -66,23 +74,38 @@ Describe 'Safe Akamai.FirewallRulesNotification Tests' {
         }
     }
 
-    Context 'Set-FirewallRulesSubscription by parameter' {
-        It 'Set-FirewallRulesSubscription by param returns the correct data' {
-            $PD.SetFirewallRulesSubscriptionByParam = Set-FirewallRulesSubscription -Body $PD.GetFirewallRulesSubscription @CommonParams
+    Context 'Set-FirewallRulesSubscription' {
+        It 'updates by body' {
+            $TestParams = @{
+                'Body' = $PD.GetFirewallRulesSubscription
+            }
+            $PD.SetFirewallRulesSubscriptionByParam = Set-FirewallRulesSubscription @TestParams @CommonParams
             $PD.SetFirewallRulesSubscriptionByParam[0].subscriptionId | Should -Not -BeNullOrEmpty
         }
-    }
-
-    Context 'Set-FirewallRulesSubscription by pipeline' {
-        It 'returns the correct data' {
-            $PD.SetFirewallRulesSubscriptionByPipeline = ($PD.GetFirewallRulesSubscription | Set-FirewallRulesSubscription @CommonParams)
+        It 'updates by pipeline' {
+            $PD.SetFirewallRulesSubscriptionByPipeline = $PD.GetFirewallRulesSubscription | Set-FirewallRulesSubscription @CommonParams
             $PD.SetFirewallRulesSubscriptionByPipeline[0].subscriptionId | Should -Not -BeNullOrEmpty
         }
     }
 
+    #------------------------------------------------
+    #                 FirewallRulesCIDR
+    #------------------------------------------------
+
+    Context 'Get-FirewallRulesCIDR' {
+        It 'returns the correct data' {
+            $PD.GetFirewallRulesCIDR = Get-FirewallRulesCIDR @CommonParams
+            $PD.GetFirewallRulesCIDR[0].cidrId | Should -Not -BeNullOrEmpty
+        }
+    }
+
+    #------------------------------------------------
+    #                    Remove
+    #------------------------------------------------
+
     Context 'Remove-FirewallRulesSubscription' {
         It 'returns the correct data' {
-            $PD.RemoveFirewallRulesSubscription = Remove-FirewallRulesSubscription -SubscriptionId $PD.GetFirewallRulesSubscription[0].subscriptionId @CommonParams
+            $PD.RemoveFirewallRulesSubscription = $PD.SetFirewallRulesSubscriptionByPipeline | Remove-FirewallRulesSubscription @CommonParams
             $PD.RemoveFirewallRulesSubscription[0].subscriptionId | Should -Not -BeNullOrEmpty
         }
     }

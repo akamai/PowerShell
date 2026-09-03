@@ -37,7 +37,7 @@ function Get-GTMTrafficPerDatacenter {
         if (($Start -and $Start -notmatch $DateTimeMatch) -or ($End -and $End -notmatch $DateTimeMatch)) {
             throw "ERROR: Start & End must be in the format 'YYYY-MM-DDThh:mm:ssZ'"
         }
-    
+
         $Path = "/gtm-api/v1/reports/traffic/domains/$DomainName/datacenters/$DatacenterID"
         $QueryParameters = @{
             'start' = $Start

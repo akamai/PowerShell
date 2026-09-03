@@ -4,7 +4,7 @@ function Remove-NetstorageUploadAccount {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string]
         $UploadAccountID,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

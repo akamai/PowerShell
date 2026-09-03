@@ -1,13 +1,14 @@
 function Get-DataStreamActivationHistory {
     [CmdletBinding()]
-    Param(
-        [Parameter()]
-        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm')]
+    param(
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('LogType')]
+        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm', 'appsec', 'answerx')]
         [string]
-        $LogType = 'cdn', # Defaulting to CDN for backward compatibility
-        
-        [Parameter(Mandatory)]
-        [string]
+        $StreamType = 'cdn', # Defaulting to CDN for backward compatibility
+
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [int]
         $StreamID,
 
         [Parameter()]
@@ -23,17 +24,38 @@ function Get-DataStreamActivationHistory {
         $AccountSwitchKey
     )
 
-    $Path = "/datastream-config-api/v3/log/$LogType/streams/$StreamID/activation-history"
-    $RequestParams = @{
-        'Path'             = $Path
-        'Method'           = 'GET'
-        'EdgeRCFile'       = $EdgeRCFile
-        'Section'          = $Section
-        'AccountSwitchKey' = $AccountSwitchKey
-        'Debug'            = ($PSBoundParameters.Debug -eq $true)
+    process {
+        switch ($StreamType) {
+            'cdn' {
+                $Path = "/datastream-config-api/v3/log/cdn/streams/$StreamID/activation-history"
+            }
+            'edgeworkers' {
+                $Path = "/datastream-config-api/v3/log/edgeworkers/streams/$StreamID/activation-history"
+            }
+            'edns' {
+                $Path = "/datastream-config-api/v3/log/edns/streams/$StreamID/activation-history"
+            }
+            'gtm' {
+                $Path = "/datastream-config-api/v3/log/gtm/streams/$StreamID/activation-history"
+            }
+            'appsec' {
+                $Path = "/datastream-config-api/v3/log/appsec/streams/$StreamID/activation-history"
+            }
+            'answerx' {
+                $Path = "/datastream-config-api/v3/log/answerx/streams/$StreamID/activation-history"
+            }
+        }
+        $RequestParams = @{
+            'Path'             = $Path
+            'Method'           = 'GET'
+            'EdgeRCFile'       = $EdgeRCFile
+            'Section'          = $Section
+            'AccountSwitchKey' = $AccountSwitchKey
+            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+        }
+        # Make Request
+        $Response = Invoke-AkamaiRequest @RequestParams
+        return $Response.Body
     }
-    # Make Request
-    $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body
 }
 

@@ -56,7 +56,7 @@ function Get-TestSuite {
         else {
             $Path = "/test-management/v3/functional/test-suites"
         }
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'includeRecentlyDeleted' = $PSBoundParameters.IncludeRecentlyDeleted.IsPresent
             'propertyId'             = $PSBoundParameters.PropertyID
             'propertyName'           = $PropertyName

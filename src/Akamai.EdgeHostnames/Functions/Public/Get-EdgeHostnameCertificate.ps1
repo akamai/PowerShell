@@ -4,7 +4,7 @@ function Get-EdgeHostnameCertificate {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $RecordName,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $DNSZone,

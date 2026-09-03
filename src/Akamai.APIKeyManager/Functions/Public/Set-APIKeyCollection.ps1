@@ -1,6 +1,6 @@
 function Set-APIKeyCollection {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [int64]
         $CollectionID,
@@ -22,7 +22,7 @@ function Set-APIKeyCollection {
     )
 
     begin {}
-    
+
     process {
         $Path = "/apikey-manager-api/v2/collections/$CollectionID"
         $RequestParams = @{

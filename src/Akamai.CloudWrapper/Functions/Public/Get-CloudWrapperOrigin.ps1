@@ -29,7 +29,7 @@ function Get-CloudwrapperOrigin {
 
     process {
         $Path = "/cloud-wrapper/v1/properties/$PropertyID/origins"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'contractId' = $ContractID
             'groupId'    = $PSBoundParameters.GroupID
         }

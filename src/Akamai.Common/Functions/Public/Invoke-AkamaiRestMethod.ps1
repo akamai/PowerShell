@@ -1,37 +1,37 @@
 function Invoke-AkamaiRestMethod {
     [Alias('iarm')]
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter()]
-        [ValidateSet("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
-        [string] 
-        $Method = "GET",
-        
+        [ValidateSet('GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH')]
+        [string]
+        $Method = 'GET',
+
         [Parameter(Mandatory)]
         [string]
         $Path,
 
         [Parameter()]
-        [hashtable] 
+        [hashtable]
         $QueryParameters,
-        
+
         [Parameter()]
-        [hashtable] 
+        [hashtable]
         $AdditionalHeaders,
 
         [Parameter()]
         $Body,
-        
+
         [Parameter()]
-        [string] 
+        [string]
         $InputFile,
 
         [Parameter()]
-        [string] 
+        [string]
         $OutputFile,
 
         [Parameter()]
-        [string] 
+        [string]
         $MaxBody = 131072,
 
         [Parameter()]
@@ -50,16 +50,16 @@ function Invoke-AkamaiRestMethod {
         [string]
         $AccountSwitchKey
     )
-    
+
     # Get auth creds from various potential sources
     $Credentials = Get-EdgegridCredentials -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey
     # Validate credentials
     $CredentialsStatus = $Credentials | Test-EdgegridCredentials
     if ($CredentialsStatus.Count -gt 0) {
         $CredentialsStatus | ForEach-Object { Write-Debug $_ }
-        throw "One or more Edgegrid credentials appear to be invalid. See debug output for details."
+        throw 'One or more Edgegrid credentials appear to be invalid. See debug output for details.'
     }
-    
+
     # Path with QueryString compatibility
     if ($Path.Contains('?')) {
         $PathElements = $Path.Split('?')
@@ -74,8 +74,8 @@ function Invoke-AkamaiRestMethod {
     if ($QueryFromPath) {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString($QueryFromPath)
         foreach ($key in $QueryString.Keys) {
-            if (@($null, '') -notcontains $key -and @($null, '') -notcontains $QueryString[$key]) { 
-                $QueryNVCollection.Add($key, $QueryString[$key]) 
+            if (@($null, '') -notcontains $key -and @($null, '') -notcontains $QueryString[$key]) {
+                $QueryNVCollection.Add($key, $QueryString[$key])
             }
         }
     }
@@ -101,7 +101,7 @@ function Invoke-AkamaiRestMethod {
     if ($Credentials.AccountKey) {
         $QueryNVCollection.Add('accountSwitchKey', $Credentials.AccountKey)
     }
-    
+
     # Build Request URL
     [System.UriBuilder]$Request = New-Object -TypeName 'System.UriBuilder'
     $Request.Scheme = 'https'
@@ -111,15 +111,15 @@ function Invoke-AkamaiRestMethod {
 
     # ReqURL Verification
     Write-Debug "Request URL = $($Request.Uri.AbsoluteUri)"
-    If (($null -eq $Request.Uri.AbsoluteUri) -or ($Request.Host -notmatch "akamaiapis.net")) {
-        throw "Error: Invalid Request URI"
+    if (($null -eq $Request.Uri.AbsoluteUri) -or ($Request.Host -notmatch 'akamaiapis.net')) {
+        throw 'Error: Invalid Request URI'
     }
 
     # Sanitize Method param
     $Method = $Method.ToUpper()
 
     # Timestamp for request signing
-    $TimeStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHH:mm:sszz00")
+    $TimeStamp = [DateTime]::UtcNow.ToString('yyyyMMddTHH:mm:sszz00')
 
     # GUID for request signing
     $Nonce = [GUID]::NewGuid()
@@ -149,10 +149,10 @@ function Invoke-AkamaiRestMethod {
     }
 
     #Sanitize body to remove NO-BREAK SPACE Unicode character, which breaks PAPI
-    $Body = $Body -replace "[\u00a0]", ""
+    $Body = $Body -replace '[\u00a0]', ''
 
     # Add body to signature. Truncate if body is greater than max-body (Akamai default is 131072). PUT Method does not require adding to signature.
-    if ($Method -eq "POST") {
+    if ($Method -eq 'POST') {
         if ($Body) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
             if ($Body.Length -gt $MaxBody) {
@@ -162,7 +162,7 @@ function Invoke-AkamaiRestMethod {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Body)))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
         }
         elseif ($InputFile) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
@@ -180,7 +180,7 @@ function Invoke-AkamaiRestMethod {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash($Bytes))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
             Write-Debug "Signature generated from input file $InputFile"
         }
         else {
@@ -191,34 +191,32 @@ function Invoke-AkamaiRestMethod {
         $SignatureData += "`t`t`t"
     }
 
-    $SignatureData += "EG1-HMAC-SHA256 "
-    $SignatureData += "client_token=" + $Credentials.client_token + ";"
-    $SignatureData += "access_token=" + $Credentials.access_token + ";"
-    $SignatureData += "timestamp=" + $TimeStamp + ";"
-    $SignatureData += "nonce=" + $Nonce + ";"
+    # Construct auth header base for use in both signature calculation and auth header
+    $AuthHeaderBase = 'EG1-HMAC-SHA256 '
+    $AuthHeaderBase += 'client_token=' + $Credentials.ClientToken + ';'
+    $AuthHeaderBase += 'access_token=' + $Credentials.AccessToken + ';'
+    $AuthHeaderBase += 'timestamp=' + $TimeStamp + ';'
+    $AuthHeaderBase += 'nonce=' + $Nonce + ';'
 
+    # Add auth header base to signature data
+    $SignatureData += $AuthHeaderBase
     Write-Debug "SignatureData = $SignatureData"
 
     # Generate SigningKey
-    $SigningKey = Get-EncryptedMessage -secret $Credentials.client_secret -message $TimeStamp
+    $SigningKey = Get-EncryptedMessage -secret $Credentials.ClientSecret -message $TimeStamp
 
     # Generate Auth Signature
     $Signature = Get-EncryptedMessage -secret $SigningKey -message $SignatureData
 
     # Create AuthHeader
-    $AuthorizationHeader = "EG1-HMAC-SHA256 "
-    $AuthorizationHeader += "client_token=" + $Credentials.client_token + ";"
-    $AuthorizationHeader += "access_token=" + $Credentials.access_token + ";"
-    $AuthorizationHeader += "timestamp=" + $TimeStamp + ";"
-    $AuthorizationHeader += "nonce=" + $Nonce + ";"
-    $AuthorizationHeader += "signature=" + $Signature
+    $AuthorizationHeader = $AuthHeaderBase + 'signature=' + $Signature
 
     # Create IDictionary to hold request headers
     $Headers = @{}
 
     ## Calculate custom UA
     $UserAgent = Get-AkamaiUserAgent
-    
+
     # Add headers
     $Headers.Add('Authorization', $AuthorizationHeader)
     $Headers.Add('Accept', 'application/json')
@@ -240,7 +238,7 @@ function Invoke-AkamaiRestMethod {
 
     # Set TLS version to 1.2
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-    
+
     $RequestParams = @{
         Method             = $Method
         Uri                = $Request.Uri
@@ -248,29 +246,29 @@ function Invoke-AkamaiRestMethod {
         ContentType        = $ContentType
         MaximumRedirection = 0
     }
-    
+
     # Add -AllowInsecureRedirect if Pwsh 7.4 or higher
     if ($PSVersionTable.PSVersion -ge '7.4.0') {
         $RequestParams['AllowInsecureRedirect'] = $true
     }
-    
+
     # Support proxy as environment variable
     if ($null -ne $ENV:https_proxy) { $RequestParams.Proxy = $ENV:https_proxy }
     # Include credentials
     if ($null -ne $ENV:proxy_use_default_credentials) { $params.ProxyUseDefaultCredentials = $true }
 
-    if ($Method -in "PUT", "POST", "PATCH") {
+    if ($Method -in 'PUT', 'POST', 'PATCH') {
         if ($Body) { $RequestParams.Body = $Body }
         if ($InputFile) { $RequestParams.InFile = $InputFile }
     }
     # GET requests typically
-    else { 
+    else {
         # Differentiate on PS 5 and later as PS 5's Invoke-RestMethod doesn't behave the same as the later versions
         if ($PSVersionTable.PSVersion.Major -lt 6) {
-            $RequestParams.ErrorAction = "SilentlyContinue"
+            $RequestParams.ErrorAction = 'SilentlyContinue'
         }
         else {
-            $RequestParams.ErrorAction = "Stop"
+            $RequestParams.ErrorAction = 'Stop'
             $RequestParams.ResponseHeadersVariable = 'ResponseHeaders'
         }
     }
@@ -314,9 +312,9 @@ function Invoke-AkamaiRestMethod {
             throw $_
         }
     }
-    
+
     # PS <5 handling
-    if ($null -ne ($Response.PSObject.members | Where-Object { $_.Name -eq "redirectLink" }) -and $method -notin "PUT", "POST", "PATCH") {
+    if ($null -ne ($Response.PSObject.members | Where-Object { $_.Name -eq 'redirectLink' }) -and $method -notin 'PUT', 'POST', 'PATCH') {
         try {
             Write-Debug "Redirecting to $($Response.redirectLink)"
             $Response = Invoke-AkamaiRestMethod -Method $Method -Path $Response.redirectLink -AdditionalHeaders $AdditionalHeaders -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey
@@ -325,12 +323,13 @@ function Invoke-AkamaiRestMethod {
             throw $_
         }
     }
-    
+
     # Include response headers in return if required
     if ($IncludeResponseHeaders) {
         return $Response, $ResponseHeaders
     }
     else {
-        Return $Response
+        return $Response
     }
 }
+

@@ -4,46 +4,46 @@ function Find-Property {
         [Parameter(ParameterSetName = 'Name', Position = 0, Mandatory)]
         [string]
         $PropertyName,
-    
+
         [Parameter(ParameterSetName = 'Host', Mandatory)]
         [string]
         $PropertyHostname,
-    
+
         [Parameter(ParameterSetName = 'Edge', Mandatory)]
         [string]
         $EdgeHostname,
-    
+
         [Parameter(ParameterSetName = 'Include', Mandatory)]
         [string]
         $IncludeName,
-    
+
         [Parameter()]
         [switch]
         $Latest,
-    
+
         [Parameter()]
         [switch]
         $JustProductionActive,
-    
+
         [Parameter()]
         [switch]
         $JustStagingActive,
-    
+
         [Parameter()]
         [string]
         $EdgeRCFile,
-    
+
         [Parameter()]
         [string]
         $Section,
-    
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
 
     $Path = "/papi/v1/search/find-by-value"
-    
+
     $Body = @{}
     if ($PropertyName) {
         $Body["propertyName"] = $PropertyName

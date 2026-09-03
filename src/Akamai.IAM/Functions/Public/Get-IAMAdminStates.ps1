@@ -5,7 +5,7 @@ function Get-IAMAdminStates {
         [ValidateSet('USA', 'Canada')]
         [string]
         $Country,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

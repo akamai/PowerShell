@@ -4,11 +4,11 @@ function Get-APIHostnamesAndGroups {
         [Parameter(Mandatory)]
         [int]
         $GroupID,
-        
+
         [Parameter(Mandatory)]
         [string]
         $ContractID,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

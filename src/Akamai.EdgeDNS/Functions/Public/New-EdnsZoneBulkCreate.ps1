@@ -6,7 +6,7 @@ function New-EDNSZoneBulkCreate {
         $ContractID,
 
         [Parameter()]
-        [int] 
+        [int]
         $GroupID,
 
         [Parameter(Mandatory, ValueFromPipeline)]
@@ -15,16 +15,16 @@ function New-EDNSZoneBulkCreate {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'POST'
         $Path = "/config-dns/v2/zones/create-requests"

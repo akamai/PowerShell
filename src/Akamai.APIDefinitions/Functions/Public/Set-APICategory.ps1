@@ -8,7 +8,7 @@ function Set-APICategory {
         [Parameter(Mandatory)]
         [string]
         $APICategoryName,
-        
+
         [Parameter()]
         [string]
         $APICategoryDescription,

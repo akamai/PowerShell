@@ -29,7 +29,7 @@ function Remove-NetstorageDirectory {
             $Body = ''
             $AdditionalOptions = @{}
         }
-    
+
         else {
             if (!$Force) {
                 $Sure = Read-Host "This operation will delete the directory $Path with no further confirmation. Are you really, really sure?[y/n]"
@@ -38,14 +38,14 @@ function Remove-NetstorageDirectory {
                     return
                 }
             }
-        
+
             $Action = 'quick-delete'
             $Body = ''
             $AdditionalOptions = @{
                 'quick-delete' = 'imreallyreallysure'
             }
-        }   
-    
+        }
+
         $RequestParams = @{
             'Path'              = $Path
             'Action'            = $Action

@@ -55,7 +55,7 @@ function Invoke-NetstorageRequest {
     # Handle spaces in filenames
     $Path = $Path.Replace(' ', '%20')
     # Do the same for any additional options that might be missing the CP Code prefix
-    $PathFixAttributes = @( 
+    $PathFixAttributes = @(
         'destination'
         'target'
     )
@@ -88,7 +88,7 @@ function Invoke-NetstorageRequest {
     }
 
     $Headers = @{}
-    
+
     # Action Header
     $Options = @{
         'version' = '1'
@@ -162,7 +162,7 @@ function Invoke-NetstorageRequest {
 
     # Include credentials
     if ($null -ne $ENV:proxy_use_default_credentials) {
-        $Params.ProxyUseDefaultCredentials = $true 
+        $Params.ProxyUseDefaultCredentials = $true
     }
 
     # Reset retry params
@@ -223,6 +223,6 @@ function Invoke-NetstorageRequest {
             throw $_
         }
     }
-    
+
     return $Response
 }

@@ -105,17 +105,17 @@ function New-Property {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             if ($Response.Body.propertyLink -Match '\/properties\/([^\?]+)') {
                 $PropertyID = $matches[1]
                 $Response.Body | Add-Member -NotePropertyName 'propertyId' -NotePropertyValue $PropertyID
-    
+
                 # Add to data cache
                 if ($AkamaiOptions.EnableDataCache) {
                     Set-AkamaiDataCache -PropertyName $Name -PropertyID $PropertyID
                 }
             }
-    
+
             return $Response.Body
         }
         catch {

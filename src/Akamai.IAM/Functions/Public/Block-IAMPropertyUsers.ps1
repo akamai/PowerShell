@@ -43,7 +43,7 @@ function Block-IAMPropertyUsers {
         $CollatedIDs | ForEach-Object {
             $Body.Add(@{ "uiIdentityId" = $_ }) | Out-Null
         }
-        
+
         $Path = "/identity-management/v3/user-admin/properties/$AssetID/users/block"
         $RequestParams = @{
             'Path'             = $Path
@@ -58,7 +58,7 @@ function Block-IAMPropertyUsers {
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
     }
-    
+
 }
 
 

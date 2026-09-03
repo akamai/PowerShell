@@ -10,7 +10,7 @@ function Get-EDNSTSIGKeyContract {
         [Parameter(Mandatory)]
         [string]
         $TSIGKeyName,
-        
+
         [Parameter(Mandatory)]
         [string]
         $TSIGKeySecret,
@@ -35,7 +35,7 @@ function Get-EDNSTSIGKeyContract {
 
     process {
         $Path = "/config-dns/v2/keys/used-by/zone-contract-map"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'keyType' = $KeyType
         }
         $Body = @{
@@ -48,7 +48,7 @@ function Get-EDNSTSIGKeyContract {
             Path             = $Path
             Method           = 'POST'
             Body             = $Body
-            QueryParameters  = $QueryParameters 
+            QueryParameters  = $QueryParameters
             EdgeRCFile       = $EdgeRCFile
             Section          = $Section
             AccountSwitchKey = $AccountSwitchKey

@@ -20,7 +20,7 @@ function Get-NetstorageDirectoryUsage {
         $AdditionalOptions = @{
             'format' = 'sql'
         }
-    
+
         $RequestParams = @{
             'Path'              = $Path
             'Action'            = $Action

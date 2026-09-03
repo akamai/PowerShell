@@ -42,6 +42,13 @@ function Get-EDNSRecordSet {
         $Path = "/config-dns/v2/zones/$Zone/recordsets"
 
         if ($PSCmdlet.ParameterSetName -eq 'Get one') {
+            if ($Name -ne $Zone -and $Name -notmatch "\.$Zone\.?$") {
+                $Name = "$Name.$Zone"
+            }
+            # Remove trailing dot if present
+            if ($Name.EndsWith('.')) {
+                $Name = $Name.TrimEnd('.')
+            }
             $Path = "/config-dns/v2/zones/$Zone/names/$Name/types/$Type"
         }
 

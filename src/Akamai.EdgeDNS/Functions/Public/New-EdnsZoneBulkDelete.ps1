@@ -7,22 +7,22 @@ function New-EDNSZoneBulkDelete {
         $Zone,
 
         [Parameter()]
-        [switch] 
+        [switch]
         $BypassSafetyChecks,
 
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     begin {
         $CollatedZones = New-Object -TypeName System.Collections.Generic.List[string]
     }

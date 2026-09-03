@@ -34,6 +34,6 @@ function Get-Contract {
     }
     # Make Request
     $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body  
+    return $Response.Body
 }
 

@@ -24,11 +24,11 @@ function New-NetstorageCredentials {
 
     process {
         # ----------------- Get credentials
-    
-        # Gets the given upload account's details. 
+
+        # Gets the given upload account's details.
         #
         # The response contains two values needed for the auth file, the HTTP API key and the storage group ID.
-    
+
         $UploadAccountParams = @{
             'UploadAccountID'  = $UploadAccountID
             'EdgeRCFile'       = $EdgeRCFile
@@ -36,7 +36,7 @@ function New-NetstorageCredentials {
             'AccountSwitchKey' = $AccountSwitchKey
         }
         $UploadAccount = Get-NetstorageUploadAccount @UploadAccountParams
-    
+
         # Check if upload account has http api access
         if (-not $UploadAccount.hasHttpApiAccess) {
             throw "Upload account ID $UploadAccountID does not have HTTP API access enabled. Please enable and try again."
@@ -50,11 +50,11 @@ function New-NetstorageCredentials {
             }
             $APIKey = $UploadAccount.keys.g2o[0].key
         }
-    
+
         # Gets the given storage group's details.
         #
-        # The response contains two additional values needed for the auth file, the HTTP domain name and upload directory's CP code.  
-    
+        # The response contains two additional values needed for the auth file, the HTTP domain name and upload directory's CP code.
+
         $GroupParams = @{
             'StorageGroupID'   = $UploadAccount.storageGroupId
             'EdgeRCFile'       = $EdgeRCFile
@@ -62,9 +62,9 @@ function New-NetstorageCredentials {
             'AccountSwitchKey' = $AccountSwitchKey
         }
         $StorageGroup = Get-NetstorageGroup @GroupParams
-    
+
         # The content of the NS auth resource file.
-    
+
         return [PSCustomObject] @{
             'key'    = $APIKey
             'id'     = $UploadAccountID

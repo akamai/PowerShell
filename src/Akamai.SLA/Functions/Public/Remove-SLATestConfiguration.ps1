@@ -30,6 +30,6 @@ function Remove-SLATestConfiguration {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body  
+        return $Response.Body
     }
 }

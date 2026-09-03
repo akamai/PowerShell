@@ -9,15 +9,15 @@ function Get-IVMPolicySet {
         [Parameter()]
         [string]
         $ContractID,
-        
+
         [Parameter()]
-        [string] 
+        [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
@@ -30,7 +30,7 @@ function Get-IVMPolicySet {
         else {
             $Path = "/imaging/v2/policysets"
         }
-    
+
         if ($ContractID -ne '') {
             $AdditionalHeaders = @{'Contract' = $ContractID }
         }

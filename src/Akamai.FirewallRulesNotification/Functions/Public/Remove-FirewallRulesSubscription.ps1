@@ -4,7 +4,7 @@ function Remove-FirewallRulesSubscription {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $SubscriptionID,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
@@ -22,7 +22,7 @@ function Remove-FirewallRulesSubscription {
         if ($AccountSwitchKey) {
             throw "This endpoint can only be run for your own user. As such Account Switching does not apply"
         }
-        
+
         $Path = "/firewall-rules-manager/v1/subscriptions"
         $Body = @(
             @{

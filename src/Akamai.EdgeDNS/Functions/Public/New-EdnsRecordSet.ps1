@@ -62,6 +62,9 @@ function New-EDNSRecordSet {
                     }
                 }
             }
+            if ($Name -ne $Zone -and $Name -notmatch "\.$Zone\.?$") {
+                $Name = "$Name.$Zone"
+            }
 
             $Body = @{
                 'recordsets' = @(

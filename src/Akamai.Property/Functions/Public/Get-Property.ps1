@@ -67,14 +67,14 @@ function Get-Property {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($Response.Body.properties.items -and $AkamaiOptions.EnableDataCache) {
                 foreach ($Property in $Response.Body.properties.items) {
                     Set-AkamaiDataCache -PropertyName $Property.propertyName -PropertyID $Property.propertyId
                 }
             }
-    
+
             return $Response.Body.properties.items
         }
         catch {

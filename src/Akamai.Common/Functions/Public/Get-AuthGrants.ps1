@@ -1,6 +1,6 @@
 function Get-AuthGrants {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter()]
         [switch]
         $ReturnObject,
@@ -25,13 +25,13 @@ function Get-AuthGrants {
         if ($ReturnObject) {
             return $Response.Body
         }
-        Write-Host "Credential Name: '$($Response.Body.name)'."
-        Write-Host "---------------------------------"
-        Write-Host "Created $($Response.Body.Created) by '$($Response.Body.CreatedBy)'."
-        Write-Host "Updated $($Response.Body.Updated) by '$($Response.Body.UpdatedBy)'."
-        Write-Host "Activated $($Response.Body.Activated) by '$($Response.Body.ActivatedBy)'."
-        Write-Host "Grants:"
-        
+        Write-Output "Credential Name: '$($Response.Body.name)'."
+        Write-Output "---------------------------------"
+        Write-Output "Created $($Response.Body.Created) by '$($Response.Body.CreatedBy)'."
+        Write-Output "Updated $($Response.Body.Updated) by '$($Response.Body.UpdatedBy)'."
+        Write-Output "Activated $($Response.Body.Activated) by '$($Response.Body.ActivatedBy)'."
+        Write-Output "Grants:"
+
         $Scope = $Response.Body.Scope.Split(" ")
         $Grants = New-Object System.Collections.ArrayList
         foreach ($Grant in $Scope) {

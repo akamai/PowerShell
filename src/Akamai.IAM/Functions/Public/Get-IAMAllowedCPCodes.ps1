@@ -36,5 +36,5 @@ function Get-IAMAllowedCPCodes {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }    
+    }
 }

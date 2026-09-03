@@ -1,6 +1,6 @@
 function Get-CloudAccessLookup {
     [CmdletBinding()]
-    Param(      
+    param(
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [AllowNull()]
         [nullable[int]]

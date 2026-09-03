@@ -63,13 +63,13 @@ function Set-CPSEnrollment {
             'renewal-date-check-override'        = $PSBoundParameters.RenewalDateCheckOverride
             'allow-missing-certificate-addition' = $PSBoundParameters.AllowMissingCertificateAddition
         }
-        
+
         $AdditionalHeaders = @{
             'accept'       = 'application/vnd.akamai.cps.enrollment-status.v1+json'
             'content-type' = 'application/vnd.akamai.cps.enrollment.v12+json'
         }
     }
-    
+
     process {
         $Path = "/cps/v2/enrollments/$EnrollmentID"
         # Cleanup request body to remove additional elements added in Get-CPSEnrollment

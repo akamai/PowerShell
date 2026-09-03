@@ -25,7 +25,7 @@ function Get-CloudWrapperAuthKey {
 
     process {
         $Path = "/cloud-wrapper/v1/multi-cdn/auth-keys"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'contractId' = $ContractID
             'cdnCode'    = $CdnCode
         }

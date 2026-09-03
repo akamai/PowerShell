@@ -29,14 +29,14 @@ function Remove-NetstorageCPCode {
 
     process {
         $Path = "/storage/v1/storage-groups/$StorageGroupID/cpcodes/$CpcodeID"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'forceDelete' = $PSBoundParameters.ForceDelete.IsPresent
         }
 
         $RequestParams = @{
             Path             = $Path
             Method           = 'DELETE'
-            QueryParameters  = $QueryParameters 
+            QueryParameters  = $QueryParameters
             EdgeRCFile       = $EdgeRCFile
             Section          = $Section
             AccountSwitchKey = $AccountSwitchKey

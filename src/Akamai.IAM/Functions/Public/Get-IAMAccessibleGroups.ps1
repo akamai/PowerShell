@@ -18,7 +18,7 @@ function Get-IAMAccessibleGroups {
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Path = "/identity-management/v3/users/$Username/group-access"
         $RequestParams = @{

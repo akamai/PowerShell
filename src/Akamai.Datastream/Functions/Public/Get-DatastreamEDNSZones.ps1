@@ -1,7 +1,7 @@
 function Get-DatastreamEDNSZones {
     [CmdletBinding()]
-    Param(
-        [Parameter(Mandatory)]
+    param(
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string]
         $ContractID,
 
@@ -18,16 +18,18 @@ function Get-DatastreamEDNSZones {
         $AccountSwitchKey
     )
 
-    $Path = "/datastream-config-api/v3/log/edns/contracts/$ContractID/zones"
-    $RequestParams = @{
-        'Path'             = $Path
-        'Method'           = 'GET'
-        'EdgeRCFile'       = $EdgeRCFile
-        'Section'          = $Section
-        'AccountSwitchKey' = $AccountSwitchKey
-        'Debug'            = ($PSBoundParameters.Debug -eq $true)
+    process {
+        $Path = "/datastream-config-api/v3/log/edns/contracts/$ContractID/zones"
+        $RequestParams = @{
+            'Path'             = $Path
+            'Method'           = 'GET'
+            'EdgeRCFile'       = $EdgeRCFile
+            'Section'          = $Section
+            'AccountSwitchKey' = $AccountSwitchKey
+            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+        }
+        # Make Request
+        $Response = Invoke-AkamaiRequest @RequestParams
+        return $Response.Body.zones
     }
-    # Make Request
-    $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body.zones
 }

@@ -4,7 +4,7 @@ function Expand-APIEndpointDetails {
         [Parameter()]
         [string]
         $APIEndpointName,
-        
+
         [Parameter()]
         [string]
         $APIEndpointID,

@@ -1,6 +1,6 @@
 function Get-ClientList {
     [CmdletBinding(DefaultParameterSetName = 'Get all')]
-    Param(
+    param(
         [Parameter(ParameterSetName = 'Get all', Position = 0)]
         [string]
         $Name,
@@ -38,7 +38,7 @@ function Get-ClientList {
         $Sort,
 
         [Parameter(ParameterSetName = 'Get all')]
-        [ValidateSet('IP', 'GEO', 'ASN', 'TLS_FINGERPRINT', 'FILE_HASH', 'USER_ID')]
+        [ValidateSet('IP', 'GEO', 'ASN', 'TLS_FINGERPRINT', 'FILE_HASH', 'USER_ID', 'DOMAIN', 'REQUEST_HEADER_NAME_VALUE')]
         [string]
         $Type,
 
@@ -90,7 +90,7 @@ function Get-ClientList {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 if ($ListID) {
@@ -102,7 +102,7 @@ function Get-ClientList {
                     }
                 }
             }
-    
+
             # Return response
             if ($ListID -or $IncludeMetadata) {
                 return $Response.Body

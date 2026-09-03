@@ -1,12 +1,13 @@
 function Update-DataStream {
     [CmdletBinding()]
-    Param(
-        [Parameter()]
-        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm')]
+    param(
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [Alias('LogType')]
+        [ValidateSet('cdn', 'edgeworkers', 'edns', 'gtm', 'appsec', 'answerx')]
         [string]
-        $LogType = 'cdn', # Defaulting to CDN for backward compatibility
+        $StreamType = 'cdn', # Defaulting to CDN for backward compatibility
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [int]
         $StreamID,
 
@@ -51,7 +52,26 @@ function Update-DataStream {
     }
 
     end {
-        $Path = "/datastream-config-api/v3/log/$LogType/streams/$StreamID"
+        switch ($StreamType) {
+            'cdn' {
+                $Path = "/datastream-config-api/v3/log/cdn/streams/$StreamID"
+            }
+            'edgeworkers' {
+                $Path = "/datastream-config-api/v3/log/edgeworkers/streams/$StreamID"
+            }
+            'edns' {
+                $Path = "/datastream-config-api/v3/log/edns/streams/$StreamID"
+            }
+            'gtm' {
+                $Path = "/datastream-config-api/v3/log/gtm/streams/$StreamID"
+            }
+            'appsec' {
+                $Path = "/datastream-config-api/v3/log/appsec/streams/$StreamID"
+            }
+            'answerx' {
+                $Path = "/datastream-config-api/v3/log/answerx/streams/$StreamID"
+            }
+        }
         if ($CollatedUpdates.Count -gt 0) {
             $Body = $CollatedUpdates
         }
@@ -70,7 +90,14 @@ function Update-DataStream {
             'Debug'            = ($PSBoundParameters.Debug -eq $true)
         }
         # Make Request
-        $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body
+        try {
+            $Response = Invoke-AkamaiRequest @RequestParams
+            # Add stream type to response
+            $Response.Body | Add-Member -MemberType NoteProperty -Name 'streamType' -Value $StreamType
+            return $Response.Body
+        }
+        catch {
+            throw $_
+        }
     }
 }

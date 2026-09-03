@@ -1,19 +1,19 @@
 function New-IVMPolicy {
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory)]  
-        [string] 
+        [Parameter(Mandatory)]
+        [string]
         $PolicySetID,
-        
+
         [Parameter(Mandatory)]
         [string]
         $PolicyID,
 
-        [Parameter(Mandatory)]  
-        [ValidateSet('Staging', 'Production')] 
-        [string] 
+        [Parameter(Mandatory)]
+        [ValidateSet('Staging', 'Production')]
+        [string]
         $Network,
-        
+
         [Parameter()]
         [string]
         $ContractID,
@@ -22,13 +22,13 @@ function New-IVMPolicy {
         $Body,
 
         [Parameter()]
-        [string] 
+        [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
@@ -39,7 +39,7 @@ function New-IVMPolicy {
             $ExistingPolicy = Get-IVMPolicy -PolicySetID $PolicySetID -PolicyID $PolicyID -Network $Network -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey
         }
         catch {}
-        
+
         if ($ExistingPolicy) {
             throw "Policy $PolicyID already exists in Policy Set $PolicySetID"
         }

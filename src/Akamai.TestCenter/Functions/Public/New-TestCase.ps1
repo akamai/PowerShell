@@ -32,7 +32,7 @@ function New-TestCase {
         [ValidateSet('US')]
         [string]
         $GeoLocation,
-        
+
         [Parameter(ParameterSetName = 'Attributes')]
         [string]
         $RequestBody,
@@ -55,7 +55,7 @@ function New-TestCase {
 
         [Parameter(Mandatory, ValueFromPipeline, ParameterSetName = 'POST body')]
         $Body,
-        
+
         [Parameter()]
         [switch]
         $IncludeStatus,

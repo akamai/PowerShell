@@ -4,7 +4,7 @@ function Test-ISO8601 {
         [Parameter()]
         [string]
         $DateTime,
-        
+
         [Parameter()]
         [switch]
         $RequireTime

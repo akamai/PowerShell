@@ -5,14 +5,14 @@ function Set-CloudletPolicyVersion {
         [Alias('id')]
         [int]
         $PolicyID,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $Version,
-        
+
         [Parameter(Mandatory, ValueFromPipeline)]
         $Body,
-        
+
         [Parameter()]
         [switch]
         $Legacy,
@@ -42,7 +42,7 @@ function Set-CloudletPolicyVersion {
         else {
             $Path = "/cloudlets/v3/policies/$PolicyID/versions/$Version"
         }
-        
+
         ### Sanitize
         $Body = Get-BodyObject -Source $Body
         $Body = @{

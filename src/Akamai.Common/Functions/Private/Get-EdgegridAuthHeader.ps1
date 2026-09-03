@@ -1,14 +1,14 @@
 function Get-EdgegridAuthHeader {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory)]
         [PSCustomObject]
         $Credentials,
 
         [Parameter(Mandatory)]
-        [string] 
+        [string]
         $Method,
-        
+
         [Parameter(Mandatory)]
         [string]
         $ExpandedPath,
@@ -16,13 +16,13 @@ function Get-EdgegridAuthHeader {
         [Parameter()]
         [string]
         $Body,
-        
+
         [Parameter()]
-        [string] 
+        [string]
         $InputFile,
 
         [Parameter()]
-        [string] 
+        [string]
         $MaxBody = 131072
     )
 
@@ -30,7 +30,7 @@ function Get-EdgegridAuthHeader {
     $Method = $Method.ToUpper()
 
     # Timestamp for request signing
-    $TimeStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHH:mm:sszz00")
+    $TimeStamp = [DateTime]::UtcNow.ToString('yyyyMMddTHH:mm:sszz00')
 
     # GUID for request signing
     $Nonce = [GUID]::NewGuid()
@@ -40,10 +40,10 @@ function Get-EdgegridAuthHeader {
     $SignatureData += $Credentials.Host + "`t" + $ExpandedPath
 
     #Sanitize body to remove NO-BREAK SPACE Unicode character, which breaks PAPI
-    $Body = $Body -replace "[\u00a0]", ""
+    $Body = $Body -replace '[\u00a0]', ''
 
     # Add body to signature. Truncate if body is greater than max-body (Akamai default is 131072). PUT Method does not require adding to signature.
-    if ($Method -eq "POST") {
+    if ($Method -eq 'POST') {
         if ($Body) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
             if ($Body.Length -gt $MaxBody) {
@@ -53,7 +53,7 @@ function Get-EdgegridAuthHeader {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Body)))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
         }
         elseif ($InputFile) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
@@ -71,7 +71,7 @@ function Get-EdgegridAuthHeader {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash($Bytes))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
             Write-Debug "Signature generated from input file $InputFile"
         }
         else {
@@ -82,12 +82,14 @@ function Get-EdgegridAuthHeader {
         $SignatureData += "`t`t`t"
     }
 
-    $SignatureData += "EG1-HMAC-SHA256 "
-    $SignatureData += "client_token=" + $Credentials.ClientToken + ";"
-    $SignatureData += "access_token=" + $Credentials.AccessToken + ";"
-    $SignatureData += "timestamp=" + $TimeStamp + ";"
-    $SignatureData += "nonce=" + $Nonce + ";"
+    $AuthHeaderBase = 'EG1-HMAC-SHA256 '
+    $AuthHeaderBase += 'client_token=' + $Credentials.ClientToken + ';'
+    $AuthHeaderBase += 'access_token=' + $Credentials.AccessToken + ';'
+    $AuthHeaderBase += 'timestamp=' + $TimeStamp + ';'
+    $AuthHeaderBase += 'nonce=' + $Nonce + ';'
 
+    # Add auth header base to signature data
+    $SignatureData += $AuthHeaderBase
     Write-Debug "SignatureData = $SignatureData"
 
     # Generate SigningKey
@@ -97,12 +99,7 @@ function Get-EdgegridAuthHeader {
     $Signature = Get-EncryptedMessage -secret $SigningKey -message $SignatureData
 
     # Create AuthHeader
-    $AuthorizationHeader = "EG1-HMAC-SHA256 "
-    $AuthorizationHeader += "client_token=" + $Credentials.ClientToken + ";"
-    $AuthorizationHeader += "access_token=" + $Credentials.AccessToken + ";"
-    $AuthorizationHeader += "timestamp=" + $TimeStamp + ";"
-    $AuthorizationHeader += "nonce=" + $Nonce + ";"
-    $AuthorizationHeader += "signature=" + $Signature
+    $AuthorizationHeader = $AuthHeaderBase + 'signature=' + $Signature
 
     return $AuthorizationHeader
 }

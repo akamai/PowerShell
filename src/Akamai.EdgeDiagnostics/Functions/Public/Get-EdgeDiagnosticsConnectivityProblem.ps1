@@ -4,11 +4,11 @@ function Get-EdgeDiagnosticsConnectivityProblem {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [int]
         $RequestID,
-        
+
         [Parameter()]
         [switch]
         $IncludeContentResponseBody,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

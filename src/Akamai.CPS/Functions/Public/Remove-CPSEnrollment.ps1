@@ -36,7 +36,7 @@ function Remove-CPSEnrollment {
         if (($DeployNotAfter -or $DeployNotBefore) -and ($DeployNotAfter -notmatch $DateMatch -or $DeployNotBefore -notmatch $DateMatch)) {
             throw "ERROR: DeployNotAfter & DeployNotBefore must be in the format 'YYYY-MM-DD'"
         }
-    
+
         $AdditionalHeaders = @{
             'accept' = 'application/vnd.akamai.cps.enrollment-status.v1+json'
         }

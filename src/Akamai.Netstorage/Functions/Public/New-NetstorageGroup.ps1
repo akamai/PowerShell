@@ -30,5 +30,5 @@ function New-NetstorageGroup {
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
         return $Response.Body
-    }   
+    }
 }

@@ -8,16 +8,16 @@ function Get-EDNSMasterFile {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'GET'
         $Path = "/config-dns/v2/zones/$Zone/zone-file"

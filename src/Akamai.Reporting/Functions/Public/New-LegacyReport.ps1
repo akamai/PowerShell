@@ -1,7 +1,7 @@
 
 function New-LegacyReport {
     [CmdletBinding(DefaultParameterSetName = 'Attributes')]
-    Param(
+    param(
         [Parameter(ValueFromPipelineByPropertyName, Mandatory)]
         [String]
         $Name,
@@ -42,6 +42,10 @@ function New-LegacyReport {
         [Parameter(ParameterSetName = 'Attributes')]
         [string[]]
         $Metrics,
+
+        [Parameter(ParameterSetName = 'Attributes')]
+        [int]
+        $Limit,
 
         [Parameter(ParameterSetName = 'Body', ValueFromPipeline, Mandatory)]
         $Body,
@@ -95,6 +99,7 @@ function New-LegacyReport {
                     }
                 }
             }
+            if ($Limit) { $Body['limit'] = $Limit }
         }
 
         $RequestParams = @{

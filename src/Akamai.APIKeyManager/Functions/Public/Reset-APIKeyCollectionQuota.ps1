@@ -1,10 +1,10 @@
 function Reset-APIKeyCollectionQuota {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory)]
         [int64]
         $CollectionID,
-        
+
         [Parameter(Mandatory, ValueFromPipeline)]
         [int64[]]
         $KeyIDs,
@@ -31,7 +31,7 @@ function Reset-APIKeyCollectionQuota {
             $CollatedKeys.Add($KeyID)
         }
     }
-    
+
     end {
         $Path = "/apikey-manager-api/v2/collections/$CollectionID/quota-reset"
         $Body = @{

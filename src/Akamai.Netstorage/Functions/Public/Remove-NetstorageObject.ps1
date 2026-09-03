@@ -18,7 +18,7 @@ function Remove-NetstorageObject {
     process {
         $Action = "delete"
         $Body = ''
-    
+
         $RequestParams = @{
             'Path'     = $Path
             'Action'   = $Action

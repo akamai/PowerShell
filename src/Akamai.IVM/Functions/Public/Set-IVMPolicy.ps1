@@ -1,20 +1,20 @@
 function Set-IVMPolicy {
     [CmdletBinding()]
     Param(
-        [Parameter(Mandatory)]  
-        [string] 
+        [Parameter(Mandatory)]
+        [string]
         $PolicySetID,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
-        [Alias('id')]  
-        [string] 
+        [Alias('id')]
+        [string]
         $PolicyID,
 
-        [Parameter(Mandatory)]  
-        [ValidateSet('Staging', 'Production')] 
-        [string] 
+        [Parameter(Mandatory)]
+        [ValidateSet('Staging', 'Production')]
+        [string]
         $Network,
-        
+
         [Parameter()]
         [string]
         $ContractID,
@@ -23,13 +23,13 @@ function Set-IVMPolicy {
         $Body,
 
         [Parameter()]
-        [string] 
+        [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey

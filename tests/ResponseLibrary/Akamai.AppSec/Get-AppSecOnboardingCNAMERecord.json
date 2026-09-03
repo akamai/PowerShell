@@ -1,0 +1,26 @@
+{
+  "Status": 200,
+  "Body": {
+    "description": "Add all records to your DNS settings to cname hostnames to Akamai and validate the records to complete the onboarding",
+    "records": [
+      {
+        "recordName": "test.hostname1.com",
+        "recordType": "CNAME",
+        "recordValue": "test.hostname1.com.edgekey.net",
+        "recordTtl": 300,
+        "recordStatus": "NOT_VALIDATED"
+      },
+      {
+        "recordName": "test.hostname2.com",
+        "recordType": "CNAME",
+        "recordValue": "test.hostname2.com.edgekey.net",
+        "recordTtl": 300,
+        "recordStatus": "NOT_VALIDATED"
+      }
+    ],
+    "cnameValidationStatus": "VALIDATION_NEEDED",
+    "cnameValidateLink": "/appsec/v1/onboardings/101/cname-to-akamai/validate",
+    "onboardingLink": "/appsec/v1/onboardings/101"
+  },
+  "Headers": {}
+}

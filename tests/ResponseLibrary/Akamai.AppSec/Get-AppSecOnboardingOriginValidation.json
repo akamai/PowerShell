@@ -1,0 +1,29 @@
+{
+  "Status": 200,
+  "Body": {
+    "description": "Add all records to your DNS settings",
+    "originValidationStatus": "VALIDATION_NEEDED",
+    "records": [
+      {
+        "hostname": "test.hostname1.com",
+        "recordName": "origin-03bdb4-test.hostname1.com",
+        "recordType": "A",
+        "recordValue": "192.0.2.233",
+        "recordTtl": 900,
+        "recordStatus": "VALIDATED"
+      },
+      {
+        "hostname": "test.hostname2.com",
+        "recordName": "origin-86249f-test.hostname2.com",
+        "recordType": "A",
+        "recordValue": "192.0.2.198",
+        "recordTtl": 900,
+        "recordStatus": "NOT_VALIDATED"
+      }
+    ],
+    "originValidateLink": "/appsec/v1/onboardings/5533/origin-validation/validate",
+    "originSkipLink": "/appsec/v1/onboardings/5533/origin-validation/skip",
+    "onboardingLink": "/appsec/v1/onboardings/2626"
+  },
+  "Headers": {}
+}

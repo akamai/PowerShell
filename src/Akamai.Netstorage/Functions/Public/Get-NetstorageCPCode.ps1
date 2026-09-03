@@ -4,7 +4,7 @@ function Get-NetstorageCPCode {
         [Parameter()]
         [switch]
         $Unused,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

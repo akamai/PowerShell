@@ -8,7 +8,7 @@ function Expand-ChildRuleSnippet {
         [Parameter(Mandatory)]
         [string]
         $Path,
-        
+
         [Parameter(Mandatory)]
         [string]
         $DefaultRuleDirectory
@@ -29,13 +29,13 @@ function Expand-ChildRuleSnippet {
         else {
             throw "Could not find include path in the following locations: $IncludePath, $IncludePathFromMain."
         }
-    
+
         for ($i = 0; $i -lt $Child.children.count; $i++) {
             if ($Child.children[$i].GetType().Name -eq 'String' -and $Child.children[$i].StartsWith('#include:')) {
                 $Child.children[$i] = Expand-ChildRuleSnippet -Include $Child.children[$i] -Path $IncludeDir -DefaultRuleDirectory $DefaultRuleDirectory
             }
         }
-    
+
         return $Child
     }
 }
@@ -97,7 +97,7 @@ function Expand-PropertyDetails {
                 $ContractID = $Global:AkamaiDataCache.Property.Properties.$PropertyName.ContractID
                 $GroupID = $Global:AkamaiDataCache.Property.Properties.$PropertyName.GroupID
             }
-            
+
             if (-not $PropertyID) {
                 Write-Debug "Expand-PropertyDetails: Finding property with name '$PropertyName'."
                 try {
@@ -113,16 +113,16 @@ function Expand-PropertyDetails {
                     throw $_
                 }
             }
-    
+
             # Add to data cache
             if ($Global:AkamaiOptions.EnableDataCache) {
-                $Global:AkamaiDataCache.Property.Properties.$PropertyName = [ordered] @{ 
+                $Global:AkamaiDataCache.Property.Properties.$PropertyName = [ordered] @{
                     'PropertyID' = $PropertyID
                     'ContractID' = $ContractID
                     'GroupID'    = $GroupID
                 }
             }
-    
+
             Write-Debug "Expand-PropertyDetails: PropertyID = $PropertyID."
         }
         if ($PropertyVersion -and $PropertyVersion -notmatch "^[0-9]+$") {
@@ -162,7 +162,7 @@ function Expand-PropertyDetails {
                         $ContractID = $Property.contractId
                         $GroupID = $Property.groupId
                     }
-    
+
                     if ($PropertyVersion -eq 'latest') {
                         $PropertyVersion = $Property.latestVersion
                     }
@@ -189,7 +189,7 @@ function Expand-PropertyDetails {
             }
             Write-Debug "Expand-PropertyDetails: PropertyVersion = $PropertyVersion."
         }
-    
+
         return $PropertyID, $PropertyVersion, $GroupID, $ContractID
     }
 }
@@ -243,7 +243,7 @@ function Expand-PropertyIncludeDetails {
             'AccountSwitchKey' = $AccountSwitchKey
             'Debug'            = ($PSBoundParameters.Debug -eq $true)
         }
-    
+
         if ($IncludeName -ne '') {
             # Check cache if enabled
             if ($Global:AkamaiOptions.EnableDataCache) {
@@ -251,7 +251,7 @@ function Expand-PropertyIncludeDetails {
                 $ContractID = $Global:AkamaiDataCache.Property.Includes.$IncludeName.ContractID
                 $GroupID = $Global:AkamaiDataCache.Property.Includes.$IncludeName.GroupID
             }
-    
+
             if (-not $IncludeID) {
                 Write-Debug "Expand-PropertyIncludeDetails: Finding include with name '$IncludeName'."
                 try {
@@ -267,16 +267,16 @@ function Expand-PropertyIncludeDetails {
                     throw $_
                 }
             }
-    
+
             # Add to data cache
             if ($Global:AkamaiOptions.EnableDataCache) {
-                $Global:AkamaiDataCache.Property.Includes.$IncludeName = [ordered] @{ 
+                $Global:AkamaiDataCache.Property.Includes.$IncludeName = [ordered] @{
                     'IncludeID'  = $IncludeID
                     'ContractID' = $ContractID
                     'GroupID'    = $GroupID
                 }
             }
-    
+
             Write-Debug "Expand-PropertyIncludeDetails: IncludeID = $IncludeID."
         }
         if ($IncludeVersion -and $IncludeVersion -notmatch "^[0-9]+$") {
@@ -316,7 +316,7 @@ function Expand-PropertyIncludeDetails {
                         $ContractID = $Include.contractId
                         $GroupID = $Include.groupId
                     }
-    
+
                     if ($IncludeVersion -eq 'latest') {
                         $IncludeVersion = $Include.latestVersion
                     }
@@ -343,9 +343,36 @@ function Expand-PropertyIncludeDetails {
             }
             Write-Debug "Expand-IncludeDetails: IncludeVersion = $IncludeVersion."
         }
-    
+
         return $IncludeID, $IncludeVersion, $GroupID, $ContractID
     }
+}
+function Find-Behavior {
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)]
+        [string]
+        $BehaviorName,
+
+        [Parameter(Mandatory)]
+        [PSCustomObject]
+        $Rule
+    )
+
+    $Results = New-Object System.Collections.Generic.List[PSCustomObject]
+    foreach ($Behavior in $Rule.behaviors) {
+        if ($Behavior.name -eq $BehaviorName) {
+            $Results.Add($Behavior)
+        }
+    }
+
+    foreach ($Child in $Rule.children) {
+        $ChildResults = Find-Behavior -BehaviorName $BehaviorName -Rule $Child
+        if ($ChildResults.Count -gt 0) {
+            $Results.AddRange($ChildResults)
+        }
+    }
+    return $Results
 }
 function Format-FileName {
     [CmdletBinding()]
@@ -354,7 +381,7 @@ function Format-FileName {
         [string]
         $Filename
     )
-    
+
     $BadCharacters = @(
         '\',
         '/',
@@ -377,7 +404,7 @@ function Format-FileName {
 
     # Trim whitespace
     $SanitizedFilename = $SanitizedFilename.Trim()
-    
+
     return $SanitizedFilename
 }
 
@@ -442,17 +469,17 @@ function Get-ChildRuleSnippet {
         [Parameter(Mandatory)]
         [int]
         $MaxDepth,
-        
+
         [Parameter()]
         [switch]
         $PathFromMainJson
     )
-    
+
     process {
         $SafeName = Format-Filename -FileName $Rules.Name
         $ChildPath = "$Path/$SafeName"
         $NewDepth = $CurrentDepth + 1
-    
+
         if ($NewDepth -lt $MaxDepth) {
             if ($Rules.children.count -gt 0) {
                 if (!(Test-Path $ChildPath)) {
@@ -479,7 +506,7 @@ function Get-ChildRuleSnippet {
                 }
             }
         }
-    
+
         $Rules | ConvertTo-Json -Depth 100 | Set-Content "$Path/$SafeName.json"
     }
 }
@@ -1063,17 +1090,17 @@ function Copy-Property {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             if ($Response.Body.propertyLink -Match '\/properties\/([^\?]+)') {
                 $PropertyID = $matches[1]
                 $Response.Body | Add-Member -NotePropertyName 'propertyId' -NotePropertyValue $PropertyID
-    
+
                 # Add to data cache
                 if ($AkamaiOptions.EnableDataCache) {
                     Set-AkamaiDataCache -PropertyName $Name -PropertyID $PropertyID
                 }
             }
-    
+
             return $Response.Body
         }
         catch {
@@ -1189,7 +1216,7 @@ function Copy-PropertyInclude {
             if ($Response.Body.includeLink -Match '\/includes\/([^\?]+)') {
                 $IncludeID = $Matches[1]
                 $Response.Body | Add-Member -NotePropertyName 'includeId' -NotePropertyValue $IncludeID
-    
+
                 # Add to data cache
                 if ($AkamaiOptions.EnableDataCache) {
                     Set-AkamaiDataCache -IncludeName $Name -IncludeID $IncludeID
@@ -1209,46 +1236,46 @@ function Find-Property {
         [Parameter(ParameterSetName = 'Name', Position = 0, Mandatory)]
         [string]
         $PropertyName,
-    
+
         [Parameter(ParameterSetName = 'Host', Mandatory)]
         [string]
         $PropertyHostname,
-    
+
         [Parameter(ParameterSetName = 'Edge', Mandatory)]
         [string]
         $EdgeHostname,
-    
+
         [Parameter(ParameterSetName = 'Include', Mandatory)]
         [string]
         $IncludeName,
-    
+
         [Parameter()]
         [switch]
         $Latest,
-    
+
         [Parameter()]
         [switch]
         $JustProductionActive,
-    
+
         [Parameter()]
         [switch]
         $JustStagingActive,
-    
+
         [Parameter()]
         [string]
         $EdgeRCFile,
-    
+
         [Parameter()]
         [string]
         $Section,
-    
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
 
     $Path = "/papi/v1/search/find-by-value"
-    
+
     $Body = @{}
     if ($PropertyName) {
         $Body["propertyName"] = $PropertyName
@@ -1544,7 +1571,7 @@ function Get-BulkActivatedProperty {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body           
+        return $Response.Body
     }
 }
 
@@ -1593,7 +1620,7 @@ function Get-BulkPatchedProperty {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body           
+        return $Response.Body
     }
 }
 
@@ -1692,7 +1719,7 @@ function Get-BulkVersionedProperty {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body           
+        return $Response.Body
     }
 }
 
@@ -1912,7 +1939,7 @@ function Get-ProductUseCases {
         [Parameter(Position = 0, Mandatory)]
         [string]
         $ContractID,
-        
+
         [Parameter(Position = 1, Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string]
         $ProductID,
@@ -2019,14 +2046,14 @@ function Get-Property {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($Response.Body.properties.items -and $AkamaiOptions.EnableDataCache) {
                 foreach ($Property in $Response.Body.properties.items) {
                     Set-AkamaiDataCache -PropertyName $Property.propertyName -PropertyID $Property.propertyId
                 }
             }
-    
+
             return $Response.Body.properties.items
         }
         catch {
@@ -2295,7 +2322,7 @@ function Get-PropertyContract {
     }
     # Make Request
     $Response = Invoke-AkamaiRequest @RequestParams
-    return $Response.Body.contracts.items  
+    return $Response.Body.contracts.items
 }
 
 function Get-PropertyCPCode {
@@ -2411,6 +2438,103 @@ function Get-PropertyCriteria {
     }
 }
 
+function Get-PropertyDebugKey {
+    [OutputType([String])]
+    [CmdletBinding(DefaultParameterSetName = 'Property Name')]
+    param(
+        [Parameter(ParameterSetName = 'Property Name', Position = 0, Mandatory)]
+        [string]
+        $PropertyName,
+
+        [Parameter(ParameterSetName = 'Property ID', Mandatory, ValueFromPipelineByPropertyName)]
+        [string]
+        $PropertyID,
+
+        [Parameter(ParameterSetName = 'Hostname', Mandatory)]
+        [string]
+        $Hostname,
+
+        [Parameter(Position = 1, Mandatory, ValueFromPipelineByPropertyName)]
+        [ValidatePattern('^(latest|production|staging|[0-9]+)$')]
+        [string]
+        $PropertyVersion,
+
+        [Parameter(Position = 1)]
+        [ValidateSet('cache', 'vars', 'tls', 'client', 'brotli', 'feo', 'tags', 'a2', 'ro', 'im', 'all', 'tap', 'purge')]
+        [string]
+        $Option = 'all',
+
+        [Parameter()]
+        [int]
+        $DurationInHours = 24,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]
+        $GroupID,
+
+        [Parameter(ValueFromPipelineByPropertyName)]
+        [string]
+        $ContractId,
+
+        [Parameter()]
+        [string]
+        $EdgeRCFile,
+
+        [Parameter()]
+        [string]
+        $Section,
+
+        [Parameter()]
+        [string]
+        $AccountSwitchKey
+    )
+
+    process {
+        $AuthParams = @{
+            EdgeRCFile       = $EdgeRCFile
+            Section          = $Section
+            AccountSwitchKey = $AccountSwitchKey
+        }
+
+        # If using property name or hostname, search for the property
+        if ($Hostname) {
+            $Local:FoundProperty = Find-Property -PropertyHostname $Hostname @AuthParams
+            if (-not $FoundProperty) {
+                throw "No property found for hostname $Hostname"
+            }
+            $Local:FirstFoundProperty = $FoundProperty | Select-Object -First 1
+            $PSBoundParameters['PropertyName'] = $Local:FirstFoundProperty.propertyName
+        }
+
+        # Expand details as usual
+        $PropertyID, $PropertyVersion, $GroupID, $ContractID = Expand-PropertyDetails @PSBoundParameters
+        $RulesParams = @{
+            PropertyId      = $PropertyID
+            PropertyVersion = $PropertyVersion
+            GroupId         = $GroupID
+            ContractId      = $ContractID
+        }
+        $Rules = Get-PropertyRules @RulesParams @AuthParams
+        $DebugBehavior = Find-Behavior -BehaviorName 'enhancedDebug' -Rule $Rules.rules
+        if ($DebugBehavior.Count -eq 0) {
+            throw "No debug behavior found in property $PropertyName"
+        }
+
+        $Key = $DebugBehavior[0].options.debugKey
+        if (-not $Key) {
+            throw "No debug key set in enhancedDebug behavior for property $PropertyName"
+        }
+
+        $TokenParams = @{
+            Secret          = $Key
+            DurationInHours = $DurationInHours
+            ACL             = '/*'
+        }
+        $Token = New-EdgeAuthToken @TokenParams
+        return "$Token $Option"
+    }
+
+}
 function Get-PropertyDomainOwnershipChallenge {
     [CmdletBinding()]
     Param(
@@ -2716,14 +2840,14 @@ function Get-PropertyInclude {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 foreach ($Include in $Response.Body.includes.items) {
                     Set-AkamaiDataCache -IncludeName $Include.includeName -IncludeID $Include.includeId
                 }
             }
-    
+
             return $Response.Body.includes.items
         }
         catch {
@@ -3815,7 +3939,7 @@ function Get-RuleFormatSchema {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body        
+        return $Response.Body
     }
 }
 
@@ -3837,7 +3961,7 @@ function Get-TopLevelGroup {
 
     try {
         $Groups = Get-Group -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey | Where-Object { $null -eq $_.parentGroupId }
-        return $Groups 
+        return $Groups
     }
     catch {
         throw $_
@@ -3871,10 +3995,10 @@ function Merge-PropertyRules {
         else {
             $Source = Get-Item $SourceDirectory
         }
-    
+
         $DefaultRulePath = "$($Source.FullName)/$DefaultRuleFilename"
         $Rules = Get-Content -Raw $DefaultRulePath | ConvertFrom-Json
-    
+
         ## Get Variables
         if ($null -ne $Rules.variables) {
             $VariablesFileName = $Rules.variables.Replace("#include:", "")
@@ -3882,17 +4006,17 @@ function Merge-PropertyRules {
             $Variables = Get-Content -Raw "$($Source.FullName)/$VariablesFileName" | ConvertFrom-Json
             $Rules.variables += $Variables
         }
-        
-    
+
+
         for ($i = 0; $i -lt $Rules.children.count; $i++) {
             if ($Rules.children[$i].GetType().Name -eq 'String' -and $Rules.children[$i].StartsWith('#include:')) {
                 $Rules.children[$i] = Expand-ChildRuleSnippet -Include $Rules.children[$i] -Path $Source.FullName -DefaultRuleDirectory $Source.FullName
             }
         }
-    
+
         $Output = New-Object -TypeName PSCustomObject
         $Output | Add-Member -MemberType NoteProperty -Name rules -Value $Rules
-    
+
         if ($OutputToFile) {
             if ($OutputFileName -eq '') {
                 $OutputFileName = $Source.Name + '.json'
@@ -3960,7 +4084,7 @@ function New-BulkActivation {
         $BulkActivationID = $Response.Body.bulkActivationLink -split '\?' | Select-Object -First 1
         $BulkActivationID = $BulkActivationID -split '/' | Select-Object -Last 1
         $Response.Body | Add-Member -NotePropertyName BulkActivationID -NotePropertyValue $BulkActivationID -Force
-        
+
         return $Response.Body
     }
 }
@@ -4434,17 +4558,17 @@ function New-Property {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             if ($Response.Body.propertyLink -Match '\/properties\/([^\?]+)') {
                 $PropertyID = $matches[1]
                 $Response.Body | Add-Member -NotePropertyName 'propertyId' -NotePropertyValue $PropertyID
-    
+
                 # Add to data cache
                 if ($AkamaiOptions.EnableDataCache) {
                     Set-AkamaiDataCache -PropertyName $Name -PropertyID $PropertyID
                 }
             }
-    
+
             return $Response.Body
         }
         catch {
@@ -4893,7 +5017,7 @@ function New-PropertyInclude {
             if ($Response.Body.includeLink -Match '\/includes\/([^\?]+)') {
                 $IncludeID = $Matches[1]
                 $Response.Body | Add-Member -NotePropertyName 'includeId' -NotePropertyValue $IncludeID
-    
+
                 # Add to data cache
                 if ($AkamaiOptions.EnableDataCache) {
                     Set-AkamaiDataCache -IncludeName $Name -IncludeID $IncludeID
@@ -6018,7 +6142,7 @@ function Set-PropertyClientSettings {
         [Parameter(Mandatory)]
         [bool]
         $UsePrefixes,
-        
+
         [Parameter()]
         [bool]
         $UpgradeRules,
@@ -6040,9 +6164,9 @@ function Set-PropertyClientSettings {
     if ($RuleFormat -notin $AcceptedRuleFormats) {
         throw "$RuleFormat is not an accepted rule format. Run Get-RuleFormat for a full list."
     }
-    
+
     $Path = "/papi/v1/client-settings"
-    $Body = @{ 
+    $Body = @{
         'ruleFormat'  = $RuleFormat
         'usePrefixes' = $UsePrefixes
     }
@@ -7224,61 +7348,222 @@ function Update-PropertyRule {
 }
 
 # SIG # Begin signature block
-# MIIKmAYJKoZIhvcNAQcCoIIKiTCCCoUCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# MIIo2AYJKoZIhvcNAQcCoIIoyTCCKMUCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCD/6noVsIHaAJGG
-# nuJJD2CrmZSZTRGbBA8l2hcTqdmeXKCCB1owggdWMIIFPqADAgECAhAGRzH371Sh
-# X6hjGl1wSSyYMA0GCSqGSIb3DQEBCwUAMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQK
-# Ew5EaWdpQ2VydCwgSW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBD
-# b2RlIFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTEwHhcNMjYwMjI1MDAw
-# MDAwWhcNMjcwMzEwMjM1OTU5WjCB3jETMBEGCysGAQQBgjc8AgEDEwJVUzEZMBcG
-# CysGAQQBgjc8AgECEwhEZWxhd2FyZTEdMBsGA1UEDwwUUHJpdmF0ZSBPcmdhbml6
-# YXRpb24xEDAOBgNVBAUTBzI5MzM2MzcxCzAJBgNVBAYTAlVTMRYwFAYDVQQIEw1N
-# YXNzYWNodXNldHRzMRIwEAYDVQQHEwlDYW1icmlkZ2UxIDAeBgNVBAoTF0FrYW1h
-# aSBUZWNobm9sb2dpZXMgSW5jMSAwHgYDVQQDExdBa2FtYWkgVGVjaG5vbG9naWVz
-# IEluYzCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAJeMKuhiUI5WSRdG
-# IPhNWLpaVPlXbSazhGuvzZxTi623Ht46hiPejDtWB8F8dT2pd+nOWsx5NVgkv7x/
-# Tz35cZcWVMDxq/K7wYe9R2GndGgfEL02/j5rslwHr8e6qFzy1axuL/xaGXuBTVrS
-# Qw25019l1KalUHwInKLIP7Hw1HLPTacyJNNTsYmOpZNqKIiQe9ivzBd7SuPU0cGi
-# 1YHUk4ZQh6Ig5tBx8XZYjTmzbiQr2WWwk/CufaoIPME5zAvmW99S05rAtOqvoUr7
-# eoLUQ/TcMMA6eOliAbO5m0w/pv5YDgzhzt9hQez189zZNOkMO6AcHNitJzzsEvCg
-# 7fhPHxoXvasRJ0EaCEze0nuVakLPf+mGCLoZYGRctayOn4HP6LEEOGmAnQBZkwFR
-# 6zxk0hzAMOkK/p7MV9V6QwOuk9q7WKnIdzS/4RjRtXNxXb2fMNyBEwrwJhdmEhWF
-# 0eS0Wd6Uz3IbSr0+XH8FHLflQXFCkPcZKiGPgSCp8rTP3KHr6wIDAQABo4ICAjCC
-# Af4wHwYDVR0jBBgwFoAUaDfg67Y7+F8Rhvv+YXsIiGX0TkIwHQYDVR0OBBYEFKT3
-# RICOlmcsnPu7KwUf9HL4YegLMD0GA1UdIAQ2MDQwMgYFZ4EMAQMwKTAnBggrBgEF
-# BQcCARYbaHR0cDovL3d3dy5kaWdpY2VydC5jb20vQ1BTMA4GA1UdDwEB/wQEAwIH
-# gDATBgNVHSUEDDAKBggrBgEFBQcDAzCBtQYDVR0fBIGtMIGqMFOgUaBPhk1odHRw
-# Oi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRUcnVzdGVkRzRDb2RlU2lnbmlu
-# Z1JTQTQwOTZTSEEzODQyMDIxQ0ExLmNybDBToFGgT4ZNaHR0cDovL2NybDQuZGln
-# aWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0Q29kZVNpZ25pbmdSU0E0MDk2U0hB
-# Mzg0MjAyMUNBMS5jcmwwgZQGCCsGAQUFBwEBBIGHMIGEMCQGCCsGAQUFBzABhhho
-# dHRwOi8vb2NzcC5kaWdpY2VydC5jb20wXAYIKwYBBQUHMAKGUGh0dHA6Ly9jYWNl
-# cnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRydXN0ZWRHNENvZGVTaWduaW5nUlNB
-# NDA5NlNIQTM4NDIwMjFDQTEuY3J0MAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQAD
-# ggIBAGSBrSnUReHUzGTy9VC6hy2oDSpu2QNu5j3o/uoaaAy2CgI0hVJRL/OfYinL
-# R4hJofuNNKORp2MWXpy52L5PCGtD6/Hf92bMkDl1AP6nXuplt5HvkFPh5kVDbQ7o
-# HfI1Pup2IOpKxb00UNwjtKy+38ZCX0dgkASP2vQFamBCG0eTaGUh/9ZH9rz11Nkr
-# 9p83Snz/3eW3vOeKAFL3S5RDEMkTvv09540mnzA4J5lKGES2eje/FhwCCQUQBvqC
-# voNFNZHyXvW9v8KqX/3CcN1LAtGCy4XnkFjQRPyn+o/OJv5M5yX2Rm5kq9dYpWnD
-# U2xgxMR1BZaDf+uDoqGsLo4OqbPV4Dftp2FDs8DHMD8xP6i/k4htaWShkdyjdijr
-# 9TBOi+pS9vNlcCKjwLq6aibcbkUk7ef3wxR5imhajsX22vy8Zd9ByAk07BJrccgg
-# JGczCtiKcD6LZtP3VjnqhYPSQ4jk6wCruqcTCTwwO7FrIROVrWb2Ro+ph+/a5Llj
-# 5ryLyp+6NAgtNwyrkp2WxZviLbh5AXnmg9Pnwrz64UE93LEjI23AWBJsLFdJTbis
-# Z/tTgozdVdPZf2Dy2k8xfYZoIq6V1oWiAoQCzb5B9nETV5NGjiMPskJ4GwnlzOvz
-# +4IgLQjl0V5I08Qw+3uvPQ8rHHMLbKgncTqSxqtZ73kItOztMYIClDCCApACAQEw
-# fTBpMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xQTA/BgNV
-# BAMTOERpZ2lDZXJ0IFRydXN0ZWQgRzQgQ29kZSBTaWduaW5nIFJTQTQwOTYgU0hB
-# Mzg0IDIwMjEgQ0ExAhAGRzH371ShX6hjGl1wSSyYMA0GCWCGSAFlAwQCAQUAoGow
-# GQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisG
-# AQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIPSaDSIRPJAdbSNZnw1SAMHbeinl92DN
-# e2UANgW1VZj8MA0GCSqGSIb3DQEBAQUABIIBgF7v207wfOiy27SBzVCeTGbLRb1B
-# IksbjSclQ8nxcW54yYo8Fv36/VIhTmXP097G0s+rH7xYLaJn6RMiXe+6rbq/BgK8
-# lBisEc+3wJYLsLMVgGGmLxZbp1voFsbO97xz6q6A0/ekGtMVqKjSWQ8EAZ+Jh0OD
-# QCflBqoUvbcS9nXg75DqlPJSCnHpZqhyQVtd4JGy1YZCLXIdHn06+u92sjFmaUdg
-# qfwOXGZT00RJhXHDgdYJnm4WwO35ZFS0pvTRDO+yplkhd5BLVCzBWpAXt7HPgD8L
-# NOr1uHkkts+HY74qTnVOjrda8x9yZfIERMCnsd7dxRTgMGty2Seh/xrEHNfH7VXY
-# HEWFeu3ZCSI2DLLxyG39DmNmI6OcFW/NCWQXgdoLHL0Vg1GSigyZkx23ci5f6G9y
-# jtCY6uD1L+UXs6jRf4+wiU1vSc8eKUfnXd3+O7E7Hy7AZLRL/AWlSDLAe7Btqx6A
-# KRCG3VjgNyoy785Tk77/6hEz3Ts1YCfZtKGXIg==
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCBk2014QEeBjWw5
+# cMbsgzomQsWQ236TTDuAhLTH7Fx/zKCCDg4wggawMIIEmKADAgECAhAIrUCyYNKc
+# TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
+# EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
+# BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
+# NjA0MjgyMzU5NTlaMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwg
+# SW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBDb2RlIFNpZ25pbmcg
+# UlNBNDA5NiBTSEEzODQgMjAyMSBDQTEwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+# ggIKAoICAQDVtC9C0CiteLdd1TlZG7GIQvUzjOs9gZdwxbvEhSYwn6SOaNhc9es0
+# JAfhS0/TeEP0F9ce2vnS1WcaUk8OoVf8iJnBkcyBAz5NcCRks43iCH00fUyAVxJr
+# Q5qZ8sU7H/Lvy0daE6ZMswEgJfMQ04uy+wjwiuCdCcBlp/qYgEk1hz1RGeiQIXhF
+# LqGfLOEYwhrMxe6TSXBCMo/7xuoc82VokaJNTIIRSFJo3hC9FFdd6BgTZcV/sk+F
+# LEikVoQ11vkunKoAFdE3/hoGlMJ8yOobMubKwvSnowMOdKWvObarYBLj6Na59zHh
+# 3K3kGKDYwSNHR7OhD26jq22YBoMbt2pnLdK9RBqSEIGPsDsJ18ebMlrC/2pgVItJ
+# wZPt4bRc4G/rJvmM1bL5OBDm6s6R9b7T+2+TYTRcvJNFKIM2KmYoX7BzzosmJQay
+# g9Rc9hUZTO1i4F4z8ujo7AqnsAMrkbI2eb73rQgedaZlzLvjSFDzd5Ea/ttQokbI
+# YViY9XwCFjyDKK05huzUtw1T0PhH5nUwjewwk3YUpltLXXRhTT8SkXbev1jLchAp
+# QfDVxW0mdmgRQRNYmtwmKwH0iU1Z23jPgUo+QEdfyYFQc4UQIyFZYIpkVMHMIRro
+# OBl8ZhzNeDhFMJlP/2NPTLuqDQhTQXxYPUez+rbsjDIJAsxsPAxWEQIDAQABo4IB
+# WTCCAVUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUaDfg67Y7+F8Rhvv+
+# YXsIiGX0TkIwHwYDVR0jBBgwFoAU7NfjgtJxXWRM3y5nP+e6mK4cD08wDgYDVR0P
+# AQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMDMHcGCCsGAQUFBwEBBGswaTAk
+# BggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEEGCCsGAQUFBzAC
+# hjVodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRUcnVzdGVkUm9v
+# dEc0LmNydDBDBgNVHR8EPDA6MDigNqA0hjJodHRwOi8vY3JsMy5kaWdpY2VydC5j
+# b20vRGlnaUNlcnRUcnVzdGVkUm9vdEc0LmNybDAcBgNVHSAEFTATMAcGBWeBDAED
+# MAgGBmeBDAEEATANBgkqhkiG9w0BAQwFAAOCAgEAOiNEPY0Idu6PvDqZ01bgAhql
+# +Eg08yy25nRm95RysQDKr2wwJxMSnpBEn0v9nqN8JtU3vDpdSG2V1T9J9Ce7FoFF
+# UP2cvbaF4HZ+N3HLIvdaqpDP9ZNq4+sg0dVQeYiaiorBtr2hSBh+3NiAGhEZGM1h
+# mYFW9snjdufE5BtfQ/g+lP92OT2e1JnPSt0o618moZVYSNUa/tcnP/2Q0XaG3Ryw
+# YFzzDaju4ImhvTnhOE7abrs2nfvlIVNaw8rpavGiPttDuDPITzgUkpn13c5Ubdld
+# AhQfQDN8A+KVssIhdXNSy0bYxDQcoqVLjc1vdjcshT8azibpGL6QB7BDf5WIIIJw
+# 8MzK7/0pNVwfiThV9zeKiwmhywvpMRr/LhlcOXHhvpynCgbWJme3kuZOX956rEnP
+# LqR0kq3bPKSchh/jwVYbKyP/j7XqiHtwa+aguv06P0WmxOgWkVKLQcBIhEuWTatE
+# QOON8BUozu3xGFYHKi8QxAwIZDwzj64ojDzLj4gLDb879M4ee47vtevLt/B3E+bn
+# KD+sEq6lLyJsQfmCXBVmzGwOysWGw/YmMwwHS6DTBwJqakAwSEs0qFEgu60bhQji
+# WQ1tygVQK+pKHJ6l/aCnHwZ05/LWUpD9r4VIIflXO7ScA+2GRfS0YW6/aOImYIbq
+# yK+p/pQd52MbOoZWeE4wggdWMIIFPqADAgECAhAGRzH371ShX6hjGl1wSSyYMA0G
+# CSqGSIb3DQEBCwUAMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwg
+# SW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBDb2RlIFNpZ25pbmcg
+# UlNBNDA5NiBTSEEzODQgMjAyMSBDQTEwHhcNMjYwMjI1MDAwMDAwWhcNMjcwMzEw
+# MjM1OTU5WjCB3jETMBEGCysGAQQBgjc8AgEDEwJVUzEZMBcGCysGAQQBgjc8AgEC
+# EwhEZWxhd2FyZTEdMBsGA1UEDwwUUHJpdmF0ZSBPcmdhbml6YXRpb24xEDAOBgNV
+# BAUTBzI5MzM2MzcxCzAJBgNVBAYTAlVTMRYwFAYDVQQIEw1NYXNzYWNodXNldHRz
+# MRIwEAYDVQQHEwlDYW1icmlkZ2UxIDAeBgNVBAoTF0FrYW1haSBUZWNobm9sb2dp
+# ZXMgSW5jMSAwHgYDVQQDExdBa2FtYWkgVGVjaG5vbG9naWVzIEluYzCCAaIwDQYJ
+# KoZIhvcNAQEBBQADggGPADCCAYoCggGBAJeMKuhiUI5WSRdGIPhNWLpaVPlXbSaz
+# hGuvzZxTi623Ht46hiPejDtWB8F8dT2pd+nOWsx5NVgkv7x/Tz35cZcWVMDxq/K7
+# wYe9R2GndGgfEL02/j5rslwHr8e6qFzy1axuL/xaGXuBTVrSQw25019l1KalUHwI
+# nKLIP7Hw1HLPTacyJNNTsYmOpZNqKIiQe9ivzBd7SuPU0cGi1YHUk4ZQh6Ig5tBx
+# 8XZYjTmzbiQr2WWwk/CufaoIPME5zAvmW99S05rAtOqvoUr7eoLUQ/TcMMA6eOli
+# AbO5m0w/pv5YDgzhzt9hQez189zZNOkMO6AcHNitJzzsEvCg7fhPHxoXvasRJ0Ea
+# CEze0nuVakLPf+mGCLoZYGRctayOn4HP6LEEOGmAnQBZkwFR6zxk0hzAMOkK/p7M
+# V9V6QwOuk9q7WKnIdzS/4RjRtXNxXb2fMNyBEwrwJhdmEhWF0eS0Wd6Uz3IbSr0+
+# XH8FHLflQXFCkPcZKiGPgSCp8rTP3KHr6wIDAQABo4ICAjCCAf4wHwYDVR0jBBgw
+# FoAUaDfg67Y7+F8Rhvv+YXsIiGX0TkIwHQYDVR0OBBYEFKT3RICOlmcsnPu7KwUf
+# 9HL4YegLMD0GA1UdIAQ2MDQwMgYFZ4EMAQMwKTAnBggrBgEFBQcCARYbaHR0cDov
+# L3d3dy5kaWdpY2VydC5jb20vQ1BTMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAK
+# BggrBgEFBQcDAzCBtQYDVR0fBIGtMIGqMFOgUaBPhk1odHRwOi8vY3JsMy5kaWdp
+# Y2VydC5jb20vRGlnaUNlcnRUcnVzdGVkRzRDb2RlU2lnbmluZ1JTQTQwOTZTSEEz
+# ODQyMDIxQ0ExLmNybDBToFGgT4ZNaHR0cDovL2NybDQuZGlnaWNlcnQuY29tL0Rp
+# Z2lDZXJ0VHJ1c3RlZEc0Q29kZVNpZ25pbmdSU0E0MDk2U0hBMzg0MjAyMUNBMS5j
+# cmwwgZQGCCsGAQUFBwEBBIGHMIGEMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5k
+# aWdpY2VydC5jb20wXAYIKwYBBQUHMAKGUGh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0
+# LmNvbS9EaWdpQ2VydFRydXN0ZWRHNENvZGVTaWduaW5nUlNBNDA5NlNIQTM4NDIw
+# MjFDQTEuY3J0MAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQADggIBAGSBrSnUReHU
+# zGTy9VC6hy2oDSpu2QNu5j3o/uoaaAy2CgI0hVJRL/OfYinLR4hJofuNNKORp2MW
+# Xpy52L5PCGtD6/Hf92bMkDl1AP6nXuplt5HvkFPh5kVDbQ7oHfI1Pup2IOpKxb00
+# UNwjtKy+38ZCX0dgkASP2vQFamBCG0eTaGUh/9ZH9rz11Nkr9p83Snz/3eW3vOeK
+# AFL3S5RDEMkTvv09540mnzA4J5lKGES2eje/FhwCCQUQBvqCvoNFNZHyXvW9v8Kq
+# X/3CcN1LAtGCy4XnkFjQRPyn+o/OJv5M5yX2Rm5kq9dYpWnDU2xgxMR1BZaDf+uD
+# oqGsLo4OqbPV4Dftp2FDs8DHMD8xP6i/k4htaWShkdyjdijr9TBOi+pS9vNlcCKj
+# wLq6aibcbkUk7ef3wxR5imhajsX22vy8Zd9ByAk07BJrccggJGczCtiKcD6LZtP3
+# VjnqhYPSQ4jk6wCruqcTCTwwO7FrIROVrWb2Ro+ph+/a5Llj5ryLyp+6NAgtNwyr
+# kp2WxZviLbh5AXnmg9Pnwrz64UE93LEjI23AWBJsLFdJTbisZ/tTgozdVdPZf2Dy
+# 2k8xfYZoIq6V1oWiAoQCzb5B9nETV5NGjiMPskJ4GwnlzOvz+4IgLQjl0V5I08Qw
+# +3uvPQ8rHHMLbKgncTqSxqtZ73kItOztMYIaIDCCGhwCAQEwfTBpMQswCQYDVQQG
+# EwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xQTA/BgNVBAMTOERpZ2lDZXJ0
+# IFRydXN0ZWQgRzQgQ29kZSBTaWduaW5nIFJTQTQwOTYgU0hBMzg0IDIwMjEgQ0Ex
+# AhAGRzH371ShX6hjGl1wSSyYMA0GCWCGSAFlAwQCAQUAoHwwEAYKKwYBBAGCNwIB
+# DDECMAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIFFPh6QfOjSZchVvvtIvwiDB
+# GR2CWqKVTLz/TH9zpb3DMA0GCSqGSIb3DQEBAQUABIIBgEwJ2bZB9sAJDkFPwEUa
+# mQ4W3qMlODPYzV/TKTE/9++Mx3OKtAQ9UYJsA7wUkQxof741+S3mBERVIkYyAFmV
+# A9VhKZFyUpJYkcyalGBIQHaUqwUFyau4cs/fbYDl2uSUhj4P4rUvKrMwhcALrEhe
+# mVsT9q94kAhW9SLQvSjjj6KLuIY9q5dBeJmW8bHeYQ2d5uaj2HRjvUXHLMLRU5rI
+# 7BD3qrmdAXsyyCiLftkGQ0EoVPt6vYU0EF5UxHZ7TbkCh98X3l8iUBhmtn26l4Ca
+# dhqggeqsTSjbGuEI/fT8oXfNxkP02X9Wdhsc1W/R1ZFF44ODKG73TiFnPEdzUwnH
+# RZGMR+NIqo4EKzVFymPueH+Ck1tc2KDIldH6j5dpgffVsI7VbEqwiv/XEMRgLjkO
+# q3VviyptkuDreekTWOuvJDgnDaiF6XsnMx2QCMoyiA21y+/PbkCXeMUwfFMy0HBp
+# V0z7z/TDLjS8SFihEiC0Zz7qFwVSAsv3LMr7mBolN0tv+KGCF3YwghdyBgorBgEE
+# AYI3AwMBMYIXYjCCF14GCSqGSIb3DQEHAqCCF08wghdLAgEDMQ8wDQYJYIZIAWUD
+# BAIBBQAwdwYLKoZIhvcNAQkQAQSgaARmMGQCAQEGCWCGSAGG/WwHATAxMA0GCWCG
+# SAFlAwQCAQUABCA9+KybJCy4wuwi4HgYq16qvKZyyEeBubk7BB8mfUjoQgIQbIDZ
+# RqYICnaCAktJriopkxgPMjAyNjA4MjUyMjQwNTZaoIITOjCCBu0wggTVoAMCAQIC
+# EAqA7xhLjfEFgtHEdqeVdGgwDQYJKoZIhvcNAQELBQAwaTELMAkGA1UEBhMCVVMx
+# FzAVBgNVBAoTDkRpZ2lDZXJ0LCBJbmMuMUEwPwYDVQQDEzhEaWdpQ2VydCBUcnVz
+# dGVkIEc0IFRpbWVTdGFtcGluZyBSU0E0MDk2IFNIQTI1NiAyMDI1IENBMTAeFw0y
+# NTA2MDQwMDAwMDBaFw0zNjA5MDMyMzU5NTlaMGMxCzAJBgNVBAYTAlVTMRcwFQYD
+# VQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UEAxMyRGlnaUNlcnQgU0hBMjU2IFJT
+# QTQwOTYgVGltZXN0YW1wIFJlc3BvbmRlciAyMDI1IDEwggIiMA0GCSqGSIb3DQEB
+# AQUAA4ICDwAwggIKAoICAQDQRqwtEsae0OquYFazK1e6b1H/hnAKAd/KN8wZQjBj
+# MqiZ3xTWcfsLwOvRxUwXcGx8AUjni6bz52fGTfr6PHRNv6T7zsf1Y/E3IU8kgNke
+# ECqVQ+3bzWYesFtkepErvUSbf+EIYLkrLKd6qJnuzK8Vcn0DvbDMemQFoxQ2Dsw4
+# vEjoT1FpS54dNApZfKY61HAldytxNM89PZXUP/5wWWURK+IfxiOg8W9lKMqzdIo7
+# VA1R0V3Zp3DjjANwqAf4lEkTlCDQ0/fKJLKLkzGBTpx6EYevvOi7XOc4zyh1uSqg
+# r6UnbksIcFJqLbkIXIPbcNmA98Oskkkrvt6lPAw/p4oDSRZreiwB7x9ykrjS6GS3
+# NR39iTTFS+ENTqW8m6THuOmHHjQNC3zbJ6nJ6SXiLSvw4Smz8U07hqF+8CTXaETk
+# VWz0dVVZw7knh1WZXOLHgDvundrAtuvz0D3T+dYaNcwafsVCGZKUhQPL1naFKBy1
+# p6llN3QgshRta6Eq4B40h5avMcpi54wm0i2ePZD5pPIssoszQyF4//3DoK2O65Uc
+# k5Wggn8O2klETsJ7u8xEehGifgJYi+6I03UuT1j7FnrqVrOzaQoVJOeeStPeldYR
+# NMmSF3voIgMFtNGh86w3ISHNm0IaadCKCkUe2LnwJKa8TIlwCUNVwppwn4D3/Pt5
+# pwIDAQABo4IBlTCCAZEwDAYDVR0TAQH/BAIwADAdBgNVHQ4EFgQU5Dv88jHt/f3X
+# 85FxYxlQQ89hjOgwHwYDVR0jBBgwFoAU729TSunkBnx6yuKQVvYv1Ensy04wDgYD
+# VR0PAQH/BAQDAgeAMBYGA1UdJQEB/wQMMAoGCCsGAQUFBwMIMIGVBggrBgEFBQcB
+# AQSBiDCBhTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMF0G
+# CCsGAQUFBzAChlFodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRU
+# cnVzdGVkRzRUaW1lU3RhbXBpbmdSU0E0MDk2U0hBMjU2MjAyNUNBMS5jcnQwXwYD
+# VR0fBFgwVjBUoFKgUIZOaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+# VHJ1c3RlZEc0VGltZVN0YW1waW5nUlNBNDA5NlNIQTI1NjIwMjVDQTEuY3JsMCAG
+# A1UdIAQZMBcwCAYGZ4EMAQQCMAsGCWCGSAGG/WwHATANBgkqhkiG9w0BAQsFAAOC
+# AgEAZSqt8RwnBLmuYEHs0QhEnmNAciH45PYiT9s1i6UKtW+FERp8FgXRGQ/YAavX
+# zWjZhY+hIfP2JkQ38U+wtJPBVBajYfrbIYG+Dui4I4PCvHpQuPqFgqp1PzC/ZRX4
+# pvP/ciZmUnthfAEP1HShTrY+2DE5qjzvZs7JIIgt0GCFD9ktx0LxxtRQ7vllKluH
+# WiKk6FxRPyUPxAAYH2Vy1lNM4kzekd8oEARzFAWgeW3az2xejEWLNN4eKGxDJ8WD
+# l/FQUSntbjZ80FU3i54tpx5F/0Kr15zW/mJAxZMVBrTE2oi0fcI8VMbtoRAmaasl
+# NXdCG1+lqvP4FbrQ6IwSBXkZagHLhFU9HCrG/syTRLLhAezu/3Lr00GrJzPQFnCE
+# H1Y58678IgmfORBPC1JKkYaEt2OdDh4GmO0/5cHelAK2/gTlQJINqDr6JfwyYHXS
+# d+V08X1JUPvB4ILfJdmL+66Gp3CSBXG6IwXMZUXBhtCyIaehr0XkBoDIGMUG1dUt
+# wq1qmcwbdUfcSYCn+OwncVUXf53VJUNOaMWMts0VlRYxe5nK+At+DI96HAlXHAL5
+# SlfYxJ7La54i71McVWRP66bW+yERNpbJCjyCYG2j+bdpxo/1Cy4uPcU3AWVPGrbn
+# 5PhDBf3Froguzzhk++ami+r3Qrx5bIbY3TVzgiFI7Gq3zWcwgga0MIIEnKADAgEC
+# AhANx6xXBf8hmS5AQyIMOkmGMA0GCSqGSIb3DQEBCwUAMGIxCzAJBgNVBAYTAlVT
+# MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j
+# b20xITAfBgNVBAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yNTA1MDcw
+# MDAwMDBaFw0zODAxMTQyMzU5NTlaMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5E
+# aWdpQ2VydCwgSW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBUaW1l
+# U3RhbXBpbmcgUlNBNDA5NiBTSEEyNTYgMjAyNSBDQTEwggIiMA0GCSqGSIb3DQEB
+# AQUAA4ICDwAwggIKAoICAQC0eDHTCphBcr48RsAcrHXbo0ZodLRRF51NrY0NlLWZ
+# loMsVO1DahGPNRcybEKq+RuwOnPhof6pvF4uGjwjqNjfEvUi6wuim5bap+0lgloM
+# 2zX4kftn5B1IpYzTqpyFQ/4Bt0mAxAHeHYNnQxqXmRinvuNgxVBdJkf77S2uPoCj
+# 7GH8BLuxBG5AvftBdsOECS1UkxBvMgEdgkFiDNYiOTx4OtiFcMSkqTtF2hfQz3zQ
+# Sku2Ws3IfDReb6e3mmdglTcaarps0wjUjsZvkgFkriK9tUKJm/s80FiocSk1VYLZ
+# lDwFt+cVFBURJg6zMUjZa/zbCclF83bRVFLeGkuAhHiGPMvSGmhgaTzVyhYn4p0+
+# 8y9oHRaQT/aofEnS5xLrfxnGpTXiUOeSLsJygoLPp66bkDX1ZlAeSpQl92QOMeRx
+# ykvq6gbylsXQskBBBnGy3tW/AMOMCZIVNSaz7BX8VtYGqLt9MmeOreGPRdtBx3yG
+# OP+rx3rKWDEJlIqLXvJWnY0v5ydPpOjL6s36czwzsucuoKs7Yk/ehb//Wx+5kMqI
+# MRvUBDx6z1ev+7psNOdgJMoiwOrUG2ZdSoQbU2rMkpLiQ6bGRinZbI4OLu9BMIFm
+# 1UUl9VnePs6BaaeEWvjJSjNm2qA+sdFUeEY0qVjPKOWug/G6X5uAiynM7Bu2ayBj
+# UwIDAQABo4IBXTCCAVkwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQU729T
+# SunkBnx6yuKQVvYv1Ensy04wHwYDVR0jBBgwFoAU7NfjgtJxXWRM3y5nP+e6mK4c
+# D08wDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMIMHcGCCsGAQUF
+# BwEBBGswaTAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEEG
+# CCsGAQUFBzAChjVodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRU
+# cnVzdGVkUm9vdEc0LmNydDBDBgNVHR8EPDA6MDigNqA0hjJodHRwOi8vY3JsMy5k
+# aWdpY2VydC5jb20vRGlnaUNlcnRUcnVzdGVkUm9vdEc0LmNybDAgBgNVHSAEGTAX
+# MAgGBmeBDAEEAjALBglghkgBhv1sBwEwDQYJKoZIhvcNAQELBQADggIBABfO+xaA
+# HP4HPRF2cTC9vgvItTSmf83Qh8WIGjB/T8ObXAZz8OjuhUxjaaFdleMM0lBryPTQ
+# M2qEJPe36zwbSI/mS83afsl3YTj+IQhQE7jU/kXjjytJgnn0hvrV6hqWGd3rLAUt
+# 6vJy9lMDPjTLxLgXf9r5nWMQwr8Myb9rEVKChHyfpzee5kH0F8HABBgr0UdqirZ7
+# bowe9Vj2AIMD8liyrukZ2iA/wdG2th9y1IsA0QF8dTXqvcnTmpfeQh35k5zOCPmS
+# Nq1UH410ANVko43+Cdmu4y81hjajV/gxdEkMx1NKU4uHQcKfZxAvBAKqMVuqte69
+# M9J6A47OvgRaPs+2ykgcGV00TYr2Lr3ty9qIijanrUR3anzEwlvzZiiyfTPjLbnF
+# RsjsYg39OlV8cipDoq7+qNNjqFzeGxcytL5TTLL4ZaoBdqbhOhZ3ZRDUphPvSRmM
+# Thi0vw9vODRzW6AxnJll38F0cuJG7uEBYTptMSbhdhGQDpOXgpIUsWTjd6xpR6oa
+# Qf/DJbg3s6KCLPAlZ66RzIg9sC+NJpud/v4+7RWsWCiKi9EOLLHfMR2ZyJ/+xhCx
+# 9yHbxtl5TPau1j/1MIDpMPx0LckTetiSuEtQvLsNz3Qbp7wGWqbIiOWCnb5WqxL3
+# /BAPvIXKUjPSxyZsq8WhbaM2tszWkPZPubdcMIIFjTCCBHWgAwIBAgIQDpsYjvnQ
+# Lefv21DiCEAYWjANBgkqhkiG9w0BAQwFADBlMQswCQYDVQQGEwJVUzEVMBMGA1UE
+# ChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSQwIgYD
+# VQQDExtEaWdpQ2VydCBBc3N1cmVkIElEIFJvb3QgQ0EwHhcNMjIwODAxMDAwMDAw
+# WhcNMzExMTA5MjM1OTU5WjBiMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNl
+# cnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSEwHwYDVQQDExhEaWdp
+# Q2VydCBUcnVzdGVkIFJvb3QgRzQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIK
+# AoICAQC/5pBzaN675F1KPDAiMGkz7MKnJS7JIT3yithZwuEppz1Yq3aaza57G4QN
+# xDAf8xukOBbrVsaXbR2rsnnyyhHS5F/WBTxSD1Ifxp4VpX6+n6lXFllVcq9ok3DC
+# srp1mWpzMpTREEQQLt+C8weE5nQ7bXHiLQwb7iDVySAdYyktzuxeTsiT+CFhmzTr
+# BcZe7FsavOvJz82sNEBfsXpm7nfISKhmV1efVFiODCu3T6cw2Vbuyntd463JT17l
+# Necxy9qTXtyOj4DatpGYQJB5w3jHtrHEtWoYOAMQjdjUN6QuBX2I9YI+EJFwq1WC
+# QTLX2wRzKm6RAXwhTNS8rhsDdV14Ztk6MUSaM0C/CNdaSaTC5qmgZ92kJ7yhTzm1
+# EVgX9yRcRo9k98FpiHaYdj1ZXUJ2h4mXaXpI8OCiEhtmmnTK3kse5w5jrubU75KS
+# Op493ADkRSWJtppEGSt+wJS00mFt6zPZxd9LBADMfRyVw4/3IbKyEbe7f/LVjHAs
+# QWCqsWMYRJUadmJ+9oCw++hkpjPRiQfhvbfmQ6QYuKZ3AeEPlAwhHbJUKSWJbOUO
+# UlFHdL4mrLZBdd56rF+NP8m800ERElvlEFDrMcXKchYiCd98THU/Y+whX8QgUWtv
+# sauGi0/C1kVfnSD8oR7FwI+isX4KJpn15GkvmB0t9dmpsh3lGwIDAQABo4IBOjCC
+# ATYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQU7NfjgtJxXWRM3y5nP+e6mK4c
+# D08wHwYDVR0jBBgwFoAUReuir/SSy4IxLVGLp6chnfNtyA8wDgYDVR0PAQH/BAQD
+# AgGGMHkGCCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGln
+# aWNlcnQuY29tMEMGCCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5j
+# b20vRGlnaUNlcnRBc3N1cmVkSURSb290Q0EuY3J0MEUGA1UdHwQ+MDwwOqA4oDaG
+# NGh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+# QS5jcmwwEQYDVR0gBAowCDAGBgRVHSAAMA0GCSqGSIb3DQEBDAUAA4IBAQBwoL9D
+# XFXnOF+go3QbPbYW1/e/Vwe9mqyhhyzshV6pGrsi+IcaaVQi7aSId229GhT0E0p6
+# Ly23OO/0/4C5+KH38nLeJLxSA8hO0Cre+i1Wz/n096wwepqLsl7Uz9FDRJtDIeuW
+# cqFItJnLnU+nBgMTdydE1Od/6Fmo8L8vC6bp8jQ87PcDx4eo0kxAGTVGamlUsLih
+# Vo7spNU96LHc/RzY9HdaXFSMb++hUD38dglohJ9vytsgjTVgHAIDyyCwrFigDkBj
+# xZgiwbJZ9VVrzyerbHbObyMt9H5xaiNrIv8SuFQtJ37YOtnwtoeW/VvRXKwYw02f
+# c7cBqZ9Xql4o4rmUMYIDfDCCA3gCAQEwfTBpMQswCQYDVQQGEwJVUzEXMBUGA1UE
+# ChMORGlnaUNlcnQsIEluYy4xQTA/BgNVBAMTOERpZ2lDZXJ0IFRydXN0ZWQgRzQg
+# VGltZVN0YW1waW5nIFJTQTQwOTYgU0hBMjU2IDIwMjUgQ0ExAhAKgO8YS43xBYLR
+# xHanlXRoMA0GCWCGSAFlAwQCAQUAoIHRMBoGCSqGSIb3DQEJAzENBgsqhkiG9w0B
+# CRABBDAcBgkqhkiG9w0BCQUxDxcNMjYwODI1MjI0MDU2WjArBgsqhkiG9w0BCRAC
+# DDEcMBowGDAWBBTdYjCshgotMGvaOLFoeVIwB/tBfjAvBgkqhkiG9w0BCQQxIgQg
+# pJl64mHyrlHPswmN6A+xZIkHcioDIfygEvYwx/8FCkYwNwYLKoZIhvcNAQkQAi8x
+# KDAmMCQwIgQgSqA/oizXXITFXJOPgo5na5yuyrM/420mmqM08UYRCjMwDQYJKoZI
+# hvcNAQEBBQAEggIAwCiyc3RW8Wa49ZwKuwDpGB1sW0RbJ78G+4kR+8zKwuoqZ9Mw
+# QSbenjODRrbZOclUvmqWqmCzurHfJG+gG213QuZO5/1f4GXqjUUW60JB26QUXrGj
+# 3gnhdU0xqutXGv1CyufJMRp8MODsaozFQrMc+zDc/lq8/lDUkFycqV2EkdzLtzJS
+# kINf8VNRMEoIGPyXXpRJi7oB69evD15vau9nV8JjGT/N/XIKViTlRxZbYhajuqmf
+# KwzihaOW95vhoJ+hahJzkraRS7S693KqGejceC8nK9ihiA74mRbFF2pAEqv01Wdq
+# sXkFl+fFuo0Dr0OAZz7rAhhOanqLkND0Gqbkd5OBRwulJoIMQKpSYQWsU/Vxzu8M
+# kmYcGzCjXF1yTiXGzJPmxpcGnTZqFXDhsS7+2AAjugdtaLManJdoDy76W8zQ1iNX
+# z+BHBS0ckfxSe/U8t8FbtVKWWbrX7Ybv1zr8EvkECzn8cY9G6r7KbKJr3q39rxai
+# 6HeQ3hE1xuO2e9nab6B/eRixZ9SuA3ujANh5AmV8Sw29iyiirqqjsM0GDSKEo792
+# fSbxCimFsD4gDxKLWEyQCMGnNUFbmLzlLY8m0LaYBeecVeKaQpMC8HwB1cctMjt4
+# wkm7it9wekywakqJFKOslXCHPAPdNUd0Z3XSkokOsX9HZO+uyJBbCVGOpUY=
 # SIG # End signature block

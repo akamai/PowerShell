@@ -9,7 +9,7 @@ function Show-AppSecDiscoveredAPI {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $BasePath,
-        
+
         [Parameter(Mandatory)]
         [ValidateSet('FALSE_POSITIVE', 'NOT_ELIGIBLE')]
         [string]

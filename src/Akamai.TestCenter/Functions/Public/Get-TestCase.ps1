@@ -37,7 +37,7 @@ function Get-TestCase {
         else {
             $Path = "/test-management/v3/functional/test-suites/$TestSuiteID/test-cases"
         }
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'includeRecentlyDeleted' = $PSBoundParameters.IncludeRecentlyDeleted.IsPresent
             'resolveVariables'       = $PSBoundParameters.ResolveVariables.IsPresent
         }

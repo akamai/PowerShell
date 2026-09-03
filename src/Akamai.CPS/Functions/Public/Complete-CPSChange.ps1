@@ -37,11 +37,11 @@ function Complete-CPSChange {
             'accept'       = 'application/vnd.akamai.cps.change-id.v1+json'
             'content-type' = 'application/vnd.akamai.cps.acknowledgement.v1+json'
         }
-        
+
         $Body = @{
             'acknowledgement' = $Acknowledgement
         }
-    
+
         if ($Hash) {
             $AdditionalHeaders['content-type'] = 'application/vnd.akamai.cps.acknowledgement-with-hash.v1+json'
             $Body['hash'] = $Hash

@@ -49,7 +49,7 @@ function Expand-AppSecConfigDetails {
             if ($Global:AkamaiOptions.EnableDataCache) {
                 $ConfigID = $Global:AkamaiDataCache.AppSec.Configs.$ConfigName.ConfigID
             }
-    
+
             if (-not $ConfigID) {
                 Write-Debug "Expand-AppSecConfigDetails: '$ConfigName' - Retrieving Config details."
                 $Config = Get-AppSecConfiguration @CommonParams | Where-Object { $_.name -eq $ConfigName }
@@ -60,7 +60,7 @@ function Expand-AppSecConfigDetails {
                     throw "Security config '$ConfigName' not found."
                 }
             }
-            
+
             # Add to data cache
             if ($Global:AkamaiOptions.EnableDataCache -and -not $Global:AkamaiDataCache.AppSec.Configs.$ConfigName) {
                 $Global:AkamaiDataCache.AppSec.Configs.$ConfigName = @{
@@ -75,7 +75,7 @@ function Expand-AppSecConfigDetails {
                 Write-Debug "Expand-AppSecConfigDetails: '$ConfigID' - Retrieving Config."
                 $Config = Get-AppSecConfiguration -ConfigID $ConfigID @CommonParams
             }
-    
+
             if ($VersionNumber -eq 'latest') {
                 $VersionNumber = $Config.latestVersion
             }
@@ -102,7 +102,7 @@ function Expand-AppSecConfigDetails {
             if ($Global:AkamaiOptions.EnableDataCache) {
                 $PolicyID = $Global:AkamaiDataCache.AppSec.Configs.$ConfigName.Policies.$PolicyName.PolicyID
             }
-    
+
             if (-not $PolicyID) {
                 Write-Debug "Expand-AppSecConfigDetails: '$PolicyName' - Retrieving policy details."
                 $Policy = Get-AppSecPolicy -ConfigID $ConfigID -VersionNumber $VersionNumber @CommonParams | Where-Object { $_.policyName -eq $PolicyName }
@@ -113,7 +113,7 @@ function Expand-AppSecConfigDetails {
                     throw "Security policy '$PolicyName' not found."
                 }
             }
-            
+
             # Add to data cache
             if ($Global:AkamaiOptions.EnableDataCache) {
                 # Check for cache entry. It may not exist
@@ -125,10 +125,10 @@ function Expand-AppSecConfigDetails {
                 else {
                     Write-Debug "Expand-AppSecConfigDetails: Cannot create data cache entry without ConfigName."
                 }
-            } 
+            }
             Write-Debug "Expand-AppSecConfigDetails: PolicyID = $PolicyID."
         }
-    
+
         return $ConfigID, $VersionNumber, $PolicyID
     }
 }

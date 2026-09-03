@@ -21,7 +21,7 @@ function Get-CloudWrapperCapacity {
 
     process {
         $Path = "/cloud-wrapper/v1/capacity"
-        $QueryParameters = @{ 
+        $QueryParameters = @{
             'contractIds' = $ContractIds
         }
         $RequestParams = @{

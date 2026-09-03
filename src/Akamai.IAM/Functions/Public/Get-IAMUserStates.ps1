@@ -5,7 +5,7 @@ function Get-IAMUserStates {
         [ValidateSet('USA', 'Canada')]
         [string]
         $Country,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,

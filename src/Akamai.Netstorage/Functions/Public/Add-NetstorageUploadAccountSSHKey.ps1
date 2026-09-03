@@ -1,26 +1,26 @@
 function Add-NetstorageUploadAccountSSHKey {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory)]
         [string]
         $UploadAccountID,
-        
+
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string]
         $Key,
-        
+
         [Parameter()]
         [string]
         $EmailID,
-        
+
         [Parameter()]
         [string]
         $Comments,
-        
+
         [Parameter()]
         [switch]
         $Update,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
@@ -35,7 +35,7 @@ function Add-NetstorageUploadAccountSSHKey {
     )
 
     process {
-        $Path = "/storage/v1/upload-accounts/$UploadAccountID/keys/ssh/$Identity"
+        $Path = "/storage/v1/upload-accounts/$UploadAccountID/keys/ssh"
         $QueryParameters = @{
             'update' = $PSBoundParameters.Update
         }

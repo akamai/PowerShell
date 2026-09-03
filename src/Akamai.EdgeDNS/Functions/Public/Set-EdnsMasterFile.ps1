@@ -12,23 +12,23 @@ function Set-EDNSMasterFile {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     begin {
         $MasterFile = ""
     }
 
     process {
         foreach ($Line in $Body) {
-            $MasterFile += $Line 
+            $MasterFile += $Line
         }
     }
 

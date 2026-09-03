@@ -10,7 +10,7 @@ function Test-ClientListItem {
         $File,
 
         [Parameter(Mandatory)]
-        [ValidateSet('IP', 'GEO', 'ASN', 'TLS_FINGERPRINT', 'FILE_HASH')]
+        [ValidateSet('IP', 'GEO', 'ASN', 'TLS_FINGERPRINT', 'FILE_HASH', 'USER_ID', 'DOMAIN', 'REQUEST_HEADER_NAME_VALUE')]
         [string]
         $ListType,
 

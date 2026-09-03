@@ -3,30 +3,30 @@ function Get-IVMPolicy {
     Param(
         [Parameter(Mandatory, ValueFromPipelineByPropertyName, ValueFromPipeline)]
         [Alias('id')]
-        [string] 
+        [string]
         $PolicySetID,
-        
+
         [Parameter()]
         [string]
         $PolicyID,
- 
+
         [Parameter()]
-        [ValidateSet('Staging', 'Production')] 
-        [string] 
+        [ValidateSet('Staging', 'Production')]
+        [string]
         $Network = 'Production',
-    
+
         [Parameter()]
         [string]
         $ContractID,
 
         [Parameter()]
-        [string] 
+        [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
@@ -41,7 +41,7 @@ function Get-IVMPolicy {
             $Path = "/imaging/v2/network/$Network/policies"
         }
         $AdditionalHeaders = @{ 'Policy-Set' = $PolicySetID }
-    
+
         if ($ContractID -ne '') {
             $AdditionalHeaders['Contract'] = $ContractID
         }

@@ -4,7 +4,7 @@ function New-APICategory {
         [Parameter(Mandatory)]
         [string]
         $APICategoryName,
-        
+
         [Parameter()]
         [string]
         $APICategoryDescription,

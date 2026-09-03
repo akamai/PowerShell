@@ -8,7 +8,7 @@ function Get-IAMGroup {
         [Parameter()]
         [switch]
         $Actions,
-        
+
         [Parameter()]
         [switch]
         $Flatten,
@@ -38,7 +38,7 @@ function Get-IAMGroup {
             }
             return $Output
         }
-    
+
         if ($GroupID) {
             $Path = "/identity-management/v3/user-admin/groups/$GroupID"
         }

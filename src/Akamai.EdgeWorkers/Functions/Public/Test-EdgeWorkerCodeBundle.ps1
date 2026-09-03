@@ -28,7 +28,7 @@ function Test-EdgeWorkerCodeBundle {
                 $Directory = Get-Item $CodeDirectory
                 $Bundle = Get-Content "$($Directory.FullName)\bundle.json" | ConvertFrom-Json
                 $CodeBundle = New-TemporaryFile
-    
+
                 # Create bundle
                 Write-Debug "Creating tarball $CodeBundle from directory $($Directory.fullName)."
                 New-TarArchive -SourceDirectory $Directory.FullName -OutputFile $CodeBundle

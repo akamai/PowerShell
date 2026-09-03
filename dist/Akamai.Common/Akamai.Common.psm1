@@ -44,7 +44,7 @@ function Expand-AkamaiError {
         [Parameter(Mandatory)]
         [System.Management.Automation.ErrorRecord]
         $ErrorRecord,
-        
+
         [Parameter()]
         [PSCustomObject]
         $Options
@@ -63,7 +63,7 @@ function Expand-AkamaiError {
         }
     }
     Write-Debug "ResponseContentType = $ResponseContentType"
-    
+
     # If json, convert to object to extract useful info
     $ErrorData = $null
     if ($ResponseContentType -and $ResponseContentType.Contains('json')) {
@@ -76,7 +76,7 @@ function Expand-AkamaiError {
                 Write-Debug "Failed to convert error response body from JSON."
                 Write-Debug $_
             }
-    
+
             if ($ErrorData) {
                 try {
                     # Remove closing full stops for printing
@@ -140,7 +140,7 @@ function Expand-AkamaiError {
     'Response', 'HttpRequestError', 'StatusCode' | ForEach-Object {
         $ExpandedError.Exception | Add-Member -MemberType NoteProperty -Name $_ -Value $ErrorRecord.Exception.$_
     }
-        
+
     # Evaluate known errors and add recommended actions if found
     if ($null -ne $ErrorMessage) {
         $ExpandedError.ErrorDetails = $ErrorMessage
@@ -152,7 +152,7 @@ function Expand-AkamaiError {
             }
         }
     }
-    
+
     # Rerun loop to copy data to target exception
     if ($null -ne $ErrorData) {
         $ErrorData.PSObject.Properties.Name | foreach-object {
@@ -170,7 +170,7 @@ function Format-FileName {
         [string]
         $Filename
     )
-    
+
     $BadCharacters = @(
         '\',
         '/',
@@ -193,7 +193,7 @@ function Format-FileName {
 
     # Trim whitespace
     $SanitizedFilename = $SanitizedFilename.Trim()
-    
+
     return $SanitizedFilename
 }
 
@@ -212,12 +212,12 @@ function Format-QueryString {
         [string]
         $QueryString
     )
-    
+
     $ValidParameters = New-Object -TypeName System.Collections.ArrayList
 
     # Remove invalid characters
     $QueryString = $QueryString.Replace(" ", "%20")
-    
+
     # Parse Elements
     if ($QueryString.Contains("&")) {
         $Parameters = $QueryString.Split("&")
@@ -263,7 +263,7 @@ function Get-AkamaiUserAgent {
     else {
         $OS = $Env:OS
     }
-    
+
     $UserAgent = "AkamaiPowershell/$ModuleVersion (Powershell $PSEdition $($PSVersionTable.PSVersion) $PSCulture, $OS)"
     return $UserAgent
 }
@@ -306,15 +306,15 @@ function Get-BodyObject {
 
 function Get-EdgegridAuthHeader {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(Mandatory)]
         [PSCustomObject]
         $Credentials,
 
         [Parameter(Mandatory)]
-        [string] 
+        [string]
         $Method,
-        
+
         [Parameter(Mandatory)]
         [string]
         $ExpandedPath,
@@ -322,13 +322,13 @@ function Get-EdgegridAuthHeader {
         [Parameter()]
         [string]
         $Body,
-        
+
         [Parameter()]
-        [string] 
+        [string]
         $InputFile,
 
         [Parameter()]
-        [string] 
+        [string]
         $MaxBody = 131072
     )
 
@@ -336,7 +336,7 @@ function Get-EdgegridAuthHeader {
     $Method = $Method.ToUpper()
 
     # Timestamp for request signing
-    $TimeStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHH:mm:sszz00")
+    $TimeStamp = [DateTime]::UtcNow.ToString('yyyyMMddTHH:mm:sszz00')
 
     # GUID for request signing
     $Nonce = [GUID]::NewGuid()
@@ -346,10 +346,10 @@ function Get-EdgegridAuthHeader {
     $SignatureData += $Credentials.Host + "`t" + $ExpandedPath
 
     #Sanitize body to remove NO-BREAK SPACE Unicode character, which breaks PAPI
-    $Body = $Body -replace "[\u00a0]", ""
+    $Body = $Body -replace '[\u00a0]', ''
 
     # Add body to signature. Truncate if body is greater than max-body (Akamai default is 131072). PUT Method does not require adding to signature.
-    if ($Method -eq "POST") {
+    if ($Method -eq 'POST') {
         if ($Body) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
             if ($Body.Length -gt $MaxBody) {
@@ -359,7 +359,7 @@ function Get-EdgegridAuthHeader {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Body)))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
         }
         elseif ($InputFile) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
@@ -377,7 +377,7 @@ function Get-EdgegridAuthHeader {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash($Bytes))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
             Write-Debug "Signature generated from input file $InputFile"
         }
         else {
@@ -388,12 +388,14 @@ function Get-EdgegridAuthHeader {
         $SignatureData += "`t`t`t"
     }
 
-    $SignatureData += "EG1-HMAC-SHA256 "
-    $SignatureData += "client_token=" + $Credentials.ClientToken + ";"
-    $SignatureData += "access_token=" + $Credentials.AccessToken + ";"
-    $SignatureData += "timestamp=" + $TimeStamp + ";"
-    $SignatureData += "nonce=" + $Nonce + ";"
+    $AuthHeaderBase = 'EG1-HMAC-SHA256 '
+    $AuthHeaderBase += 'client_token=' + $Credentials.ClientToken + ';'
+    $AuthHeaderBase += 'access_token=' + $Credentials.AccessToken + ';'
+    $AuthHeaderBase += 'timestamp=' + $TimeStamp + ';'
+    $AuthHeaderBase += 'nonce=' + $Nonce + ';'
 
+    # Add auth header base to signature data
+    $SignatureData += $AuthHeaderBase
     Write-Debug "SignatureData = $SignatureData"
 
     # Generate SigningKey
@@ -403,15 +405,11 @@ function Get-EdgegridAuthHeader {
     $Signature = Get-EncryptedMessage -secret $SigningKey -message $SignatureData
 
     # Create AuthHeader
-    $AuthorizationHeader = "EG1-HMAC-SHA256 "
-    $AuthorizationHeader += "client_token=" + $Credentials.ClientToken + ";"
-    $AuthorizationHeader += "access_token=" + $Credentials.AccessToken + ";"
-    $AuthorizationHeader += "timestamp=" + $TimeStamp + ";"
-    $AuthorizationHeader += "nonce=" + $Nonce + ";"
-    $AuthorizationHeader += "signature=" + $Signature
+    $AuthorizationHeader = $AuthHeaderBase + 'signature=' + $Signature
 
     return $AuthorizationHeader
 }
+
 function Get-EncryptedMessage {
     [CmdletBinding()]
     Param(
@@ -508,7 +506,7 @@ function Test-ISO8601 {
         [Parameter()]
         [string]
         $DateTime,
-        
+
         [Parameter()]
         [switch]
         $RequireTime
@@ -984,7 +982,7 @@ function Export-NetstorageCredentials {
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $Key,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $ID,
@@ -997,7 +995,7 @@ function Export-NetstorageCredentials {
         [Alias('host')]
         [string]
         $Hostname,
-        
+
         [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [string]
         $CPCode,
@@ -1016,7 +1014,7 @@ function Export-NetstorageCredentials {
             "id = $ID"
             "key = $Key"
         ) -Join "`n"
-    
+
         # Check for existing file
         if (Test-Path -Path $NSRCFile) {
             # Get file contents
@@ -1032,7 +1030,7 @@ function Export-NetstorageCredentials {
                 Write-Debug "Export-NetstorageCredentials: No existing credentials found in $NSRCFile for section $Section"
                 $AppendNewEntry = $true
             }
-    
+
             if ($ExistingCredentials) {
                 if (-not $Force) {
                     throw "Credentials for section '$Section' already exist in '$NSRCFile'. Use -Force to overwrite."
@@ -1050,7 +1048,7 @@ function Export-NetstorageCredentials {
                     $UpdatedSection = $UpdatedSection -replace "(\r?\n)group[ ]*=[ ]*$($ExistingCredentials.group)", "`$1group = $Group"
                     $UpdatedSection = $UpdatedSection -replace "(\r?\n)host[ ]*=[ ]*$($ExistingCredentials.Host)", "`$1host = $HostName"
                     $UpdatedSection = $UpdatedSection -replace "(\r?\n)cpcode[ ]*=[ ]*$($ExistingCredentials.cpcode)", "`$1cpcode = $CPCode"
-                    
+
                     # Update file
                     Write-Debug "Export-NetstorageCredentials: Replacing existing entry:`n$ExistingSection`nwith updated entry:`n$UpdatedSection"
                     $UpdatedFileContents = $AuthFileContents.Replace($ExistingSection, $UpdatedSection)
@@ -1074,7 +1072,7 @@ function Export-NetstorageCredentials {
                     Write-Debug "Export-NetstorageCredentials: Detected Windows line endings in existing file"
                     $LineBreak = "`r`n"
                 }
-                
+
                 if (!$AuthFileContents.EndsWith($LineBreak)) {
                     Write-Debug "Export-NetstorageCredentials: Adding line break before new entry"
                     Add-Content -Path $NSRCFile -Value $LineBreak -NoNewline
@@ -1105,12 +1103,12 @@ function Export-NetstorageCredentials {
 function Get-AkamaiOptions {
     [CmdletBinding()]
     Param()
-    
+
     $OptionsPath = $Env:AkamaiOptionsPath
     if (-Not $OptionsPath) {
         $OptionsPath = $HOME + "/.akamai-pwsh/options.json"
     }
-    
+
     if ((Test-Path $OptionsPath)) {
         Write-Debug "Get-AkamaiOptions: Retrieving options from $OptionsPath"
         $OptionsContent = Get-Content -Raw $OptionsPath
@@ -1138,7 +1136,7 @@ function Get-AkamaiOptions {
 
 function Get-AuthGrants {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter()]
         [switch]
         $ReturnObject,
@@ -1163,13 +1161,13 @@ function Get-AuthGrants {
         if ($ReturnObject) {
             return $Response.Body
         }
-        Write-Host "Credential Name: '$($Response.Body.name)'."
-        Write-Host "---------------------------------"
-        Write-Host "Created $($Response.Body.Created) by '$($Response.Body.CreatedBy)'."
-        Write-Host "Updated $($Response.Body.Updated) by '$($Response.Body.UpdatedBy)'."
-        Write-Host "Activated $($Response.Body.Activated) by '$($Response.Body.ActivatedBy)'."
-        Write-Host "Grants:"
-        
+        Write-Output "Credential Name: '$($Response.Body.name)'."
+        Write-Output "---------------------------------"
+        Write-Output "Created $($Response.Body.Created) by '$($Response.Body.CreatedBy)'."
+        Write-Output "Updated $($Response.Body.Updated) by '$($Response.Body.UpdatedBy)'."
+        Write-Output "Activated $($Response.Body.Activated) by '$($Response.Body.ActivatedBy)'."
+        Write-Output "Grants:"
+
         $Scope = $Response.Body.Scope.Split(" ")
         $Grants = New-Object System.Collections.ArrayList
         foreach ($Grant in $Scope) {
@@ -1210,7 +1208,7 @@ function Get-EdgegridCredentials {
     }
     if ($Section -eq '') {
         $Section = 'default'
-    }   
+    }
 
 
     #----------------------------------------------------------------------------------------------
@@ -1229,7 +1227,7 @@ function Get-EdgegridCredentials {
     #----------------------------------------------------------------------------------------------
     #                              2. Check for environment variables
     #----------------------------------------------------------------------------------------------
-    
+
     ## 'default' section is implicit. Otherwise env variable starts with section prefix
     if ($Mode -ne 'edgerc') {
         if ($Section.ToLower() -eq 'default') {
@@ -1238,7 +1236,7 @@ function Get-EdgegridCredentials {
         else {
             $EnvPrefix = "AKAMAI_$Section".ToUpper()
         }
-    
+
         if (Test-Path "env:\$EnvPrefix`_HOST") {
             $Credentials.Host = (Get-Item -Path "env:\$EnvPrefix`_HOST").Value
         }
@@ -1327,12 +1325,12 @@ function Get-EdgegridCredentials {
             return $Credentials
         }
     }
-    
+
     #----------------------------------------------------------------------------------------------
     #                                     4. Panic!
     #----------------------------------------------------------------------------------------------
 
-    ## Under normal circumstances you should not get this far...    
+    ## Under normal circumstances you should not get this far...
     throw "Error: Credentials could not be loaded from either; session, environment variables or edgerc file '$EdgeRCFile'"
 
 }
@@ -1379,7 +1377,7 @@ function Get-NetstorageCredentials {
     #----------------------------------------------------------------------------------------------
     #                              2. Check for environment variables
     #----------------------------------------------------------------------------------------------
-    
+
     ## 'default' section is implicit. Otherwise env variable starts with section prefix
     if ($Section.ToLower() -eq 'default') {
         $EnvPrefix = 'NETSTORAGE_'
@@ -1434,12 +1432,12 @@ function Get-NetstorageCredentials {
             return $Credentials
         }
     }
-    
+
     #----------------------------------------------------------------------------------------------
     #                                     4. Panic!
     #----------------------------------------------------------------------------------------------
 
-    ## Under normal circumstances you should not get this far...    
+    ## Under normal circumstances you should not get this far...
     throw "Error: Credentials could not be loaded from either; session, environment variables or auth file '$NSRCFile'"
 }
 function Import-EdgegridCredentials {
@@ -1639,7 +1637,7 @@ function Invoke-AkamaiNSAPIRequest {
     # Handle spaces in filenames
     $Path = $Path.Replace(' ', '%20')
     # Do the same for any additional options that might be missing the CP Code prefix
-    $PathFixAttributes = @( 
+    $PathFixAttributes = @(
         'destination'
         'target'
     )
@@ -1672,7 +1670,7 @@ function Invoke-AkamaiNSAPIRequest {
     }
 
     $Headers = @{}
-    
+
     # Action Header
     $Options = @{
         'version' = '1'
@@ -1758,12 +1756,12 @@ function Invoke-AkamaiNSAPIRequest {
 
     # Include credentials
     if ($null -ne $ENV:proxy_use_default_credentials) {
-        $Params.ProxyUseDefaultCredentials = $true 
+        $Params.ProxyUseDefaultCredentials = $true
     }
 
     ## Do It.
     $Response = Invoke-RestMethod @Params
-    
+
     return $Response
 }
 
@@ -2224,37 +2222,37 @@ function Invoke-AkamaiRequest {
 function Invoke-AkamaiRestMethod {
     [Alias('iarm')]
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter()]
-        [ValidateSet("GET", "HEAD", "PUT", "POST", "DELETE", "PATCH")]
-        [string] 
-        $Method = "GET",
-        
+        [ValidateSet('GET', 'HEAD', 'PUT', 'POST', 'DELETE', 'PATCH')]
+        [string]
+        $Method = 'GET',
+
         [Parameter(Mandatory)]
         [string]
         $Path,
 
         [Parameter()]
-        [hashtable] 
+        [hashtable]
         $QueryParameters,
-        
+
         [Parameter()]
-        [hashtable] 
+        [hashtable]
         $AdditionalHeaders,
 
         [Parameter()]
         $Body,
-        
+
         [Parameter()]
-        [string] 
+        [string]
         $InputFile,
 
         [Parameter()]
-        [string] 
+        [string]
         $OutputFile,
 
         [Parameter()]
-        [string] 
+        [string]
         $MaxBody = 131072,
 
         [Parameter()]
@@ -2273,16 +2271,16 @@ function Invoke-AkamaiRestMethod {
         [string]
         $AccountSwitchKey
     )
-    
+
     # Get auth creds from various potential sources
     $Credentials = Get-EdgegridCredentials -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey
     # Validate credentials
     $CredentialsStatus = $Credentials | Test-EdgegridCredentials
     if ($CredentialsStatus.Count -gt 0) {
         $CredentialsStatus | ForEach-Object { Write-Debug $_ }
-        throw "One or more Edgegrid credentials appear to be invalid. See debug output for details."
+        throw 'One or more Edgegrid credentials appear to be invalid. See debug output for details.'
     }
-    
+
     # Path with QueryString compatibility
     if ($Path.Contains('?')) {
         $PathElements = $Path.Split('?')
@@ -2297,8 +2295,8 @@ function Invoke-AkamaiRestMethod {
     if ($QueryFromPath) {
         $QueryString = [System.Web.HttpUtility]::ParseQueryString($QueryFromPath)
         foreach ($key in $QueryString.Keys) {
-            if (@($null, '') -notcontains $key -and @($null, '') -notcontains $QueryString[$key]) { 
-                $QueryNVCollection.Add($key, $QueryString[$key]) 
+            if (@($null, '') -notcontains $key -and @($null, '') -notcontains $QueryString[$key]) {
+                $QueryNVCollection.Add($key, $QueryString[$key])
             }
         }
     }
@@ -2324,7 +2322,7 @@ function Invoke-AkamaiRestMethod {
     if ($Credentials.AccountKey) {
         $QueryNVCollection.Add('accountSwitchKey', $Credentials.AccountKey)
     }
-    
+
     # Build Request URL
     [System.UriBuilder]$Request = New-Object -TypeName 'System.UriBuilder'
     $Request.Scheme = 'https'
@@ -2334,15 +2332,15 @@ function Invoke-AkamaiRestMethod {
 
     # ReqURL Verification
     Write-Debug "Request URL = $($Request.Uri.AbsoluteUri)"
-    If (($null -eq $Request.Uri.AbsoluteUri) -or ($Request.Host -notmatch "akamaiapis.net")) {
-        throw "Error: Invalid Request URI"
+    if (($null -eq $Request.Uri.AbsoluteUri) -or ($Request.Host -notmatch 'akamaiapis.net')) {
+        throw 'Error: Invalid Request URI'
     }
 
     # Sanitize Method param
     $Method = $Method.ToUpper()
 
     # Timestamp for request signing
-    $TimeStamp = [DateTime]::UtcNow.ToString("yyyyMMddTHH:mm:sszz00")
+    $TimeStamp = [DateTime]::UtcNow.ToString('yyyyMMddTHH:mm:sszz00')
 
     # GUID for request signing
     $Nonce = [GUID]::NewGuid()
@@ -2372,10 +2370,10 @@ function Invoke-AkamaiRestMethod {
     }
 
     #Sanitize body to remove NO-BREAK SPACE Unicode character, which breaks PAPI
-    $Body = $Body -replace "[\u00a0]", ""
+    $Body = $Body -replace '[\u00a0]', ''
 
     # Add body to signature. Truncate if body is greater than max-body (Akamai default is 131072). PUT Method does not require adding to signature.
-    if ($Method -eq "POST") {
+    if ($Method -eq 'POST') {
         if ($Body) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
             if ($Body.Length -gt $MaxBody) {
@@ -2385,7 +2383,7 @@ function Invoke-AkamaiRestMethod {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Body)))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
         }
         elseif ($InputFile) {
             $Body_SHA256 = [System.Security.Cryptography.SHA256]::Create()
@@ -2403,7 +2401,7 @@ function Invoke-AkamaiRestMethod {
                 $Body_Hash = [System.Convert]::ToBase64String($Body_SHA256.ComputeHash($Bytes))
             }
 
-            $SignatureData += "`t`t" + $Body_Hash + "`t"
+            $SignatureData += "`t`t$Body_Hash`t"
             Write-Debug "Signature generated from input file $InputFile"
         }
         else {
@@ -2414,34 +2412,32 @@ function Invoke-AkamaiRestMethod {
         $SignatureData += "`t`t`t"
     }
 
-    $SignatureData += "EG1-HMAC-SHA256 "
-    $SignatureData += "client_token=" + $Credentials.client_token + ";"
-    $SignatureData += "access_token=" + $Credentials.access_token + ";"
-    $SignatureData += "timestamp=" + $TimeStamp + ";"
-    $SignatureData += "nonce=" + $Nonce + ";"
+    # Construct auth header base for use in both signature calculation and auth header
+    $AuthHeaderBase = 'EG1-HMAC-SHA256 '
+    $AuthHeaderBase += 'client_token=' + $Credentials.ClientToken + ';'
+    $AuthHeaderBase += 'access_token=' + $Credentials.AccessToken + ';'
+    $AuthHeaderBase += 'timestamp=' + $TimeStamp + ';'
+    $AuthHeaderBase += 'nonce=' + $Nonce + ';'
 
+    # Add auth header base to signature data
+    $SignatureData += $AuthHeaderBase
     Write-Debug "SignatureData = $SignatureData"
 
     # Generate SigningKey
-    $SigningKey = Get-EncryptedMessage -secret $Credentials.client_secret -message $TimeStamp
+    $SigningKey = Get-EncryptedMessage -secret $Credentials.ClientSecret -message $TimeStamp
 
     # Generate Auth Signature
     $Signature = Get-EncryptedMessage -secret $SigningKey -message $SignatureData
 
     # Create AuthHeader
-    $AuthorizationHeader = "EG1-HMAC-SHA256 "
-    $AuthorizationHeader += "client_token=" + $Credentials.client_token + ";"
-    $AuthorizationHeader += "access_token=" + $Credentials.access_token + ";"
-    $AuthorizationHeader += "timestamp=" + $TimeStamp + ";"
-    $AuthorizationHeader += "nonce=" + $Nonce + ";"
-    $AuthorizationHeader += "signature=" + $Signature
+    $AuthorizationHeader = $AuthHeaderBase + 'signature=' + $Signature
 
     # Create IDictionary to hold request headers
     $Headers = @{}
 
     ## Calculate custom UA
     $UserAgent = Get-AkamaiUserAgent
-    
+
     # Add headers
     $Headers.Add('Authorization', $AuthorizationHeader)
     $Headers.Add('Accept', 'application/json')
@@ -2463,7 +2459,7 @@ function Invoke-AkamaiRestMethod {
 
     # Set TLS version to 1.2
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
-    
+
     $RequestParams = @{
         Method             = $Method
         Uri                = $Request.Uri
@@ -2471,29 +2467,29 @@ function Invoke-AkamaiRestMethod {
         ContentType        = $ContentType
         MaximumRedirection = 0
     }
-    
+
     # Add -AllowInsecureRedirect if Pwsh 7.4 or higher
     if ($PSVersionTable.PSVersion -ge '7.4.0') {
         $RequestParams['AllowInsecureRedirect'] = $true
     }
-    
+
     # Support proxy as environment variable
     if ($null -ne $ENV:https_proxy) { $RequestParams.Proxy = $ENV:https_proxy }
     # Include credentials
     if ($null -ne $ENV:proxy_use_default_credentials) { $params.ProxyUseDefaultCredentials = $true }
 
-    if ($Method -in "PUT", "POST", "PATCH") {
+    if ($Method -in 'PUT', 'POST', 'PATCH') {
         if ($Body) { $RequestParams.Body = $Body }
         if ($InputFile) { $RequestParams.InFile = $InputFile }
     }
     # GET requests typically
-    else { 
+    else {
         # Differentiate on PS 5 and later as PS 5's Invoke-RestMethod doesn't behave the same as the later versions
         if ($PSVersionTable.PSVersion.Major -lt 6) {
-            $RequestParams.ErrorAction = "SilentlyContinue"
+            $RequestParams.ErrorAction = 'SilentlyContinue'
         }
         else {
-            $RequestParams.ErrorAction = "Stop"
+            $RequestParams.ErrorAction = 'Stop'
             $RequestParams.ResponseHeadersVariable = 'ResponseHeaders'
         }
     }
@@ -2537,9 +2533,9 @@ function Invoke-AkamaiRestMethod {
             throw $_
         }
     }
-    
+
     # PS <5 handling
-    if ($null -ne ($Response.PSObject.members | Where-Object { $_.Name -eq "redirectLink" }) -and $method -notin "PUT", "POST", "PATCH") {
+    if ($null -ne ($Response.PSObject.members | Where-Object { $_.Name -eq 'redirectLink' }) -and $method -notin 'PUT', 'POST', 'PATCH') {
         try {
             Write-Debug "Redirecting to $($Response.redirectLink)"
             $Response = Invoke-AkamaiRestMethod -Method $Method -Path $Response.redirectLink -AdditionalHeaders $AdditionalHeaders -EdgeRCFile $EdgeRCFile -Section $Section -AccountSwitchKey $AccountSwitchKey
@@ -2548,15 +2544,16 @@ function Invoke-AkamaiRestMethod {
             throw $_
         }
     }
-    
+
     # Include response headers in return if required
     if ($IncludeResponseHeaders) {
         return $Response, $ResponseHeaders
     }
     else {
-        Return $Response
+        return $Response
     }
 }
+
 
 function Invoke-NetstorageRequest {
     [CmdletBinding()]
@@ -2615,7 +2612,7 @@ function Invoke-NetstorageRequest {
     # Handle spaces in filenames
     $Path = $Path.Replace(' ', '%20')
     # Do the same for any additional options that might be missing the CP Code prefix
-    $PathFixAttributes = @( 
+    $PathFixAttributes = @(
         'destination'
         'target'
     )
@@ -2648,7 +2645,7 @@ function Invoke-NetstorageRequest {
     }
 
     $Headers = @{}
-    
+
     # Action Header
     $Options = @{
         'version' = '1'
@@ -2722,7 +2719,7 @@ function Invoke-NetstorageRequest {
 
     # Include credentials
     if ($null -ne $ENV:proxy_use_default_credentials) {
-        $Params.ProxyUseDefaultCredentials = $true 
+        $Params.ProxyUseDefaultCredentials = $true
     }
 
     # Reset retry params
@@ -2783,7 +2780,7 @@ function Invoke-NetstorageRequest {
             throw $_
         }
     }
-    
+
     return $Response
 }
 
@@ -2824,7 +2821,7 @@ function New-AkamaiOptions {
     if (-Not $OptionsPath) {
         $OptionsPath = $HOME + "/.akamai-pwsh/options.json"
     }
-    
+
     if (-not (Test-Path $OptionsPath)) {
         New-Item -ItemType File -Path $OptionsPath -Force | Out-Null
     }
@@ -3400,7 +3397,18 @@ Get-AkamaiOptions | Out-Null
 # Load Recommended actions provider if required
 if ($Global:AkamaiOptions.EnableRecommendedActions -and $PSVersionTable.PSVersion -ge '7.4.0') {
     Write-Debug "Loading recommended actions provider."
-    Import-Module "$PSScriptRoot/bin/RecommendedActionsProvider.dll"
+    try {
+        Import-Module "$PSScriptRoot/bin/RecommendedActionsProvider.dll" -ErrorAction Stop
+    }
+    catch {
+        # Parallel runspaces can attempt to register the same feedback provider subsystem implementation.
+        if ($_.Exception.Message -match "already registered" -and $_.Exception.Message -match "FeedbackProvider") {
+            Write-Debug "Recommended actions provider already registered in this process. Skipping duplicate registration."
+        }
+        else {
+            throw
+        }
+    }
 }
 
 # Optionally create data cache
@@ -3412,61 +3420,222 @@ if ($Global:AkamaiOptions.EnableDataCache -and -not $Global:AkamaiDataCache) {
 # Load known errors
 $Script:KnownErrors = Get-Content -Raw "$PSScriptRoot/data/KnownErrors.json" | ConvertFrom-Json
 # SIG # Begin signature block
-# MIIKmAYJKoZIhvcNAQcCoIIKiTCCCoUCAQExDzANBglghkgBZQMEAgEFADB5Bgor
+# MIIo2QYJKoZIhvcNAQcCoIIoyjCCKMYCAQExDzANBglghkgBZQMEAgEFADB5Bgor
 # BgEEAYI3AgEEoGswaTA0BgorBgEEAYI3AgEeMCYCAwEAAAQQH8w7YFlLCE63JNLG
-# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCB9nWSaYokyLUyC
-# UwqBvKJhwNktxWny/czFe4f5xUrmw6CCB1owggdWMIIFPqADAgECAhAGRzH371Sh
-# X6hjGl1wSSyYMA0GCSqGSIb3DQEBCwUAMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQK
-# Ew5EaWdpQ2VydCwgSW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBD
-# b2RlIFNpZ25pbmcgUlNBNDA5NiBTSEEzODQgMjAyMSBDQTEwHhcNMjYwMjI1MDAw
-# MDAwWhcNMjcwMzEwMjM1OTU5WjCB3jETMBEGCysGAQQBgjc8AgEDEwJVUzEZMBcG
-# CysGAQQBgjc8AgECEwhEZWxhd2FyZTEdMBsGA1UEDwwUUHJpdmF0ZSBPcmdhbml6
-# YXRpb24xEDAOBgNVBAUTBzI5MzM2MzcxCzAJBgNVBAYTAlVTMRYwFAYDVQQIEw1N
-# YXNzYWNodXNldHRzMRIwEAYDVQQHEwlDYW1icmlkZ2UxIDAeBgNVBAoTF0FrYW1h
-# aSBUZWNobm9sb2dpZXMgSW5jMSAwHgYDVQQDExdBa2FtYWkgVGVjaG5vbG9naWVz
-# IEluYzCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAJeMKuhiUI5WSRdG
-# IPhNWLpaVPlXbSazhGuvzZxTi623Ht46hiPejDtWB8F8dT2pd+nOWsx5NVgkv7x/
-# Tz35cZcWVMDxq/K7wYe9R2GndGgfEL02/j5rslwHr8e6qFzy1axuL/xaGXuBTVrS
-# Qw25019l1KalUHwInKLIP7Hw1HLPTacyJNNTsYmOpZNqKIiQe9ivzBd7SuPU0cGi
-# 1YHUk4ZQh6Ig5tBx8XZYjTmzbiQr2WWwk/CufaoIPME5zAvmW99S05rAtOqvoUr7
-# eoLUQ/TcMMA6eOliAbO5m0w/pv5YDgzhzt9hQez189zZNOkMO6AcHNitJzzsEvCg
-# 7fhPHxoXvasRJ0EaCEze0nuVakLPf+mGCLoZYGRctayOn4HP6LEEOGmAnQBZkwFR
-# 6zxk0hzAMOkK/p7MV9V6QwOuk9q7WKnIdzS/4RjRtXNxXb2fMNyBEwrwJhdmEhWF
-# 0eS0Wd6Uz3IbSr0+XH8FHLflQXFCkPcZKiGPgSCp8rTP3KHr6wIDAQABo4ICAjCC
-# Af4wHwYDVR0jBBgwFoAUaDfg67Y7+F8Rhvv+YXsIiGX0TkIwHQYDVR0OBBYEFKT3
-# RICOlmcsnPu7KwUf9HL4YegLMD0GA1UdIAQ2MDQwMgYFZ4EMAQMwKTAnBggrBgEF
-# BQcCARYbaHR0cDovL3d3dy5kaWdpY2VydC5jb20vQ1BTMA4GA1UdDwEB/wQEAwIH
-# gDATBgNVHSUEDDAKBggrBgEFBQcDAzCBtQYDVR0fBIGtMIGqMFOgUaBPhk1odHRw
-# Oi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRUcnVzdGVkRzRDb2RlU2lnbmlu
-# Z1JTQTQwOTZTSEEzODQyMDIxQ0ExLmNybDBToFGgT4ZNaHR0cDovL2NybDQuZGln
-# aWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZEc0Q29kZVNpZ25pbmdSU0E0MDk2U0hB
-# Mzg0MjAyMUNBMS5jcmwwgZQGCCsGAQUFBwEBBIGHMIGEMCQGCCsGAQUFBzABhhho
-# dHRwOi8vb2NzcC5kaWdpY2VydC5jb20wXAYIKwYBBQUHMAKGUGh0dHA6Ly9jYWNl
-# cnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRydXN0ZWRHNENvZGVTaWduaW5nUlNB
-# NDA5NlNIQTM4NDIwMjFDQTEuY3J0MAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQAD
-# ggIBAGSBrSnUReHUzGTy9VC6hy2oDSpu2QNu5j3o/uoaaAy2CgI0hVJRL/OfYinL
-# R4hJofuNNKORp2MWXpy52L5PCGtD6/Hf92bMkDl1AP6nXuplt5HvkFPh5kVDbQ7o
-# HfI1Pup2IOpKxb00UNwjtKy+38ZCX0dgkASP2vQFamBCG0eTaGUh/9ZH9rz11Nkr
-# 9p83Snz/3eW3vOeKAFL3S5RDEMkTvv09540mnzA4J5lKGES2eje/FhwCCQUQBvqC
-# voNFNZHyXvW9v8KqX/3CcN1LAtGCy4XnkFjQRPyn+o/OJv5M5yX2Rm5kq9dYpWnD
-# U2xgxMR1BZaDf+uDoqGsLo4OqbPV4Dftp2FDs8DHMD8xP6i/k4htaWShkdyjdijr
-# 9TBOi+pS9vNlcCKjwLq6aibcbkUk7ef3wxR5imhajsX22vy8Zd9ByAk07BJrccgg
-# JGczCtiKcD6LZtP3VjnqhYPSQ4jk6wCruqcTCTwwO7FrIROVrWb2Ro+ph+/a5Llj
-# 5ryLyp+6NAgtNwyrkp2WxZviLbh5AXnmg9Pnwrz64UE93LEjI23AWBJsLFdJTbis
-# Z/tTgozdVdPZf2Dy2k8xfYZoIq6V1oWiAoQCzb5B9nETV5NGjiMPskJ4GwnlzOvz
-# +4IgLQjl0V5I08Qw+3uvPQ8rHHMLbKgncTqSxqtZ73kItOztMYIClDCCApACAQEw
-# fTBpMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xQTA/BgNV
-# BAMTOERpZ2lDZXJ0IFRydXN0ZWQgRzQgQ29kZSBTaWduaW5nIFJTQTQwOTYgU0hB
-# Mzg0IDIwMjEgQ0ExAhAGRzH371ShX6hjGl1wSSyYMA0GCWCGSAFlAwQCAQUAoGow
-# GQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisG
-# AQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIHFOp3LFDWajoiCLl1cs5dox2X24CH3Q
-# 43MrJAWCW8BoMA0GCSqGSIb3DQEBAQUABIIBgArZ5P8jhKyheVc7zlkmNB/bj89Z
-# cugFUCl19aSvY7WMwqKAdA0x4kYarFIHtPQKKEtyIvcTQU/W2sQnjsZmTqEjeTyw
-# dkvJsHUCwyLjKiXoL0nYrPlSZG3TnmjlMGQilHM4Dvyjw5sc2bu66dSNUutZkzSp
-# UZpfe5mOIZeM85+2JYEMlWH+E9aVEsb1XOgMyAZ42PneQkH+tLaIfScX3Z9e4+bN
-# UsFHtHP4/WaQ4XhCU+n0EmMjLi/YUax9Zr8dTIBdKTNcRGRPN6PvYp/2U4eRzl2V
-# LZO2i18CqSf5D9m0h+CXLWENgL8oB+Jp0szl2UXhxwOVPXfvC0VTeiwCQ8MV47lT
-# HnsK60P4ocWYdUU30rSDClwBtksPfbD5IzKypsms4n3UPc6feoyM/2OSY+3v9plN
-# cfiGR3HsHPOcXNpKUHIQpmHCLdLF8HFHT8zeEHZnVYxtnYxIudU6awN0csJp/1xf
-# d5Gy/v23IVSlMVkOF7pceeHHzH+hjPI3GMs/zA==
+# KX7zUQIBAAIBAAIBAAIBAAIBADAxMA0GCWCGSAFlAwQCAQUABCDcOzfMSgeqEMXi
+# wl7jP15K9u3hZNsXy1LQdarzItE0TqCCDg4wggawMIIEmKADAgECAhAIrUCyYNKc
+# TJ9ezam9k67ZMA0GCSqGSIb3DQEBDAUAMGIxCzAJBgNVBAYTAlVTMRUwEwYDVQQK
+# EwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xITAfBgNV
+# BAMTGERpZ2lDZXJ0IFRydXN0ZWQgUm9vdCBHNDAeFw0yMTA0MjkwMDAwMDBaFw0z
+# NjA0MjgyMzU5NTlaMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwg
+# SW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBDb2RlIFNpZ25pbmcg
+# UlNBNDA5NiBTSEEzODQgMjAyMSBDQTEwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAw
+# ggIKAoICAQDVtC9C0CiteLdd1TlZG7GIQvUzjOs9gZdwxbvEhSYwn6SOaNhc9es0
+# JAfhS0/TeEP0F9ce2vnS1WcaUk8OoVf8iJnBkcyBAz5NcCRks43iCH00fUyAVxJr
+# Q5qZ8sU7H/Lvy0daE6ZMswEgJfMQ04uy+wjwiuCdCcBlp/qYgEk1hz1RGeiQIXhF
+# LqGfLOEYwhrMxe6TSXBCMo/7xuoc82VokaJNTIIRSFJo3hC9FFdd6BgTZcV/sk+F
+# LEikVoQ11vkunKoAFdE3/hoGlMJ8yOobMubKwvSnowMOdKWvObarYBLj6Na59zHh
+# 3K3kGKDYwSNHR7OhD26jq22YBoMbt2pnLdK9RBqSEIGPsDsJ18ebMlrC/2pgVItJ
+# wZPt4bRc4G/rJvmM1bL5OBDm6s6R9b7T+2+TYTRcvJNFKIM2KmYoX7BzzosmJQay
+# g9Rc9hUZTO1i4F4z8ujo7AqnsAMrkbI2eb73rQgedaZlzLvjSFDzd5Ea/ttQokbI
+# YViY9XwCFjyDKK05huzUtw1T0PhH5nUwjewwk3YUpltLXXRhTT8SkXbev1jLchAp
+# QfDVxW0mdmgRQRNYmtwmKwH0iU1Z23jPgUo+QEdfyYFQc4UQIyFZYIpkVMHMIRro
+# OBl8ZhzNeDhFMJlP/2NPTLuqDQhTQXxYPUez+rbsjDIJAsxsPAxWEQIDAQABo4IB
+# WTCCAVUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUaDfg67Y7+F8Rhvv+
+# YXsIiGX0TkIwHwYDVR0jBBgwFoAU7NfjgtJxXWRM3y5nP+e6mK4cD08wDgYDVR0P
+# AQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMDMHcGCCsGAQUFBwEBBGswaTAk
+# BggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tMEEGCCsGAQUFBzAC
+# hjVodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRUcnVzdGVkUm9v
+# dEc0LmNydDBDBgNVHR8EPDA6MDigNqA0hjJodHRwOi8vY3JsMy5kaWdpY2VydC5j
+# b20vRGlnaUNlcnRUcnVzdGVkUm9vdEc0LmNybDAcBgNVHSAEFTATMAcGBWeBDAED
+# MAgGBmeBDAEEATANBgkqhkiG9w0BAQwFAAOCAgEAOiNEPY0Idu6PvDqZ01bgAhql
+# +Eg08yy25nRm95RysQDKr2wwJxMSnpBEn0v9nqN8JtU3vDpdSG2V1T9J9Ce7FoFF
+# UP2cvbaF4HZ+N3HLIvdaqpDP9ZNq4+sg0dVQeYiaiorBtr2hSBh+3NiAGhEZGM1h
+# mYFW9snjdufE5BtfQ/g+lP92OT2e1JnPSt0o618moZVYSNUa/tcnP/2Q0XaG3Ryw
+# YFzzDaju4ImhvTnhOE7abrs2nfvlIVNaw8rpavGiPttDuDPITzgUkpn13c5Ubdld
+# AhQfQDN8A+KVssIhdXNSy0bYxDQcoqVLjc1vdjcshT8azibpGL6QB7BDf5WIIIJw
+# 8MzK7/0pNVwfiThV9zeKiwmhywvpMRr/LhlcOXHhvpynCgbWJme3kuZOX956rEnP
+# LqR0kq3bPKSchh/jwVYbKyP/j7XqiHtwa+aguv06P0WmxOgWkVKLQcBIhEuWTatE
+# QOON8BUozu3xGFYHKi8QxAwIZDwzj64ojDzLj4gLDb879M4ee47vtevLt/B3E+bn
+# KD+sEq6lLyJsQfmCXBVmzGwOysWGw/YmMwwHS6DTBwJqakAwSEs0qFEgu60bhQji
+# WQ1tygVQK+pKHJ6l/aCnHwZ05/LWUpD9r4VIIflXO7ScA+2GRfS0YW6/aOImYIbq
+# yK+p/pQd52MbOoZWeE4wggdWMIIFPqADAgECAhAGRzH371ShX6hjGl1wSSyYMA0G
+# CSqGSIb3DQEBCwUAMGkxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwg
+# SW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1c3RlZCBHNCBDb2RlIFNpZ25pbmcg
+# UlNBNDA5NiBTSEEzODQgMjAyMSBDQTEwHhcNMjYwMjI1MDAwMDAwWhcNMjcwMzEw
+# MjM1OTU5WjCB3jETMBEGCysGAQQBgjc8AgEDEwJVUzEZMBcGCysGAQQBgjc8AgEC
+# EwhEZWxhd2FyZTEdMBsGA1UEDwwUUHJpdmF0ZSBPcmdhbml6YXRpb24xEDAOBgNV
+# BAUTBzI5MzM2MzcxCzAJBgNVBAYTAlVTMRYwFAYDVQQIEw1NYXNzYWNodXNldHRz
+# MRIwEAYDVQQHEwlDYW1icmlkZ2UxIDAeBgNVBAoTF0FrYW1haSBUZWNobm9sb2dp
+# ZXMgSW5jMSAwHgYDVQQDExdBa2FtYWkgVGVjaG5vbG9naWVzIEluYzCCAaIwDQYJ
+# KoZIhvcNAQEBBQADggGPADCCAYoCggGBAJeMKuhiUI5WSRdGIPhNWLpaVPlXbSaz
+# hGuvzZxTi623Ht46hiPejDtWB8F8dT2pd+nOWsx5NVgkv7x/Tz35cZcWVMDxq/K7
+# wYe9R2GndGgfEL02/j5rslwHr8e6qFzy1axuL/xaGXuBTVrSQw25019l1KalUHwI
+# nKLIP7Hw1HLPTacyJNNTsYmOpZNqKIiQe9ivzBd7SuPU0cGi1YHUk4ZQh6Ig5tBx
+# 8XZYjTmzbiQr2WWwk/CufaoIPME5zAvmW99S05rAtOqvoUr7eoLUQ/TcMMA6eOli
+# AbO5m0w/pv5YDgzhzt9hQez189zZNOkMO6AcHNitJzzsEvCg7fhPHxoXvasRJ0Ea
+# CEze0nuVakLPf+mGCLoZYGRctayOn4HP6LEEOGmAnQBZkwFR6zxk0hzAMOkK/p7M
+# V9V6QwOuk9q7WKnIdzS/4RjRtXNxXb2fMNyBEwrwJhdmEhWF0eS0Wd6Uz3IbSr0+
+# XH8FHLflQXFCkPcZKiGPgSCp8rTP3KHr6wIDAQABo4ICAjCCAf4wHwYDVR0jBBgw
+# FoAUaDfg67Y7+F8Rhvv+YXsIiGX0TkIwHQYDVR0OBBYEFKT3RICOlmcsnPu7KwUf
+# 9HL4YegLMD0GA1UdIAQ2MDQwMgYFZ4EMAQMwKTAnBggrBgEFBQcCARYbaHR0cDov
+# L3d3dy5kaWdpY2VydC5jb20vQ1BTMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUEDDAK
+# BggrBgEFBQcDAzCBtQYDVR0fBIGtMIGqMFOgUaBPhk1odHRwOi8vY3JsMy5kaWdp
+# Y2VydC5jb20vRGlnaUNlcnRUcnVzdGVkRzRDb2RlU2lnbmluZ1JTQTQwOTZTSEEz
+# ODQyMDIxQ0ExLmNybDBToFGgT4ZNaHR0cDovL2NybDQuZGlnaWNlcnQuY29tL0Rp
+# Z2lDZXJ0VHJ1c3RlZEc0Q29kZVNpZ25pbmdSU0E0MDk2U0hBMzg0MjAyMUNBMS5j
+# cmwwgZQGCCsGAQUFBwEBBIGHMIGEMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5k
+# aWdpY2VydC5jb20wXAYIKwYBBQUHMAKGUGh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0
+# LmNvbS9EaWdpQ2VydFRydXN0ZWRHNENvZGVTaWduaW5nUlNBNDA5NlNIQTM4NDIw
+# MjFDQTEuY3J0MAkGA1UdEwQCMAAwDQYJKoZIhvcNAQELBQADggIBAGSBrSnUReHU
+# zGTy9VC6hy2oDSpu2QNu5j3o/uoaaAy2CgI0hVJRL/OfYinLR4hJofuNNKORp2MW
+# Xpy52L5PCGtD6/Hf92bMkDl1AP6nXuplt5HvkFPh5kVDbQ7oHfI1Pup2IOpKxb00
+# UNwjtKy+38ZCX0dgkASP2vQFamBCG0eTaGUh/9ZH9rz11Nkr9p83Snz/3eW3vOeK
+# AFL3S5RDEMkTvv09540mnzA4J5lKGES2eje/FhwCCQUQBvqCvoNFNZHyXvW9v8Kq
+# X/3CcN1LAtGCy4XnkFjQRPyn+o/OJv5M5yX2Rm5kq9dYpWnDU2xgxMR1BZaDf+uD
+# oqGsLo4OqbPV4Dftp2FDs8DHMD8xP6i/k4htaWShkdyjdijr9TBOi+pS9vNlcCKj
+# wLq6aibcbkUk7ef3wxR5imhajsX22vy8Zd9ByAk07BJrccggJGczCtiKcD6LZtP3
+# VjnqhYPSQ4jk6wCruqcTCTwwO7FrIROVrWb2Ro+ph+/a5Llj5ryLyp+6NAgtNwyr
+# kp2WxZviLbh5AXnmg9Pnwrz64UE93LEjI23AWBJsLFdJTbisZ/tTgozdVdPZf2Dy
+# 2k8xfYZoIq6V1oWiAoQCzb5B9nETV5NGjiMPskJ4GwnlzOvz+4IgLQjl0V5I08Qw
+# +3uvPQ8rHHMLbKgncTqSxqtZ73kItOztMYIaITCCGh0CAQEwfTBpMQswCQYDVQQG
+# EwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4xQTA/BgNVBAMTOERpZ2lDZXJ0
+# IFRydXN0ZWQgRzQgQ29kZSBTaWduaW5nIFJTQTQwOTYgU0hBMzg0IDIwMjEgQ0Ex
+# AhAGRzH371ShX6hjGl1wSSyYMA0GCWCGSAFlAwQCAQUAoHwwEAYKKwYBBAGCNwIB
+# DDECMAAwGQYJKoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEO
+# MAwGCisGAQQBgjcCARUwLwYJKoZIhvcNAQkEMSIEIHt5MDADZOlBXiq3YU6p2Rok
+# g/u1+q6GByTOSDKfXHRqMA0GCSqGSIb3DQEBAQUABIIBgFow5FJK4gg9KyhHM17B
+# dOx9WsQLNVn/tt9+ExsE2+aIfXjUUos7HfycX3vEY6Bbjh2jdCcE+JmyeZTrk9hi
+# SG0WX6Rj7RI13BR5O0Z1NncoS5grBYaAQD+KSF7UWCxuw3RXxGciDImT4ZMFtUQs
+# MMb0kijOp3b9C8Z0ZERSfcdgi4euuSAryrKz2z43tjQSQy0TjSM8Ge7AtvHqDtfw
+# SQ30VFOLLR3syaJSoHzDjfjNOPqua7JvgOc3XMJi6F4EvpZOyJ5zBGbrkJ33g35y
+# SYzYWK6JP4d/OsMt/YKCM/TgsHfRJfXJEUnR/9yvrr2lBHXviU0MP8uGwFEEICKh
+# 9or+H3RJEVDJ4QUYRDHoeeFxiKgRe8aBDDpYItV0/qy/BGdtWUoh+xi5XTA6Mka5
+# lHHdftj5nxQqTL2Obc6iN8e1Ur/yPQ5hj28orsOvQeIgTLt7c2e1rx9p2e5vVIjJ
+# JU4HQsE3gSdMVq5cOjfephKdE4Kd59CpH2/hgGwt9NmIS6GCF3cwghdzBgorBgEE
+# AYI3AwMBMYIXYzCCF18GCSqGSIb3DQEHAqCCF1AwghdMAgEDMQ8wDQYJYIZIAWUD
+# BAIBBQAweAYLKoZIhvcNAQkQAQSgaQRnMGUCAQEGCWCGSAGG/WwHATAxMA0GCWCG
+# SAFlAwQCAQUABCCEsmaC7aZz3B7/KP9xAgCUFX2A/cDugamLMQGMm4+IxAIRAO6b
+# 17DO5nXVcjZUq952zyoYDzIwMjYwODI1MjI0MTE5WqCCEzowggbtMIIE1aADAgEC
+# AhAKgO8YS43xBYLRxHanlXRoMA0GCSqGSIb3DQEBCwUAMGkxCzAJBgNVBAYTAlVT
+# MRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjFBMD8GA1UEAxM4RGlnaUNlcnQgVHJ1
+# c3RlZCBHNCBUaW1lU3RhbXBpbmcgUlNBNDA5NiBTSEEyNTYgMjAyNSBDQTEwHhcN
+# MjUwNjA0MDAwMDAwWhcNMzYwOTAzMjM1OTU5WjBjMQswCQYDVQQGEwJVUzEXMBUG
+# A1UEChMORGlnaUNlcnQsIEluYy4xOzA5BgNVBAMTMkRpZ2lDZXJ0IFNIQTI1NiBS
+# U0E0MDk2IFRpbWVzdGFtcCBSZXNwb25kZXIgMjAyNSAxMIICIjANBgkqhkiG9w0B
+# AQEFAAOCAg8AMIICCgKCAgEA0EasLRLGntDqrmBWsytXum9R/4ZwCgHfyjfMGUIw
+# YzKomd8U1nH7C8Dr0cVMF3BsfAFI54um8+dnxk36+jx0Tb+k+87H9WPxNyFPJIDZ
+# HhAqlUPt281mHrBbZHqRK71Em3/hCGC5KyyneqiZ7syvFXJ9A72wzHpkBaMUNg7M
+# OLxI6E9RaUueHTQKWXymOtRwJXcrcTTPPT2V1D/+cFllESviH8YjoPFvZSjKs3SK
+# O1QNUdFd2adw44wDcKgH+JRJE5Qg0NP3yiSyi5MxgU6cehGHr7zou1znOM8odbkq
+# oK+lJ25LCHBSai25CFyD23DZgPfDrJJJK77epTwMP6eKA0kWa3osAe8fcpK40uhk
+# tzUd/Yk0xUvhDU6lvJukx7jphx40DQt82yepyekl4i0r8OEps/FNO4ahfvAk12hE
+# 5FVs9HVVWcO5J4dVmVzix4A77p3awLbr89A90/nWGjXMGn7FQhmSlIUDy9Z2hSgc
+# taepZTd0ILIUbWuhKuAeNIeWrzHKYueMJtItnj2Q+aTyLLKLM0MheP/9w6CtjuuV
+# HJOVoIJ/DtpJRE7Ce7vMRHoRon4CWIvuiNN1Lk9Y+xZ66lazs2kKFSTnnkrT3pXW
+# ETTJkhd76CIDBbTRofOsNyEhzZtCGmnQigpFHti58CSmvEyJcAlDVcKacJ+A9/z7
+# eacCAwEAAaOCAZUwggGRMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFOQ7/PIx7f39
+# 1/ORcWMZUEPPYYzoMB8GA1UdIwQYMBaAFO9vU0rp5AZ8esrikFb2L9RJ7MtOMA4G
+# A1UdDwEB/wQEAwIHgDAWBgNVHSUBAf8EDDAKBggrBgEFBQcDCDCBlQYIKwYBBQUH
+# AQEEgYgwgYUwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBd
+# BggrBgEFBQcwAoZRaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+# VHJ1c3RlZEc0VGltZVN0YW1waW5nUlNBNDA5NlNIQTI1NjIwMjVDQTEuY3J0MF8G
+# A1UdHwRYMFYwVKBSoFCGTmh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2Vy
+# dFRydXN0ZWRHNFRpbWVTdGFtcGluZ1JTQTQwOTZTSEEyNTYyMDI1Q0ExLmNybDAg
+# BgNVHSAEGTAXMAgGBmeBDAEEAjALBglghkgBhv1sBwEwDQYJKoZIhvcNAQELBQAD
+# ggIBAGUqrfEcJwS5rmBB7NEIRJ5jQHIh+OT2Ik/bNYulCrVvhREafBYF0RkP2AGr
+# 181o2YWPoSHz9iZEN/FPsLSTwVQWo2H62yGBvg7ouCODwrx6ULj6hYKqdT8wv2UV
+# +Kbz/3ImZlJ7YXwBD9R0oU62PtgxOao872bOySCILdBghQ/ZLcdC8cbUUO75ZSpb
+# h1oipOhcUT8lD8QAGB9lctZTTOJM3pHfKBAEcxQFoHlt2s9sXoxFizTeHihsQyfF
+# g5fxUFEp7W42fNBVN4ueLaceRf9Cq9ec1v5iQMWTFQa0xNqItH3CPFTG7aEQJmmr
+# JTV3Qhtfparz+BW60OiMEgV5GWoBy4RVPRwqxv7Mk0Sy4QHs7v9y69NBqycz0BZw
+# hB9WOfOu/CIJnzkQTwtSSpGGhLdjnQ4eBpjtP+XB3pQCtv4E5UCSDag6+iX8MmB1
+# 0nfldPF9SVD7weCC3yXZi/uuhqdwkgVxuiMFzGVFwYbQsiGnoa9F5AaAyBjFBtXV
+# LcKtapnMG3VH3EmAp/jsJ3FVF3+d1SVDTmjFjLbNFZUWMXuZyvgLfgyPehwJVxwC
+# +UpX2MSey2ueIu9THFVkT+um1vshETaWyQo8gmBto/m3acaP9QsuLj3FNwFlTxq2
+# 5+T4QwX9xa6ILs84ZPvmpovq90K8eWyG2N01c4IhSOxqt81nMIIGtDCCBJygAwIB
+# AgIQDcesVwX/IZkuQEMiDDpJhjANBgkqhkiG9w0BAQsFADBiMQswCQYDVQQGEwJV
+# UzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQu
+# Y29tMSEwHwYDVQQDExhEaWdpQ2VydCBUcnVzdGVkIFJvb3QgRzQwHhcNMjUwNTA3
+# MDAwMDAwWhcNMzgwMTE0MjM1OTU5WjBpMQswCQYDVQQGEwJVUzEXMBUGA1UEChMO
+# RGlnaUNlcnQsIEluYy4xQTA/BgNVBAMTOERpZ2lDZXJ0IFRydXN0ZWQgRzQgVGlt
+# ZVN0YW1waW5nIFJTQTQwOTYgU0hBMjU2IDIwMjUgQ0ExMIICIjANBgkqhkiG9w0B
+# AQEFAAOCAg8AMIICCgKCAgEAtHgx0wqYQXK+PEbAHKx126NGaHS0URedTa2NDZS1
+# mZaDLFTtQ2oRjzUXMmxCqvkbsDpz4aH+qbxeLho8I6jY3xL1IusLopuW2qftJYJa
+# DNs1+JH7Z+QdSKWM06qchUP+AbdJgMQB3h2DZ0Mal5kYp77jYMVQXSZH++0trj6A
+# o+xh/AS7sQRuQL37QXbDhAktVJMQbzIBHYJBYgzWIjk8eDrYhXDEpKk7RdoX0M98
+# 0EpLtlrNyHw0Xm+nt5pnYJU3Gmq6bNMI1I7Gb5IBZK4ivbVCiZv7PNBYqHEpNVWC
+# 2ZQ8BbfnFRQVESYOszFI2Wv82wnJRfN20VRS3hpLgIR4hjzL0hpoYGk81coWJ+Kd
+# PvMvaB0WkE/2qHxJ0ucS638ZxqU14lDnki7CcoKCz6eum5A19WZQHkqUJfdkDjHk
+# ccpL6uoG8pbF0LJAQQZxst7VvwDDjAmSFTUms+wV/FbWBqi7fTJnjq3hj0XbQcd8
+# hjj/q8d6ylgxCZSKi17yVp2NL+cnT6Toy+rN+nM8M7LnLqCrO2JP3oW//1sfuZDK
+# iDEb1AQ8es9Xr/u6bDTnYCTKIsDq1BtmXUqEG1NqzJKS4kOmxkYp2WyODi7vQTCB
+# ZtVFJfVZ3j7OgWmnhFr4yUozZtqgPrHRVHhGNKlYzyjlroPxul+bgIspzOwbtmsg
+# Y1MCAwEAAaOCAV0wggFZMBIGA1UdEwEB/wQIMAYBAf8CAQAwHQYDVR0OBBYEFO9v
+# U0rp5AZ8esrikFb2L9RJ7MtOMB8GA1UdIwQYMBaAFOzX44LScV1kTN8uZz/nupiu
+# HA9PMA4GA1UdDwEB/wQEAwIBhjATBgNVHSUEDDAKBggrBgEFBQcDCDB3BggrBgEF
+# BQcBAQRrMGkwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBB
+# BggrBgEFBQcwAoY1aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+# VHJ1c3RlZFJvb3RHNC5jcnQwQwYDVR0fBDwwOjA4oDagNIYyaHR0cDovL2NybDMu
+# ZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VHJ1c3RlZFJvb3RHNC5jcmwwIAYDVR0gBBkw
+# FzAIBgZngQwBBAIwCwYJYIZIAYb9bAcBMA0GCSqGSIb3DQEBCwUAA4ICAQAXzvsW
+# gBz+Bz0RdnEwvb4LyLU0pn/N0IfFiBowf0/Dm1wGc/Do7oVMY2mhXZXjDNJQa8j0
+# 0DNqhCT3t+s8G0iP5kvN2n7Jd2E4/iEIUBO41P5F448rSYJ59Ib61eoalhnd6ywF
+# LerycvZTAz40y8S4F3/a+Z1jEMK/DMm/axFSgoR8n6c3nuZB9BfBwAQYK9FHaoq2
+# e26MHvVY9gCDA/JYsq7pGdogP8HRtrYfctSLANEBfHU16r3J05qX3kId+ZOczgj5
+# kjatVB+NdADVZKON/gnZruMvNYY2o1f4MXRJDMdTSlOLh0HCn2cQLwQCqjFbqrXu
+# vTPSegOOzr4EWj7PtspIHBldNE2K9i697cvaiIo2p61Ed2p8xMJb82Yosn0z4y25
+# xUbI7GIN/TpVfHIqQ6Ku/qjTY6hc3hsXMrS+U0yy+GWqAXam4ToWd2UQ1KYT70kZ
+# jE4YtL8Pbzg0c1ugMZyZZd/BdHLiRu7hAWE6bTEm4XYRkA6Tl4KSFLFk43esaUeq
+# GkH/wyW4N7OigizwJWeukcyIPbAvjSabnf7+Pu0VrFgoiovRDiyx3zEdmcif/sYQ
+# sfch28bZeUz2rtY/9TCA6TD8dC3JE3rYkrhLULy7Dc90G6e8BlqmyIjlgp2+VqsS
+# 9/wQD7yFylIz0scmbKvFoW2jNrbM1pD2T7m3XDCCBY0wggR1oAMCAQICEA6bGI75
+# 0C3n79tQ4ghAGFowDQYJKoZIhvcNAQEMBQAwZTELMAkGA1UEBhMCVVMxFTATBgNV
+# BAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEkMCIG
+# A1UEAxMbRGlnaUNlcnQgQXNzdXJlZCBJRCBSb290IENBMB4XDTIyMDgwMTAwMDAw
+# MFoXDTMxMTEwOTIzNTk1OVowYjELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lD
+# ZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGln
+# aUNlcnQgVHJ1c3RlZCBSb290IEc0MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIIC
+# CgKCAgEAv+aQc2jeu+RdSjwwIjBpM+zCpyUuySE98orYWcLhKac9WKt2ms2uexuE
+# DcQwH/MbpDgW61bGl20dq7J58soR0uRf1gU8Ug9SH8aeFaV+vp+pVxZZVXKvaJNw
+# wrK6dZlqczKU0RBEEC7fgvMHhOZ0O21x4i0MG+4g1ckgHWMpLc7sXk7Ik/ghYZs0
+# 6wXGXuxbGrzryc/NrDRAX7F6Zu53yEioZldXn1RYjgwrt0+nMNlW7sp7XeOtyU9e
+# 5TXnMcvak17cjo+A2raRmECQecN4x7axxLVqGDgDEI3Y1DekLgV9iPWCPhCRcKtV
+# gkEy19sEcypukQF8IUzUvK4bA3VdeGbZOjFEmjNAvwjXWkmkwuapoGfdpCe8oU85
+# tRFYF/ckXEaPZPfBaYh2mHY9WV1CdoeJl2l6SPDgohIbZpp0yt5LHucOY67m1O+S
+# kjqePdwA5EUlibaaRBkrfsCUtNJhbesz2cXfSwQAzH0clcOP9yGyshG3u3/y1Yxw
+# LEFgqrFjGESVGnZifvaAsPvoZKYz0YkH4b235kOkGLimdwHhD5QMIR2yVCkliWzl
+# DlJRR3S+Jqy2QXXeeqxfjT/JvNNBERJb5RBQ6zHFynIWIgnffEx1P2PsIV/EIFFr
+# b7GrhotPwtZFX50g/KEexcCPorF+CiaZ9eRpL5gdLfXZqbId5RsCAwEAAaOCATow
+# ggE2MA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFOzX44LScV1kTN8uZz/nupiu
+# HA9PMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6enIZ3zbcgPMA4GA1UdDwEB/wQE
+# AwIBhjB5BggrBgEFBQcBAQRtMGswJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRp
+# Z2ljZXJ0LmNvbTBDBggrBgEFBQcwAoY3aHR0cDovL2NhY2VydHMuZGlnaWNlcnQu
+# Y29tL0RpZ2lDZXJ0QXNzdXJlZElEUm9vdENBLmNydDBFBgNVHR8EPjA8MDqgOKA2
+# hjRodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURSb290
+# Q0EuY3JsMBEGA1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAQEAcKC/
+# Q1xV5zhfoKN0Gz22Ftf3v1cHvZqsoYcs7IVeqRq7IviHGmlUIu2kiHdtvRoU9BNK
+# ei8ttzjv9P+Aufih9/Jy3iS8UgPITtAq3votVs/59PesMHqai7Je1M/RQ0SbQyHr
+# lnKhSLSZy51PpwYDE3cnRNTnf+hZqPC/Lwum6fI0POz3A8eHqNJMQBk1RmppVLC4
+# oVaO7KTVPeix3P0c2PR3WlxUjG/voVA9/HYJaISfb8rbII01YBwCA8sgsKxYoA5A
+# Y8WYIsGyWfVVa88nq2x2zm8jLfR+cWojayL/ErhULSd+2DrZ8LaHlv1b0VysGMNN
+# n3O3AamfV6peKOK5lDGCA3wwggN4AgEBMH0waTELMAkGA1UEBhMCVVMxFzAVBgNV
+# BAoTDkRpZ2lDZXJ0LCBJbmMuMUEwPwYDVQQDEzhEaWdpQ2VydCBUcnVzdGVkIEc0
+# IFRpbWVTdGFtcGluZyBSU0E0MDk2IFNIQTI1NiAyMDI1IENBMQIQCoDvGEuN8QWC
+# 0cR2p5V0aDANBglghkgBZQMEAgEFAKCB0TAaBgkqhkiG9w0BCQMxDQYLKoZIhvcN
+# AQkQAQQwHAYJKoZIhvcNAQkFMQ8XDTI2MDgyNTIyNDExOVowKwYLKoZIhvcNAQkQ
+# AgwxHDAaMBgwFgQU3WIwrIYKLTBr2jixaHlSMAf7QX4wLwYJKoZIhvcNAQkEMSIE
+# IFjrbwv4FMTAnM56JHvpw7yPKo2OqdT+gbVeu7oUsYLrMDcGCyqGSIb3DQEJEAIv
+# MSgwJjAkMCIEIEqgP6Is11yExVyTj4KOZ2ucrsqzP+NtJpqjNPFGEQozMA0GCSqG
+# SIb3DQEBAQUABIICAAtxBJ6fDicwnlhoYeZzOnoiozpmCSXN768obZD/NwjoNsfu
+# KtfZtvZWGgpc/Rl5iKmJKdewR181So2wLQPpFDHWY5nmrBqlJsGldIi6H8Lbqkfk
+# lMgbjCVm9FOIvD+TTVVKyo0YLKNlyXl/m3UFjaUQRWkyrXG+kdKInB6l9aUkj4lX
+# 49qvrdVsIe3SE5l8hwmGIgtnH93SZqpr2DNg5Y0BOv4AB09sSShgN/Q1668rGmUN
+# cYKgKkYjJZ2Pi6fehHauMOp0u2/TDn1eujENyWLPBbzjV+r0WJ5PtoWBmlW+5WbN
+# fei/D74ViGwqJNAp9+UvuhRDTliKpe3JrkoayyyI1/3mgHlsU+A73A/woHbVjmpE
+# h1zd9d9fe+fEDn5WnH+XGzkIGRe9CxIIkZzVHA+3CGwr69OK6eHMyBXcmTjNxuVO
+# rzuSUeix/jkixuYQHQbTsmf9xWur5KMwUvqKRdIrH6tCPQNboMvkx4o1h1NQeW0O
+# rl3Vw+Xq235yM2v1Ehq3+TIgIQm9hY3sU79SmEUak/NDtIx1FC3rA0sGuHsKkiW9
+# ihzPCW2QxYtUqeK3jIUvRXJJOHl7IutU0/KT2j4nXuaNTxTq7mec/rhxbwSGBaPa
+# uv5XLN9Pcs5s8nECN2ZocJoiAJkj1wwsAitC2foZGcDijpJUWR4htQj0lPpE
 # SIG # End signature block

@@ -13,20 +13,20 @@ function Restore-EDNSZoneVersion {
         [Parameter(ValueFromPipelineByPropertyName)]
         [string]
         $Comment,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'POST'
         $Path = "/config-dns/v2/zones/$Zone/versions/$VersionID/recordsets/activate"

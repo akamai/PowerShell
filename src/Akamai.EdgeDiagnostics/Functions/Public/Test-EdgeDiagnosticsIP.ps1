@@ -4,7 +4,7 @@ function Test-EdgeDiagnosticsIP {
         [Parameter(Mandatory, ValueFromPipeline)]
         [string[]]
         $IPAddress,
-        
+
         [Parameter()]
         [switch]
         $IncludeLocation,

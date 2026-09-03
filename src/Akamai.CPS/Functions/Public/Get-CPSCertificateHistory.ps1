@@ -35,6 +35,6 @@ function Get-CPSCertificateHistory {
         }
         # Make Request
         $Response = Invoke-AkamaiRequest @RequestParams
-        return $Response.Body.certificates 
+        return $Response.Body.certificates
     }
 }

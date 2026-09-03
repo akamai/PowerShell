@@ -28,7 +28,7 @@ function Rename-NetstorageObject {
         $AdditionalOptions = @{
             'destination' = $EncodedNewPath
         }
-    
+
         $RequestParams = @{
             'Path'              = $Path
             'Action'            = $Action

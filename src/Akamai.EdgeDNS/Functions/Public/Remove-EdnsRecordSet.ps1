@@ -16,18 +16,25 @@ function Remove-EDNSRecordSet {
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'DELETE'
+        if ($Name -ne $Zone -and $Name -notmatch "\.$Zone\.?$") {
+            $Name = "$Name.$Zone"
+        }
+        # Remove trailing dot if present
+        if ($Name.EndsWith('.')) {
+            $Name = $Name.TrimEnd('.')
+        }
         $Path = "/config-dns/v2/zones/$Zone/names/$Name/types/$Type"
 
         $RequestParams = @{

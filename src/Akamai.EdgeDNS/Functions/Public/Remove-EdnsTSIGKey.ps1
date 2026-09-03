@@ -4,20 +4,20 @@ function Remove-EDNSTSIGKey {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [string]
         $Zone,
-        
+
         [Parameter()]
         [string]
         $EdgeRCFile,
-        
+
         [Parameter()]
         [string]
         $Section,
-        
+
         [Parameter()]
         [string]
         $AccountSwitchKey
     )
-    
+
     process {
         $Method = 'DELETE'
         $Path = "/config-dns/v2/zones/$Zone/key"

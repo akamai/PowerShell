@@ -14,7 +14,7 @@ function Get-AkamaiUserAgent {
     else {
         $OS = $Env:OS
     }
-    
+
     $UserAgent = "AkamaiPowershell/$ModuleVersion (Powershell $PSEdition $($PSVersionTable.PSVersion) $PSCulture, $OS)"
     return $UserAgent
 }

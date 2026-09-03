@@ -60,14 +60,14 @@ function Get-PropertyInclude {
         try {
             # Make Request
             $Response = Invoke-AkamaiRequest @RequestParams
-    
+
             # Add to data cache
             if ($AkamaiOptions.EnableDataCache) {
                 foreach ($Include in $Response.Body.includes.items) {
                     Set-AkamaiDataCache -IncludeName $Include.includeName -IncludeID $Include.includeId
                 }
             }
-    
+
             return $Response.Body.includes.items
         }
         catch {

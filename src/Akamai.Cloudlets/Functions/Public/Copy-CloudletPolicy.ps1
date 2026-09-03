@@ -37,7 +37,7 @@ function Copy-CloudletPolicy {
             newName = $NewName
             groupId = $GroupID
         }
-    
+
         if ($AdditionalVersions) {
             $Body['additionalVersions'] = $AdditionalVersions
         }
