@@ -54,7 +54,6 @@
     RequiredModules   = @(@{ModuleName = 'Akamai.APIDefinitions'; GUID = '9218e32f-fd59-4ed8-baed-4ed24a084cb6'; ModuleVersion = '3.1.0'; },
         @{ModuleName = 'Akamai.APIKeyManager'; GUID = '379c6c40-aae5-45e0-ae92-1b6d8dade4d8'; ModuleVersion = '3.1.0'; },
         @{ModuleName = 'Akamai.AppSec'; GUID = '1a559a1b-e028-4309-9921-8a66b6a7be41'; ModuleVersion = '3.1.0'; },
-        @{ModuleName = 'Akamai.CCM'; GUID = '4c8a14e4-d1d5-4ce1-9fe5-b11b4172d621'; ModuleVersion = '3.1.0'; },
         @{ModuleName = 'Akamai.ClientLists'; GUID = 'b69c3900-e5b4-4fbd-bcb5-3858568b3c8e'; ModuleVersion = '3.1.0'; },
         @{ModuleName = 'Akamai.CloudAccessManager'; GUID = '43b5f4a9-6388-473c-b7f8-f7f3d9c3e9b7'; ModuleVersion = '3.1.0'; },
         @{ModuleName = 'Akamai.Cloudlets'; GUID = 'f3177805-a7e7-4b1b-8a9b-4f13f6e87457'; ModuleVersion = '3.1.0'; },
