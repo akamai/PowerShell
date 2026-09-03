@@ -16,7 +16,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Copy-CloudletPolicy</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -40,7 +40,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
           <maml:name>GroupID</maml:name>
           <maml:description>
             <maml:para>Your group's ID.</maml:para>
@@ -57,9 +57,9 @@
           <maml:description>
             <maml:para>Any additional versions that you want to clone into the new shared policy.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -120,9 +120,9 @@
         <maml:description>
           <maml:para>Any additional versions that you want to clone into the new shared policy.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -139,7 +139,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="2" aliases="none">
         <maml:name>GroupID</maml:name>
         <maml:description>
           <maml:para>Your group's ID.</maml:para>
@@ -163,7 +163,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -191,7 +191,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -218,429 +218,10 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/copy-cloudletpolicy</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/post-policy-clone</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Expand-CloudletLoadBalancerDetails</command:name>
-      <command:verb>Expand</command:verb>
-      <command:noun>CloudletLoadBalancerDetails</command:noun>
-      <maml:description>
-        <maml:para>Expand load balancer details.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>This is an internal function used to retrieve Cloudlet Load Balancers and their versions more easily in other commands.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Expand-CloudletLoadBalancerDetails</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>OriginID</maml:name>
-          <maml:description>
-            <maml:para>Your origin's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Version</maml:name>
-          <maml:description>
-            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>UnusedArgs</maml:name>
-          <maml:description>
-            <maml:para>Additional parameters.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
-        <maml:description>
-          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>OriginID</maml:name>
-        <maml:description>
-          <maml:para>Your origin's ID.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>Section</maml:name>
-        <maml:description>
-          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-        <maml:name>UnusedArgs</maml:name>
-        <maml:description>
-          <maml:para>Additional parameters.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Version</maml:name>
-        <maml:description>
-          <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples />
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>User Guide: Cloudlets</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Expand-CloudletPolicyDetails</command:name>
-      <command:verb>Expand</command:verb>
-      <command:noun>CloudletPolicyDetails</command:noun>
-      <maml:description>
-        <maml:para>Expand cloudlet policy details.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>This is an internal function used to retrieve Cloudlet policies and their versions more easily in other commands.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Expand-CloudletPolicyDetails</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>PolicyID</maml:name>
-          <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Version</maml:name>
-          <maml:description>
-            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>UnusedArgs</maml:name>
-          <maml:description>
-            <maml:para>Additional parameters.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-          <dev:type>
-            <maml:name>Object</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Legacy</maml:name>
-          <maml:description>
-            <maml:para>If present, this indicates that your policy is legacy (v2). Without this switch, v3 of the Cloudlets API is used.</maml:para>
-          </maml:description>
-          <dev:type>
-            <maml:name>SwitchParameter</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
-        <maml:description>
-          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Legacy</maml:name>
-        <maml:description>
-          <maml:para>If present, this indicates that your policy is legacy (v2). Without this switch, v3 of the Cloudlets API is used.</maml:para>
-        </maml:description>
-        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
-        <dev:type>
-          <maml:name>SwitchParameter</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>False</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>PolicyID</maml:name>
-        <maml:description>
-          <maml:para>Your cloudlet policy's ID.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>Section</maml:name>
-        <maml:description>
-          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-        <maml:name>UnusedArgs</maml:name>
-        <maml:description>
-          <maml:para>Additional parameters.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
-        <dev:type>
-          <maml:name>Object</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Version</maml:name>
-        <maml:description>
-          <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples />
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>User Guide: Cloudlets</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -659,6 +240,18 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-Cloudlet</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>CloudletID</maml:name>
+          <maml:description>
+            <maml:para>For GET operations, returns only policies for this particular `-CloudletIF`. The `-CloudletID` for: Edge Redirector is `0`, Visitor Prioritization is `1`, Forward Rewrite is `3`, Request Control is `4`, API Prioritization is `5`, Audience Segmentation is `6`, Phased Release is `7` and Application Load Balancer is `9`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -667,18 +260,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>CloudletID</maml:name>
-          <maml:description>
-            <maml:para>For GET operations, returns only policies for this particular `-CloudletIF`. The `-CloudletID` for: Edge Redirector is `0`, Visitor Prioritization is `1`, Forward Rewrite is `3`, Request Control is `4`, API Prioritization is `5`, Audience Segmentation is `6`, Phased Release is `7` and Application Load Balancer is `9`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -733,7 +314,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>CloudletID</maml:name>
         <maml:description>
           <maml:para>For GET operations, returns only policies for this particular `-CloudletIF`. The `-CloudletID` for: Edge Redirector is `0`, Visitor Prioritization is `1`, Forward Rewrite is `3`, Request Control is `4`, API Prioritization is `5`, Audience Segmentation is `6`, Phased Release is `7` and Application Load Balancer is `9`.</maml:para>
@@ -814,10 +395,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudlet</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/get-policies</maml:uri>
       </maml:navigationLink>
@@ -850,7 +427,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -862,7 +451,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -874,22 +463,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -901,7 +478,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -925,7 +502,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -970,10 +547,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletgroup</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/get-groupid-info</maml:uri>
       </maml:navigationLink>
@@ -994,6 +567,18 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletLoadBalancer</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>OriginID</maml:name>
+          <maml:description>
+            <maml:para>Your origin's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -1010,18 +595,6 @@
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>OriginID</maml:name>
-          <maml:description>
-            <maml:para>Your origin's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1084,10 +657,9 @@
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Type</maml:name>
           <maml:description>
-            <maml:para>The type of origin as defined in Property Manager. Options include:</maml:para>
-            <maml:para>- `APPLICATION_LOAD_BALANCER` for Application Load Balancer origins</maml:para>
+            <maml:para>The type of origin as defined in Property Manager. Options include: - `APPLICATION_LOAD_BALANCER` for Application Load Balancer origins</maml:para>
             <maml:para>- `CUSTOMER` for standard origins</maml:para>
-            <maml:para>- `NETSTORAGE` for NetStorage-based origins</maml:para>
+            <maml:para>- `NETSTORAGE` for NetStorage-based origins.</maml:para>
           </maml:description>
           <command:parameterValueGroup>
             <command:parameterValue required="false" command:variableLength="false">APPLICATION_LOAD_BALANCER</command:parameterValue>
@@ -1128,7 +700,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -1155,10 +727,9 @@
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Type</maml:name>
         <maml:description>
-          <maml:para>The type of origin as defined in Property Manager. Options include:</maml:para>
-          <maml:para>- `APPLICATION_LOAD_BALANCER` for Application Load Balancer origins</maml:para>
+          <maml:para>The type of origin as defined in Property Manager. Options include: - `APPLICATION_LOAD_BALANCER` for Application Load Balancer origins</maml:para>
           <maml:para>- `CUSTOMER` for standard origins</maml:para>
-          <maml:para>- `NETSTORAGE` for NetStorage-based origins</maml:para>
+          <maml:para>- `NETSTORAGE` for NetStorage-based origins.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
         <dev:type>
@@ -1198,10 +769,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletloadbalancer</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -1224,7 +791,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletLoadBalancerActivation</maml:name>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -1236,7 +803,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -1248,7 +827,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -1260,22 +839,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -1287,7 +854,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -1299,7 +866,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -1311,7 +878,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -1327,7 +894,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1356,10 +923,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletloadbalanceractivation</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/get-origin-activations</maml:uri>
       </maml:navigationLink>
@@ -1380,7 +943,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletLoadBalancerVersion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -1404,7 +967,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -1416,22 +991,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -1454,7 +1017,7 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -1466,7 +1029,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -1478,7 +1041,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -1490,7 +1053,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -1530,7 +1093,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1557,10 +1120,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletloadbalancerversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -1669,9 +1228,21 @@
           <maml:description>
             <maml:para>Specifies a page number for batched results, starting at zero.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageSize</maml:name>
+          <maml:description>
+            <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -1688,10 +1259,13 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Size</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-CloudletPolicy</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
+          <maml:name>PolicyID</maml:name>
           <maml:description>
-            <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -1700,9 +1274,6 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Get-CloudletPolicy</maml:name>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -1737,18 +1308,6 @@
             <maml:uri />
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
-          <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
@@ -1854,14 +1413,26 @@
         <maml:description>
           <maml:para>Specifies a page number for batched results, starting at zero.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Int32</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
       <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PageSize</maml:name>
+        <maml:description>
+          <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -1885,23 +1456,11 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Size</maml:name>
-        <maml:description>
-          <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -1930,10 +1489,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletpolicy</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/get-policy</maml:uri>
       </maml:navigationLink>
@@ -1955,6 +1510,18 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletPolicyActivation</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
+          <maml:name>PolicyID</maml:name>
+          <maml:description>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -2002,18 +1569,6 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
-          <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
@@ -2029,6 +1584,18 @@
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-CloudletPolicyActivation</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
+          <maml:name>PolicyID</maml:name>
+          <maml:description>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -2092,10 +1659,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageSize</maml:name>
           <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
+            <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2124,18 +1691,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Size</maml:name>
-          <maml:description>
-            <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2215,7 +1770,19 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PageSize</maml:name>
+        <maml:description>
+          <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -2251,23 +1818,11 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Size</maml:name>
-        <maml:description>
-          <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2294,214 +1849,10 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletpolicyactivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/get-policy-activation</maml:uri>
-      </maml:navigationLink>
-    </command:relatedLinks>
-  </command:command>
-  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
-    <command:details>
-      <command:name>Get-CloudletPolicyCSV</command:name>
-      <command:verb>Get</command:verb>
-      <command:noun>CloudletPolicyCSV</command:noun>
-      <maml:description>
-        <maml:para>Download a policy in CSV format.</maml:para>
-      </maml:description>
-    </command:details>
-    <maml:description>
-      <maml:para>Downloads a Cloudlet policy in CSV format as an alternative to JSON format. This operation applies only to v2 Cloudlet policies.</maml:para>
-    </maml:description>
-    <command:syntax>
-      <command:syntaxItem>
-        <maml:name>Get-CloudletPolicyCSV</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-          <maml:name>PolicyID</maml:name>
-          <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Version</maml:name>
-          <maml:description>
-            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-          <maml:name>OutputFileName</maml:name>
-          <maml:description>
-            <maml:para>Filename to write CSV content to.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-      </command:syntaxItem>
-    </command:syntax>
-    <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-        <maml:name>AccountSwitchKey</maml:name>
-        <maml:description>
-          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-        <maml:name>EdgeRCFile</maml:name>
-        <maml:description>
-          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
-        <maml:name>OutputFileName</maml:name>
-        <maml:description>
-          <maml:para>Filename to write CSV content to.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
-        <maml:name>PolicyID</maml:name>
-        <maml:description>
-          <maml:para>Your cloudlet policy's ID.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-        <maml:name>Section</maml:name>
-        <maml:description>
-          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-        <maml:name>Version</maml:name>
-        <maml:description>
-          <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-        <dev:type>
-          <maml:name>String</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-    </command:parameters>
-    <command:inputTypes>
-      <command:inputType>
-        <dev:type>
-          <maml:name>None</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:inputType>
-    </command:inputTypes>
-    <command:returnValues>
-      <command:returnValue>
-        <dev:type>
-          <maml:name>System.Object</maml:name>
-        </dev:type>
-        <maml:description>
-          <maml:para></maml:para>
-        </maml:description>
-      </command:returnValue>
-    </command:returnValues>
-    <maml:alertSet>
-      <maml:alert>
-        <maml:para></maml:para>
-      </maml:alert>
-    </maml:alertSet>
-    <command:examples />
-    <command:relatedLinks>
-      <maml:navigationLink>
-        <maml:linkText>User Guide: Cloudlets</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletpolicycsv</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -2520,6 +1871,18 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletPolicyProperty</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
+          <maml:name>PolicyID</maml:name>
+          <maml:description>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -2567,10 +1930,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageSize</maml:name>
           <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
+            <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2587,18 +1950,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Size</maml:name>
-          <maml:description>
-            <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2654,7 +2005,19 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PageSize</maml:name>
+        <maml:description>
+          <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -2678,23 +2041,11 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Size</maml:name>
-        <maml:description>
-          <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
     </command:parameters>
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -2723,10 +2074,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletpolicyproperty</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/get-policy-properties</maml:uri>
       </maml:navigationLink>
@@ -2749,6 +2096,30 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletPolicyVersion</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
+          <maml:name>PolicyID</maml:name>
+          <maml:description>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -2795,18 +2166,6 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
-          <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
@@ -2819,21 +2178,21 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Version</maml:name>
+      </command:syntaxItem>
+      <command:syntaxItem>
+        <maml:name>Get-CloudletPolicyVersion</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
+          <maml:name>PolicyID</maml:name>
           <maml:description>
-            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-      </command:syntaxItem>
-      <command:syntaxItem>
-        <maml:name>Get-CloudletPolicyVersion</maml:name>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -2881,10 +2240,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>PageSize</maml:name>
           <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
+            <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
           <dev:type>
@@ -2901,18 +2260,6 @@
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
             <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Size</maml:name>
-          <maml:description>
-            <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -2980,7 +2327,19 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>PageSize</maml:name>
+        <maml:description>
+          <maml:para>The number of records to return. Use with `offset` to manage the number of records returned.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+        <dev:type>
+          <maml:name>Int32</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -3004,19 +2363,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-        <maml:name>Size</maml:name>
-        <maml:description>
-          <maml:para>Specifies the number of objects on a page, at least `10` objects if using Shared. Otherwise the minimum is `1`.</maml:para>
-        </maml:description>
-        <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-        <dev:type>
-          <maml:name>Int32</maml:name>
-          <maml:uri />
-        </dev:type>
-        <dev:defaultValue>None</dev:defaultValue>
-      </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -3032,7 +2379,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3059,10 +2414,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletpolicyversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -3085,7 +2436,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Get-CloudletPolicyVersionRule</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -3097,7 +2448,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -3109,7 +2460,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AkaRuleID</maml:name>
           <maml:description>
             <maml:para>The ID of the rule within the policy version.</maml:para>
@@ -3121,7 +2484,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -3133,7 +2496,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -3145,22 +2508,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -3172,7 +2523,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AkaRuleID</maml:name>
         <maml:description>
           <maml:para>The ID of the rule within the policy version.</maml:para>
@@ -3184,7 +2535,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -3196,7 +2547,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -3208,7 +2559,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -3220,7 +2571,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -3236,7 +2587,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3263,10 +2622,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletpolicyversionrule</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -3397,10 +2752,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletproperty</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/get-properties</maml:uri>
       </maml:navigationLink>
@@ -3482,6 +2833,24 @@
       </command:syntaxItem>
       <command:syntaxItem>
         <maml:name>Get-CloudletSchema</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+          <maml:name>SchemaName</maml:name>
+          <maml:description>
+            <maml:para>The name of the JSON schema file. JSON schema filenames include:  - `create-policy.json`</maml:para>
+            <maml:para>- `update-policy.json`</maml:para>
+            <maml:para>- `clone-policy.json`</maml:para>
+            <maml:para>- `create-nimbus_policy_version-{cloudletCode}-1.0.json`</maml:para>
+            <maml:para>- `update-nimbus_policy_version-{cloudletCode}-1.0.json`</maml:para>
+            <maml:para>- `match_rule-{cloudletCode}-1.0.json`</maml:para>
+            <maml:para>The value for the `cloudletCode` is either `ALB`, `AP`, `AS`, `CD`, `ER`, `FR`, `IG`, or `VP`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -3498,26 +2867,6 @@
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>SchemaName</maml:name>
-          <maml:description>
-            <maml:para>The name of the JSON schema file. JSON schema filenames include: </maml:para>
-            <maml:para>- `create-policy.json`</maml:para>
-            <maml:para>- `update-policy.json`</maml:para>
-            <maml:para>- `clone-policy.json`</maml:para>
-            <maml:para>- `create-nimbus_policy_version-{cloudletCode}�1.0.json`</maml:para>
-            <maml:para>- `update-nimbus_policy_version-{cloudletCode}�1.0.json`</maml:para>
-            <maml:para>- `match_rule-{cloudletCode}�1.0.json`</maml:para>
-            <maml:para></maml:para>
-            <maml:para>The value for the `cloudletCode` is either `ALB`, `AP`, `AS`, `CD`, `ER`, `FR`, `IG`, or `VP`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -3577,17 +2926,15 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
         <maml:name>SchemaName</maml:name>
         <maml:description>
-          <maml:para>The name of the JSON schema file. JSON schema filenames include: </maml:para>
-          <maml:para>- `create-policy.json`</maml:para>
+          <maml:para>The name of the JSON schema file. JSON schema filenames include:  - `create-policy.json`</maml:para>
           <maml:para>- `update-policy.json`</maml:para>
           <maml:para>- `clone-policy.json`</maml:para>
-          <maml:para>- `create-nimbus_policy_version-{cloudletCode}�1.0.json`</maml:para>
-          <maml:para>- `update-nimbus_policy_version-{cloudletCode}�1.0.json`</maml:para>
-          <maml:para>- `match_rule-{cloudletCode}�1.0.json`</maml:para>
-          <maml:para></maml:para>
+          <maml:para>- `create-nimbus_policy_version-{cloudletCode}-1.0.json`</maml:para>
+          <maml:para>- `update-nimbus_policy_version-{cloudletCode}-1.0.json`</maml:para>
+          <maml:para>- `match_rule-{cloudletCode}-1.0.json`</maml:para>
           <maml:para>The value for the `cloudletCode` is either `ALB`, `AP`, `AS`, `CD`, `ER`, `FR`, `IG`, or `VP`.</maml:para>
         </maml:description>
         <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
@@ -3642,10 +2989,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/get-cloudletschema</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/get-schemas-schemaname</maml:uri>
       </maml:navigationLink>
@@ -3666,7 +3009,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-CloudletLoadBalancer</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -3678,7 +3021,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Description</maml:name>
           <maml:description>
             <maml:para>A description to include.</maml:para>
@@ -3690,7 +3045,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -3702,7 +3057,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -3714,22 +3069,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -3741,7 +3084,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Description</maml:name>
         <maml:description>
           <maml:para>A description to include.</maml:para>
@@ -3753,7 +3096,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -3765,7 +3108,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -3777,7 +3120,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -3793,7 +3136,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -3822,10 +3165,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletloadbalancer</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/post-origin</maml:uri>
       </maml:navigationLink>
@@ -3846,7 +3185,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-CloudletLoadBalancerActivation</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -3858,23 +3197,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
-          <maml:name>Network</maml:name>
-          <maml:description>
-            <maml:para>Returns only activations for the selected network, either `STAGING` or `PRODUCTION`. Note that this has no effect on Shared policies.</maml:para>
-          </maml:description>
-          <command:parameterValueGroup>
-            <command:parameterValue required="false" command:variableLength="false">STAGING</command:parameterValue>
-            <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
-          </command:parameterValueGroup>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -3886,31 +3209,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>Section</maml:name>
-          <maml:description>
-            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
             <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -3944,10 +3243,50 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Network</maml:name>
+          <maml:description>
+            <maml:para>Returns only activations for the selected network, either `STAGING` or `PRODUCTION`. Note that this has no effect on Shared policies.</maml:para>
+          </maml:description>
+          <command:parameterValueGroup>
+            <command:parameterValue required="false" command:variableLength="false">STAGING</command:parameterValue>
+            <command:parameterValue required="false" command:variableLength="false">PRODUCTION</command:parameterValue>
+          </command:parameterValueGroup>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -3983,7 +3322,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -3995,7 +3334,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Network</maml:name>
         <maml:description>
           <maml:para>Returns only activations for the selected network, either `STAGING` or `PRODUCTION`. Note that this has no effect on Shared policies.</maml:para>
@@ -4007,7 +3346,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -4019,7 +3358,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -4031,7 +3370,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -4047,7 +3386,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4076,10 +3415,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletloadbalanceractivation</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/post-origin-activations</maml:uri>
       </maml:navigationLink>
@@ -4100,7 +3435,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-CloudletLoadBalancerVersion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -4112,7 +3447,19 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
           <maml:name>Body</maml:name>
           <maml:description>
             <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
@@ -4124,7 +3471,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>EdgeRCFile</maml:name>
           <maml:description>
             <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -4136,22 +3483,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4174,7 +3509,7 @@
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -4186,7 +3521,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByValue)" position="named" aliases="none">
         <maml:name>Body</maml:name>
         <maml:description>
           <maml:para>A request body, either as a `PSCustomObject` or a string. This parameter supports pipelining.</maml:para>
@@ -4198,7 +3533,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -4210,7 +3545,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -4222,7 +3557,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -4250,6 +3585,14 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
           <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
@@ -4277,10 +3620,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletloadbalancerversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -4589,10 +3928,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletpolicy</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/post-policy</maml:uri>
       </maml:navigationLink>
@@ -4614,6 +3949,30 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-CloudletPolicyActivation</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
+          <maml:name>PolicyID</maml:name>
+          <maml:description>
+            <maml:para>Your cloudlet policy's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
+          <dev:type>
+            <maml:name>Int32</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
+          <maml:name>Version</maml:name>
+          <maml:description>
+            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>AccountSwitchKey</maml:name>
           <maml:description>
@@ -4631,9 +3990,9 @@
           <maml:description>
             <maml:para>An array of one or more additional properties that you want to activate with the Cloudlet policy. Once activated, the property and policy are permanently linked.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>String[]</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -4677,34 +4036,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>PolicyID</maml:name>
-          <maml:description>
-            <maml:para>Your cloudlet policy's ID.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">Int32</command:parameterValue>
-          <dev:type>
-            <maml:name>Int32</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
         <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
-          <maml:name>Version</maml:name>
-          <maml:description>
-            <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
           </maml:description>
           <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
           <dev:type>
@@ -4733,9 +4068,9 @@
         <maml:description>
           <maml:para>An array of one or more additional properties that you want to activate with the Cloudlet policy. Once activated, the property and policy are permanently linked.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">String[]</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>String[]</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -4776,7 +4111,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -4800,7 +4135,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -4816,7 +4151,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -4843,10 +4186,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletpolicyactivation</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -4869,7 +4208,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-CloudletPolicyDeactivation</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -4881,7 +4220,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -4893,7 +4232,31 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Network</maml:name>
           <maml:description>
             <maml:para>Returns only activations for the selected network, either `STAGING` or `PRODUCTION`. Note that this has no effect on Shared policies.</maml:para>
@@ -4909,19 +4272,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
-          <maml:name>EdgeRCFile</maml:name>
-          <maml:description>
-            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
           <maml:name>Section</maml:name>
           <maml:description>
             <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -4933,22 +4284,10 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
-          <maml:name>AccountSwitchKey</maml:name>
-          <maml:description>
-            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use Get-AccountSwitchKey (https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
-          </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
-          <dev:type>
-            <maml:name>String</maml:name>
-            <maml:uri />
-          </dev:type>
-          <dev:defaultValue>None</dev:defaultValue>
-        </command:parameter>
       </command:syntaxItem>
     </command:syntax>
     <command:parameters>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="5" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>AccountSwitchKey</maml:name>
         <maml:description>
           <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
@@ -4960,7 +4299,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="3" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>EdgeRCFile</maml:name>
         <maml:description>
           <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
@@ -4972,7 +4311,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="2" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Network</maml:name>
         <maml:description>
           <maml:para>Returns only activations for the selected network, either `STAGING` or `PRODUCTION`. Note that this has no effect on Shared policies.</maml:para>
@@ -4984,7 +4323,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -4996,7 +4335,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="4" aliases="none">
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
         <maml:name>Section</maml:name>
         <maml:description>
           <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
@@ -5008,7 +4347,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -5024,7 +4363,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5053,10 +4400,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletpolicydeactivation</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/post-policy-activations</maml:uri>
       </maml:navigationLink>
@@ -5072,13 +4415,12 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Creates a new version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 policies. </maml:para>
-      <maml:para>&gt; Note: Request bodies are automatically sanitized to enable you to retrieve a version with the `Get-CloudletPolicyVersion` operation, edit it locally, and pipe the object to this command.</maml:para>
+      <maml:para>Creates a new version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, the command will apply only to v3 policies.  &gt; Note: Request bodies are automatically sanitized to enable you to retrieve a version with the `Get-CloudletPolicyVersion` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>New-CloudletPolicyVersion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -5200,7 +4542,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -5226,6 +4568,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -5255,10 +4605,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletpolicyversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -5485,12 +4831,160 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/new-cloudletpolicyversionrule</maml:uri>
+        <maml:linkText>API Reference</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/post-policy-version-rules</maml:uri>
+      </maml:navigationLink>
+    </command:relatedLinks>
+  </command:command>
+  <command:command xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns:MSHelp="http://msdn.microsoft.com/mshelp">
+    <command:details>
+      <command:name>Remove-CloudletLoadBalancer</command:name>
+      <command:verb>Remove</command:verb>
+      <command:noun>CloudletLoadBalancer</command:noun>
+      <maml:description>
+        <maml:para>Delete a load balancing configuration.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>You can delete load balancing configurations, including those that are currently active on either the staging or production network. Run `Get-CloudletLoadBalancer` to get the `originId`. This operation is only available for the `APPLICATION_LOAD_BALANCER` origin type.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Remove-CloudletLoadBalancer</maml:name>
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+          <maml:name>OriginID</maml:name>
+          <maml:description>
+            <maml:para>Your origin's ID.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>AccountSwitchKey</maml:name>
+          <maml:description>
+            <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>EdgeRCFile</maml:name>
+          <maml:description>
+            <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+          <maml:name>Section</maml:name>
+          <maml:description>
+            <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <dev:type>
+            <maml:name>String</maml:name>
+            <maml:uri />
+          </dev:type>
+          <dev:defaultValue>None</dev:defaultValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>AccountSwitchKey</maml:name>
+        <maml:description>
+          <maml:para>An account credential key that lets you move between accounts when using an API client enabled for multiple accounts. To find account switch keys, use [Get-AccountSwitchKey](https://techdocs.akamai.com/powershell/docs/get-accountswitchkey).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>EdgeRCFile</maml:name>
+        <maml:description>
+          <maml:para>Your EdgeGrid resource file to authenticate your command. Defaults to `~/.edgerc`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="none">
+        <maml:name>OriginID</maml:name>
+        <maml:description>
+          <maml:para>Your origin's ID.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <maml:name>Section</maml:name>
+        <maml:description>
+          <maml:para>The section name in your EdgeGrid resource file to retrieve authentication credentials from. Defaults to `default`.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <dev:type>
+          <maml:name>String</maml:name>
+          <maml:uri />
+        </dev:type>
+        <dev:defaultValue>None</dev:defaultValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <maml:alertSet>
+      <maml:alert>
+        <maml:para></maml:para>
+      </maml:alert>
+    </maml:alertSet>
+    <command:examples />
+    <command:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>User Guide: Cloudlets</maml:linkText>
+        <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/post-policy-version-rules</maml:uri>
+        <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/delete-origin</maml:uri>
       </maml:navigationLink>
     </command:relatedLinks>
   </command:command>
@@ -5509,7 +5003,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Remove-CloudletPolicy</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -5607,7 +5101,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName, ByValue)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -5635,7 +5129,7 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Int32</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5664,10 +5158,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-cloudletpolicy</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/delete-policy</maml:uri>
       </maml:navigationLink>
@@ -5688,7 +5178,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Remove-CloudletPolicyVersion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -5700,14 +5190,14 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
           </maml:description>
-          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+          <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
           <dev:type>
-            <maml:name>String</maml:name>
+            <maml:name>Object</maml:name>
             <maml:uri />
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
@@ -5798,7 +5288,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -5822,14 +5312,14 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
         </maml:description>
-        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        <command:parameterValue required="true" variableLength="false">Object</command:parameterValue>
         <dev:type>
-          <maml:name>String</maml:name>
+          <maml:name>Object</maml:name>
           <maml:uri />
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
@@ -5838,7 +5328,15 @@
     <command:inputTypes>
       <command:inputType>
         <dev:type>
-          <maml:name>None</maml:name>
+          <maml:name>System.Nullable`1[[System.Int32, System.Private.CoreLib, Version=10.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Object</maml:name>
         </dev:type>
         <maml:description>
           <maml:para></maml:para>
@@ -5867,10 +5365,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/remove-cloudletpolicyversion</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/delete-policy-version</maml:uri>
       </maml:navigationLink>
@@ -5891,7 +5385,7 @@
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-CloudletLoadBalancer</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -5990,7 +5484,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -6016,6 +5510,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -6047,10 +5549,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-cloudletloadbalancer</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/v2/reference/put-origin</maml:uri>
       </maml:navigationLink>
@@ -6066,13 +5564,12 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates an existing Cloudlet Load Balancer's version. The `-Version` parameter is an integer or the word `latest`. </maml:para>
-      <maml:para>&gt; Note: Due to the complexity of the request object, it's recommended that you retrieve the existing configuration with the `Get-CloudletLoadBalancer` operation, edit it locally, and pipe the object to this command.</maml:para>
+      <maml:para>Updates an existing Cloudlet Load Balancer's version. The `-Version` parameter is an integer or the word `latest`.  &gt; Note: Due to the complexity of the request object, it's recommended that you retrieve the existing configuration with the `Get-CloudletLoadBalancer` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-CloudletLoadBalancerVersion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
           <maml:name>OriginID</maml:name>
           <maml:description>
             <maml:para>Your origin's ID.</maml:para>
@@ -6084,7 +5581,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -6194,7 +5691,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="none">
         <maml:name>OriginID</maml:name>
         <maml:description>
           <maml:para>Your origin's ID.</maml:para>
@@ -6230,7 +5727,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -6244,6 +5741,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -6273,10 +5778,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-cloudletloadbalancerversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -6346,7 +5847,7 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -6432,7 +5933,7 @@
           </dev:type>
           <dev:defaultValue>False</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -6530,7 +6031,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -6641,7 +6142,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="named" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="named" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -6667,6 +6168,14 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -6698,10 +6207,6 @@
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-cloudletpolicy</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/cloudlets/reference/put-policy</maml:uri>
       </maml:navigationLink>
@@ -6717,13 +6222,12 @@
       </maml:description>
     </command:details>
     <maml:description>
-      <maml:para>Updates the description and match rules for a given version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, this command will apply only to v3 policies. The `-Version` parameter is an integer or the word `latest`. </maml:para>
-      <maml:para>&gt; Note: Request bodies are automatically sanitized to enable you to retrieve a version with the `Get-CloudletPolicyVersion` operation, edit it locally, and pipe the object to this command.</maml:para>
+      <maml:para>Updates the description and match rules for a given version of a Cloudlet policy. Use the `-Legacy` switch to specify v2 policies; otherwise, this command will apply only to v3 policies. The `-Version` parameter is an integer or the word `latest`.  &gt; Note: Request bodies are automatically sanitized to enable you to retrieve a version with the `Get-CloudletPolicyVersion` operation, edit it locally, and pipe the object to this command.</maml:para>
     </maml:description>
     <command:syntax>
       <command:syntaxItem>
         <maml:name>Set-CloudletPolicyVersion</maml:name>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
           <maml:name>PolicyID</maml:name>
           <maml:description>
             <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -6735,7 +6239,7 @@
           </dev:type>
           <dev:defaultValue>None</dev:defaultValue>
         </command:parameter>
-        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+        <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
           <maml:name>Version</maml:name>
           <maml:description>
             <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -6880,7 +6384,7 @@
         </dev:type>
         <dev:defaultValue>False</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="0" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="0" aliases="id">
         <maml:name>PolicyID</maml:name>
         <maml:description>
           <maml:para>Your cloudlet policy's ID.</maml:para>
@@ -6904,7 +6408,7 @@
         </dev:type>
         <dev:defaultValue>None</dev:defaultValue>
       </command:parameter>
-      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="False" position="1" aliases="none">
+      <command:parameter required="true" variableLength="true" globbing="false" pipelineInput="True (ByPropertyName)" position="1" aliases="none">
         <maml:name>Version</maml:name>
         <maml:description>
           <maml:para>Version number. Can be an integer or the word `latest`.</maml:para>
@@ -6918,6 +6422,22 @@
       </command:parameter>
     </command:parameters>
     <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Int32</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para></maml:para>
+        </maml:description>
+      </command:inputType>
       <command:inputType>
         <dev:type>
           <maml:name>System.Object</maml:name>
@@ -6947,10 +6467,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-cloudletpolicyversion</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>
@@ -7175,10 +6691,6 @@
       <maml:navigationLink>
         <maml:linkText>User Guide: Cloudlets</maml:linkText>
         <maml:uri>https://techdocs.akamai.com/powershell/docs/cloudlets</maml:uri>
-      </maml:navigationLink>
-      <maml:navigationLink>
-        <maml:linkText>Function Reference</maml:linkText>
-        <maml:uri>https://techdocs.akamai.com/powershell/docs/set-cloudletpolicyversionrule</maml:uri>
       </maml:navigationLink>
       <maml:navigationLink>
         <maml:linkText>API Reference</maml:linkText>

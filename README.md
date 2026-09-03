@@ -1,6 +1,8 @@
 # Akamai Powershell Module
 
-The Akamai PowerShell module provides a consistent interface with which to manage Akamai's product API. 
+The Akamai PowerShell module provides a consistent interface with which to manage Akamai's product API.
+
+Our module documentation is on Akamai TechDocs at [PowerShell](https://techdocs.akamai.com/powershell/docs).
 
 ## What's new
 
@@ -26,7 +28,7 @@ Install the full module or customize your install with specific submodules.
 
 * Install individual submodules.
 
-    **Note:** Custom installs load only 
+    **Note:** Custom installs load only
 
     ```powershell Submodule
     Install-Module Akamai.<submodule-name>
@@ -34,21 +36,21 @@ Install the full module or customize your install with specific submodules.
 
 ## Contribute
 
-We're not currently accepting pull requests, but we appreciate and encourage community contribution and feedback through Issues. 
+We're not currently accepting pull requests, but we appreciate and encourage community contribution and feedback through Issues.
 
 ### Create a new issue
 
-Before you create a new issue, search existing issues to see if something related already exists. 
+Before you create a new issue, search existing issues to see if something related already exists.
 
-If not, open a new issue, fill out the issue template, providing as much information as you can. 
+If not, open a new issue, fill out the issue template, providing as much information as you can.
 
 ### Solve an issue
 
-Have a look through our [open issues](https://github.com/akamai/PowerShell/issues) to find one that interests you and pass on your solutions or suggestions. 
+Have a look through our [open issues](https://github.com/akamai/PowerShell/issues) to find one that interests you and pass on your solutions or suggestions.
 
 ### License
 
-Copyright © 2024 Akamai Technologies, Inc. All rights reserved
+Copyright © 2026 Akamai Technologies, Inc. All rights reserved
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 

@@ -1,0 +1,82 @@
+function Get-AppSecPolicyRapidRule {
+    [CmdletBinding(DefaultParameterSetName = 'configname-policyname-all')]
+    Param(
+        [Parameter(ParameterSetName = 'Config & policy name', Position = 0, Mandatory)]
+        [Parameter(ParameterSetName = 'Config name & policy ID', Position = 0, Mandatory)]
+        [string]
+        $ConfigName,
+
+        [Parameter(ParameterSetName = 'Config ID & policy name', Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Config & policy ID', Mandatory, ValueFromPipelineByPropertyName)]
+        [int]
+        $ConfigID,
+
+        [Parameter(Position = 1, Mandatory, ValueFromPipelineByPropertyName)]
+        [ValidatePattern('^(latest|production|staging|[0-9]+)$')]
+        [Alias('version')]
+        [string]
+        $VersionNumber,
+
+        [Parameter(ParameterSetName = 'Config & policy name', Position = 2, Mandatory)]
+        [Parameter(ParameterSetName = 'Config ID & policy name', Position = 2, Mandatory)]
+        [string]
+        $PolicyName,
+
+        [Parameter(ParameterSetName = 'Config name & policy ID', Mandatory, ValueFromPipelineByPropertyName)]
+        [Parameter(ParameterSetName = 'Config & policy ID', Mandatory, ValueFromPipelineByPropertyName)]
+        [string]
+        $PolicyID,
+
+        [Parameter()]
+        [int]
+        $RuleID,
+
+        [Parameter()]
+        [int]
+        $RuleVersion,
+
+        [Parameter()]
+        [string]
+        $EdgeRCFile,
+
+        [Parameter()]
+        [string]
+        $Section,
+
+        [Parameter()]
+        [string]
+        $AccountSwitchKey
+    )
+
+    process {
+        [string] $ConfigID, $VersionNumber, $PolicyID = Expand-AppSecConfigDetails @PSBoundParameters
+        if ($RuleID -and $RuleVersion) {
+            $Path = "/appsec/v1/configs/$ConfigID/versions/$VersionNumber/security-policies/$PolicyID/rapid-rules/$RuleID/versions/$RuleVersion/action"
+        }
+        else {
+            $Path = "/appsec/v1/configs/$ConfigID/versions/$VersionNumber/security-policies/$PolicyID/rapid-rules"
+        }
+
+        $RequestParameters = @{
+            'Path'             = $Path
+            'Method'           = 'GET'
+            'EdgeRCFile'       = $EdgeRCFile
+            'Section'          = $Section
+            'AccountSwitchKey' = $AccountSwitchKey
+            'Debug'            = ($PSBoundParameters.Debug -eq $true)
+        }
+        try {
+            $Response = Invoke-AkamaiRequest @RequestParameters
+
+            if ($RuleID -and $RuleVersion) {
+                return $Response.Body
+            }
+            else {
+                return $Response.Body.policyRules
+            }
+        }
+        catch {
+            throw $_
+        }
+    }
+}
